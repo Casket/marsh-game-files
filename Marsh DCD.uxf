@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.2">
+  <zoom_level>7</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>364</x>
+      <y>826</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Guard
+--
+path</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>651</x>
+      <y>546</y>
+      <w>182</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Character
+--
+string[] dialogue
+int dialogueLength
+--
+speak()
+updateDialogue(int length, string[] dialogue)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>560</x>
+      <y>637</y>
+      <w>147</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Combat
+--
+int health
+int mana
+int armor
+int vitality
+int intelligence
+int focus
+int willpower
+Attack[] loadOut
+--
+initiateAttack(Attack attack)
+(abstract) movementControl()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>812</x>
+      <y>672</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>NonCombat
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>798</x>
+      <y>378</y>
+      <w>147</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Drawable (not an interface)
+--
+Sprite sprite
+int x
+int y
+int velocity
+int velocityDelay
+--
+void update()
+void dealWithAttack(Attack)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>826</x>
+      <y>826</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Magic_User
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>602</x>
+      <y>826</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Monster
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>616</x>
+      <y>252</y>
+      <w>147</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Screen
+--
+bitmap screenBuffer
+point playerLocation
+--
+writeToScreen()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1071</x>
+      <y>539</y>
+      <w>196</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>Attack
+--
+int baseDamage
+int penetration
+int range
+enum type {melee, fire, indirect, energy, acid}
+int treeDepthLevel
+int deathTimer 'time to tick up before it dies
+int chargeTime
+--
+(override) dealWithAttack()
+(override) update()
+clone()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>427</x>
+      <y>749</y>
+      <w>167</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>154;21;21;77</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>602</x>
+      <y>749</y>
+      <w>108</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>35;21;77;77</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>665</x>
+      <y>749</y>
+      <w>188</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>21;21;175;77</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>616</x>
+      <y>588</y>
+      <w>108</w>
+      <h>62</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>84;21;28;49</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>728</x>
+      <y>588</y>
+      <w>146</w>
+      <h>97</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>21;21;133;84</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>742</x>
+      <y>462</y>
+      <w>108</w>
+      <h>97</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>77;21;35;84</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>903</x>
+      <y>462</y>
+      <w>237</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;implements&gt;&gt;</panel_attributes>
+    <additional_attributes>21;21;224;77</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>826</x>
+      <y>917</y>
+      <w>147</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+int level
+int experience
+Equipment[] iventory
+--
+(override) movementControl()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>847</x>
+      <y>854</y>
+      <w>92</w>
+      <h>76</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>49;21;49;63</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>182</x>
+      <y>595</y>
+      <w>196</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>Sprite
+--
+bitmap image
+enum direction {N S E W NE NW NE SW}
+int animationFrame
+int animationFrameDelay
+int numFrames
+enum state {casting, normal, explosion, death}
+bool lit
+--
+Bitmap load()
+Bitmap getCurrentFrame()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>287</x>
+      <y>455</y>
+      <w>147</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>Tile
+--
+int row
+int column
+sprite image
+LinkedList? drawableObjects
+int/bool canWalk
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>791</x>
+      <y>91</y>
+      <w>147</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>Main
+--
+Player playa
+structure worlds
+World currentWorld
+--
+startGame()
+endGame()
+generateWorld()
+upadateMovement()
+checkCollisions()
+updateClock()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>364</x>
+      <y>266</y>
+      <w>147</w>
+      <h>119</h>
+    </coordinates>
+    <panel_attributes>World
+--
+Bitmap worldImage
+Tile[] worldTiles
+int tilesWide
+int tilesHigh
+
+--
+loadWorld()
+loadMission(file)
+tick/update()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1127</x>
+      <y>889</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>Equipment
+--
+string name
+int vitality
+int focus
+int intelligence
+int willpower
+boolean equipped
+enum type {boots, belt, stuff}</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
