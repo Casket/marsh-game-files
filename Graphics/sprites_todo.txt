@@ -46,8 +46,8 @@ shop
    aisle		DONE
    stair		DONE
 docks			Inside_C
-water
-grass
+water			DONE
+grass			DONE
    grass_tuft		DONE
    grass_flowers	DONE
    tree_pine		DONE
