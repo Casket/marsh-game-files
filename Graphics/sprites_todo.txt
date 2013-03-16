@@ -1,0 +1,125 @@
+Areas:
+marsh
+   cattails
+   water_marsh		Dungeon_A1
+   grass_marsh		DONE
+   grass_tuft_marsh	DONE
+   tree_dead
+hut
+   bed    		DONE
+   table		DONE
+   chair
+   kitchen stuff	DONE
+   oven			DONE
+dungeon
+   firey lamps
+   gothic statues	Inside_C
+house
+   stair		DONE
+   table		
+   chair
+   kitchen stuff	DONE
+   mirror		DONE
+   portrait		DONE
+   oven			DONE
+   bed			DONE
+   chair_lazy
+   fireplace		DONE
+   box			DONE
+   dresser		DONE
+keep
+tavern
+   bar
+   beer			DONE
+   cups			DONE
+   shelves		DONE
+   chairs
+   tables		DONE
+   stairs		DONE
+   bed			DONE
+   box			DONE
+   barrels		DONE
+shop
+   floor_wood
+   bar
+   boxes		DONE
+   aisle		DONE
+   stair		DONE
+docks			Inside_C
+water
+grass
+   grass_tuft		DONE
+   grass_flowers	DONE
+   tree_pine		DONE
+   tree_oak		
+   tree_stump		DONE
+cobbles_road
+dirt_road
+   dirt_clump		DONE
+farm
+   dark dirt
+   fence
+   farm hut
+church
+   organ		DONE
+   pew
+   altar		DONE
+   bible		DONE
+palace
+   piano		DONE
+   throne		DONE
+   statues		DONE
+   fancy doors
+bridge
+marsh camp
+watchtowers		DONE
+
+
+Characters:
+shopkeeper
+player
+rival
+bishop
+monk
+outcast
+   outcast_leader
+guard
+   guard_cpt
+monsters
+   vampires
+      vampire_boss
+   marsh_monster
+   skeletons
+random ppl
+   man_nice
+   woman_nice
+   man_peasant
+   woman_peasant
+
+
+Attack/Spells:
+fireball		DONE
+energy ball
+energy beam
+fire fan
+energy lance
+penetrating spikes
+flaming shock wave
+safety bubble
+
+
+Objects/UI/Animals:
+chest  			DONE
+mouse sprite
+health bar
+mana bar
+HUD outline
+pigs			
+cows			DONE
+chickens		DONE
+
+
+
+
+
+http://walyou.com/aleph-2d-rpg-game/
