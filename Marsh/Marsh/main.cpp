@@ -18,7 +18,7 @@ void update_world(World*);
 void draw_world_to_buffer(World*);
 void start_game(void);
 void end_game(void);
-World* generate_world(); // TODO add world identifying thingymahinger
+World* generate_world(void); // TODO add world identifying thingymahinger
 
 int main(void)
 {
@@ -27,6 +27,14 @@ int main(void)
 
 	BITMAP* blank = create_bitmap(SCREENW, SCREENH);
 	clear_bitmap(blank);
+
+	World* w = new World(30, 30);
+
+	for (int i=0; i < 30; i++){
+		for (int j=0; j < 30; j++){
+			w->tile_map[i][j]->can_walk = false;
+		}
+	}
 
 	while(!key[KEY_ESC]) {
 		if (!rested) {
@@ -42,6 +50,7 @@ int main(void)
 
 	}
 	
+	delete w;
 	allegro_exit();
 
     return 0;

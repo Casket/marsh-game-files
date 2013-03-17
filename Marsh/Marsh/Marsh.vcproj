@@ -168,6 +168,10 @@
 				RelativePath=".\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\World.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -175,7 +179,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Attack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Character.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Combat.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Drawable.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Screen.h"
 				>
 			</File>
 			<File

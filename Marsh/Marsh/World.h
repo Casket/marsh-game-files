@@ -3,7 +3,6 @@
 #define TILE_SIZE 32
 
 #include "Main.h"
-#include "Sprite.h"
 
 using namespace std;
 
@@ -11,15 +10,20 @@ typedef struct Tile{
 	int row;
 	int col;
 	Sprite* background_image;
-	std::list<int*> contents;
+	std::list<Drawable*> contents;
 	bool can_walk;
 }Tile;
 
+enum WorldName{ main_world };
+// TODO GABE TYPE THIS SHIT, thank you
+
 class World{
+public:
 	int tiles_wide, tiles_high;
 	Tile*** tile_map;
+	int current_mission;
 
-	public:
+
 		World(int tiles_w, int tiles_h);
 		~World();
 		void load_world(char* load_file);
