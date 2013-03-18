@@ -26,6 +26,7 @@
 #define CAST_TEN KEY_0
 #define OPEN_MENU		// TODO define that
 
+#define MOVEMENT_DELTA 2
 
 
 using namespace std;
@@ -57,6 +58,8 @@ class Player: public Combat{
 	private:
 		// private stuff
 		void listen_to_keyboard(void);
+		void accept_aiming(void);
+		void accept_movement(void);
 
 
 };
