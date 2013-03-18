@@ -1,5 +1,6 @@
 # Ignore everything
-
+/*
+/*/
 
 #but leave resources and .cpp/.h files
 !.gitignore
