@@ -26,7 +26,7 @@ public:
 
 		World(int tiles_w, int tiles_h);
 		~World();
-		void load_world(char* load_file);
+		char load_world(char* load_file);
 		void load_mission(char* mission_file);
 		Tile*** get_tile_map(void);
 		int get_tiles_wide(void);

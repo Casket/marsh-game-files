@@ -1,4 +1,7 @@
 #include "Main.h"
+#include <fstream>
+#include <string>
+#include <iostream>
 
 
 using namespace std;
@@ -40,4 +43,28 @@ World::~World(void){
 	}
 
 	free(this->tile_map);
+}
+
+char World::load_world(char* filename){
+	
+	ifstream fin;
+
+	fin.open(filename);
+	
+	char current = '6';
+
+	if(fin.is_open()){
+		
+		
+		fin.get(current);
+
+	}else{
+
+		current = '9';
+		
+	}
+
+	fin.close();
+
+return current;	
 }

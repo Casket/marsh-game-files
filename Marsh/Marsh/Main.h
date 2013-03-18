@@ -7,6 +7,7 @@ class Attack;
 #include <stdio.h>
 #include <allegro.h>
 #include <list>
+#include <string>
 #include "Sprite.h"
 #include "Drawable.h"
 #include "Character.h"
@@ -15,6 +16,7 @@ class Attack;
 #include "Player.h"
 #include "World.h"
 #include "Screen.h"
+
 
 using namespace std;
 
