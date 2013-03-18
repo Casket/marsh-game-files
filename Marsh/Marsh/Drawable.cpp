@@ -9,7 +9,9 @@ Drawable::Drawable(int x, int y, int vel, int vel_d, Sprite *img)
 	this->image = img;
 }
 
+Drawable::~Drawable(void) {
 
+}
 
 void update(void){
 

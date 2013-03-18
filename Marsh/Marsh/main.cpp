@@ -41,7 +41,7 @@ int main(void)
 			rest(4);
 			continue;
 		}
-		rested = false;
+		//rested = false;
 		ticks++;
 
 		blit(blank, screen, 0,0, 0,0, SCREENW, SCREENH);

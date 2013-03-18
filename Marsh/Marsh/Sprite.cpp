@@ -23,6 +23,14 @@ void Sprite::load_sprite_sheet(char* name) {
 	this->sprite_sheet = load_bitmap(name, NULL);
 }
 
+Direction Sprite::get_facing(void) {
+	return this->facing;
+}
+
+void Sprite::set_facing(Direction d) {
+	this->facing = d;
+}
+
 BITMAP* Sprite::get_current_frame(void) {
 	int y = 0;
 	if (!this->lighted)
