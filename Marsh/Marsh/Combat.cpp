@@ -1,7 +1,7 @@
 #include "Main.h"
 
 Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
-:Character(x, y, vel, vel_d, img)
+:Drawable(x, y, vel, vel_d, img)
 {
 	this->vitality = BASE_VIT;
 	this->intelligence = BASE_INTEL;

@@ -12,7 +12,7 @@
 
 enum EntityType {Guard, Monster, Outcast, Player, Rival};
 
-class Combat: public Character{
+class Combat: public Drawable{
 	Attack* attack_loadout[MAX_ATTACKS];
 	EntityType my_type;
 	int health, mana, armor;
