@@ -35,7 +35,7 @@ class Sprite{
 	public:
 		Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
 		~Sprite(void);
-		void load_sprite_sheet(char* name, int cols, int rows, int total);
+		void load_sprite_sheet(char* name);
 		BITMAP* get_current_frame(void);
 		void update(void);
 		void casting_update(void);
