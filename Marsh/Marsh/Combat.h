@@ -17,6 +17,11 @@ class Combat: public Character{
 		~Combat(void);
 		void initiate_attack(Attack*);
 		void update(void);
+		void set_my_type(EntityType);
+
+	private:
+		int calculate_health(int);
+		int calculate_mana(int);
 
 };
 
