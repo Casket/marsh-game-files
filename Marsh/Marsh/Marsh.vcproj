@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Drawable.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
