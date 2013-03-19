@@ -1,0 +1,33 @@
+prefixes:
+0 random
+1 water
+2 marshWater
+3 dirt / road
+4 cobblestone / road
+
+
+specifiers:
+0 regular
+1 convex_up_left
+2 convex_up_right
+3 convex_down_right
+4 convex_down_left
+5 concave_up_left
+6 concave_up_right
+7 concave_down_right
+8 concave_down_left
+9 up
+A down
+B left
+C right
+
+
+random:
+00 grass
+01 grass_marsh
+02 wood floor
+03 stone floor
+04 bridgefloor
+05 bridgebottom_right
+06 bridgebottom_left
+
