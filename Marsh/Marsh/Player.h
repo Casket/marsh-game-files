@@ -31,9 +31,14 @@
 #define MOVEMENT_DELTA 2
 
 
-using namespace std;
 
 #include "Main.h"
+#include "Sprite.h"
+#include "Drawable.h"
+#include "Combat.h"
+
+using namespace std;
+
 
 enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book, Key,Dagger, Consumable};
 
@@ -67,6 +72,7 @@ class Player: public Combat{
 		void check_casting(void);
 		void check_collisions(void);
 		void casting_update(void);
+		void accept_interaction(void);
 
 
 };

@@ -1,5 +1,6 @@
 #include "Sprite.h"
 
+
 Sprite::Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames){
 	this->animation_counter = 0;
 	this->animation_delay = ani_delay;
@@ -13,6 +14,8 @@ Sprite::Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int 
 	this->current_state = Normal;
 
 	this->sprite_sheet = load_bitmap(file_name, NULL);
+	if (this->sprite_sheet == NULL)
+		exit(0);
 }
 
 Sprite::~Sprite(void) {

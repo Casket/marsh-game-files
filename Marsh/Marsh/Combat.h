@@ -9,6 +9,7 @@
 #define BASE_ARMOR 0
 
 #include "Main.h"
+using namespace std;
 
 enum EntityType {Guard, Monster, Outcast, Player, Rival};
 

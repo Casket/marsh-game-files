@@ -20,6 +20,10 @@ void Player::update(void) {
 	check_collisions();
 }
 
+void Player::check_collisions(void) {
+
+}
+
 void Player::listen_to_keyboard(void) {
 	if (this->casting)
 		// only accept aiming
@@ -27,8 +31,13 @@ void Player::listen_to_keyboard(void) {
 	else {
 		// deal with all other potential input
 		accept_movement();
+		acccept_interaction();
 		check_casting();
 	}
+}
+
+void Player::accept_interaction(void) {
+	// TODO implement this
 }
 
 void Player::casting_update(void) {
@@ -41,6 +50,7 @@ void Player::casting_update(void) {
 		throw std::exception("PLAYER: spell casting, no current spell");
 	}
 
+	/*
 	if (++this->casting_timer >= this->casted_spell->get_charge_time()){
 		// ready to fire that bad boy
 		this->casting = false;
@@ -48,6 +58,7 @@ void Player::casting_update(void) {
 		// TODO put the casted spell into the world
 		this->casted_spell = NULL;
 	}
+	*/ 
 }
 
 void Player::check_casting(void) {
@@ -75,11 +86,13 @@ void Player::check_casting(void) {
 		desired_attack = 9;
 	}
 
+	/*
 	if (desired_attack >= 0) {
 		this->casting = true;
 		Attack* used_attack = this->attack_loadout[desired_attack];
 		this->casted_spell = used_attack->clone();
 	}
+	*/ 
 }
 
 void Player::accept_aiming(void) {

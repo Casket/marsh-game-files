@@ -1,5 +1,7 @@
 #include "Main.h"
 
+using namespace std;
+
 Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 :Drawable(x, y, vel, vel_d, img)
 {
