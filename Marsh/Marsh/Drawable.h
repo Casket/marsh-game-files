@@ -20,6 +20,7 @@ class Drawable{
 		void update(void);
 		void deal_with_attack(Attack* attack);
 		void set_sprite(Sprite* spr);
+		void set_world(World* world);
 };
 
 
