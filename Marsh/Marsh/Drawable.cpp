@@ -10,17 +10,23 @@ Drawable::Drawable(int x, int y, int vel, int vel_d, Sprite *img)
 }
 
 Drawable::~Drawable(void) {
+	delete this->image;
+}
+
+void Drawable::update(void){
+	//Not needed as these objects don't move in this level
+	return;
+}
+
+void Drawable::deal_with_attack(Attack* attack){
+	//cause attack to start its dieing proces
 
 }
 
-void update(void){
-
+void Drawable::set_sprite(Sprite* spr){
+	this->image = spr;
 }
 
-void deal_with_attack(Attack* attack){
-
-}
-
-void set_sprite(Sprite* spr){
-	
+void Drawable::set_world(World* world){
+	this->my_world = world;
 }
