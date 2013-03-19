@@ -37,7 +37,6 @@ int main(void)
 	}
 
 	while(!key[KEY_ESC]) {
-
 		if (!rested) {
 			rest(4);
 			continue;
