@@ -165,7 +165,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-<<<<<<< HEAD
 				RelativePath=".\Attack.cpp"
 				>
 			</File>
@@ -175,9 +174,7 @@
 			</File>
 			<File
 				RelativePath=".\Drawable.cpp"
-=======
 				RelativePath=".\Ground_Sprite.cpp"
->>>>>>> gabesBranch
 				>
 			</File>
 			<File
@@ -185,15 +182,12 @@
 				>
 			</File>
 			<File
-<<<<<<< HEAD
 				RelativePath=".\Player.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Sprite.cpp"
-=======
 				RelativePath=".\Sprite_Solid.cpp"
->>>>>>> gabesBranch
 				>
 			</File>
 			<File
