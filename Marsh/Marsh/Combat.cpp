@@ -54,3 +54,15 @@ void Combat::casting_update(void) {
 	}
 	*/ 
 }
+
+void Combat::launch_attack(int attack_num) {
+		/*
+	if ((attack_num >= 0) && (attack_num < MAX_ATTACKS ) {
+		this->casting = true;
+		Attack* used_attack = this->attack_loadout[attack_num];
+		this->casted_spell = used_attack->clone();
+	}
+	*/ 
+
+
+}

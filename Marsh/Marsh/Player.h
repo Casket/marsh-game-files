@@ -61,6 +61,9 @@ class Player: public Combat{
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
 		void update(void);
+		Equipment** get_inventory(void);
+		bool add_to_inventory(Equipment*);
+
 	
 	private:
 		// private stuff

@@ -14,6 +14,22 @@ Player::~Player(void){
 	
 }
 
+Equipment** Player::get_inventory(void) {
+	return this->inventory;
+}
+
+bool Player::add_to_inventory(Equipment* e) {
+	for (int i=0; i < MAX_HELD_ITEMS; i++) {
+		if (this->inventory[i] != NULL){
+			this->inventory[i] = e;
+			return true;
+		}
+	}
+	// inventory is full, so it wasn't added
+	return false;
+}
+
+
 void Player::update(void) {
 	// need to figure out where this guy wants to go
 	listen_to_keyboard();
@@ -68,14 +84,9 @@ void Player::check_casting(void) {
 	} else if (key[CAST_TEN]) {
 		desired_attack = 9;
 	}
+	this->launch_attack(desired_attack);
+	
 
-	/*
-	if (desired_attack >= 0) {
-		this->casting = true;
-		Attack* used_attack = this->attack_loadout[desired_attack];
-		this->casted_spell = used_attack->clone();
-	}
-	*/ 
 }
 
 void Player::accept_aiming(void) {

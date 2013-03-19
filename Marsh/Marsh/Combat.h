@@ -36,6 +36,7 @@ class Combat: public Drawable{
 
 	protected:
 		void casting_update(void);
+		void launch_attack(int);
 
 };
 
