@@ -165,7 +165,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Ground_Sprite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite_Solid.cpp"
 				>
 			</File>
 			<File
@@ -195,6 +203,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Ground_Sprite.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.h"
 				>
 			</File>
@@ -208,6 +220,10 @@
 			</File>
 			<File
 				RelativePath=".\Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite_Solid.h"
 				>
 			</File>
 			<File

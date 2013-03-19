@@ -9,6 +9,7 @@ class Attack;
 #include <list>
 #include <string>
 #include "Sprite.h"
+#include "Ground_Sprite.h"
 #include "Drawable.h"
 #include "Character.h"
 #include "Attack.h"

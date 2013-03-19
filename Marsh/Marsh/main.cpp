@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 
 
 using namespace std;
@@ -32,22 +33,11 @@ int main(void)
 	BITMAP* blank = create_bitmap(SCREENW, SCREENH);
 	clear_bitmap(blank);
 
-	stringstream ss;
-
 	World* w = new World(30, 30);
 	
 	char* filename = (char*)malloc(sizeof(char) * 100);
 	
-//	strcpy_s(filename, sizeof(char) * 100, "C:\\Users\\glenngs\\Documents\\School\\Csse490\\MarshRepo\\marsh-game-files\\Marsh\\Debug\\mapTEST.txt");
 	strcpy_s(filename, sizeof(char) * 100, "mapTEST.txt");
-	
-	char saved = w->load_world(filename);
-	
-	for (int i=0; i < 30; i++){
-		for (int j=0; j < 30; j++){
-			w->tile_map[i][j]->can_walk = false;
-		}
-	}
 
 	while(!key[KEY_ESC]) {
 		if (!rested) {
@@ -60,14 +50,7 @@ int main(void)
 
 		blit(blank, screen, 0,0, 0,0, SCREENW, SCREENH);
 
-		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);
-
-
-
-
-		textprintf_centre_ex(screen,font,100,100,makecol(255,255,255),-1,"FRAMERATE %c", saved);
-		textprintf_centre_ex(screen,font,500,180,makecol(255,255,255),-1,"FRAMERATE %s", filename);
-		
+		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		
 	}
 	
