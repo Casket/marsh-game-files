@@ -13,6 +13,8 @@
 
 #define AIM_LEFT KEY_LEFT
 #define AIM_RIGHT KEY_RIGHT
+#define AIM_UP KEY_UP
+#define AIM_DOWN KEY_DOWN
 
 #define CAST_ONE KEY_1
 #define CAST_TWO KEY_2
@@ -49,6 +51,8 @@ class Player: public Combat{
 	Equipment* inventory[MAX_HELD_ITEMS];
 	int level, current_experience;
 	bool casting;
+	int casting_timer;
+	Attack* casted_spell;
 
 	public:
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
@@ -60,6 +64,9 @@ class Player: public Combat{
 		void listen_to_keyboard(void);
 		void accept_aiming(void);
 		void accept_movement(void);
+		void check_casting(void);
+		void check_collisions(void);
+		void casting_update(void);
 
 
 };

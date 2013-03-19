@@ -13,10 +13,11 @@
 enum EntityType {Guard, Monster, Outcast, Player, Rival};
 
 class Combat: public Drawable{
-	Attack* attack_loadout[MAX_ATTACKS];
-	EntityType my_type;
-	int health, mana, armor;
-	int vitality, intelligence, focus, willpower; // combat stats
+	protected:
+		Attack* attack_loadout[MAX_ATTACKS];
+		EntityType my_type;
+		int health, mana, armor;
+		int vitality, intelligence, focus, willpower; // combat stats
 	
 	public:
 		Combat(int x, int y, int vel, int vel_d, Sprite* img);
