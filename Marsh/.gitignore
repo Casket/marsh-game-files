@@ -1,5 +1,5 @@
 # Ignore everything
-*/Debug
+*/Debug/*
 /Debug/
 text.txt
 Marsh/*
