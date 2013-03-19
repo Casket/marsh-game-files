@@ -9,3 +9,4 @@ Marsh/*
 !*.cpp
 !*.h
 !Marsh/Resources/
+!Marsh/Marsh.vcproj
