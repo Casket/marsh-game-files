@@ -9,7 +9,7 @@ using namespace std;
 typedef struct Tile{
 	int row;
 	int col;
-	Sprite* background_image;
+	Ground_Sprite* background_image;
 	std::list<Drawable*> contents;
 	bool can_walk;
 }Tile;
@@ -33,6 +33,8 @@ public:
 		int get_tiles_high(void);
 
 	private:
+		Tile* convert_to_tile(char a, char b, int pos_x, int pos_y);
+		int find_x(char b);
 		// room for expansion packs! (and easter eggs, and stuffz)
 		
 

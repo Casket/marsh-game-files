@@ -1,4 +1,9 @@
 #include "Main.h"
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <fstream>
+
 
 using namespace std;
 
@@ -29,25 +34,24 @@ int main(void)
 	clear_bitmap(blank);
 
 	World* w = new World(30, 30);
-
-	for (int i=0; i < 30; i++){
-		for (int j=0; j < 30; j++){
-			w->tile_map[i][j]->can_walk = false;
-		}
-	}
+	
+	char* filename = (char*)malloc(sizeof(char) * 100);
+	
+	strcpy_s(filename, sizeof(char) * 100, "mapTEST.txt");
 
 	while(!key[KEY_ESC]) {
 		if (!rested) {
 			rest(4);
 			continue;
 		}
-		//rested = false;
+		rested = false;
+
 		ticks++;
 
 		blit(blank, screen, 0,0, 0,0, SCREENW, SCREENH);
-		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,
-            "FRAMERATE %d", framerate);
 
+		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
+		
 	}
 	
 	delete w;
