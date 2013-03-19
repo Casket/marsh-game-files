@@ -31,34 +31,13 @@ void Player::listen_to_keyboard(void) {
 	else {
 		// deal with all other potential input
 		accept_movement();
-		acccept_interaction();
+		accept_interaction();
 		check_casting();
 	}
 }
 
 void Player::accept_interaction(void) {
 	// TODO implement this
-}
-
-void Player::casting_update(void) {
-	// should only be called if he's casting, but let's be careful
-	if (!this->casting)
-		return;
-	if (this->casted_spell == NULL) {
-		// oh balls... this is bad... this is bad...
-		// player is casting AND has no spell cast... idk
-		throw std::exception("PLAYER: spell casting, no current spell");
-	}
-
-	/*
-	if (++this->casting_timer >= this->casted_spell->get_charge_time()){
-		// ready to fire that bad boy
-		this->casting = false;
-		this->casting_timer = 0;
-		// TODO put the casted spell into the world
-		this->casted_spell = NULL;
-	}
-	*/ 
 }
 
 void Player::check_casting(void) {

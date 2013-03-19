@@ -55,9 +55,7 @@ typedef struct Equipment{
 class Player: public Combat{
 	Equipment* inventory[MAX_HELD_ITEMS];
 	int level, current_experience;
-	bool casting;
-	int casting_timer;
-	Attack* casted_spell;
+	
 
 	public:
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
@@ -71,7 +69,6 @@ class Player: public Combat{
 		void accept_movement(void);
 		void check_casting(void);
 		void check_collisions(void);
-		void casting_update(void);
 		void accept_interaction(void);
 
 

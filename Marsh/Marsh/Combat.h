@@ -19,6 +19,9 @@ class Combat: public Drawable{
 		EntityType my_type;
 		int health, mana, armor;
 		int vitality, intelligence, focus, willpower; // combat stats
+		bool casting;
+		int casting_timer;
+		Attack* casted_spell;
 	
 	public:
 		Combat(int x, int y, int vel, int vel_d, Sprite* img);
@@ -30,6 +33,9 @@ class Combat: public Drawable{
 	private:
 		int calculate_health(int);
 		int calculate_mana(int);
+
+	protected:
+		void casting_update(void);
 
 };
 

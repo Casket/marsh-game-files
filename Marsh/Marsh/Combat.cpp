@@ -29,3 +29,23 @@ int Combat::calculate_mana(int stat) {
 	// TODO do some calculation
 }
 
+void Combat::casting_update(void) {
+	// should only be called if he's casting, but let's be careful
+	if (!this->casting)
+		return;
+	if (this->casted_spell == NULL) {
+		// oh balls... this is bad... this is bad...
+		// player is casting AND has no spell cast... idk
+		throw std::exception("COMBAT: spell casting, no current spell");
+	}
+
+	/*
+	if (++this->casting_timer >= this->casted_spell->get_charge_time()){
+		// ready to fire that bad boy
+		this->casting = false;
+		this->casting_timer = 0;
+		// TODO put the casted spell into the world
+		this->casted_spell = NULL;
+	}
+	*/ 
+}
