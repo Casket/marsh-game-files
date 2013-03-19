@@ -10,6 +10,10 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	// TODO implement a constructor
 }
 
+Player::~Player(void){
+	
+}
+
 void Player::update(void) {
 	// need to figure out where this guy wants to go
 	listen_to_keyboard();

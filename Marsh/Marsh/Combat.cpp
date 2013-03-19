@@ -15,6 +15,11 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->mana = calculate_mana(this->willpower);
 }
 
+Combat::~Combat(void) {
+	if(casted_spell != NULL)
+		delete casted_spell;
+}
+
 void Combat::set_my_type(EntityType e) {
 	this->my_type = e;
 }
