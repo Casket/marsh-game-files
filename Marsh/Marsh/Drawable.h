@@ -8,10 +8,11 @@ using namespace std;
 class World;
 
 class Drawable{
-	Sprite* image;
-	int x_pos, y_pos;
-	int velocity, velocity_delay;
-	World* my_world;
+	protected:
+		Sprite* image;
+		int x_pos, y_pos;
+		int velocity, velocity_delay;
+		World* my_world;
 	
 	public:
 		Drawable(int x, int y, int vel, int vel_d, Sprite* img);

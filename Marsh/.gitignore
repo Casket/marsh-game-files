@@ -1,10 +1,8 @@
 # Ignore everything
 */Debug
 /Debug/
-Marsh.*
-/Marsh/*
-Marsh/*
 text.txt
+Marsh/*
 
 #but leave resources and .cpp/.h files
 !.gitignore

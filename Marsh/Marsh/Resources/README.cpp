@@ -1,0 +1,1 @@
+Resources folder contains critical game resources, including data files, image files, sound files, other files, and stuffs that are important because reasons so don't delete it or your game won't work or worse I'll be angry at you for deleting it because you're dumb and stuff.  So... yeah.

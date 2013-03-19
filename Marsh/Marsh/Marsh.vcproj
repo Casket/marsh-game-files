@@ -165,7 +165,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Attack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Combat.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Drawable.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite.cpp"
 				>
 			</File>
 			<File
