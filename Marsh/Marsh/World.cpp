@@ -58,24 +58,61 @@ void World::load_world(char* filename){
 	if(fin.is_open()){
 		
 		int row_count = 0;
-
+		
+		//begin moving line by line down the file
 		while(!fin.eof()){
 			
 			fin.getline(back_ground_tiles, 500);
-
-			if(back_ground_tiles[0] == '+'){
+			
+			//checks if the line is a 2nd layer drawable or a background
+			if(back_ground_tiles[0] == '@'){
+				int inner_index = 0; 
+				int outer_index = 1;
+				//drawables the format of the line will be @type(2)+xpos(...)+ypos!
+				char* type = (char*)malloc((sizeof(char)) * 8);
+				char* x = (char*)malloc((sizeof(char)) * 8);
+				char* y = (char*)malloc((sizeof(char)) * 8);
 				
+				//grabs type
+				while(back_ground_tiles[outer_index] != '+'){
+					type[inner_index] = back_ground_tiles[outer_index];
+					inner_index += 1;
+					outer_index += 1;
+				}
+				outer_index += 1;
+				inner_index = 0;
+				//grabs xpos
+				while(back_ground_tiles[outer_index] != '+'){
+					x[inner_index] = back_ground_tiles[outer_index];
+					inner_index += 1;
+					outer_index += 1;
+				}
+				//grabs ypos and records num of digits xpos was 
+				outer_index += 1;
+				int size_x = inner_index;
+				inner_index = 0;
+				while(back_ground_tiles[outer_index] != '+'){
+					y[inner_index] = back_ground_tiles[outer_index];
+					inner_index += 1;
+					outer_index += 1;
+				}
+				
+				//passes the things gathered to another function that will make the object
+				Drawable* to_draw = make_drawable(type, x, y, size_x, inner_index);
+			//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
 			}else{
-				int size = 500;
-
+				int size = this->tiles_wide;
+				
 				char first = ' ';
 				char second = ' ';
-
-				for(int i = 1; i < size ; i+=2){
+				
+				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
+				for(int i = 0; i < size ; i+=2){
 					Tile* t_to_add = (Tile*)malloc(sizeof(Tile));
 					first = back_ground_tiles[i];
 					second = back_ground_tiles[i+1];
 					t_to_add = convert_to_tile(first, second, row_count, i);
+					this->tile_map[row_count][i] = t_to_add;
 				}
 				row_count += 1;
 			}
@@ -98,7 +135,7 @@ int World::get_tiles_wide(void){
 int World::get_tiles_high(){
 	return this->tiles_high;
 }
-
+//takes in the tile code and then converts it to the actual tile
 Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	int sprite_x = -1;
 	int sprite_y = -1;
@@ -126,8 +163,6 @@ Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 		
-
-
 	}else if(a == '2'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
@@ -146,6 +181,43 @@ Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 	return NULL;
 }
+//creates a drawable object from the code given 
+Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int size_y){
+
+
+	char* file = (char*)malloc(sizeof(char) * 100);
+	
+	if(type[0] == ' '){
+		strcpy_s(file, sizeof(char) * 100, "variable.bmp");	
+	}else{
+		//
+	}
+
+	Sprite* image = new Sprite(file,S,0,0,0,1);	
+	
+	int x_num = list_to_int(x, size_x);//these two are used
+	int y_num = list_to_int(y, size_y);//to convert a char array([1,2,3]) to the int 123
+
+	Drawable* to_draw = new Drawable(x_num,y_num,0,0,image);
+
+	return to_draw;
+}
+
+int World::list_to_int(char* given, int size){
+	int num_return = 0;
+
+	for(int i = 0; i < size; i++){
+		int start_int = given[i];
+
+		for(int j = 0; j < size - i;j++){
+			start_int = start_int*10;
+		}
+		num_return = num_return + start_int;
+	}
+	return num_return;
+}
+
+//just converts so that the background knows which sprite to use
 int World::find_x(char b){
 	if(b == '0'){
 		return 0;
