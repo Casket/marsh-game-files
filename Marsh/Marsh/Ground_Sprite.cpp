@@ -1,3 +1,4 @@
+#include "Main.h"
 #include "Ground_Sprite.h"
 
 Ground_Sprite::Ground_Sprite(char* file_name, int tile_x, int tile_y){

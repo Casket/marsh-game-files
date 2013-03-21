@@ -3,6 +3,7 @@
 #define TILE_SIZE 32
 
 #include "Main.h"
+class Ground_Sprite;
 
 using namespace std;
 

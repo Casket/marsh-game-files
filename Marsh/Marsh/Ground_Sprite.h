@@ -4,7 +4,8 @@
 #define TILE_WIDTH 32
 #define TILE_HEIGHT 32
 
-#include <allegro.h>
+#include "Main.h"
+using namespace std;
 
 // States for the sprites, will add as needed and whatnots
 

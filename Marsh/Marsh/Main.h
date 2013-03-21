@@ -3,6 +3,7 @@
 
 class Attack;
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
