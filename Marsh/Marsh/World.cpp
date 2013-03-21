@@ -48,7 +48,8 @@ World::~World(void){
 
 void World::load_world(char* filename){
 	char back_ground_tiles[500];
-
+	
+	//opens the file-stream
 	fstream fin;
 
 	fin.open(filename, ios::in);
