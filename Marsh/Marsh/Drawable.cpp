@@ -31,3 +31,26 @@ void Drawable::set_world(World* world){
 	this->my_world = world;
 }
 
+Sprite* Drawable::get_image(void){
+	return this->image;
+}
+
+int Drawable::get_x_pos(void){
+	return this->x_pos;
+}
+
+int Drawable::get_y_pos(void){
+	return this->y_pos;
+}
+
+World* Drawable::get_world(void){
+	return this->my_world;
+}
+
+void Drawable::set_x_pos(int x){
+	this->x_pos = x;
+}
+void Drawable::set_y_pos(int y){
+	this->y_pos = y;
+}
+
