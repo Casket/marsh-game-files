@@ -103,6 +103,10 @@ void World::load_world(char* filename){
 				
 				//passes the things gathered to another function that will make the object
 				Drawable* to_draw = make_drawable(type, x, y, size_x, inner_index);
+
+				free(type);
+				free(x);
+				free(y);
 			//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
 			}else{
 				int size = this->tiles_wide;
@@ -112,11 +116,9 @@ void World::load_world(char* filename){
 				
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 				for(int i = 0; i < size ; i+=2){
-					Tile* t_to_add = (Tile*)malloc(sizeof(Tile));
 					first = back_ground_tiles[i];
 					second = back_ground_tiles[i+1];
-					t_to_add = convert_to_tile(first, second, row_count, i);
-					this->tile_map[row_count][i] = t_to_add;
+					convert_to_tile(first, second, row_count,i);
 				}
 				row_count += 1;
 			}
@@ -140,134 +142,107 @@ int World::get_tiles_high(){
 	return this->tiles_high;
 }
 //takes in the tile code and then converts it to the actual tile
-Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
+void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	int sprite_x = -1;
 	int sprite_y = -1;
+	
+	char* file = (char*)malloc(sizeof(char) * 100);
 
-	Tile* new_tile = (Tile*)malloc(sizeof(Tile));
+	this->tile_map[pos_x][pos_y]->row = pos_x;
+	this->tile_map[pos_x][pos_y]->col = pos_y;
+	this->tile_map[pos_x][pos_y]->can_walk = true;
 
 	if(a == '0'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		char* file = (char*)malloc(sizeof(char) * 100);
 		strcpy_s(file, sizeof(char) * 100, "graphics//general.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = true;
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
+		
 
-		return new_tile;
 
 	}else if(a == '1'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 		
-		char* file = (char*)malloc(sizeof(char) * 100);
 		strcpy_s(file, sizeof(char) * 100, "back_ground//water.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = true;
-
-		return new_tile;
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
+		this->tile_map[pos_x][pos_y]->can_walk = false;
 
 	}else if(a == '2'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 		
-		char* file = (char*)malloc(sizeof(char) * 100);
 		strcpy_s(file, sizeof(char) * 100, "back_ground//grass.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = false;
-
-		return new_tile;
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 
 	}else if(a == '3'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 		
-		char* file = (char*)malloc(sizeof(char) * 100);
 		strcpy_s(file, sizeof(char) * 100, "back_ground//dirt.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = true;
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 
-		return new_tile;
 
 	}else if(a == '4'){
 		
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		char* file = (char*)malloc(sizeof(char) * 100);
 		strcpy_s(file, sizeof(char) * 100, "back_ground//grass_marsh.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = true;
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 
-		return new_tile;
 
 	}else if(a == '5'){
 		
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		char* file = (char*)malloc(sizeof(char) * 100);
 		strcpy_s(file, sizeof(char) * 100, "back_ground//water_marsh.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = false;
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 
-		return new_tile;
+		this->tile_map[pos_x][pos_y]->can_walk = false;
 
 	}else if(a == '6'){
 		
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		char* file = (char*)malloc(sizeof(char) * 100);
+		
 		strcpy_s(file, sizeof(char) * 100, "back_ground//cobblestones.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
-		new_tile->background_image = tile_sprite;
-		new_tile->row = pos_x;
-		new_tile->col = pos_y;
-		new_tile->can_walk = true;
-
-		return new_tile;	
+		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;		
+	
+	}else{
+		//
 	}
+	free(file);
 
-	return NULL;
 }
 //creates a drawable object from the code given 
 Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int size_y){
