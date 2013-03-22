@@ -11,7 +11,7 @@
 #include "Main.h"
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Player, Rival};
+enum EntityType {Guard, Monster, Outcast, Hero, Rival};
 
 class Combat: public Drawable{
 	protected:

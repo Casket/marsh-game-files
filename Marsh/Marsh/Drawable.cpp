@@ -30,3 +30,4 @@ void Drawable::set_sprite(Sprite* spr){
 void Drawable::set_world(World* world){
 	this->my_world = world;
 }
+

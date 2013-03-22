@@ -250,3 +250,8 @@ int World::find_x(char b){
 	}
 
 }
+
+bool World::equals(World* w){
+	return false;
+	// TODO WRITE THIS, eventually
+}
