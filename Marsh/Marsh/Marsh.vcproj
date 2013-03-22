@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\View.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\World.cpp"
 				>
 			</File>

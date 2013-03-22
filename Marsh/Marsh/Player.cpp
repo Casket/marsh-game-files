@@ -11,7 +11,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 }
 
 Player::~Player(void){
-	
+
 }
 
 Equipment** Player::get_inventory(void) {
@@ -85,7 +85,7 @@ void Player::check_casting(void) {
 		desired_attack = 9;
 	}
 	this->launch_attack(desired_attack);
-	
+
 
 }
 
@@ -93,7 +93,7 @@ void Player::accept_aiming(void) {
 	Direction old_dir = this->image->get_facing();
 	Direction new_dir = old_dir;
 	if (key[AIM_LEFT]) {
-			switch(old_dir) {
+		switch(old_dir) {
 			case N:
 				new_dir = NW;
 				break;
@@ -118,10 +118,10 @@ void Player::accept_aiming(void) {
 			case W:
 				new_dir = SW;
 				break;
-			}
 		}
-		if (key[AIM_RIGHT]) {
-			switch(old_dir) {
+	}
+	if (key[AIM_RIGHT]) {
+		switch(old_dir) {
 			case N:
 				new_dir = NE;
 				break;
@@ -146,11 +146,11 @@ void Player::accept_aiming(void) {
 			case W:
 				new_dir = NW;
 				break;
-			}
 		}
-		// should rotate the player 180 degrees (turn around... bright eyes... everytime...)
-		if (key[AIM_UP] || key[AIM_DOWN]) {
-			switch(old_dir) {
+	}
+	// should rotate the player 180 degrees (turn around... bright eyes... everytime...)
+	if (key[AIM_UP] || key[AIM_DOWN]) {
+		switch(old_dir) {
 			case N:
 				new_dir = S;
 				break;
@@ -175,10 +175,10 @@ void Player::accept_aiming(void) {
 			case W:
 				new_dir = E;
 				break;
-			}
 		}
-		if (new_dir != old_dir)
-			this->image->set_facing(new_dir);
+	}
+	if (new_dir != old_dir)
+		this->image->set_facing(new_dir);
 }
 
 void Player::accept_movement(void) {
@@ -197,7 +197,7 @@ void Player::accept_movement(void) {
 			new_dir = W;
 		}
 	}
-	
+
 	if (key[MOVE_RIGHT]) {
 		new_x += MOVEMENT_DELTA;
 		if (!walking) {
@@ -205,7 +205,7 @@ void Player::accept_movement(void) {
 			new_dir = E;
 		}
 	}
-	
+
 	if (key[MOVE_DOWN]) {
 		new_y += MOVEMENT_DELTA;
 		if (!walking) {
@@ -218,7 +218,7 @@ void Player::accept_movement(void) {
 		new_y -= MOVEMENT_DELTA;
 		if (!walking) {
 			walking = true;
-				new_dir = N;
+			new_dir = N;
 		}
 	}
 

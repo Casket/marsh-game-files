@@ -21,6 +21,13 @@ class Drawable{
 		void deal_with_attack(Attack* attack);
 		void set_sprite(Sprite* spr);
 		void set_world(World* world);
+		Sprite* get_image(void);
+		int get_x_pos(void);
+		int get_y_pos(void);
+		World* get_world(void);
+		void set_x_pos(int x);
+		void set_y_pos(int y);
+
 };
 
 

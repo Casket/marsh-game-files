@@ -25,21 +25,22 @@ public:
 	int current_mission;
 
 
-		World(int tiles_w, int tiles_h);
-		~World();
-		void load_world(char* load_file);
-		void load_mission(char* mission_file);
-		Tile*** get_tile_map(void);
-		int get_tiles_wide(void);
-		int get_tiles_high(void);
+	World(int tiles_w, int tiles_h);
+	~World();
+	void load_world(char* load_file);
+	void load_mission(char* mission_file);
+	Tile*** get_tile_map(void);
+	int get_tiles_wide(void);
+	int get_tiles_high(void);
+	bool equals(World*);
 
-	private:
-		Tile* convert_to_tile(char a, char b, int pos_x, int pos_y);
-		int find_x(char b);
-		int list_to_int(char* given, int size);
-		Drawable* make_drawable(char* type, char* x, char* y, int size_x, int size_y);
-		// room for expansion packs! (and easter eggs, and stuffz)
-		
+private:
+	Tile* convert_to_tile(char a, char b, int pos_x, int pos_y);
+	int find_x(char b);
+	int list_to_int(char* given, int size);
+	Drawable* make_drawable(char* type, char* x, char* y, int size_x, int size_y);
+	// room for expansion packs! (and easter eggs, and stuffz)
+
 
 };
 
