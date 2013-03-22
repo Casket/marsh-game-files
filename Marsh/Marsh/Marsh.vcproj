@@ -235,15 +235,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Screen.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Sprite.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Sprite_Solid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\View.h"
 				>
 			</File>
 			<File

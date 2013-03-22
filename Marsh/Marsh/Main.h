@@ -17,7 +17,7 @@ class Attack;
 #include "Combat.h"
 #include "Player.h"
 #include "World.h"
-#include "Screen.h"
+#include "View.h"
 
 
 using namespace std;

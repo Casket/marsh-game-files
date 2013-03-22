@@ -147,7 +147,7 @@ Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_y = 0;
 
 		char* file = (char*)malloc(sizeof(char) * 100);
-		strcpy_s(file, sizeof(char) * 100, "variable.bmp");
+		strcpy_s(file, sizeof(char) * 100, "graphics//general.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -163,20 +163,104 @@ Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 		
+		char* file = (char*)malloc(sizeof(char) * 100);
+		strcpy_s(file, sizeof(char) * 100, "back_ground//grass.bmp");
+
+		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
+
+
+		new_tile->background_image = tile_sprite;
+		new_tile->row = pos_x;
+		new_tile->col = pos_y;
+		new_tile->can_walk = true;
+
+		return new_tile;
+
 	}else if(a == '2'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
+		
+		char* file = (char*)malloc(sizeof(char) * 100);
+		strcpy_s(file, sizeof(char) * 100, "back_ground//water.bmp");
+
+		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
+
+
+		new_tile->background_image = tile_sprite;
+		new_tile->row = pos_x;
+		new_tile->col = pos_y;
+		new_tile->can_walk = false;
+
+		return new_tile;
 
 	}else if(a == '3'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
+		
+		char* file = (char*)malloc(sizeof(char) * 100);
+		strcpy_s(file, sizeof(char) * 100, "back_ground//dirt.bmp");
+
+		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
+
+
+		new_tile->background_image = tile_sprite;
+		new_tile->row = pos_x;
+		new_tile->col = pos_y;
+		new_tile->can_walk = true;
+
+		return new_tile;
 
 	}else if(a == '4'){
+		
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-	}else{
-		return NULL;
+		char* file = (char*)malloc(sizeof(char) * 100);
+		strcpy_s(file, sizeof(char) * 100, "back_ground//grass_marsh.bmp");
+
+		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
+
+
+		new_tile->background_image = tile_sprite;
+		new_tile->row = pos_x;
+		new_tile->col = pos_y;
+		new_tile->can_walk = true;
+
+		return new_tile;
+
+	}else if(a == '5'){
+		
+		sprite_x = find_x(b);
+		sprite_y = 0;
+
+		char* file = (char*)malloc(sizeof(char) * 100);
+		strcpy_s(file, sizeof(char) * 100, "back_ground//water_marsh.bmp");
+
+		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
+
+		new_tile->background_image = tile_sprite;
+		new_tile->row = pos_x;
+		new_tile->col = pos_y;
+		new_tile->can_walk = false;
+
+		return new_tile;
+
+	}else if(a == '6'){
+		
+		sprite_x = find_x(b);
+		sprite_y = 0;
+
+		char* file = (char*)malloc(sizeof(char) * 100);
+		strcpy_s(file, sizeof(char) * 100, "back_ground//cobblestones.bmp");
+
+		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
+
+		new_tile->background_image = tile_sprite;
+		new_tile->row = pos_x;
+		new_tile->col = pos_y;
+		new_tile->can_walk = true;
+
+		return new_tile;	
 	}
 
 	return NULL;
@@ -203,6 +287,8 @@ Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int siz
 	return to_draw;
 }
 
+
+//converts [4,2,0] to 420 or something like that based on the given and the size
 int World::list_to_int(char* given, int size){
 	int num_return = 0;
 
