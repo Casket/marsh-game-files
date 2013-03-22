@@ -51,7 +51,7 @@ int main(void)
 		ticks++;
 
 		hero->update();
-		//our_viewer->draw_active_world();
+		our_viewer->draw_active_world();
 
 		masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
 			SCREEN_W/2, SCREEN_H/2, 32,30);
