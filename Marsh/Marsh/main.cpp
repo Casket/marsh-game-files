@@ -56,7 +56,7 @@ int main(void)
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		
 	}
-	
+	//delete hero;
 	delete our_viewer;
 	allegro_exit();
 
@@ -67,7 +67,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("testMap.txt");
+	//v->load_world("testMap.txt");
 	return v;
 }
 
