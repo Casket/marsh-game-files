@@ -52,7 +52,7 @@ World::~World(void){
 
 void World::load_world(char* filename){
 	char back_ground_tiles[500];
-	
+
 	//opens the file-stream
 	fstream fin;
 
@@ -128,7 +128,7 @@ void World::load_world(char* filename){
 	}else{
 			return;
 		}
-	
+
 
 }
 Tile*** World::get_tile_map(void){
@@ -146,7 +146,7 @@ int World::get_tiles_high(){
 void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	int sprite_x = -1;
 	int sprite_y = -1;
-	
+
 	char* file = (char*)malloc(sizeof(char) * 100);
 
 	this->tile_map[pos_x][pos_y]->row = pos_x;
@@ -163,13 +163,13 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
-		
+
 
 
 	}else if(a == '1'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
-		
+
 		strcpy_s(file, sizeof(char) * 100, "back_ground//water.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
@@ -181,7 +181,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	}else if(a == '2'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
-		
+
 		strcpy_s(file, sizeof(char) * 100, "back_ground//grass.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
@@ -192,7 +192,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	}else if(a == '3'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
-		
+
 		strcpy_s(file, sizeof(char) * 100, "back_ground//dirt.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
@@ -202,7 +202,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 	}else if(a == '4'){
-		
+
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
@@ -215,7 +215,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 	}else if(a == '5'){
-		
+
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
@@ -228,17 +228,17 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		this->tile_map[pos_x][pos_y]->can_walk = false;
 
 	}else if(a == '6'){
-		
+
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		
+
 		strcpy_s(file, sizeof(char) * 100, "back_ground//cobblestones.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;		
-	
+
 	}else{
 		//
 	}
@@ -250,7 +250,7 @@ Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int siz
 
 
 	char* file = (char*)malloc(sizeof(char) * 100);
-	
+
 	if(type[0] == ' '){
 		strcpy_s(file, sizeof(char) * 100, "variable.bmp");	
 	}else{
@@ -258,7 +258,7 @@ Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int siz
 	}
 
 	Sprite* image = new Sprite(file,S,0,0,0,1);	
-	
+
 	int x_num = list_to_int(x, size_x);//these two are used
 	int y_num = list_to_int(y, size_y);//to convert a char array([1,2,3]) to the int 123
 
