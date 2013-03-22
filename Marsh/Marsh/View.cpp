@@ -8,6 +8,7 @@ View::View(Player* hero){
 	clear_bitmap(this->buffer);
 	for (int i=0; i < MAX_NUMBER_WORLDS; i++)
 		this->loaded_worlds[i] = NULL;
+	this->current_world = NULL;
 }
 
 View::~View(void){
@@ -19,6 +20,10 @@ View::~View(void){
 	}
 	if (this->buffer != NULL)
 		destroy_bitmap(this->buffer);
+	
+
+	//TODO FIX THIS CAUSE ITS BAD
+	delete this->current_world;
 	this->current_world = NULL;
 }
 
@@ -28,7 +33,7 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(102, 59);
+	this->current_world = new World(32, 12);
 	this->current_world->load_world(filename);
 }
 
@@ -49,11 +54,12 @@ void View::update(void){
 
 void View::draw_active_world(void){
 	clear_bitmap(this->buffer);
+
 	int tile_wide = this->current_world->get_tiles_wide();
 	int tile_high = this->current_world->get_tiles_high();
 	Tile*** tiles = this->current_world->get_tile_map();
 	draw_sprites(this->buffer, tiles, tile_wide, tile_high);
-	draw_interface(this->playa);
+	//draw_interface(this->playa);
 	draw_to_screen();
 
 }

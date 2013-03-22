@@ -60,14 +60,14 @@ void World::load_world(char* filename){
 
 
 	if(fin.is_open()){
-		
+
 		int row_count = 0;
-		
+
 		//begin moving line by line down the file
 		while(!fin.eof()){
-			
+
 			fin.getline(back_ground_tiles, 500);
-			
+
 			//checks if the line is a 2nd layer drawable or a background
 			if(back_ground_tiles[0] == '@'){
 				int inner_index = 0; 
@@ -76,7 +76,7 @@ void World::load_world(char* filename){
 				char* type = (char*)malloc((sizeof(char)) * 8);
 				char* x = (char*)malloc((sizeof(char)) * 8);
 				char* y = (char*)malloc((sizeof(char)) * 8);
-				
+
 				//grabs type
 				while(back_ground_tiles[outer_index] != '+'){
 					type[inner_index] = back_ground_tiles[outer_index];
@@ -100,20 +100,20 @@ void World::load_world(char* filename){
 					inner_index += 1;
 					outer_index += 1;
 				}
-				
+
 				//passes the things gathered to another function that will make the object
 				Drawable* to_draw = make_drawable(type, x, y, size_x, inner_index);
 
 				free(type);
 				free(x);
 				free(y);
-			//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
+				//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
 			}else{
 				int size = this->tiles_wide;
-				
+
 				char first = ' ';
 				char second = ' ';
-				
+
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 				for(int i = 0; i < size ; i+=2){
 					first = back_ground_tiles[i];
@@ -124,10 +124,11 @@ void World::load_world(char* filename){
 			}
 		}
 
-
 		fin.close();
-
-	}
+	}else{
+			return;
+		}
+	
 
 }
 Tile*** World::get_tile_map(void){
