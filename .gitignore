@@ -1,0 +1,12 @@
+# Ignore everything
+*/Debug/*
+/Debug/
+text.txt
+Marsh/*
+
+#but leave resources and .cpp/.h files
+!.gitignore
+!*.cpp
+!*.h
+!Marsh/Resources/
+!Marsh/Marsh.vcproj
