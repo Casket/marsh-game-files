@@ -26,7 +26,7 @@
 #define CAST_EIGHT KEY_8
 #define CAST_NINE KEY_9
 #define CAST_TEN KEY_0
-#define OPEN_MENU		// TODO define that
+#define OPEN_MENU KEY_ESC	// TODO define that
 
 #define MOVEMENT_DELTA 2
 
@@ -40,7 +40,7 @@
 using namespace std;
 
 
-enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book, Key,Dagger, Consumable};
+enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book, Key, Dagger, Consumable};
 
 typedef struct Equipment{
 	char* name;

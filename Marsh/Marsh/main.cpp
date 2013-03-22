@@ -39,7 +39,10 @@ int main(void)
 	View* our_viewer= create_view(hero);
 
 
-	while(!key[KEY_ESC]) {
+	while(true) {
+		if (key[KEY_ESC] && (key_shifts & KB_SHIFT_FLAG))
+			break;
+		
 		if (!rested) {
 			rest(4);
 			continue;
@@ -56,7 +59,7 @@ int main(void)
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		
 	}
-	
+	//delete hero;
 	delete our_viewer;
 	allegro_exit();
 
