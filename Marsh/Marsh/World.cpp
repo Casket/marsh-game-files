@@ -164,7 +164,7 @@ Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_y = 0;
 		
 		char* file = (char*)malloc(sizeof(char) * 100);
-		strcpy_s(file, sizeof(char) * 100, "back_ground//grass.bmp");
+		strcpy_s(file, sizeof(char) * 100, "back_ground//water.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -181,7 +181,7 @@ Tile* World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_y = 0;
 		
 		char* file = (char*)malloc(sizeof(char) * 100);
-		strcpy_s(file, sizeof(char) * 100, "back_ground//water.bmp");
+		strcpy_s(file, sizeof(char) * 100, "back_ground//grass.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
