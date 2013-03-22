@@ -39,7 +39,10 @@ int main(void)
 	View* our_viewer= create_view(hero);
 
 
-	while(!key[KEY_ESC]) {
+	while(true) {
+		if (key[KEY_ESC] && (key_shifts & KB_SHIFT_FLAG))
+			break;
+		
 		if (!rested) {
 			rest(4);
 			continue;
