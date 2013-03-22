@@ -11,7 +11,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 }
 
 Player::~Player(void){
-
+	
 }
 
 Equipment** Player::get_inventory(void) {

@@ -4,7 +4,8 @@ using namespace std;
 
 View::View(Player* hero){
 	this->playa = hero;
-	this->buffer = create_bitmap(3000, 3000);
+	this->buffer = create_bitmap(3500, 3500);
+	clear_bitmap(this->buffer);
 	for (int i=0; i < MAX_NUMBER_WORLDS; i++)
 		this->loaded_worlds[i] = NULL;
 }
@@ -27,7 +28,7 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(TEST_WORLD_SIZE, TEST_WORLD_SIZE);
+	this->current_world = new World(102, 59);
 	this->current_world->load_world(filename);
 }
 
@@ -53,11 +54,20 @@ void View::draw_active_world(void){
 	Tile*** tiles = this->current_world->get_tile_map();
 	draw_sprites(this->buffer, tiles, tile_wide, tile_high);
 	draw_interface(this->playa);
+	draw_to_screen();
 
 }
 
-void draw_status(Player* hero, BITMAP* buffer){
+void View::draw_to_screen(void){
+	int x = this->playa->get_x_pos();
+	x -= SCREEN_W/2;
+	int y = this->playa->get_y_pos();
+	y -= SCREEN_H/2;
+	blit(this->buffer, screen, x,y,0,0, SCREEN_W, SCREEN_H);
+}
 
+void draw_status(Player* hero, BITMAP* buffer){
+	
 }
 
 void draw_dialogs(BITMAP* buffer){

@@ -21,6 +21,10 @@ World::World(int tiles_w, int tiles_h){
 	for (int i=0; i < tiles_h; i++){
 		for (int j=0; j < tiles_w; j++){
 			map[i][j] = (Tile*)malloc(sizeof(Tile));
+			map[i][j]->row = 0;
+			map[i][j]->col = 0;
+			map[i][j]->background_image = NULL;
+			map[i][j]->can_walk = true;
 		}
 	}
 

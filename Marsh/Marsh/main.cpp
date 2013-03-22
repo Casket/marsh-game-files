@@ -24,20 +24,20 @@ void draw_world_to_buffer(World*);
 void start_game(void);
 void end_game(void);
 World* generate_world(void); // TODO add world identifying thingymahinger
+View* create_view(Player*);
+
 
 int main(void)
 {
     //initialize everything
 	set_up_game();
-
-	BITMAP* blank = create_bitmap(SCREENW, SCREENH);
-	clear_bitmap(blank);
-
-	World* w = new World(30, 30);
 	
-	char* filename = (char*)malloc(sizeof(char) * 100);
-	
-	strcpy_s(filename, sizeof(char) * 100, "mapTEST.txt");
+
+	Sprite* img = new Sprite("edited-chars.bmp", S, 5, 1, 16, 16);
+	Player* hero = new Player(400, 400, 0, 0, img);
+
+	View* our_viewer= create_view(hero);
+
 
 	while(!key[KEY_ESC]) {
 		if (!rested) {
@@ -45,21 +45,31 @@ int main(void)
 			continue;
 		}
 		rested = false;
-
 		ticks++;
 
-		blit(blank, screen, 0,0, 0,0, SCREENW, SCREENH);
+		hero->update();
+		//our_viewer->draw_active_world();
+
+		masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
+			SCREEN_W/2, SCREEN_H/2, 32,30);
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		
 	}
 	
-	delete w;
+	delete our_viewer;
 	allegro_exit();
+
 
     return 0;
 }
 END_OF_MAIN()
+
+View* create_view(Player* hero){
+	View* v = new View(hero);
+	v->load_world("testMap.txt");
+	return v;
+}
 
 
 void timer_frame_counter(void) {
