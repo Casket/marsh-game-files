@@ -34,7 +34,7 @@ void View::load_world(char* filename){
 	}
 
 	this->current_world = new World(32, 12);
-	this->current_world->load_world(filename);
+	//this->current_world->load_world(filename);
 }
 
 void View::put_world_in_loaded(World* world){
@@ -88,12 +88,12 @@ void View::draw_interface(Player* hero){
 
 
 void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){
-	for (int i=0; i<tile_wide; i++){
-		for (int j=0; j<tile_high; j++){
+	for (int i=0; i<tile_high; i++){
+		for (int j=0; j<tile_wide; j++){
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
-				buffer, 0,0, i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				buffer, 0,0, j*TILE_SIZE, i*TILE_SIZE, TILE_SIZE, TILE_SIZE);
 			// draw the background image for starters
-			draw_drawables(buffer, tile_map[i][j]->contents);
+			//draw_drawables(buffer, tile_map[i][j]->contents);
 		}
 	}
 }

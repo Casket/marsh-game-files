@@ -24,6 +24,7 @@ BITMAP* Ground_Sprite::get_current_frame(void) {
 	BITMAP* pic = create_sub_bitmap(this->sprite_sheet,
 		this->frame*TILE_WIDTH, y, TILE_WIDTH, TILE_HEIGHT);
 	return pic;
+	//try to use an instance variable for the bitmap so it can be destroyed when the bitmap is free
 }
 
 void Ground_Sprite::change_frame(int frame){

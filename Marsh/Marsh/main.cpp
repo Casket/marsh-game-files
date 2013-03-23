@@ -35,7 +35,9 @@ int main(void)
 
 	Sprite* img = new Sprite("edited-chars.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
-
+	Ground_Sprite* sprite = new Ground_Sprite("grass.bmp", 0, 0);
+	masked_blit(sprite->get_current_frame(),
+				screen, 0,0, 0, 0, 32, 32);
 	View* our_viewer= create_view(hero);
 
 
