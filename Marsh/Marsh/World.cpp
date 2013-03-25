@@ -16,7 +16,7 @@ World::World(int tiles_w, int tiles_h){
 		map[i] = (Tile**)malloc(sizeof(Tile*)*tiles_w);
 	}
 
-	Ground_Sprite* sprite = new Ground_Sprite("grass.bmp", 0, 0);
+	Ground_Sprite* sprite = new Ground_Sprite("back_ground//general.bmp", 0, 0);
 
 	for (int i=0; i < tiles_h; i++){
 		for (int j=0; j < tiles_w; j++){
@@ -67,11 +67,15 @@ void World::load_world(char* filename){
 		//begin moving line by line down the file
 		while(!fin.eof()){
 			
-			if(back_ground_tiles[0] == ){
-				continue;
-			}
+			//if(back_ground_tiles[0] == ){
+			//	continue;
+			//}
 
 			fin.getline(back_ground_tiles, 500);
+
+			if (strcmp(back_ground_tiles, "")==0){
+				break;
+			}
 
 			//checks if the line is a 2nd layer drawable or a background
 			if(back_ground_tiles[0] == '@'){
@@ -123,7 +127,7 @@ void World::load_world(char* filename){
 				for(int i = 0; i < size ; i+=2){
 					first = back_ground_tiles[i];
 					second = back_ground_tiles[i+1];
-					convert_to_tile(first, second, row_count,i);
+					convert_to_tile(first, second, row_count,i/2);
 				}
 				row_count += 1;
 			}
