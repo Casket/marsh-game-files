@@ -60,11 +60,15 @@ void World::load_world(char* filename){
 
 
 	if(fin.is_open()){
-
+		
 		int row_count = 0;
 
 		//begin moving line by line down the file
 		while(!fin.eof()){
+			
+			if(back_ground_tiles[0] == ){
+				continue;
+			}
 
 			fin.getline(back_ground_tiles, 500);
 
@@ -157,7 +161,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		strcpy_s(file, sizeof(char) * 100, "graphics//general.bmp");
+		strcpy_s(file, sizeof(char) * 100, "back_ground//general.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
