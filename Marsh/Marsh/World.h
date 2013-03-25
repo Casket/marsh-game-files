@@ -11,7 +11,7 @@ typedef struct Tile{
 	int row;
 	int col;
 	Ground_Sprite* background_image;
-	std::list<Drawable*> contents;
+	std::list<Drawable*> *contents;
 	bool can_walk;
 }Tile;
 

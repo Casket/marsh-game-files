@@ -3,8 +3,6 @@
 #include <string>
 #include <iostream>
 
-
-
 using namespace std;
 
 World::World(int tiles_w, int tiles_h){
@@ -27,6 +25,7 @@ World::World(int tiles_w, int tiles_h){
 			map[i][j]->col = j;
 			map[i][j]->background_image = sprite;
 			map[i][j]->can_walk = true;
+			map[i][j]->contents = new std::list<Drawable*>();
 		}
 	}
 
