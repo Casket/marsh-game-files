@@ -33,9 +33,11 @@ int main(void)
 	set_up_game();
 	
 
-	Sprite* img = new Sprite("C:\\Users\\glenngs\\Documents\\School\\Csse490\\MarshRepo\\marsh-game-files - vc\\Marsh\\Marsh\\edited-chars.bmp", S, 5, 1, 16, 16);
+	Sprite* img = new Sprite("edited-chars.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
-
+	Ground_Sprite* sprite = new Ground_Sprite("grass.bmp", 0, 0);
+	masked_blit(sprite->get_current_frame(),
+				screen, 0,0, 0, 0, 32, 32);
 	View* our_viewer= create_view(hero);
 
 
@@ -70,7 +72,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("C:\\Users\\glenngs\\Documents\\School\\Csse490\\MarshRepo\\marsh-game-files - vc\\Marsh\\Marsh\\testMap2.txt");
+	v->load_world("testMap2.txt");
 	return v;
 }
 
