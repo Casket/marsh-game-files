@@ -1,6 +1,7 @@
 #ifndef VIEW_H
 #define VIEW_H 1
 #define MAX_NUMBER_WORLDS 10
+#define PAD 50
 // TODO GABE FIND THIS SHIT, thanks
 
 #define TEST_WORLD_SIZE 75
@@ -27,7 +28,7 @@ class View{
 		void put_world_in_loaded(World* world);
 		void draw_interface(Player*);
 		void draw_sprites(BITMAP*, Tile***, int, int);
-		void draw_drawables(BITMAP* buffer, std::list<Drawable*> sprites);
+		void draw_drawables(BITMAP* buffer, std::list<Drawable*> *sprites);
 		void draw_to_screen(void);
 };
 

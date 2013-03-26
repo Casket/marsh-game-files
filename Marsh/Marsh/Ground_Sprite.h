@@ -20,6 +20,8 @@ class Ground_Sprite{
 		void load_sprite_sheet(char* name);
 		BITMAP* get_current_frame(void);
 		void change_frame(int frame);
+		BITMAP* frames[2];
+
 
 	private:
 		// shhh... it's for secret cereal

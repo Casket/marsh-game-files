@@ -1,6 +1,9 @@
 #include "Sprite_Solid.h"
 
-Sprite_Solid::Sprite_Solid(char* file_name, int focus_x, int focus_y, int start_x, int start_y){
+Sprite_Solid::Sprite_Solid(char* file_name, int focus_x, int focus_y, int start_x, int start_y)
+:Sprite(file_name, W, 0,0,0,0)
+{
+	
 	this->focus_x = focus_x;
 	this->focus_y = focus_y;
 	this->start_x = start_x;

@@ -4,7 +4,7 @@
 #include "Ground_Sprite.h"
 
 // States for the sprites, will add as needed and whatnots
-class Sprite_Solid{
+class Sprite_Solid: public Sprite{
 
 	public:
 		BITMAP* sprite_sheet;

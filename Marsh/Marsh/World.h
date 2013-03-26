@@ -23,7 +23,9 @@ public:
 	int tiles_wide, tiles_high;
 	Tile*** tile_map;
 	int current_mission;
-
+	std::list<Drawable*> *active_entities;
+	std::list<Drawable*> *visible_entities;
+	Player* playa;
 
 	World(int tiles_w, int tiles_h);
 	~World();
@@ -33,6 +35,10 @@ public:
 	int get_tiles_wide(void);
 	int get_tiles_high(void);
 	bool equals(World*);
+	std::list<Drawable*>* get_visible_entities(void);
+	void insert_entity(Drawable*);
+	void remove_entity(Drawable*);
+	void set_player(Player*);
 
 private:
 	void convert_to_tile(char a, char b, int pos_x, int pos_y);

@@ -9,9 +9,9 @@ using namespace std;
 
 #define MODE GFX_AUTODETECT_WINDOWED
 #define COLOR_DEPTH 32
-#define SCREENW 1600
-#define SCREENH 900
-#define FRAME_RATE_DELAY 18
+#define SCREENW 1400
+#define SCREENH 1000
+#define FRAME_RATE_DELAY 20
 
 volatile int ticks, framerate;
 volatile bool rested;
@@ -33,11 +33,9 @@ int main(void)
 	set_up_game();
 	
 
-	Sprite* img = new Sprite("edited-chars.bmp", S, 5, 1, 16, 16);
+	Sprite* img = new Sprite("player//player_hooded_withDark.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
-	Ground_Sprite* sprite = new Ground_Sprite("grass.bmp", 0, 0);
-	masked_blit(sprite->get_current_frame(),
-				screen, 0,0, 0, 0, 32, 32);
+	
 	View* our_viewer= create_view(hero);
 
 
@@ -55,10 +53,12 @@ int main(void)
 		hero->update();
 		our_viewer->draw_active_world();
 
-		masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
-			SCREEN_W/2, SCREEN_H/2, 32,30);
+		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
+		//	SCREEN_W/2, SCREEN_H/2, 32,30);
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
+		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
+		textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
 		
 	}
 	//delete hero;
@@ -72,7 +72,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("testMap2.txt");
+	v->load_world("testMap.txt");
 	return v;
 }
 

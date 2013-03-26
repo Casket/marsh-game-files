@@ -8,8 +8,8 @@ using namespace std;
 World::World(int tiles_w, int tiles_h){
 	this->tiles_wide = tiles_w;
 	this->tiles_high = tiles_h;
-
-
+	this->active_entities = new std::list<Drawable*>();
+	this->visible_entities = new std::list<Drawable*>();
 
 	Tile*** map = (Tile***)malloc(sizeof(Tile**)*tiles_h);
 	for (int i=0; i < tiles_h; i++){
@@ -28,11 +28,8 @@ World::World(int tiles_w, int tiles_h){
 			map[i][j]->contents = new std::list<Drawable*>();
 		}
 	}
-
-
 	this->tile_map = map;
 }
-
 
 World::~World(void){
 	int rows = this->tiles_high;
@@ -49,6 +46,9 @@ World::~World(void){
 	}
 
 	free(this->tile_map);
+
+	delete this->active_entities;
+	delete this->visible_entities;
 }
 
 void World::load_world(char* filename){
@@ -118,7 +118,7 @@ void World::load_world(char* filename){
 				free(y);
 				//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
 			}else{
-				int size = this->tiles_wide;
+				int size = 2*this->tiles_wide;
 
 				char first = ' ';
 				char second = ' ';
@@ -151,6 +151,12 @@ int World::get_tiles_wide(void){
 int World::get_tiles_high(){
 	return this->tiles_high;
 }
+
+void World::set_player(Player* p){
+	this->playa = p;
+}
+
+
 //takes in the tile code and then converts it to the actual tile
 void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	int sprite_x = -1;
@@ -330,3 +336,42 @@ bool World::equals(World* w){
 	return false;
 	// TODO WRITE THIS, eventually
 }
+
+
+bool sort_visibles(Drawable* d1, Drawable* d2){
+	if (d1->get_reference_y() == d2->get_reference_y()){
+		return (d1->get_reference_x() < d2->get_reference_x());
+	}
+	return (d1->get_reference_y() < d2->get_reference_y());
+}
+
+void World::insert_entity(Drawable* da_d){
+	this->active_entities->push_back(da_d);
+}
+
+void World::remove_entity(Drawable* dat){
+	this->active_entities->remove(dat);
+}
+
+std::list<Drawable*>* World::get_visible_entities(void){
+	this->visible_entities->clear();
+
+	int left_most = this->playa->get_x_pos() - SCREEN_W/2;
+	int right_most = left_most + SCREEN_W + PAD;
+	
+	int top_most = this->playa->get_y_pos() - SCREEN_H/2;
+	int bottom_most = top_most + SCREEN_H + PAD;
+
+	std::list<Drawable*>::iterator iter;
+	for (iter = this->active_entities->begin(); iter != this->active_entities->end(); ++iter){
+		if ((*iter)->get_x_pos() >= left_most && (*iter)->get_x_pos() <= right_most){
+			if ((*iter)->get_y_pos() >= top_most && (*iter)->get_y_pos() <= bottom_most){
+				this->visible_entities->push_front((*iter));
+			}
+		}
+	}
+
+	this->visible_entities->sort(sort_visibles);
+	return this->visible_entities;
+}
+ 

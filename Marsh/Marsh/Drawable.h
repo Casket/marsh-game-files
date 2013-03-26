@@ -13,6 +13,7 @@ class Drawable{
 		int x_pos, y_pos;
 		int velocity, velocity_delay;
 		World* my_world;
+		int reference_horizontal, reference_vertical;
 	
 	public:
 		Drawable(int x, int y, int vel, int vel_d, Sprite* img);
@@ -27,6 +28,11 @@ class Drawable{
 		World* get_world(void);
 		void set_x_pos(int x);
 		void set_y_pos(int y);
+		int get_reference_x(void);
+		int get_reference_y(void);
+		void update_position(int x_delta, int y_delta);
+		void set_reference_horizontal(int);
+		void set_reference_vertical(int);
 
 };
 

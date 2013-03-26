@@ -43,6 +43,22 @@ int Drawable::get_y_pos(void){
 	return this->y_pos;
 }
 
+int Drawable::get_reference_x(void){
+	return this->x_pos + this->reference_horizontal;
+}
+
+int Drawable::get_reference_y(void){
+	return this->y_pos + this->reference_vertical;
+}
+
+void Drawable::set_reference_horizontal(int x){
+	this->reference_horizontal = x;
+}
+
+void Drawable::set_reference_vertical(int y){
+	this->reference_vertical = y;
+}
+
 World* Drawable::get_world(void){
 	return this->my_world;
 }

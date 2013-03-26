@@ -8,10 +8,11 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->casting = false;
 	this->casting_timer = 0;
 	// TODO implement a constructor
+	this->movement_flags = 0;
 }
 
 Player::~Player(void){
-	
+
 }
 
 Equipment** Player::get_inventory(void) {
@@ -37,10 +38,75 @@ void Player::update(void) {
 	if (this->casting)
 		casting_update();
 
-	check_collisions();
+	//check_collisions();
 }
 
 void Player::check_collisions(void) {
+/*
+	this->movement_flags = 0;
+	World* mine = this->get_world();
+	Tile*** map = mine->get_tile_map();
+
+	// look at 4 bounding tiles
+	Tile* nearby[4];
+	int myX = this->get_x_pos() + this->get_width()/2;
+	int myY = this->get_y_pos() + this->get_height()/2;
+	short sideThreshold = TILE_SIZE /2;
+	
+	nearby[0] = map[myY/TILE_SIZE][myX/TILE_SIZE];
+
+	bool x_sub = false;
+	if (myX % TILE_SIZE < sideThreshold){
+		nearby[1] = map[myY/TILE_SIZE][myX/TILE_SIZE - 1];
+		x_sub = true;
+	}
+	else 
+		nearby[1] = map[myY/TILE_SIZE][myX/TILE_SIZE + 1];
+
+	bool y_sub = false;
+	if (myY % TILE_SIZE < sideThreshold){
+		nearby[2] = map[myY/TILE_SIZE - 1][myX/TILE_SIZE];
+		y_sub = true;
+	}else
+		nearby[2] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE];
+
+	if (x_sub && y_sub)
+		nearby[3] = map[myY/TILE_SIZE - 1][myX/TILE_SIZE - 1];
+	else if (x_sub)
+		nearby[3] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE - 1];
+	else if (y_sub)
+		nearby[3] = map[myY/TILE_SIZE - 1][myX/TILE_SIZE + 1];
+	else
+		nearby[3] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE + 1];
+
+	nearby[2] = map[myY/TILE_SIZE][myX/TILE_SIZE + 1];
+	nearby[3] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE +1];
+
+		
+	/*
+	// Can he move left?
+	if (!nearby[0]->can_walk)
+		this->movement_flags |= 1;
+	if (!nearby[1]->can_walk)
+		this->movement_flags |= 1;
+
+	// Can he move right?  Note: add 2 on the right tile, 
+	//	so he doesn't walk into things.
+	if (!map[myY/TILE_SIZE][myX/TILE_SIZE + 2]->can_walk)
+		this->movement_flags |= 2;
+	if (!map[myY/TILE_SIZE + 1][myX/TILE_SIZE + 2]->can_walk)
+		this->movement_flags |= 2;
+
+	// Move up
+	if (!map[myY/TILE_SIZE - 1][myX/TILE_SIZE + 1]->can_walk)
+		this->movement_flags |= 4;
+
+	// Move down
+	if (!map[myY/TILE_SIZE 
+
+	*/ 
+
+
 
 }
 
@@ -191,34 +257,37 @@ void Player::accept_movement(void) {
 	bool walking = false;
 
 	if (key[MOVE_LEFT]) {
-		new_x -= MOVEMENT_DELTA;
 		if (!walking) {
 			walking = true;
 			new_dir = W;
+			new_x -= MOVEMENT_DELTA;
 		}
 	}
 
-	if (key[MOVE_RIGHT]) {
-		new_x += MOVEMENT_DELTA;
+	else if (key[MOVE_RIGHT]) {
+		
 		if (!walking) {
 			walking = true;
 			new_dir = E;
+			new_x += MOVEMENT_DELTA;
 		}
 	}
 
-	if (key[MOVE_DOWN]) {
-		new_y += MOVEMENT_DELTA;
+	else if (key[MOVE_DOWN]) {
+		
 		if (!walking) {
 			walking = true;
 			new_dir = S;
+			new_y += MOVEMENT_DELTA;
 		}
 	}
 
-	if (key[MOVE_UP]) {
-		new_y -= MOVEMENT_DELTA;
+	else if (key[MOVE_UP]) {
+		
 		if (!walking) {
 			walking = true;
 			new_dir = N;
+			new_y -= MOVEMENT_DELTA;
 		}
 	}
 

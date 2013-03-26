@@ -13,8 +13,8 @@
 #define WEST_START 4
 #define WEST_END 7
 
-#define SPRITE_WIDTH 32
-#define SPRITE_HEIGHT 32
+#define SPRITE_WIDTH 154
+#define SPRITE_HEIGHT 154
 
 #include <allegro.h>
 
