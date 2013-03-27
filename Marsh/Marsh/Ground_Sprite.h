@@ -23,7 +23,7 @@ class Ground_Sprite: public Sprite{
 		void check_casting(void);
 		BITMAP* get_current_frame(void);
 		void change_frame(int frame);
-		BITMAP* frames[2];
+		BITMAP* frames[13];
 		virtual Sprite* clone(void);
 
 

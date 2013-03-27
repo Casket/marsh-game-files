@@ -197,7 +197,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		strcpy_s(file, sizeof(char) * 100, "back_ground//grass.bmp");
+		strcpy_s(file, sizeof(char) * 100, "back_ground//water_marsh.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -221,7 +221,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		strcpy_s(file, sizeof(char) * 100, "back_ground//grass_marsh.bmp");
+		strcpy_s(file, sizeof(char) * 100, "back_ground//cobblestones.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -234,7 +234,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		strcpy_s(file, sizeof(char) * 100, "back_ground//water_marsh.bmp");
+		strcpy_s(file, sizeof(char) * 100, "back_ground//walls.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -320,11 +320,11 @@ int World::find_x(char b){
 		return 8;
 	}else if(b == '9'){
 		return 9;
-	}else if(b == 'a'){
+	}else if(b == 'A'){
 		return 10;
-	}else if(b == 'b'){
+	}else if(b == 'B'){
 		return 11;
-	}else if(b == 'c'){
+	}else if(b == 'C'){
 		return 12;
 	}else{
 		return -1;
