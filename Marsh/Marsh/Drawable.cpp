@@ -20,5 +20,9 @@ void Drawable::deal_with_attack(Attack* attack){
 
 }
 
+void Drawable::check_collisions(void){
+	return;  // inanimate objects don't need this
+}
+
 
 

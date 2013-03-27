@@ -88,9 +88,9 @@ void Player::check_casting(void) {
 	} else if (key[CAST_TEN]) {
 		desired_attack = 9;
 	}
+	if (desired_attack < 0)
+		return;
 	this->launch_attack(desired_attack);
-
-
 }
 
 void Player::accept_aiming(void) {

@@ -13,7 +13,8 @@ class Drawable : public iDrawable{
 		Drawable(int x, int y, int vel, int vel_d, Sprite* img);
 		~Drawable(void);
 		virtual void update(void);
-		virtual void deal_with_attack(Attack* attack);		
+		virtual void deal_with_attack(Attack* attack);	
+		virtual void check_collisions(void);
 
 };
 

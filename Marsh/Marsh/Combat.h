@@ -26,8 +26,6 @@ class Combat: public iDrawable{
 		
 	
 	public:
-		bool can_walk;
-		bool can_walk_left, can_walk_right, can_walk_up, can_walk_down;
 		Combat(int x, int y, int vel, int vel_d, Sprite* img);
 		~Combat(void);
 		void initiate_attack(Attack*);
@@ -38,10 +36,10 @@ class Combat: public iDrawable{
 	protected:
 		int calculate_health(int);
 		int calculate_mana(int);
-		void check_collisions(void);
 		void casting_update(void);
 		void launch_attack(int);
-		void  check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
+		virtual void check_collisions(void);
+
 
 };
 

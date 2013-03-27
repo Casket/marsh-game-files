@@ -9,6 +9,7 @@ Player_Sprite::Player_Sprite(char* file_name, Direction cur_dir, int ani_delay, 
 	// do nothing for now
 }
 
+
 Player_Sprite::~Player_Sprite(void) {
 
 }
@@ -93,5 +94,6 @@ void Player_Sprite::check_casting(){
 
 Sprite* Player_Sprite::clone(void){
 	// TODO do this
-	return NULL;
+	Player_Sprite* ps = new Player_Sprite(this->file, this->facing, this->animation_delay, this->sheet_rows, this->sheet_cols, this->total_frames);
+	return ps;
 }

@@ -23,9 +23,12 @@ class Attack: public iDrawable {
 		virtual void update(void);
 		virtual void deal_with_attack(Attack*);
 		Attack* clone(int, int, int, int);
+		bool detect_collisions(void);
 
 	private:
 		// super private methods go here
+		bool detect_hit(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height);
+		void start_death_sequence(void);
 		
 
 };

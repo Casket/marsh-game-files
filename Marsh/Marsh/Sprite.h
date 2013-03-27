@@ -18,6 +18,7 @@ protected:
 	int sheet_cols, sheet_rows, total_frames;
 	bool lighted;
 	SpriteState current_state;
+	char* file;
 
 public:
 	Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);

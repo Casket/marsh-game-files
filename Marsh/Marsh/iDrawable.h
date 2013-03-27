@@ -1,6 +1,8 @@
 #ifndef IDRAWABLE_H 
 #define IDRAWABLE_H 1
 
+#define ANGLE_SHIFT 0.707
+
 #include "Main.h"
 class World;
 
@@ -14,6 +16,8 @@ protected:
 	World* my_world;
 	int reference_horizontal, reference_vertical;
 	int bounding_width, bounding_height;
+	bool can_walk_left, can_walk_right, can_walk_up, can_walk_down;
+	int movement_counter;
 
 public:
 	iDrawable(int x, int y, int vel, int vel_d, Sprite* img);
@@ -35,6 +39,9 @@ public:
 
 	virtual void update(void) = 0;
 	virtual void deal_with_attack(Attack* attack) = 0;
+	virtual void check_collisions(void);
+	
+	virtual void check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
 
 };
 

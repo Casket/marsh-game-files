@@ -12,6 +12,7 @@ Sprite::Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int 
 
 	this->lighted = true;
 	this->current_state = Normal;
+	this->file = file_name;
 
 	this->sprite_sheet = load_bitmap(file_name, NULL);
 	if (this->sprite_sheet == NULL)

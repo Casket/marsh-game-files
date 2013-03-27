@@ -43,9 +43,10 @@ void View::load_world(char* filename){
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
 
-	Attack* att = new Attack(800, 800, 5, 5, new Solid_Sprite("magic//player_fireball.bmp"), 0,0,500, 1, 100, 50);
-	att->set_boundary_value(15, 15, 0, 0);
+	Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//new_fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
+	att->set_boundary_value(28, 28, 4, 4);
 	this->current_world->insert_entity(att);
+	att->set_world(this->current_world);
 
 }
 
@@ -89,6 +90,8 @@ void View::draw_active_world(void){
 }
 
 void View::draw_to_screen(void){
+	textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"World size %d", this->current_world->active_entities->size());		
+
 	int x = this->playa->get_x_pos();
 	x -= SCREEN_W/2;
 	int y = this->playa->get_y_pos();
