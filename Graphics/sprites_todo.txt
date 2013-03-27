@@ -1,7 +1,7 @@
 Areas:
 marsh
    cattails
-   water_marsh		Dungeon_A1
+   water_marsh		DONE
    grass_marsh		DONE
    grass_tuft_marsh	DONE
    tree_dead
@@ -45,7 +45,7 @@ shop
    boxes		DONE
    aisle		DONE
    stair		DONE
-docks			Inside_C
+docks			DONE
 water			DONE
 grass			DONE
    grass_tuft		DONE

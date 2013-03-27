@@ -4,6 +4,7 @@ prefixes:
 2 marshWater
 3 dirt / road
 4 cobblestone / road
+5 walls/doors
 
 
 specifiers:
@@ -28,6 +29,8 @@ random:
 02 wood floor
 03 stone floor
 04 bridgefloor
-05 bridgebottom_right
-06 bridgebottom_left
+05 bridgebottom
+06 stair fancy left
+07 stair fancy middle
+08 stair fancy right
 

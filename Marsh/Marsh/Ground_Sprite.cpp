@@ -11,10 +11,11 @@ Ground_Sprite::Ground_Sprite(char* file_name, int tile_x, int tile_y)
 	this->frame = tile_x;
 	this->total_frames = 13;
 	this->sprite_sheet = load_bitmap(file_name, NULL);
-	this->frames[0] = create_sub_bitmap(this->sprite_sheet, tile_x*TILE_WIDTH, 0,
-		TILE_WIDTH, TILE_HEIGHT);
-	this->frames[1] = create_sub_bitmap(this->sprite_sheet, tile_x*TILE_WIDTH, 0,
-		TILE_WIDTH, TILE_HEIGHT);
+	
+	for(int i = 0; i < 13; i++){
+		this->frames[i] = create_sub_bitmap(this->sprite_sheet, i*TILE_WIDTH, 0,
+			TILE_WIDTH, TILE_HEIGHT);
+	}
 }
 
 Ground_Sprite::~Ground_Sprite(void) {
