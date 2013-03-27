@@ -31,15 +31,13 @@ bool Player::add_to_inventory(Equipment* e) {
 }
 
 void Player::deal_with_attack(Attack* attack){
-	
+
 }
 
 
 void Player::update(void) {
 	// need to figure out where this guy wants to go
 	check_collisions();
-	if (!this->can_walk)
-		return;
 	listen_to_keyboard();
 
 	if (this->casting)
@@ -200,34 +198,38 @@ void Player::accept_movement(void) {
 		if (!walking) {
 			walking = true;
 			new_dir = W;
-			new_x -= MOVEMENT_DELTA;
+			if (this->can_walk_left)
+				new_x -= MOVEMENT_DELTA;
 		}
 	}
 
 	else if (key[MOVE_RIGHT]) {
-		
+
 		if (!walking) {
 			walking = true;
 			new_dir = E;
-			new_x += MOVEMENT_DELTA;
+			if (this->can_walk_right)
+				new_x += MOVEMENT_DELTA;
 		}
 	}
 
 	else if (key[MOVE_DOWN]) {
-		
+
 		if (!walking) {
 			walking = true;
 			new_dir = S;
-			new_y += MOVEMENT_DELTA;
+			if (this->can_walk_down)
+				new_y += MOVEMENT_DELTA;
 		}
 	}
 
 	else if (key[MOVE_UP]) {
-		
+
 		if (!walking) {
 			walking = true;
 			new_dir = N;
-			new_y -= MOVEMENT_DELTA;
+			if (this->can_walk_up)
+				new_y -= MOVEMENT_DELTA;
 		}
 	}
 
@@ -235,10 +237,13 @@ void Player::accept_movement(void) {
 		this->image->set_facing(new_dir);
 	}
 
-	this->x_pos = new_x;
-	this->y_pos = new_y;
-	if (walking)
-		this->image->update();
+	//if (this->can_walk){
+		this->x_pos = new_x;
+		this->y_pos = new_y;
+		if (walking)
+			this->image->update();
+	//}
+	
 }
 
 

@@ -7,6 +7,7 @@
 #define BASE_FOCUS 0
 #define BASE_WILL 0
 #define BASE_ARMOR 0
+#define SKEW_FACTOR 2;
 
 #include "Main.h"
 using namespace std;
@@ -22,9 +23,11 @@ class Combat: public iDrawable{
 		bool casting;
 		int casting_timer;
 		Attack* casted_spell;
-		bool can_walk;
+		
 	
 	public:
+		bool can_walk;
+		bool can_walk_left, can_walk_right, can_walk_up, can_walk_down;
 		Combat(int x, int y, int vel, int vel_d, Sprite* img);
 		~Combat(void);
 		void initiate_attack(Attack*);
