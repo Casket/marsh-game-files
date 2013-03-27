@@ -2,7 +2,7 @@
 
 
 Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img)
-:Drawable(x, y, vel, vel_d, img) 
+:iDrawable(x, y, vel, vel_d, img) 
 {
 
 }
@@ -10,5 +10,13 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img)
 
 Attack::~Attack(void)
 {
+
+}
+
+void Attack::update(void){
+
+}
+
+void Attack::deal_with_attack(Attack* attack){
 
 }

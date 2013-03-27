@@ -30,85 +30,25 @@ bool Player::add_to_inventory(Equipment* e) {
 	return false;
 }
 
+void Player::deal_with_attack(Attack* attack){
+	
+}
+
 
 void Player::update(void) {
 	// need to figure out where this guy wants to go
+	check_collisions();
+	if (!this->can_walk)
+		return;
 	listen_to_keyboard();
 
 	if (this->casting)
 		casting_update();
 
-	//check_collisions();
-}
-
-void Player::check_collisions(void) {
-/*
-	this->movement_flags = 0;
-	World* mine = this->get_world();
-	Tile*** map = mine->get_tile_map();
-
-	// look at 4 bounding tiles
-	Tile* nearby[4];
-	int myX = this->get_x_pos() + this->get_width()/2;
-	int myY = this->get_y_pos() + this->get_height()/2;
-	short sideThreshold = TILE_SIZE /2;
-	
-	nearby[0] = map[myY/TILE_SIZE][myX/TILE_SIZE];
-
-	bool x_sub = false;
-	if (myX % TILE_SIZE < sideThreshold){
-		nearby[1] = map[myY/TILE_SIZE][myX/TILE_SIZE - 1];
-		x_sub = true;
-	}
-	else 
-		nearby[1] = map[myY/TILE_SIZE][myX/TILE_SIZE + 1];
-
-	bool y_sub = false;
-	if (myY % TILE_SIZE < sideThreshold){
-		nearby[2] = map[myY/TILE_SIZE - 1][myX/TILE_SIZE];
-		y_sub = true;
-	}else
-		nearby[2] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE];
-
-	if (x_sub && y_sub)
-		nearby[3] = map[myY/TILE_SIZE - 1][myX/TILE_SIZE - 1];
-	else if (x_sub)
-		nearby[3] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE - 1];
-	else if (y_sub)
-		nearby[3] = map[myY/TILE_SIZE - 1][myX/TILE_SIZE + 1];
-	else
-		nearby[3] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE + 1];
-
-	nearby[2] = map[myY/TILE_SIZE][myX/TILE_SIZE + 1];
-	nearby[3] = map[myY/TILE_SIZE + 1][myX/TILE_SIZE +1];
-
-		
-	/*
-	// Can he move left?
-	if (!nearby[0]->can_walk)
-		this->movement_flags |= 1;
-	if (!nearby[1]->can_walk)
-		this->movement_flags |= 1;
-
-	// Can he move right?  Note: add 2 on the right tile, 
-	//	so he doesn't walk into things.
-	if (!map[myY/TILE_SIZE][myX/TILE_SIZE + 2]->can_walk)
-		this->movement_flags |= 2;
-	if (!map[myY/TILE_SIZE + 1][myX/TILE_SIZE + 2]->can_walk)
-		this->movement_flags |= 2;
-
-	// Move up
-	if (!map[myY/TILE_SIZE - 1][myX/TILE_SIZE + 1]->can_walk)
-		this->movement_flags |= 4;
-
-	// Move down
-	if (!map[myY/TILE_SIZE 
-
-	*/ 
-
-
 
 }
+
+
 
 void Player::listen_to_keyboard(void) {
 	if (this->casting)

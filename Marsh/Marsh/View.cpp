@@ -37,8 +37,10 @@ void View::load_world(char* filename){
 	this->current_world->load_world(filename);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
+	this->playa->set_world(this->current_world);
 
-	Drawable* d = new Drawable(600, 600, 0,0, new Sprite_Solid("Resources//drawable_images//tree_pine.bmp", 0,0, 0, 0));
+	Drawable* d = new Drawable(600, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
 
 }
@@ -55,6 +57,12 @@ void View::put_world_in_loaded(World* world){
 }
 
 void View::update(void){
+	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
+	
+	std::list<iDrawable*>::iterator iter;
+	for (iter = actives->begin(); iter != actives->end(); iter++){
+		(*iter)->update();
+	}
 
 }
 
@@ -126,11 +134,11 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 	}
 }
 
-void View::draw_drawables(BITMAP* buffer, std::list<Drawable*> *sprites){
+void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 	int xshift = this->playa->get_x_pos() - SCREEN_W/2;
 	int yshift = this->playa->get_y_pos() - SCREEN_H/2;
 
-	std::list<Drawable*>::iterator iter;
+	std::list<iDrawable*>::iterator iter;
 	for (iter = sprites->begin(); iter != sprites->end(); ++iter){
 		BITMAP* frame = (*iter)->get_image()->get_current_frame();
 		int x = (*iter)->get_x_pos();

@@ -61,9 +61,10 @@ class Player: public Combat{
 	public:
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
-		void update(void);
+		virtual void update(void);
 		Equipment** get_inventory(void);
 		bool add_to_inventory(Equipment*);
+		virtual void deal_with_attack(Attack* attack);
 
 	
 	private:
@@ -72,7 +73,6 @@ class Player: public Combat{
 		void accept_aiming(void);
 		void accept_movement(void);
 		void check_casting(void);
-		void check_collisions(void);
 		void accept_interaction(void);
 
 

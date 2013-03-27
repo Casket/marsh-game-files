@@ -3,15 +3,15 @@
 #define TILE_SIZE 32
 
 #include "Main.h"
-class Ground_Sprite;
 
 using namespace std;
+class Ground_Sprite;
 
 typedef struct Tile{
 	int row;
 	int col;
 	Ground_Sprite* background_image;
-	std::list<Drawable*> *contents;
+	std::list<iDrawable*> *contents;
 	bool can_walk;
 }Tile;
 
@@ -23,8 +23,8 @@ public:
 	int tiles_wide, tiles_high;
 	Tile*** tile_map;
 	int current_mission;
-	std::list<Drawable*> *active_entities;
-	std::list<Drawable*> *visible_entities;
+	std::list<iDrawable*> *active_entities;
+	std::list<iDrawable*> *visible_entities;
 	Player* playa;
 
 	World(int tiles_w, int tiles_h);
@@ -35,9 +35,10 @@ public:
 	int get_tiles_wide(void);
 	int get_tiles_high(void);
 	bool equals(World*);
-	std::list<Drawable*>* get_visible_entities(void);
-	void insert_entity(Drawable*);
-	void remove_entity(Drawable*);
+	std::list<iDrawable*>* get_visible_entities(void);
+	std::list<iDrawable*>* get_active_entities(void);
+	void insert_entity(iDrawable*);
+	void remove_entity(iDrawable*);
 	void set_player(Player*);
 
 private:

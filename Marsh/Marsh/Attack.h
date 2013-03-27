@@ -9,7 +9,7 @@ using namespace std;
 
 enum Type {Melee, Fire, Indirect, Energy, Defensive};
 
-class Attack: public Drawable {
+class Attack: public iDrawable {
 	Type spell_type;
 	int base_damage, penetration;
 	int range, distance_traveled;
@@ -20,8 +20,8 @@ class Attack: public Drawable {
 	public:
 		Attack(int x, int y, int vel, int vel_d, Sprite* img);
 		~Attack(void);
-		void update(void);
-		void deal_with_attack(Attack*);
+		virtual void update(void);
+		virtual void deal_with_attack(Attack*);
 		Attack* clone(void);
 
 	private:

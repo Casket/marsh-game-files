@@ -1,7 +1,11 @@
 #include "Main.h"
 #include "Ground_Sprite.h"
 
-Ground_Sprite::Ground_Sprite(char* file_name, int tile_x, int tile_y){
+using namespace std;
+
+Ground_Sprite::Ground_Sprite(char* file_name, int tile_x, int tile_y)
+:Sprite(file_name, W, 0,0,0,0)
+{
 	this->x = tile_x*TILE_WIDTH;
 	this->y = tile_y*TILE_HEIGHT;
 	this->frame = tile_x;
@@ -31,4 +35,16 @@ BITMAP* Ground_Sprite::get_current_frame(void) {
 
 void Ground_Sprite::change_frame(int frame){
 	this->frame = frame;
+}
+
+void Ground_Sprite::update(){
+	// do nothing
+}
+
+void Ground_Sprite::casting_update(){
+	// do nothing
+}
+
+void Ground_Sprite::check_casting(){
+	// MOAR NOTHING
 }

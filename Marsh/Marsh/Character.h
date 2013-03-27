@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Character: public Drawable {
+class Character: public iDrawable {
 	char** dialogue;
 	int dialogue_length;
 

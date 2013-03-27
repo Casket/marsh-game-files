@@ -11,12 +11,14 @@ class Attack;
 #include <string>
 #include "Sprite.h"
 #include "Ground_Sprite.h"
-#include "Sprite_Solid.h"
+#include "Solid_Sprite.h"
+#include "iDrawable.h"
 #include "Drawable.h"
 #include "Character.h"
 #include "Attack.h"
 #include "Combat.h"
 #include "Player.h"
+#include "Player_Sprite.h"
 #include "World.h"
 #include "View.h"
 

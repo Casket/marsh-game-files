@@ -8,8 +8,8 @@ using namespace std;
 World::World(int tiles_w, int tiles_h){
 	this->tiles_wide = tiles_w;
 	this->tiles_high = tiles_h;
-	this->active_entities = new std::list<Drawable*>();
-	this->visible_entities = new std::list<Drawable*>();
+	this->active_entities = new std::list<iDrawable*>();
+	this->visible_entities = new std::list<iDrawable*>();
 
 	Tile*** map = (Tile***)malloc(sizeof(Tile**)*tiles_h);
 	for (int i=0; i < tiles_h; i++){
@@ -25,7 +25,7 @@ World::World(int tiles_w, int tiles_h){
 			map[i][j]->col = j;
 			map[i][j]->background_image = sprite;
 			map[i][j]->can_walk = true;
-			map[i][j]->contents = new std::list<Drawable*>();
+			map[i][j]->contents = new std::list<iDrawable*>();
 		}
 	}
 	this->tile_map = map;
@@ -272,7 +272,7 @@ Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int siz
 		//
 	}
 
-	Sprite* image = new Sprite(file,S,0,0,0,1);	
+	Solid_Sprite* image = new Solid_Sprite(file);	
 
 	int x_num = list_to_int(x, size_x);//these two are used
 	int y_num = list_to_int(y, size_y);//to convert a char array([1,2,3]) to the int 123
@@ -338,22 +338,22 @@ bool World::equals(World* w){
 }
 
 
-bool sort_visibles(Drawable* d1, Drawable* d2){
+bool sort_visibles(iDrawable* d1, iDrawable* d2){
 	if (d1->get_reference_y() == d2->get_reference_y()){
 		return (d1->get_reference_x() < d2->get_reference_x());
 	}
 	return (d1->get_reference_y() < d2->get_reference_y());
 }
 
-void World::insert_entity(Drawable* da_d){
+void World::insert_entity(iDrawable* da_d){
 	this->active_entities->push_back(da_d);
 }
 
-void World::remove_entity(Drawable* dat){
+void World::remove_entity(iDrawable* dat){
 	this->active_entities->remove(dat);
 }
 
-std::list<Drawable*>* World::get_visible_entities(void){
+std::list<iDrawable*>* World::get_visible_entities(void){
 	this->visible_entities->clear();
 
 	int left_most = this->playa->get_x_pos() - SCREEN_W/2;
@@ -362,7 +362,7 @@ std::list<Drawable*>* World::get_visible_entities(void){
 	int top_most = this->playa->get_y_pos() - SCREEN_H/2;
 	int bottom_most = top_most + SCREEN_H + PAD;
 
-	std::list<Drawable*>::iterator iter;
+	std::list<iDrawable*>::iterator iter;
 	for (iter = this->active_entities->begin(); iter != this->active_entities->end(); ++iter){
 		if ((*iter)->get_x_pos() >= left_most && (*iter)->get_x_pos() <= right_most){
 			if ((*iter)->get_y_pos() >= top_most && (*iter)->get_y_pos() <= bottom_most){
@@ -373,5 +373,9 @@ std::list<Drawable*>* World::get_visible_entities(void){
 
 	this->visible_entities->sort(sort_visibles);
 	return this->visible_entities;
+}
+
+std::list<iDrawable*>* World::get_active_entities(void){
+	return this->active_entities;
 }
  

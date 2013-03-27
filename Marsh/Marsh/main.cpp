@@ -33,8 +33,10 @@ int main(void)
 	set_up_game();
 	
 
-	Sprite* img = new Sprite("player//player_hooded_withDark.bmp", S, 5, 1, 16, 16);
+	Player_Sprite* img = new Player_Sprite("player//player_hooded_withDark.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
+	hero->set_boundary_value(32, 14, 0, 18);
+	
 	
 	View* our_viewer= create_view(hero);
 
@@ -50,6 +52,7 @@ int main(void)
 		rested = false;
 		ticks++;
 
+		our_viewer->update();
 		hero->update();
 		our_viewer->draw_active_world();
 
