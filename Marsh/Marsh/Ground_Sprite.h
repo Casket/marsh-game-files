@@ -24,6 +24,7 @@ class Ground_Sprite: public Sprite{
 		BITMAP* get_current_frame(void);
 		void change_frame(int frame);
 		BITMAP* frames[2];
+		virtual Sprite* clone(void);
 
 
 	private:

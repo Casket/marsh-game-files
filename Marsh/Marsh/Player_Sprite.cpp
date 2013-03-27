@@ -90,3 +90,8 @@ void Player_Sprite::casting_update(){
 void Player_Sprite::check_casting(){
 
 }
+
+Sprite* Player_Sprite::clone(void){
+	// TODO do this
+	return NULL;
+}

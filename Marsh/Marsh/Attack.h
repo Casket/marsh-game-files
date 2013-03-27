@@ -7,10 +7,10 @@
 
 using namespace std;
 
-enum Type {Melee, Fire, Indirect, Energy, Defensive};
+enum AttackType {Melee, Fire, Indirect, Energy, Defensive};
 
 class Attack: public iDrawable {
-	Type spell_type;
+	AttackType spell_type;
 	int base_damage, penetration;
 	int range, distance_traveled;
 	int tree_depth_level;
@@ -18,11 +18,11 @@ class Attack: public iDrawable {
 	int charge_time;
 
 	public:
-		Attack(int x, int y, int vel, int vel_d, Sprite* img);
+		Attack(int x, int y, int vel, int vel_d, Sprite* img, int base_damage, int penetration, int range, int tree_depth, int exp_date, int charge_time);
 		~Attack(void);
 		virtual void update(void);
 		virtual void deal_with_attack(Attack*);
-		Attack* clone(void);
+		Attack* clone(int, int, int, int);
 
 	private:
 		// super private methods go here

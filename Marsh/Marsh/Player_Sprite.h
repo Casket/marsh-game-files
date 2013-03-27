@@ -29,6 +29,8 @@ public:
 	virtual void update(void);
 	virtual void casting_update(void);
 	virtual void check_casting(void);
+	virtual Sprite* clone(void);
+
 };
 
 #endif 

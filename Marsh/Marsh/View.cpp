@@ -43,6 +43,8 @@ void View::load_world(char* filename){
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
 
+	
+
 }
 
 void View::put_world_in_loaded(World* world){

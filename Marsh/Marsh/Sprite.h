@@ -27,6 +27,7 @@ public:
 	virtual void update(void) = 0;
 	virtual void casting_update(void) = 0;
 	virtual void check_casting(void) = 0;
+	virtual Sprite* clone(void) = 0;
 	Direction get_facing(void);
 	void set_facing(Direction);
 	bool get_lighted(void);

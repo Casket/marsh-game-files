@@ -48,3 +48,8 @@ void Ground_Sprite::casting_update(){
 void Ground_Sprite::check_casting(){
 	// MOAR NOTHING
 }
+
+Sprite* Ground_Sprite::clone(void){
+	// TODO implement this
+	return NULL;
+}

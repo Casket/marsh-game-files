@@ -16,6 +16,7 @@ class Solid_Sprite: public Sprite{
 		virtual void update(void);
 		virtual void casting_update(void);
 		virtual void check_casting(void);
+		virtual Sprite* clone(void);
 
 	private:
 		// shhh... it's for secret cereal
