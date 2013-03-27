@@ -128,6 +128,9 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 		for (int j=start_j; j<end_j; j++){
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
+			if (!tile_map[i][j]->can_walk)
+				rect(buffer, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, 
+					j*TILE_SIZE - left_x + TILE_SIZE, i*TILE_SIZE - top_y + TILE_SIZE, makecol(255, 255, 255));
 			// draw the background image for starters
 			//draw_drawables(buffer, tile_map[i][j]->contents);
 		}
@@ -146,6 +149,14 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 		int width = frame->w;
 		int height = frame->h;
 		masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, 154, 154);
+
+		
+		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
+			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
+			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
+			makecol(255, 255, 255));
+			
+
 	}
 }
 

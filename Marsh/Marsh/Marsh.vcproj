@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\iDrawable.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -193,11 +197,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Sprite.cpp"
+				RelativePath=".\Player_Sprite.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sprite_Solid.cpp"
+				RelativePath=".\Solid_Sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite.cpp"
 				>
 			</File>
 			<File
@@ -235,6 +243,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\iDrawable.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.h"
 				>
 			</File>
@@ -243,11 +255,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Sprite.h"
+				RelativePath=".\Player_Sprite.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Sprite_Solid.h"
+				RelativePath=".\Solid_Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite.h"
 				>
 			</File>
 			<File

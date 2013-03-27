@@ -35,7 +35,7 @@ int main(void)
 
 	Player_Sprite* img = new Player_Sprite("player//player_hooded_withDark.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
-	hero->set_boundary_value(32, 14, 0, 18);
+	hero->set_boundary_value(28, 14, 0, 18);
 	
 	
 	View* our_viewer= create_view(hero);
@@ -53,15 +53,16 @@ int main(void)
 		ticks++;
 
 		our_viewer->update();
-		hero->update();
+		//hero->update();
 		our_viewer->draw_active_world();
 
 		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
 		//	SCREEN_W/2, SCREEN_H/2, 32,30);
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
-		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
-		textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
+		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
+		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
+		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
 		
 	}
 	//delete hero;
