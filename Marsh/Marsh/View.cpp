@@ -43,7 +43,9 @@ void View::load_world(char* filename){
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
 
-	
+	Attack* att = new Attack(800, 800, 5, 5, new Solid_Sprite("magic//player_fireball.bmp"), 0,0,500, 1, 100, 50);
+	att->set_boundary_value(15, 15, 0, 0);
+	this->current_world->insert_entity(att);
 
 }
 
