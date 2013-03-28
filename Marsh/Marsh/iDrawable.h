@@ -9,7 +9,7 @@ class World;
 using namespace std;
 
 class iDrawable{
-protected:
+public:
 	Sprite* image;
 	int x_pos, y_pos;
 	int velocity, velocity_delay;

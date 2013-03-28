@@ -72,6 +72,8 @@ bool Attack::detect_collisions(void){
 		iDrawable* check = (*iter);
 		if (check == this)
 			continue;
+		if (check == this->my_caster)
+			continue;
 		check_x = check->get_reference_x();
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
@@ -80,7 +82,7 @@ bool Attack::detect_collisions(void){
 
 		if (detect_hit(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height)){
-				(*iter)->deal_with_attack(this);
+				//(*iter)->deal_with_attack(this);
 				start_death_sequence();
 				return true;
 		}
@@ -124,11 +126,23 @@ bool Attack::detect_hit(int my_x, int my_y, int my_height, int my_width, int che
 }
 
 void Attack::start_death_sequence(void){
-	delete this;
+	//this->get_world()->remove_entity(this);
+	//delete this;
+}
+
+void Attack::set_my_caster(Combat* caster){
+	this->my_caster = caster;
+}
+Combat* Attack::get_my_caster(void){
+	return this->my_caster;
 }
 
 void Attack::deal_with_attack(Attack* attack){
 
+}
+
+int Attack::get_charge_time(void){
+	return this->charge_time;
 }
 
 Attack* Attack::clone(int x, int y, int intelligence, int focus){
@@ -139,5 +153,6 @@ Attack* Attack::clone(int x, int y, int intelligence, int focus){
 	Sprite* image = this->get_image()->clone();
 	Attack* result = new Attack(x, y, this->velocity, this->velocity_delay, image, damage, penetrate, this->range, this->tree_depth_level, this->expiration_date, charge);
 	result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
+	result->set_my_caster(this->my_caster);
 	return result;
 }
