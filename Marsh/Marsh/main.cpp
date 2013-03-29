@@ -49,7 +49,7 @@ int main(void)
 	set_up_game();
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
-	theme = load_wav("main_theme.wav");
+	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
 
@@ -70,7 +70,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("testMap.txt");
+	v->load_world("friday_map.txt");
 	return v;
 }
 
@@ -187,7 +187,7 @@ void start_game(void) {
 	game_state = IN_GAME;
 	Player_Sprite* img = new Player_Sprite("player//player_sheet.bmp", S, 5, 1, 16, 16);
 
-	Player* hero = new Player(400, 400, 0, 0, img);
+	Player* hero = new Player(300, 400, 0, 0, img);
 	hero->set_boundary_value(28, 14, 0, 18);
 	
 	

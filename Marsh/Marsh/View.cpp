@@ -39,9 +39,37 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 
-	Drawable* d = new Drawable(600, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+		Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
+
+	Drawable* d1 = new Drawable(650, 149, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d1->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d1);
+
+	Drawable* d2 = new Drawable(750, 294, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d2->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d2);
+
+	Drawable* d3 = new Drawable(800, 593, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d3->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d3);
+
+	Drawable* d4 = new Drawable(900, 398, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d4->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d4);
+
+	Drawable* d5 = new Drawable(950, 438, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d5->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d5);
+
+	Drawable* d6 = new Drawable(750, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d6->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d6);
+
+	Drawable* d7 = new Drawable(850, 834, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d7->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d7);
 
 	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);

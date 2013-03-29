@@ -179,7 +179,11 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
-
+		
+		if(sprite_x == 5 || sprite_x == 9){
+			
+			this->tile_map[pos_x][pos_y]->can_walk = false;
+		}
 
 
 	}else if(a == '1'){
@@ -357,11 +361,11 @@ void World::remove_entity(iDrawable* dat){
 std::list<iDrawable*>* World::get_visible_entities(void){
 	this->visible_entities->clear();
 
-	int left_most = this->playa->get_x_pos() - SCREEN_W/2;
-	int right_most = left_most + SCREEN_W + PAD;
+	int left_most = this->playa->get_x_pos() - SCREEN_W - PAD;
+	int right_most = left_most + 2*SCREEN_W + PAD;
 	
-	int top_most = this->playa->get_y_pos() - SCREEN_H/2;
-	int bottom_most = top_most + SCREEN_H + PAD;
+	int top_most = this->playa->get_y_pos() - SCREEN_H - PAD;
+	int bottom_most = top_most + 2*SCREEN_H + PAD;
 
 	std::list<iDrawable*>::iterator iter;
 	for (iter = this->active_entities->begin(); iter != this->active_entities->end(); ++iter){
