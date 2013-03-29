@@ -33,7 +33,7 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(105, 60);
+	this->current_world = new World(45, 34);
 	this->current_world->load_world(filename);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
@@ -47,7 +47,7 @@ void View::load_world(char* filename){
 	d1->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d1);
 
-	Drawable* d2 = new Drawable(750, 294, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	Drawable* d2 = new Drawable(780, 300, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d2->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d2);
 
@@ -55,7 +55,7 @@ void View::load_world(char* filename){
 	d3->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d3);
 
-	Drawable* d4 = new Drawable(900, 398, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	Drawable* d4 = new Drawable(1000, 450, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d4->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d4);
 
@@ -63,7 +63,7 @@ void View::load_world(char* filename){
 	d5->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d5);
 
-	Drawable* d6 = new Drawable(750, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	Drawable* d6 = new Drawable(850, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d6->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d6);
 
@@ -165,9 +165,10 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 		for (int j=start_j; j<end_j; j++){
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
-			if (!tile_map[i][j]->can_walk)
+			/*if (!tile_map[i][j]->can_walk)
 				rect(buffer, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, 
 					j*TILE_SIZE - left_x + TILE_SIZE, i*TILE_SIZE - top_y + TILE_SIZE, makecol(255, 255, 255));
+			*/ 
 			// draw the background image for starters
 			//draw_drawables(buffer, tile_map[i][j]->contents);
 		}
@@ -187,11 +188,12 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 		int height = frame->h;
 		masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, 154, 154);
 
-		
+		/*
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
+			*/ 
 			
 
 	}

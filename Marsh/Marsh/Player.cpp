@@ -61,7 +61,9 @@ void Player::listen_to_keyboard(void) {
 
 void Player::accept_interaction(void) {
 	// TODO implement this
+	clear_keybuf();
 	if(key[KEY_Q]){
+		clear_keybuf();
 		this->get_image()->wearing_mask = !this->get_image()->wearing_mask;
 		clear_keybuf();
 	}
