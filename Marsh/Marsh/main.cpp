@@ -170,8 +170,8 @@ void show_intro(void) {
 					textprintf_ex(buffer, font1, 50,  420, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
-		if (mute==0) textprintf_ex(buffer, font, 70, 480, makecol(204,255,204), -1, "Sound On!");
-		else textprintf_ex(buffer, font, 70, 480, makecol(204,255,51), -1, "SOUND OFF!");
+		if (mute==0) textprintf_ex(buffer, font, 370, 100, makecol(204,255,204), -1, "Sound On! (M to mute)");
+		else textprintf_ex(buffer, font, 370, 100, makecol(204,255,51), -1, "SOUND OFF! (M to unmute)");
 
 		// draw to screen
 		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
