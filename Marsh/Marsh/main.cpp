@@ -39,6 +39,7 @@ View* create_view(Player*);
 int game_state = INTRO_GAME;
 BITMAP* buffer;
 FONT *font1;
+FONT *font2;
 SAMPLE *theme;
 int mute = 0;
 
@@ -47,6 +48,7 @@ int main(void)
     //initialize everything
 	set_up_game();
 	font1 = load_font("font1.pcx",NULL,NULL);
+	font2 = load_font("font2.pcx",NULL,NULL);
 	theme = load_wav("main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -139,35 +141,37 @@ void show_intro(void) {
 
 		// drawing
         blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
+
+		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Marsh");
         if (menu_sel == 0) { // new game
-                textprintf_ex(buffer, font1, 50,  80, makecol(0,255,255), -1, "New Game");
+                textprintf_ex(buffer, font1, 50,  130, makecol(0,255,255), -1, "New Game");
         } else {
-                textprintf_ex(buffer, font1, 50,  80, makecol(255,255,255), -1, "NEW GAME");
+                textprintf_ex(buffer, font1, 50,  130, makecol(255,255,255), -1, "NEW GAME");
         }
         if (menu_sel == 1) { // load game
-                textprintf_ex(buffer, font1, 50,  160, makecol(0,255,255), -1, "Load Game");
+                textprintf_ex(buffer, font1, 50,  200, makecol(0,255,255), -1, "Load Game");
         } else {
-                textprintf_ex(buffer, font1, 50,  160, makecol(255,255,255), -1, "LOAD GAME");
+                textprintf_ex(buffer, font1, 50,  200, makecol(255,255,255), -1, "LOAD GAME");
         }
         if (menu_sel == 2) { // exit game
-                textprintf_ex(buffer, font1, 50,  240, makecol(0,255,255), -1, "Exit Game");
+                textprintf_ex(buffer, font1, 50,  270, makecol(0,255,255), -1, "Exit Game");
         } else {
-                textprintf_ex(buffer, font1, 50,  240, makecol(255,255,255), -1, "EXIT GAME");
+                textprintf_ex(buffer, font1, 50,  270, makecol(255,255,255), -1, "EXIT GAME");
         } 
 		if (menu_sel == 3) { // back to game
-				textprintf_ex(buffer, font1, 50,  320, makecol(0,255,255), -1, "Save Game");
+				textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
         } else {
-                textprintf_ex(buffer, font1, 50,  320, makecol(255,255,255), -1, "SAVE GAME");
+                textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
         } 
 		if (game_state == IN_GAME) {
 			if (menu_sel == 4) {
-					textprintf_ex(buffer, font1, 50,  400, makecol(255,0,51), -1, "Return");
+					textprintf_ex(buffer, font1, 50,  420, makecol(255,0,51), -1, "Return");
 			} else {
-					textprintf_ex(buffer, font1, 50,  400, makecol(255,255,0), -1, "RETURN");
+					textprintf_ex(buffer, font1, 50,  420, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
-		if (mute==0) textprintf_ex(buffer, font, 70, 460, makecol(204,255,204), -1, "Sound ON!");
-		else textprintf_ex(buffer, font, 70, 460, makecol(204,255,51), -1, "Sound OFF!");
+		if (mute==0) textprintf_ex(buffer, font, 70, 480, makecol(204,255,204), -1, "Sound On!");
+		else textprintf_ex(buffer, font, 70, 480, makecol(204,255,51), -1, "SOUND OFF!");
 
 		// draw to screen
 		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
