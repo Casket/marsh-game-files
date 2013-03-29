@@ -40,6 +40,7 @@ int game_state = INTRO_GAME;
 BITMAP* buffer;
 FONT *font1;
 SAMPLE *theme;
+int mute = 0;
 
 int main(void)
 {
@@ -59,7 +60,7 @@ int main(void)
 	}
 	
 	destroy_bitmap(buffer);
-	stop_sample(theme);
+	destroy_sample(theme);
 	allegro_exit();
     return 0;
 }
@@ -122,6 +123,16 @@ void show_intro(void) {
 					case 3: game_state=SAVE_GAME; break; // save game
 					case 4: game_state=IN_GAME; goto exit_loop;
 				} break;
+				case KEY_M: {
+					if (mute==0) {
+						mute=1;
+						stop_sample(theme);
+					}
+					else {
+						mute=0;
+						play_sample(theme,255,128,1000,1);
+					}
+				}
 			}
 			clear_keybuf();
 		}
@@ -155,6 +166,8 @@ void show_intro(void) {
 					textprintf_ex(buffer, font1, 50,  400, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
+		if (mute==0) textprintf_ex(buffer, font, 70, 460, makecol(204,255,204), -1, "Sound ON!");
+		else textprintf_ex(buffer, font, 70, 460, makecol(204,255,51), -1, "Sound OFF!");
 
 		// draw to screen
 		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
@@ -196,9 +209,8 @@ void start_game(void) {
 		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
 		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
-		
+		clear_keybuf();
 	}
-	clear_keybuf();
 	//delete hero;
 	delete our_viewer;
 }
