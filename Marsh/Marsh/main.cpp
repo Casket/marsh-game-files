@@ -30,7 +30,6 @@ void draw_world_to_buffer(World*);
 void start_game(void);
 void end_game(void);
 void show_intro(void);
-void exit_game(void);
 void save_game(void);
 void load_game(void);
 World* generate_world(void); // TODO add world identifying thingymahinger
@@ -39,13 +38,13 @@ View* create_view(Player*);
 // gamestate
 int game_state = INTRO_GAME;
 BITMAP* buffer;
-View* our_viewer;
-BITMAP *title_screen_bitmap;
+FONT *font1;
 
 int main(void)
 {
     //initialize everything
 	set_up_game();
+	font1 = load_font("font1.pcx",NULL,NULL);
 
 	buffer = create_bitmap(SCREENW,SCREENH);
 	
@@ -98,7 +97,7 @@ void set_up_game(void) {
 }
 
 void show_intro(void) {
-	title_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+	BITMAP *title_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	int menu_sel = 0;
 	int max_sel = 3;
 	if (game_state == IN_GAME) max_sel = 4;
@@ -111,10 +110,10 @@ void show_intro(void) {
 				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
 				case KEY_ENTER:
 				switch (menu_sel) {
-					case 0: game_state=INTRO_GAME; start_game(); break; // new game
-					case 1: game_state=LOAD_GAME; load_game(); break; // load game
-					case 2: game_state=FINISH_GAME; exit_game(); break; // exit game 
-					case 3: game_state=SAVE_GAME; save_game(); break; // save game
+					case 0: game_state=IN_GAME; start_game(); break; // new game
+					case 1: game_state=LOAD_GAME; break; // load game
+					case 2: game_state=FINISH_GAME; break; // exit game 
+					case 3: game_state=SAVE_GAME; break; // save game
 					case 4: game_state=IN_GAME; goto exit_loop;
 				} break;
 			}
@@ -124,30 +123,30 @@ void show_intro(void) {
 		// drawing
         blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
         if (menu_sel == 0) { // new game
-                textprintf_ex(buffer, font, 20,  80, makecol(0,255,255), -1, "New Game");
+                textprintf_ex(buffer, font1, 50,  80, makecol(0,255,255), -1, "New Game");
         } else {
-                textprintf_ex(buffer, font, 20,  80, makecol(255,255,255), -1, "NEW GAME");
+                textprintf_ex(buffer, font1, 50,  80, makecol(255,255,255), -1, "NEW GAME");
         }
         if (menu_sel == 1) { // load game
-                textprintf_ex(buffer, font, 20,  90, makecol(0,255,255), -1, "Load Game");
+                textprintf_ex(buffer, font1, 50,  160, makecol(0,255,255), -1, "Load Game");
         } else {
-                textprintf_ex(buffer, font, 20,  90, makecol(255,255,255), -1, "LOAD GAME");
+                textprintf_ex(buffer, font1, 50,  160, makecol(255,255,255), -1, "LOAD GAME");
         }
         if (menu_sel == 2) { // exit game
-                textprintf_ex(buffer, font, 20,  100, makecol(0,255,255), -1, "Exit Game");
+                textprintf_ex(buffer, font1, 50,  240, makecol(0,255,255), -1, "Exit Game");
         } else {
-                textprintf_ex(buffer, font, 20,  100, makecol(255,255,255), -1, "EXIT GAME");
+                textprintf_ex(buffer, font1, 50,  240, makecol(255,255,255), -1, "EXIT GAME");
         } 
 		if (menu_sel == 3) { // back to game
-				textprintf_ex(buffer, font, 20,  110, makecol(0,255,255), -1, "Save Game");
+				textprintf_ex(buffer, font1, 50,  320, makecol(0,255,255), -1, "Save Game");
         } else {
-                textprintf_ex(buffer, font, 20,  110, makecol(255,255,255), -1, "SAVE GAME");
+                textprintf_ex(buffer, font1, 50,  320, makecol(255,255,255), -1, "SAVE GAME");
         } 
 		if (game_state == IN_GAME) {
 			if (menu_sel == 4) {
-					textprintf_ex(buffer, font, 20,  120, makecol(0,255,255), -1, "Return to Current Game");
+					textprintf_ex(buffer, font1, 50,  400, makecol(255,0,51), -1, "Return");
 			} else {
-					textprintf_ex(buffer, font, 20,  120, makecol(255,255,255), -1, "RETURN TO CURRENT GAME");
+					textprintf_ex(buffer, font1, 50,  400, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
 
@@ -161,15 +160,14 @@ void show_intro(void) {
 }
 
 void start_game(void) {
-	game_state = IN_GAME;
 	Player_Sprite* img = new Player_Sprite("player//player_hooded_withDark.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
 	hero->set_boundary_value(28, 14, 0, 18);
 	
 	
-	our_viewer= create_view(hero);
+	View *our_viewer= create_view(hero);
 
-	while(true) {
+	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
@@ -197,7 +195,6 @@ void start_game(void) {
 	clear_keybuf();
 	//delete hero;
 	delete our_viewer;
-	allegro_exit();
 }
 
 void load_game(void) {
@@ -209,8 +206,3 @@ void save_game(void) {
 	//todo
 	return;
 }
-
-void exit_game(void) {
-	return;
-}
-
