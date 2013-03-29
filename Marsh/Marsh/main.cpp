@@ -162,7 +162,7 @@ void show_intro(void) {
 
 void start_game(void) {
 	game_state = IN_GAME;
-	Player_Sprite* img = new Player_Sprite("player//player_hooded_withDark.bmp", S, 5, 1, 16, 16);
+	Player_Sprite* img = new Player_Sprite("player//player_sheet.bmp", S, 5, 1, 16, 16);
 	Player* hero = new Player(400, 400, 0, 0, img);
 	hero->set_boundary_value(28, 14, 0, 18);
 	
@@ -192,9 +192,9 @@ void start_game(void) {
 		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
 		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
-		
+		clear_keybuf();
 	}
-	clear_keybuf();
+	
 	//delete hero;
 	delete our_viewer;
 	allegro_exit();

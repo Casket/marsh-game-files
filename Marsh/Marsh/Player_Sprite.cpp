@@ -6,6 +6,7 @@ using namespace std;
 Player_Sprite::Player_Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames)
 :Sprite(file_name, cur_dir, ani_delay, rows, cols, total_frames)
 {
+	this->wearing_mask = false;
 	// do nothing for now
 }
 
@@ -17,8 +18,11 @@ Player_Sprite::~Player_Sprite(void) {
 BITMAP* Player_Sprite::get_current_frame(void) {
 	int y = 0;
 	if (!this->lighted)
-		y = 32;
+		y += 32;
 	
+	if(this->wearing_mask)
+		y += 32;
+
 	if (this->facing == None)
 		return this->sprite_sheet;
 
@@ -85,14 +89,39 @@ void Player_Sprite::update(void) {
 }
 
 void Player_Sprite::casting_update(){
-
+	switch(this->facing){
+		case N:
+			this->animation_frame = NORTH_START;
+			break;
+		case E:
+			this->animation_frame = EAST_START;
+			break;
+		case S:
+			this->animation_frame = SOUTH_START;
+			break;
+		case W:
+			this->animation_frame = WEST_START;
+			break;
+		case NE:
+			this->animation_frame = NORTH_EAST_START;
+			break;
+		case NW:
+			this->animation_frame = NORTH_WEST_START;
+			break;
+		case SE:
+			this->animation_frame = SOUTH_EAST_START;
+			break;
+		case SW:
+			this->animation_frame = SOUTH_WEST_START;
+			break;
+	}
 }
 
 void Player_Sprite::check_casting(){
 
 }
 
-Sprite* Player_Sprite::clone(void){
+Sprite* Player_Sprite::clone(Direction dir){
 	// TODO do this
 	Player_Sprite* ps = new Player_Sprite(this->file, this->facing, this->animation_delay, this->sheet_rows, this->sheet_cols, this->total_frames);
 	return ps;

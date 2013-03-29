@@ -173,6 +173,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Attack_Sprite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Combat.cpp"
 				>
 			</File>
@@ -224,6 +228,10 @@
 			>
 			<File
 				RelativePath=".\Attack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Attack_Sprite.h"
 				>
 			</File>
 			<File

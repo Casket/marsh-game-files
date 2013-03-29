@@ -12,6 +12,7 @@ class Attack;
 #include "Sprite.h"
 #include "Ground_Sprite.h"
 #include "Solid_Sprite.h"
+#include "Attack_Sprite.h"
 #include "iDrawable.h"
 #include "Drawable.h"
 #include "Character.h"

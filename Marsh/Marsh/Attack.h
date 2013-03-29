@@ -25,7 +25,7 @@ public:
 		~Attack(void);
 		virtual void update(void);
 		virtual void deal_with_attack(Attack*);
-		Attack* clone(int, int, int, int);
+		Attack* clone(int, int, int, int, Direction);
 		bool detect_collisions(void);
 		void set_my_caster(Combat*);
 		Combat* get_my_caster(void);

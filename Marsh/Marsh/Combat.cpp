@@ -10,8 +10,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Player_Sprite("magic//new_fireball.bmp", W, 0,0,0,0), 0,0,0, 0,0,100);
-	this->attack_loadout[0]->set_boundary_value(28, 28, 2, 2);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 0,0,0, 0,0,100);
+	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);
 	this->mana = calculate_mana(this->willpower);
@@ -64,7 +64,7 @@ void Combat::launch_attack(int attack_num) {
 	if ((attack_num >= 0) && (attack_num < MAX_ATTACKS )) {
 		this->casting = true;
 		Attack* used_attack = this->attack_loadout[attack_num];
-		this->casted_spell = used_attack->clone(this->get_reference_x(),this->get_reference_y(),this->intelligence,this->focus);
+		this->casted_spell = used_attack->clone(this->get_reference_x(),this->get_reference_y(),this->intelligence,this->focus, this->get_image()->get_facing());
 		this->casted_spell->set_world(this->get_world());
 	}
 	

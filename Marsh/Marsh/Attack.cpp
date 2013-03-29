@@ -19,6 +19,7 @@ Attack::~Attack(void)
 }
 
 void Attack::update(void){
+	this->get_image()->update();
 	if (!detect_collisions()){
 		if (++this->movement_counter >= this->velocity_delay){
 			switch(this->get_image()->get_facing()){
@@ -145,12 +146,12 @@ int Attack::get_charge_time(void){
 	return this->charge_time;
 }
 
-Attack* Attack::clone(int x, int y, int intelligence, int focus){
+Attack* Attack::clone(int x, int y, int intelligence, int focus, Direction dir){
 	int damage, penetrate, charge;
 	damage = this->base_damage;
 	penetrate = this->penetration;
 	charge = this->charge_time;
-	Sprite* image = this->get_image()->clone();
+	Sprite* image = this->get_image()->clone(dir);
 	Attack* result = new Attack(x, y, this->velocity, this->velocity_delay, image, damage, penetrate, this->range, this->tree_depth_level, this->expiration_date, charge);
 	result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 	result->set_my_caster(this->my_caster);

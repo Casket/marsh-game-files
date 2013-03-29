@@ -8,8 +8,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->casting = false;
 	this->casting_timer = 0;
 	// TODO implement a constructor
-	this->movement_flags = 0;
-}
+	}
 
 Player::~Player(void){
 
@@ -62,9 +61,16 @@ void Player::listen_to_keyboard(void) {
 
 void Player::accept_interaction(void) {
 	// TODO implement this
+	if(key[KEY_Q]){
+		this->get_image()->wearing_mask = !this->get_image()->wearing_mask;
+		clear_keybuf();
+	}
 }
 
 void Player::check_casting(void) {
+	if(!this->get_image()->wearing_mask)
+		return;
+
 	int desired_attack = -1;
 
 	if (key[CAST_ONE]) {

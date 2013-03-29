@@ -19,6 +19,7 @@ protected:
 	bool lighted;
 	SpriteState current_state;
 	char* file;
+	
 
 public:
 	Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
@@ -28,11 +29,13 @@ public:
 	virtual void update(void) = 0;
 	virtual void casting_update(void) = 0;
 	virtual void check_casting(void) = 0;
-	virtual Sprite* clone(void) = 0;
+	virtual Sprite* clone(Direction);
 	Direction get_facing(void);
-	void set_facing(Direction);
+	virtual void set_facing(Direction);
 	bool get_lighted(void);
 	void set_lighted(bool);
+	bool wearing_mask;
+
 
 private:
 	// shhh... it's for secret cereal

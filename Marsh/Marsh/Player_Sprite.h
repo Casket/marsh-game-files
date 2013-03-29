@@ -17,6 +17,12 @@ using namespace std;
 #define WEST_START 4
 #define WEST_END 7
 
+#define NORTH_EAST_START 18
+#define NORTH_WEST_START 19
+
+#define SOUTH_EAST_START 17
+#define SOUTH_WEST_START 16
+
 #define SPRITE_WIDTH 32
 #define SPRITE_HEIGHT 32
 
@@ -29,7 +35,8 @@ public:
 	virtual void update(void);
 	virtual void casting_update(void);
 	virtual void check_casting(void);
-	virtual Sprite* clone(void);
+	virtual Sprite* clone(Direction);
+
 
 };
 
