@@ -39,12 +39,16 @@ View* create_view(Player*);
 int game_state = INTRO_GAME;
 BITMAP* buffer;
 FONT *font1;
+SAMPLE *theme;
 
 int main(void)
 {
     //initialize everything
 	set_up_game();
 	font1 = load_font("font1.pcx",NULL,NULL);
+	theme = load_wav("main_theme.wav");
+	if (!theme) allegro_message("error theme wav");
+	else play_sample(theme,255,128,1000,1);
 
 	buffer = create_bitmap(SCREENW,SCREENH);
 	
@@ -55,6 +59,7 @@ int main(void)
 	}
 	
 	destroy_bitmap(buffer);
+	stop_sample(theme);
 	allegro_exit();
     return 0;
 }
@@ -81,6 +86,7 @@ void set_up_game(void) {
 	install_keyboard();
 	install_timer();
 	install_mouse();
+	install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,NULL);
 
 	set_color_depth(COLOR_DEPTH);
 	set_gfx_mode(MODE, SCREENW, SCREENH, 0,0);
