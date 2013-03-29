@@ -10,7 +10,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Player_Sprite("magic//new_fireball.bmp", W, 0,0,0,0), 0,0,0, 0,0,20);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Player_Sprite("magic//new_fireball.bmp", W, 0,0,0,0), 0,0,0, 0,0,100);
 	this->attack_loadout[0]->set_boundary_value(28, 28, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);

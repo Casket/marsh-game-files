@@ -126,7 +126,7 @@ bool Attack::detect_hit(int my_x, int my_y, int my_height, int my_width, int che
 }
 
 void Attack::start_death_sequence(void){
-	//this->get_world()->remove_entity(this);
+	this->get_world()->remove_entity(this);
 	//delete this;
 }
 

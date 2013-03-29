@@ -25,6 +25,7 @@ public:
 	int current_mission;
 	std::list<iDrawable*> *active_entities;
 	std::list<iDrawable*> *visible_entities;
+	std::list<iDrawable*> *removal_queue;
 	Player* playa;
 
 	World(int tiles_w, int tiles_h);
@@ -40,12 +41,14 @@ public:
 	void insert_entity(iDrawable*);
 	void remove_entity(iDrawable*);
 	void set_player(Player*);
+	void remove_destroyed(void);
 
 private:
 	void convert_to_tile(char a, char b, int pos_x, int pos_y);
 	int find_x(char b);
 	int list_to_int(char* given, int size);
 	Drawable* make_drawable(char* type, char* x, char* y, int size_x, int size_y);
+	
 	// room for expansion packs! (and easter eggs, and stuffz)
 
 

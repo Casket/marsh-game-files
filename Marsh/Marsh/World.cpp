@@ -10,6 +10,7 @@ World::World(int tiles_w, int tiles_h){
 	this->tiles_high = tiles_h;
 	this->active_entities = new std::list<iDrawable*>();
 	this->visible_entities = new std::list<iDrawable*>();
+	this->removal_queue = new std::list<iDrawable*>();
 
 	Tile*** map = (Tile***)malloc(sizeof(Tile**)*tiles_h);
 	for (int i=0; i < tiles_h; i++){
@@ -350,7 +351,7 @@ void World::insert_entity(iDrawable* da_d){
 }
 
 void World::remove_entity(iDrawable* dat){
-	this->active_entities->remove(dat);
+	this->removal_queue->push_back(dat);
 }
 
 std::list<iDrawable*>* World::get_visible_entities(void){
@@ -377,5 +378,14 @@ std::list<iDrawable*>* World::get_visible_entities(void){
 
 std::list<iDrawable*>* World::get_active_entities(void){
 	return this->active_entities;
+}
+
+void World::remove_destroyed(void){
+	std::list<iDrawable*>::iterator iter;
+	std::list<iDrawable*>::iterator end = this->removal_queue->end();
+	for (iter = this->removal_queue->begin(); iter != end; ++iter){
+		this->active_entities->remove((*iter));
+	}
+	this->removal_queue->clear();
 }
  

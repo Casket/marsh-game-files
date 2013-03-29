@@ -87,6 +87,8 @@ void View::draw_active_world(void){
 	//draw_interface(this->playa);
 	draw_to_screen();
 
+	this->current_world->remove_destroyed();
+
 }
 
 void View::draw_to_screen(void){

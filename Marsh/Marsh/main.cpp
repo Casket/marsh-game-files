@@ -76,7 +76,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("wall_test.txt");
+	v->load_world("testMap.txt");
 	return v;
 }
 
