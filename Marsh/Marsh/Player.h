@@ -55,6 +55,8 @@ typedef struct Equipment{
 class Player: public Combat{
 	Equipment* inventory[MAX_HELD_ITEMS];
 	int level, current_experience;
+	int keyboard_counter;
+	int keyboard_delay;
 
 	public:
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
