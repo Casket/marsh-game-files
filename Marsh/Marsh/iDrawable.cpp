@@ -7,6 +7,7 @@ iDrawable::iDrawable(int x, int y, int vel, int vel_d, Sprite* img){
 	this->velocity_delay = vel_d;
 	this->movement_counter = 0;
 	this->image = img;
+	this->alive = true;
 }
 
 iDrawable::~iDrawable(void){

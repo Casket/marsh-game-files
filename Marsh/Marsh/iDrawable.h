@@ -36,6 +36,7 @@ public:
 	void set_y_pos(int y);
 	int get_reference_x(void);
 	int get_reference_y(void);
+	bool alive;
 
 	virtual void update(void) = 0;
 	virtual void deal_with_attack(Attack* attack) = 0;

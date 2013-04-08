@@ -127,6 +127,7 @@ bool Attack::detect_hit(int my_x, int my_y, int my_height, int my_width, int che
 }
 
 void Attack::start_death_sequence(void){
+	this->alive = false;
 	this->get_world()->remove_entity(this);
 	//delete this;
 }
@@ -139,6 +140,8 @@ Combat* Attack::get_my_caster(void){
 }
 
 void Attack::deal_with_attack(Attack* attack){
+	if (!this->alive || !attack->alive)
+		return;
 	// which attack should die?
 	if (this->tree_depth_level == attack->tree_depth_level){
 		// kill both dem
