@@ -206,7 +206,7 @@ void start_game(void) {
 		rested = false;
 		ticks++;
 
-		zour_viewer->update();
+		our_viewer->update();
 		//hero->update();
 		our_viewer->draw_active_world();
 
