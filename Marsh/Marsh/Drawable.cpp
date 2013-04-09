@@ -17,6 +17,8 @@ void Drawable::update(void){
 
 void Drawable::deal_with_attack(Attack* attack){
 	//cause attack to start its dieing proces
+	attack->start_death_sequence();
+	// you done gone and hit something hard
 
 }
 
