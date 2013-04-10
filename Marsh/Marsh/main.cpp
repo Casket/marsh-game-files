@@ -19,6 +19,8 @@ using namespace std;
 #define SAVE_GAME 4
 #define LOAD_GAME 5
 
+Player* hero;
+
 volatile int ticks, framerate;
 volatile bool rested;
 
@@ -187,7 +189,7 @@ void start_game(void) {
 	game_state = IN_GAME;
 	Player_Sprite* img = new Player_Sprite("player//player_sheet.bmp", S, 5, 1, 16, 16);
 
-	Player* hero = new Player(300, 400, 0, 0, img);
+	hero = new Player(300, 400, 0, 0, img);
 	hero->set_boundary_value(28, 14, 0, 18);
 	
 	

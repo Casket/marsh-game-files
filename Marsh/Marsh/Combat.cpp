@@ -10,7 +10,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,100);
+	this->attack_loadout[0] = new Attack(800, 800, 0, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,100);
 	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
 	this->attack_loadout[1] = new Attack(800, 800, 10, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26, 26), 100, 0, 0, 3, 0, 100);
@@ -56,7 +56,42 @@ void Combat::casting_update(void) {
 		this->casting = false;
 		this->casting_timer = 0;
 		// TODO put the casted spell into the world
-		this->casted_spell = this->casted_spell->clone(this->get_reference_x(),this->get_reference_y(),this->intelligence,this->focus, this->get_image()->get_facing());
+		int spell_x = this->get_reference_x();
+		int spell_y = this->get_reference_y();
+		
+		switch(this->image->get_facing()){
+			case N:
+				spell_y -= this->get_bounding_height();
+				break;
+			case S:
+				spell_y += this->get_bounding_height() / 2;
+				break;
+			case W:
+				spell_x -= this->get_bounding_width();
+				spell_y -= this->get_bounding_height() / 2;
+				break;
+			case E:
+				spell_x += this->get_bounding_width();
+				spell_y -= this->get_bounding_height() / 2;
+				break;
+			case NE:
+				spell_x += this->get_bounding_width() / 2;
+				spell_y -= this->get_bounding_height();
+				break;
+			case NW:
+				spell_y -= this->get_bounding_height();
+				spell_x -= this->get_bounding_width() / 2;
+				break;
+			case SW:
+				spell_y += this->get_bounding_height() / 2;
+				spell_x -= this->get_bounding_width() / 2;
+				break;
+			case SE:
+				spell_y += this->get_bounding_height() / 2;
+				spell_x += this->get_bounding_width() / 2;
+				break;
+		}
+		this->casted_spell = this->casted_spell->clone(spell_x, spell_y,this->intelligence,this->focus, this->get_image()->get_facing());
 		this->casted_spell->set_world(this->get_world());
 		this->get_world()->insert_entity(this->casted_spell);
 		this->casted_spell = NULL;
