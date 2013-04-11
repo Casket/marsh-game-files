@@ -33,15 +33,48 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(105, 60);
+	this->current_world = new World(45, 34);
 	this->current_world->load_world(filename);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 
-	Drawable* d = new Drawable(600, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+		Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
+
+	Drawable* d1 = new Drawable(650, 149, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d1->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d1);
+
+	Drawable* d2 = new Drawable(780, 300, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d2->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d2);
+
+	Drawable* d3 = new Drawable(800, 593, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d3->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d3);
+
+	Drawable* d4 = new Drawable(1000, 450, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d4->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d4);
+
+	Drawable* d5 = new Drawable(950, 438, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d5->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d5);
+
+	Drawable* d6 = new Drawable(850, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d6->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d6);
+
+	Drawable* d7 = new Drawable(850, 834, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d7->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d7);
+
+	Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp"));
+	rambo_sheep->set_world(this->current_world);
+	this->current_world->insert_entity(rambo_sheep);
+	rambo_sheep->set_boundary_value(30, 30, 2, 2);
 
 	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);
@@ -137,9 +170,10 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 		for (int j=start_j; j<end_j; j++){
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
-			if (!tile_map[i][j]->can_walk)
+			/*if (!tile_map[i][j]->can_walk)
 				rect(buffer, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, 
 					j*TILE_SIZE - left_x + TILE_SIZE, i*TILE_SIZE - top_y + TILE_SIZE, makecol(255, 255, 255));
+			*/ 
 			// draw the background image for starters
 			//draw_drawables(buffer, tile_map[i][j]->contents);
 		}
@@ -164,6 +198,7 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
+			 
 			
 
 	}

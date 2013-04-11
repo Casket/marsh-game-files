@@ -2,11 +2,15 @@
 
 using namespace std;
 
+bool keyrel(int k);
+
 Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 :Combat(x, y, vel, vel_d, img)
 {
 	this->casting = false;
 	this->casting_timer = 0;
+	this->keyboard_counter = 0;
+	this->keyboard_delay = 4;
 	// TODO implement a constructor
 	}
 
@@ -61,10 +65,42 @@ void Player::listen_to_keyboard(void) {
 
 void Player::accept_interaction(void) {
 	// TODO implement this
-	if(key[KEY_Q]){
+	//if (this->keyboard_counter++ <= this->keyboard_delay)
+		//return;
+	this->keyboard_counter = 0;
+	if(keyrel(KEY_Q)){
 		this->get_image()->wearing_mask = !this->get_image()->wearing_mask;
-		clear_keybuf();
 	}
+}
+
+bool keyrel(int k)
+{
+    static bool initialized = false;
+    static bool keyp[KEY_MAX];
+ 
+    if(!initialized)
+    {
+        // Set the keyp (key pressed) flags to false
+        for(int i = 0; i < KEY_MAX; i++) keyp[i] = false;
+        initialized = true;
+    }
+ 
+    // Now for the checking
+    // Check if the key was pressed
+    if(key[k] && !keyp[k])
+    {
+        // Set the flag and return
+        keyp[k] = true;
+        return false;
+    }
+    else if(!key[k] && keyp[k])
+    {
+        // The key was released
+        keyp[k] = false;
+        return true;
+    }
+    // Nothing happened?
+    return false;
 }
 
 void Player::check_casting(void) {
@@ -102,7 +138,7 @@ void Player::check_casting(void) {
 void Player::accept_aiming(void) {
 	Direction old_dir = this->image->get_facing();
 	Direction new_dir = old_dir;
-	if (key[AIM_LEFT]) {
+	if (keyrel(AIM_LEFT)) {
 		switch(old_dir) {
 			case N:
 				new_dir = NW;
@@ -130,7 +166,7 @@ void Player::accept_aiming(void) {
 				break;
 		}
 	}
-	if (key[AIM_RIGHT]) {
+	if (keyrel(AIM_RIGHT)) {
 		switch(old_dir) {
 			case N:
 				new_dir = NE;
@@ -159,7 +195,7 @@ void Player::accept_aiming(void) {
 		}
 	}
 	// should rotate the player 180 degrees (turn around... bright eyes... everytime...)
-	if (key[AIM_UP] || key[AIM_DOWN]) {
+	if (keyrel(AIM_UP) || keyrel(AIM_DOWN)) {
 		switch(old_dir) {
 			case N:
 				new_dir = S;
@@ -189,6 +225,7 @@ void Player::accept_aiming(void) {
 	}
 	if (new_dir != old_dir)
 		this->image->set_facing(new_dir);
+	this->image->casting_update();
 }
 
 void Player::accept_movement(void) {

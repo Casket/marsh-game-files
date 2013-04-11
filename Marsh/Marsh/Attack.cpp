@@ -83,8 +83,8 @@ bool Attack::detect_collisions(void){
 
 		if (detect_hit(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height)){
-				//(*iter)->deal_with_attack(this);
-				start_death_sequence();
+				(*iter)->deal_with_attack(this);
+				//start_death_sequence();
 				return true;
 		}
 	}
@@ -127,6 +127,7 @@ bool Attack::detect_hit(int my_x, int my_y, int my_height, int my_width, int che
 }
 
 void Attack::start_death_sequence(void){
+	this->alive = false;
 	this->get_world()->remove_entity(this);
 	//delete this;
 }
@@ -139,7 +140,26 @@ Combat* Attack::get_my_caster(void){
 }
 
 void Attack::deal_with_attack(Attack* attack){
-
+	if (!this->alive || !attack->alive)
+		return;
+	// which attack should die?
+	if (this->tree_depth_level == attack->tree_depth_level){
+		// kill both dem
+		this->start_death_sequence();
+		attack->start_death_sequence();
+	} else if(this->tree_depth_level > attack->tree_depth_level){
+		// kill that attack
+		this->base_damage -= attack->base_damage;
+		if (this->base_damage <= 0)
+			this->start_death_sequence();
+		attack->start_death_sequence();
+	} else {
+		// i die yo
+		attack->base_damage -= this->base_damage;
+		if (attack->base_damage <= 0)
+			attack->start_death_sequence();
+		this->start_death_sequence();
+	}
 }
 
 int Attack::get_charge_time(void){

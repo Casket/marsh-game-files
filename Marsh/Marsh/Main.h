@@ -26,6 +26,4 @@ class Attack;
 
 using namespace std;
 
-
-
 #endif
