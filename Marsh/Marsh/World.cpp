@@ -172,14 +172,20 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	if(a == '0'){
 		sprite_x = find_x(b);
 		sprite_y = 0;
-
+		
 		strcpy_s(file, sizeof(char) * 100, "back_ground//general.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
-
+		
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
-
+		
+		if(sprite_x == 11){
+			Ground_Sprite* tile_sprite = new Ground_Sprite(file, 0,sprite_y);
+			this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
+			this->tile_map[pos_x][pos_y]->can_walk = false;
+			
+		}
 
 
 	}else if(a == '1'){
