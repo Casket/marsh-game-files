@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Portal.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Solid_Sprite.cpp"
 				>
 			</File>
@@ -264,6 +268,10 @@
 			</File>
 			<File
 				RelativePath=".\Player_Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Portal.h"
 				>
 			</File>
 			<File

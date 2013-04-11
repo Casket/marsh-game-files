@@ -19,7 +19,7 @@ using namespace std;
 #define SAVE_GAME 4
 #define LOAD_GAME 5
 
-Player* hero;
+Player* Player_Accessor::hero;
 
 volatile int ticks, framerate;
 volatile bool rested;
@@ -47,7 +47,7 @@ int mute = 0;
 
 int main(void)
 {
-    //initialize everything
+	//initialize everything
 	set_up_game();
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
@@ -56,17 +56,17 @@ int main(void)
 	else play_sample(theme,255,128,1000,1);
 
 	buffer = create_bitmap(SCREENW,SCREENH);
-	
+
 	while(game_state != FINISH_GAME) {
 		if (game_state == INTRO_GAME) show_intro();
 		if (game_state == SAVE_GAME) save_game();
 		if (game_state == LOAD_GAME) load_game();
 	}
-	
+
 	destroy_bitmap(buffer);
 	destroy_sample(theme);
 	allegro_exit();
-    return 0;
+	return 0;
 }
 END_OF_MAIN()
 
@@ -99,7 +99,7 @@ void set_up_game(void) {
 	srand(time(NULL));
 
 	LOCK_VARIABLE(framerate);
-    LOCK_VARIABLE(ticks);
+	LOCK_VARIABLE(ticks);
 	LOCK_VARIABLE(rested);
 	LOCK_FUNCTION(timer_frame_counter);
 	LOCK_FUNCTION(timer_game_rester);
@@ -120,13 +120,13 @@ void show_intro(void) {
 				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
 				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
 				case KEY_ENTER:
-				switch (menu_sel) {
-					case 0: game_state=IN_GAME; start_game(); break; // new game
-					case 1: game_state=LOAD_GAME; break; // load game
-					case 2: game_state=FINISH_GAME; break; // exit game 
-					case 3: game_state=SAVE_GAME; break; // save game
-					case 4: game_state=IN_GAME; goto exit_loop;
-				} break;
+					switch (menu_sel) {
+				case 0: game_state=IN_GAME; start_game(); break; // new game
+				case 1: game_state=LOAD_GAME; break; // load game
+				case 2: game_state=FINISH_GAME; break; // exit game 
+				case 3: game_state=SAVE_GAME; break; // save game
+				case 4: game_state=IN_GAME; goto exit_loop;
+					} break;
 				case KEY_M: {
 					if (mute==0) {
 						mute=1;
@@ -136,40 +136,40 @@ void show_intro(void) {
 						mute=0;
 						play_sample(theme,255,128,1000,1);
 					}
-				}
+							}
 			}
 			clear_keybuf();
 		}
 
 		// drawing
-        blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
+		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Marsh");
-        if (menu_sel == 0) { // new game
-                textprintf_ex(buffer, font1, 50,  130, makecol(0,255,255), -1, "New Game");
-        } else {
-                textprintf_ex(buffer, font1, 50,  130, makecol(255,255,255), -1, "NEW GAME");
-        }
-        if (menu_sel == 1) { // load game
-                textprintf_ex(buffer, font1, 50,  200, makecol(0,255,255), -1, "Load Game");
-        } else {
-                textprintf_ex(buffer, font1, 50,  200, makecol(255,255,255), -1, "LOAD GAME");
-        }
-        if (menu_sel == 2) { // exit game
-                textprintf_ex(buffer, font1, 50,  270, makecol(0,255,255), -1, "Exit Game");
-        } else {
-                textprintf_ex(buffer, font1, 50,  270, makecol(255,255,255), -1, "EXIT GAME");
-        } 
+		if (menu_sel == 0) { // new game
+			textprintf_ex(buffer, font1, 50,  130, makecol(0,255,255), -1, "New Game");
+		} else {
+			textprintf_ex(buffer, font1, 50,  130, makecol(255,255,255), -1, "NEW GAME");
+		}
+		if (menu_sel == 1) { // load game
+			textprintf_ex(buffer, font1, 50,  200, makecol(0,255,255), -1, "Load Game");
+		} else {
+			textprintf_ex(buffer, font1, 50,  200, makecol(255,255,255), -1, "LOAD GAME");
+		}
+		if (menu_sel == 2) { // exit game
+			textprintf_ex(buffer, font1, 50,  270, makecol(0,255,255), -1, "Exit Game");
+		} else {
+			textprintf_ex(buffer, font1, 50,  270, makecol(255,255,255), -1, "EXIT GAME");
+		} 
 		if (menu_sel == 3) { // back to game
-				textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
-        } else {
-                textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
-        } 
+			textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
+		} else {
+			textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
+		} 
 		if (game_state == IN_GAME) {
 			if (menu_sel == 4) {
-					textprintf_ex(buffer, font1, 50,  420, makecol(255,0,51), -1, "Return");
+				textprintf_ex(buffer, font1, 50,  420, makecol(255,0,51), -1, "Return");
 			} else {
-					textprintf_ex(buffer, font1, 50,  420, makecol(255,255,0), -1, "RETURN");
+				textprintf_ex(buffer, font1, 50,  420, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
 		if (mute==0) textprintf_ex(buffer, font, 370, 100, makecol(204,255,204), -1, "Sound On! (M to mute)");
@@ -178,7 +178,7 @@ void show_intro(void) {
 		// draw to screen
 		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
 	}
-	exit_loop: ;
+exit_loop: ;
 
 	destroy_bitmap(title_screen_bitmap);
 	return;
@@ -189,18 +189,18 @@ void start_game(void) {
 	game_state = IN_GAME;
 	Player_Sprite* img = new Player_Sprite("player//player_sheet.bmp", S, 5, 1, 16, 16);
 
-	hero = new Player(300, 400, 0, 0, img);
-	hero->set_boundary_value(28, 14, 0, 18);
-	
-	
+	Player_Accessor::create_player(300, 400, img, 28, 14, 0, 18);
+
+	Player*	hero = Player_Accessor::get_player();
+
 	View *our_viewer= create_view(hero);
 
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
-		
-		
+
+
 		if (!rested) {
 			rest(4);
 			continue;
