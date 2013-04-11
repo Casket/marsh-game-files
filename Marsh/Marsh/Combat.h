@@ -2,11 +2,11 @@
 #define COMBAT_H 1
 #define MAX_ATTACKS 10
 
-#define BASE_VIT 0
-#define BASE_INTEL 0
-#define BASE_FOCUS 0
-#define BASE_WILL 0
-#define BASE_ARMOR 0
+#define BASE_VIT 1
+#define BASE_INTEL 1
+#define BASE_FOCUS 1
+#define BASE_WILL 1
+#define BASE_ARMOR 1
 #define SKEW_FACTOR 2;
 
 #include "Main.h"

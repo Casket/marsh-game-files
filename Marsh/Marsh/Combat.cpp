@@ -163,7 +163,11 @@ void Combat::check_collisions(void){
 }
 
 void Combat::deal_with_attack(Attack* attack){
-	this->health -= attack->base_damage;
+
+	int armor = this->armor;
+	if(armor == 0)
+		armor = 1;
+	this->health -= (attack->base_damage*attack->get_my_caster()->intelligence)/armor;
 	if(this->health <= 0){
 		this->my_world->remove_entity(this);	
 	}
