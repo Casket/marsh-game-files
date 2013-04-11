@@ -72,6 +72,7 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(d7);
 
 	Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp"));
+	rambo_sheep->set_stats(103, 0, 0, 0, 0);
 	rambo_sheep->set_world(this->current_world);
 	this->current_world->insert_entity(rambo_sheep);
 	rambo_sheep->set_boundary_value(30, 30, 2, 2);

@@ -32,6 +32,7 @@ class Combat: public iDrawable{
 		virtual void update(void);
 		virtual void deal_with_attack(Attack* attack);
 		void set_my_type(EntityType);
+		void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
 
 	protected:
 		int calculate_health(int);

@@ -10,7 +10,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 0, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,100);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,100);
 	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
 	this->attack_loadout[1] = new Attack(800, 800, 10, 10, new Attack_Sprite("magic//fireball.bmp", W, 5, 1, 5, 5, 26, 26), 100, 0, 0, 3, 0, 100);
@@ -24,6 +24,16 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 Combat::~Combat(void) {
 	if(casted_spell != NULL)
 		delete casted_spell;
+}
+
+void Combat::set_stats(int vitality, int intelligence, int focus, int willpower, int armor) {
+	this->vitality = vitality;
+	this->intelligence = intelligence;
+	this->focus = focus;
+	this->willpower = willpower;
+	this->armor = armor;
+	this->health = calculate_health(this->vitality);
+	this->mana = calculate_mana(this->willpower);
 }
 
 void Combat::set_my_type(EntityType e) {
@@ -153,5 +163,9 @@ void Combat::check_collisions(void){
 }
 
 void Combat::deal_with_attack(Attack* attack){
-
+	this->health -= attack->base_damage;
+	if(this->health <= 0){
+		this->my_world->remove_entity(this);	
+	}
+	attack->start_death_sequence();
 }
