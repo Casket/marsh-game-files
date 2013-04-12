@@ -72,7 +72,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("friday_map.txt");
+	v->load_world("Resources//friday_map.txt");
 	return v;
 }
 
@@ -187,7 +187,7 @@ exit_loop: ;
 void start_game(void) {
 
 	game_state = IN_GAME;
-	Player_Sprite* img = new Player_Sprite("player//player_sheet.bmp", S, 5, 1, 16, 16);
+	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 1, 16, 16);
 
 	Player_Accessor::create_player(300, 400, img, 28, 14, 0, 18);
 

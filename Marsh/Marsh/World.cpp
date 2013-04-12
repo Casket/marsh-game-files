@@ -17,7 +17,7 @@ World::World(int tiles_w, int tiles_h){
 		map[i] = (Tile**)malloc(sizeof(Tile*)*tiles_w);
 	}
 
-	Ground_Sprite* sprite = new Ground_Sprite("back_ground//general.bmp", 0, 0);
+	Ground_Sprite* sprite = new Ground_Sprite("Resources//back_ground//general.bmp", 0, 0);
 
 	for (int i=0; i < tiles_h; i++){
 		for (int j=0; j < tiles_w; j++){
@@ -173,7 +173,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_x = find_x(b);
 		sprite_y = 0;
 
-		strcpy_s(file, sizeof(char) * 100, "back_ground//general.bmp");
+		strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//general.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -195,7 +195,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			sprite_x = find_x(b);
 			sprite_y = 0;
 
-			strcpy_s(file, sizeof(char) * 100, "back_ground//water.bmp");
+			strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//water.bmp");
 
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -207,7 +207,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			sprite_x = find_x(b);
 			sprite_y = 0;
 
-			strcpy_s(file, sizeof(char) * 100, "back_ground//water_marsh.bmp");
+			strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//water_marsh.bmp");
 
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -218,7 +218,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			sprite_x = find_x(b);
 			sprite_y = 0;
 
-			strcpy_s(file, sizeof(char) * 100, "back_ground//dirt.bmp");
+			strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//dirt.bmp");
 
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -231,7 +231,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			sprite_x = find_x(b);
 			sprite_y = 0;
 
-			strcpy_s(file, sizeof(char) * 100, "back_ground//cobblestones.bmp");
+			strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//cobblestones.bmp");
 
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -244,7 +244,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			sprite_x = find_x(b);
 			sprite_y = 0;
 
-			strcpy_s(file, sizeof(char) * 100, "back_ground//walls.bmp");
+			strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//walls.bmp");
 
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -258,7 +258,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			sprite_y = 0;
 
 
-			strcpy_s(file, sizeof(char) * 100, "back_ground//cobblestones.bmp");
+			strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//cobblestones.bmp");
 
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
