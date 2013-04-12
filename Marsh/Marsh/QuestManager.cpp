@@ -42,13 +42,27 @@ void QuestManager::received_item(int id){
 		if (flag)
 			this->tracking_items->erase(it);
 	}
-
-
-
 }
 void QuestManager::killed_entity(EntityType et){
 
 }
 void QuestManager::interacted_with(EntityType et){
 
+}
+
+void QuestManager::flush_queues(void){
+	while(!this->item_queue->empty()){
+		this->tracking_items->insert(this->item_queue->front());
+		this->item_queue->pop();
+	}
+
+	while(!this->interaction_queue->empty()){
+		this->tracking_interaction->insert(this->interaction_queue->front());
+		this->interaction_queue->pop();
+	}
+
+	while(!this->kill_queue->empty()){
+		this->tracking_kills->insert(this->kill_queue->front());
+		this->kill_queue->pop();
+	}
 }

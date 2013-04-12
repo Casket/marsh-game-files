@@ -8,5 +8,7 @@ Marsh/*
 !.gitignore
 !*.cpp
 !*.h
+!Marsh/Marsh/*.cpp
+!Marsh/Marsh/*.h
 !Marsh/Resources/
 !Marsh/Marsh.vcproj

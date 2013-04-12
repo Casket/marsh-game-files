@@ -31,6 +31,9 @@ public:
 	void received_item(int);
 	void killed_entity(EntityType);
 	void interacted_with(EntityType);
+
+private:
+	void flush_queues(void);
 };
 
 #endif
