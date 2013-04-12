@@ -4,7 +4,7 @@ using namespace std;
 
 Quest::Quest(QuestDescription desc, IQuestObjective obj){
 	this->description = desc;
-	this->objectives = new std::vector<IQuestObjective>();
+	this->objectives = new std::list<IQuestObjective>();
 	this->objectives->push_back(obj);
 	this->rewards = new std::list<QuestReward>();
 	this->current_objective = 0;
@@ -33,5 +33,12 @@ void Quest::end_quest(void){
 }
 
 bool Quest::mark_progress(void){
-	return true;
+	IQuestObjective obj = this->objectives->front();
+	bool flag = obj.mark_progress();
+	if (flag){
+		this->objectives->pop_front();
+		this->objectives->front().register_objective();
+	}
+
+	return flag;
 }

@@ -12,24 +12,24 @@ QuestManager::~QuestManager(void){
 
 }
 
-void QuestManager::register_tracking_kill(EntityType, Quest*){
+void QuestManager::register_tracking_kill(EntityType et, Quest* q){
 
 }
 
-void QuestManager::register_tracking_interaction(EntityType, Quest*){
+void QuestManager::register_tracking_interaction(EntityType et, Quest* q){
 
 }
 
-void QuestManager::register_tracking_items(int, Quest*){
+void QuestManager::register_tracking_items(int id, Quest* q){
 
 }
 
-void QuestManager::received_item(int){
+void QuestManager::received_item(int id){
 
 }
-void QuestManager::killed_entity(EntityType){
+void QuestManager::killed_entity(EntityType et){
 
 }
-void QuestManager::interacted_with(EntityType){
+void QuestManager::interacted_with(EntityType et){
 
 }
