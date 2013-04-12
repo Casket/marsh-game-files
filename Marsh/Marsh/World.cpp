@@ -395,6 +395,7 @@ void World::remove_destroyed(void){
 	std::list<iDrawable*>::iterator end = this->removal_queue->end();
 	for (iter = this->removal_queue->begin(); iter != end; ++iter){
 		this->active_entities->remove((*iter));
+		delete (*iter);
 	}
 	this->removal_queue->clear();
 }

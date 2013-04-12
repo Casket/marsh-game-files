@@ -37,6 +37,8 @@
 #include "Drawable.h"
 #include "Combat.h"
 
+class QuestManager;
+
 using namespace std;
 
 
@@ -44,6 +46,7 @@ enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book,
 
 typedef struct Equipment{
 	char* name;
+	int item_id;
 	int vitality, focus, intelligence, willpower;
 	bool equipped;
 	bool equipable;
@@ -54,6 +57,7 @@ typedef struct Equipment{
 
 class Player: public Combat{
 	Equipment* inventory[MAX_HELD_ITEMS];
+	QuestManager* quest_manager;
 	int level, current_experience;
 	int keyboard_counter;
 	int keyboard_delay;
