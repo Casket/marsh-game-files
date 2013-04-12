@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Guard.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\iDrawable.cpp"
 				>
 			</File>
@@ -272,6 +276,10 @@
 			</File>
 			<File
 				RelativePath=".\Ground_Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Guard.h"
 				>
 			</File>
 			<File

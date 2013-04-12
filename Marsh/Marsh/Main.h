@@ -19,6 +19,7 @@ class Attack;
 #include "Attack.h"
 #include "Combat.h"
 #include "Player.h"
+#include "Guard.h"
 #include "Player_Sprite.h"
 #include "World.h"
 #include "View.h"
@@ -28,6 +29,8 @@ class Attack;
 #include "RetrieveObjective.h"
 #include "KillObjective.h"
 #include "Quest.h"
+
+
 
 using namespace std;
 

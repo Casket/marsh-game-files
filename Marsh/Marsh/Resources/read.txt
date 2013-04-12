@@ -1,1 +1,0 @@
-I added this directory to put game resources in, feel free to use it for graphics/sounds/stuffs or not.  But I'm OCD about organizing folders so I might be angry if you make our file system messy.... just sayin'.
