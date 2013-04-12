@@ -184,13 +184,14 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			Ground_Sprite* tile_sprite = new Ground_Sprite(file, 0,sprite_y);
 			this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 			this->tile_map[pos_x][pos_y]->can_walk = false;
-
+		}
 			if(sprite_x == 5 || sprite_x == 9){
 
 				this->tile_map[pos_x][pos_y]->can_walk = false;
 			}
 
 
+			
 		}else if(a == '1'){
 			sprite_x = find_x(b);
 			sprite_y = 0;
@@ -269,7 +270,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		}
 		free(file);
 	}
-}
+
 //creates a drawable object from the code given 
 Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int size_y){
 	return NULL;
