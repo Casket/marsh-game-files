@@ -2,6 +2,7 @@
 #define QUEST_MANAGER_H 1
 #include "Main.h"
 #include <map>
+#include <queue>
 
 class Quest;
 
@@ -12,6 +13,12 @@ protected:
 	std::multimap<EntityType, Quest*>* tracking_kills;
 	std::multimap<EntityType, Quest*>* tracking_interaction;
 	std::multimap<int, Quest*>* tracking_items;
+
+	std::queue<std::pair<EntityType, Quest*>>* kill_queue;
+	std::queue<std::pair<EntityType, Quest*>>* interaction_queue;
+	std::queue<std::pair<int, Quest*>>* item_queue;
+
+	
 
 public:
 	QuestManager(void);
