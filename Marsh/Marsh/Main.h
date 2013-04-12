@@ -27,6 +27,7 @@ class Attack;
 #include "IQuestObjective.h"
 #include "RetrieveObjective.h"
 #include "KillObjective.h"
+#include "Quest.h"
 
 using namespace std;
 
