@@ -82,6 +82,11 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(att);
 	att->set_world(this->current_world);*/
 
+	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), main_world);
+	port->set_boundary_value(100, 100, 0, 0);
+	port->set_world(this->current_world);
+	this->current_world->insert_entity(port);
+
 }
 
 void View::put_world_in_loaded(World* world){

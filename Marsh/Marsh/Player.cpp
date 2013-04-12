@@ -11,6 +11,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->casting_timer = 0;
 	this->keyboard_counter = 0;
 	this->keyboard_delay = 4;
+	this->quest_manager = new QuestManager();
 	// TODO implement a constructor
 	}
 

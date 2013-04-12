@@ -193,6 +193,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IQuestObjective.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\KillObjective.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -206,6 +214,18 @@
 			</File>
 			<File
 				RelativePath=".\Portal.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Quest.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\QuestManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RetrieveObjective.cpp"
 				>
 			</File>
 			<File
@@ -259,6 +279,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IQuestObjective.h"
+				>
+			</File>
+			<File
+				RelativePath=".\KillObjective.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.h"
 				>
 			</File>
@@ -272,6 +300,18 @@
 			</File>
 			<File
 				RelativePath=".\Portal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Quest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\QuestManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RetrieveObjective.h"
 				>
 			</File>
 			<File

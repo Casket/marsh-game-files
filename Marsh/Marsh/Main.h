@@ -23,6 +23,10 @@ class Attack;
 #include "World.h"
 #include "View.h"
 #include "Portal.h"
+#include "QuestManager.h"
+#include "IQuestObjective.h"
+#include "RetrieveObjective.h"
+#include "KillObjective.h"
 
 using namespace std;
 
