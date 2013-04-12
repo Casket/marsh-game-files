@@ -4,7 +4,6 @@
 #define INITIAL_OBJECTIVE_COUNT 2
 
 #include "Main.h"
-#include <vector>
 using namespace std;
 
 typedef struct QuestReward{
@@ -18,7 +17,7 @@ typedef struct QuestDescription{
 class Quest{
 public:
 	std::list<QuestReward>* rewards;
-	std::vector<IQuestObjective>* objectives;
+	std::list<IQuestObjective>* objectives;
 	QuestDescription description;
 	int current_objective;
 	int total_objectives;

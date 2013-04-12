@@ -8,6 +8,7 @@ class IQuestObjective{
 public:
 	IQuestObjective(void);
 	~IQuestObjective(void);
+	virtual void register_objective(void);
 	virtual bool mark_progress(void);
 	virtual bool complete(void);
 

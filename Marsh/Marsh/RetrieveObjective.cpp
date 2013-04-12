@@ -23,3 +23,7 @@ bool RetrieveObjective::mark_progress(void){
 bool RetrieveObjective::complete(void){
 	return this->number_has == this->number_needed;
 }
+
+void RetrieveObjective::register_objective(void){
+
+}

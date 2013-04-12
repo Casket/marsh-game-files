@@ -12,6 +12,7 @@ public:
 
 	KillObjective(EntityType enemy, int total);
 	~KillObjective(void);
+	virtual void register_objective(void);
 	virtual bool mark_progress(void);
 	virtual bool complete(void);
 

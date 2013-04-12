@@ -24,3 +24,7 @@ bool KillObjective::mark_progress(void){
 bool KillObjective::complete(void){
 	return this->current_kill_count == this->needed_kill_count;
 }
+
+void KillObjective::register_objective(void){
+
+}
