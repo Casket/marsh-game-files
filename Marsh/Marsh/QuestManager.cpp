@@ -17,7 +17,12 @@ QuestManager::QuestManager(void){
 }
 
 QuestManager::~QuestManager(void){
-
+	delete this->tracking_interaction;
+	delete this->tracking_items;
+	delete this->tracking_kills;
+	delete this->item_queue;
+	delete this->kill_queue;
+	delete this->interaction_queue;
 }
 
 void QuestManager::register_tracking_kill(EntityType et, Quest* q){
@@ -42,12 +47,36 @@ void QuestManager::received_item(int id){
 		if (flag)
 			this->tracking_items->erase(it);
 	}
+
+	this->flush_queues();
 }
+
 void QuestManager::killed_entity(EntityType et){
+	std::pair<std::multimap<EntityType, Quest*>::iterator, std::multimap<EntityType, Quest*>::iterator> range;
+	range = this->tracking_kills->equal_range(et);
 
+	for (std::multimap<EntityType, Quest*>::iterator it=range.first; it!=range.second; ++it){
+		Quest* interested_quest = it->second;
+		bool flag = interested_quest->mark_progress();
+		if (flag)
+			this->tracking_kills->erase(it);
+	}
+
+	this->flush_queues();
 }
-void QuestManager::interacted_with(EntityType et){
 
+void QuestManager::interacted_with(EntityType et){
+	std::pair<std::multimap<EntityType, Quest*>::iterator, std::multimap<EntityType, Quest*>::iterator> range;
+	range = this->tracking_interaction->equal_range(et);
+
+	for (std::multimap<EntityType, Quest*>::iterator it=range.first; it!=range.second; ++it){
+		Quest* interested_quest = it->second;
+		bool flag = interested_quest->mark_progress();
+		if (flag)
+			this->tracking_interaction->erase(it);
+	}
+
+	this->flush_queues();
 }
 
 void QuestManager::flush_queues(void){

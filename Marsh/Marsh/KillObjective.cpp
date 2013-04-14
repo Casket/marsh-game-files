@@ -25,6 +25,6 @@ bool KillObjective::complete(void){
 	return this->current_kill_count == this->needed_kill_count;
 }
 
-void KillObjective::register_objective(void){
+void KillObjective::register_objective(Quest*){
 
 }

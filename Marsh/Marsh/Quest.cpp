@@ -12,7 +12,7 @@ Quest::Quest(QuestDescription desc, IQuestObjective obj){
 }
 
 Quest::~Quest(void){
-
+	delete this->objectives;
 }
 
 void Quest::add_reward(QuestReward reward){
@@ -37,7 +37,10 @@ bool Quest::mark_progress(void){
 	bool flag = obj.mark_progress();
 	if (flag){
 		this->objectives->pop_front();
-		this->objectives->front().register_objective();
+		if (this->objectives->empty()){
+			// quest is over, reward the player
+		} else
+			this->objectives->front().register_objective(this);
 	}
 
 	return flag;

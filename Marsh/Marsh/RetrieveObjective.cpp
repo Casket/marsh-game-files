@@ -24,6 +24,9 @@ bool RetrieveObjective::complete(void){
 	return this->number_has == this->number_needed;
 }
 
-void RetrieveObjective::register_objective(void){
-
+void RetrieveObjective::register_objective(Quest* quest){
+	Player* target = Player_Accessor::hero;
+	QuestManager* qm = target->quest_manager;
+	qm->register_tracking_items(this->desired_item_id, quest);
+	
 }
