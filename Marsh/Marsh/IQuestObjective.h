@@ -2,6 +2,7 @@
 #define IQUESTOBJECTIVE_H 1
 
 #include "Main.h"
+class Quest;
 using namespace std;
 
 class IQuestObjective{
