@@ -25,6 +25,8 @@ bool KillObjective::complete(void){
 	return this->current_kill_count == this->needed_kill_count;
 }
 
-void KillObjective::register_objective(Quest*){
-
+void KillObjective::register_objective(Quest* quest){
+	Player* target = Player_Accessor::hero;
+	QuestManager* qm = target->quest_manager;
+	qm->register_tracking_kill(this->desired_enemy, quest);
 }
