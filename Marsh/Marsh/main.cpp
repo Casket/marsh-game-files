@@ -18,6 +18,7 @@ using namespace std;
 #define FINISH_GAME 3
 #define SAVE_GAME 4
 #define LOAD_GAME 5
+#define INVENTORY_GAME 6
 
 Player* Player_Accessor::hero;
 
@@ -34,6 +35,8 @@ void end_game(void);
 void show_intro(void);
 void save_game(void);
 void load_game(void);
+void show_inv(void);
+void show_screen(int);
 World* generate_world(void); // TODO add world identifying thingymahinger
 View* create_view(Player*);
 
@@ -61,6 +64,7 @@ int main(void)
 		if (game_state == INTRO_GAME) show_intro();
 		if (game_state == SAVE_GAME) save_game();
 		if (game_state == LOAD_GAME) load_game();
+		if (game_state == INVENTORY_GAME) show_inv();
 	}
 
 	destroy_bitmap(buffer);
@@ -199,6 +203,9 @@ void start_game(void) {
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
+		if (key[KEY_I]) {
+			show_inv();
+		}
 
 
 		if (!rested) {
@@ -232,5 +239,116 @@ void load_game(void) {
 
 void save_game(void) {
 	//todo
+	return;
+}
+
+void show_inv(void) { // show inventory items in a list as well as quanitty (click each item to view what they do)
+	BITMAP *inv_screen_bitmap = create_bitmap(SCREENW/1.5,SCREENH/1.5);
+	Player* hero = Player_Accessor::get_player();
+	int menu_sel = 0;
+	Equipment** inventory = hero->get_inventory();
+	int max_sel = 11;
+
+	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
+		if (keypressed()) {
+			int k = readkey();
+			switch(k >> 8) {
+				case KEY_ESC: break;
+				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
+				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
+				case KEY_ENTER:
+					switch (menu_sel) {
+				case 0: show_screen(inventory[0]->item_id); break; 
+				case 1: show_screen(inventory[1]->item_id); break; 
+				case 2: show_screen(inventory[2]->item_id); break; 
+				case 3: show_screen(inventory[3]->item_id); break; 
+				case 4: show_screen(inventory[4]->item_id); break; 
+				case 5: show_screen(inventory[5]->item_id); break;
+				case 6: show_screen(inventory[6]->item_id); break;
+				case 7: show_screen(inventory[7]->item_id); break;
+				case 8: show_screen(inventory[8]->item_id); break;
+				case 9: show_screen(inventory[9]->item_id); break;
+				case 10: show_screen(inventory[10]->item_id); break;
+				case 11: game_state=IN_GAME; goto exit_loop;
+					} break;
+			}
+			clear_keybuf();
+		}
+
+		// drawing
+		blit(inv_screen_bitmap, buffer, SCREENW/3, SCREENW/3, 0, 0, SCREENW/1.5, SCREENH/1.5);
+
+		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Inventory");
+		if (menu_sel == 0) { 
+			textprintf_ex(buffer, font, 50,  100, makecol(0,255,255), -1, "(%d) %s", inventory[0]->number_held, inventory[0]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  100, makecol(255,255,255), -1, "(%d) %s", inventory[0]->number_held, inventory[0]->name);
+		}
+		if (menu_sel == 1) {
+			textprintf_ex(buffer, font, 50,  150, makecol(0,255,255), -1, "(%d) %s", inventory[1]->number_held, inventory[1]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  150, makecol(255,255,255), -1, "(%d) %s", inventory[1]->number_held, inventory[1]->name);
+		}
+		if (menu_sel == 2) { 
+			textprintf_ex(buffer, font, 50,  200, makecol(0,255,255), -1, "(%d) %s", inventory[2]->number_held, inventory[2]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  200, makecol(255,255,255), -1, "(%d) %s", inventory[2]->number_held, inventory[2]->name);
+		} 
+		if (menu_sel == 3) { 
+			textprintf_ex(buffer, font, 50,  250, makecol(0,255,255), -1, "(%d) %s", inventory[3]->number_held, inventory[3]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  250, makecol(255,255,255), -1, "(%d) %s", inventory[3]->number_held, inventory[3]->name);
+		} 
+		if (menu_sel == 4) { 
+			textprintf_ex(buffer, font, 50,  300, makecol(0,255,255), -1, "(%d) %s", inventory[4]->number_held, inventory[4]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  300, makecol(255,255,255), -1, "(%d) %s", inventory[4]->number_held, inventory[4]->name);
+		} 
+		if (menu_sel == 5) { 
+			textprintf_ex(buffer, font, 50,  350, makecol(0,255,255), -1, "(%d) %s", inventory[5]->number_held, inventory[5]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  350, makecol(255,255,255), -1, "(%d) %s", inventory[5]->number_held, inventory[5]->name);
+		} 
+		if (menu_sel == 6) { 
+			textprintf_ex(buffer, font, 50,  400, makecol(0,255,255), -1, "(%d) %s", inventory[6]->number_held, inventory[6]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  400, makecol(255,255,255), -1, "(%d) %s", inventory[6]->number_held, inventory[6]->name);
+		} 
+		if (menu_sel == 7) { 
+			textprintf_ex(buffer, font, 50,  450, makecol(0,255,255), -1, "(%d) %s", inventory[7]->number_held, inventory[7]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  450, makecol(255,255,255), -1, "(%d) %s", inventory[7]->number_held, inventory[7]->name);
+		} 
+		if (menu_sel == 8) { 
+			textprintf_ex(buffer, font, 50,  500, makecol(0,255,255), -1, "(%d) %s", inventory[8]->number_held, inventory[8]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  500, makecol(255,255,255), -1, "(%d) %s", inventory[8]->number_held, inventory[8]->name);
+		} 
+		if (menu_sel == 9) { 
+			textprintf_ex(buffer, font, 50,  550, makecol(0,255,255), -1, "(%d) %s", inventory[9]->number_held, inventory[9]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  550, makecol(255,255,255), -1, "(%d) %s", inventory[9]->number_held, inventory[9]->name);
+		} 
+		if (menu_sel == 10) { 
+			textprintf_ex(buffer, font, 50,  600, makecol(0,255,255), -1, "(%d) %s", inventory[10]->number_held, inventory[10]->name);
+		} else {
+			textprintf_ex(buffer, font, 50,  600, makecol(255,255,255), -1, "(%d) %s", inventory[10]->number_held, inventory[10]->name);
+		} 
+		if (menu_sel == 11) {
+			textprintf_ex(buffer, font1, 50,  700, makecol(255,0,51), -1, "Return");
+		} else {
+			textprintf_ex(buffer, font1, 50,  700, makecol(255,255,0), -1, "RETURN");
+		} 
+
+		// draw to screen
+		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
+	}
+	exit_loop: ;
+
+	destroy_bitmap(inv_screen_bitmap);
+	return;
+}
+
+void show_screen(int inv_id) {
 	return;
 }
