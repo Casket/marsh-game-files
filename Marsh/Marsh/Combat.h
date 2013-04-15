@@ -15,6 +15,10 @@ using namespace std;
 enum EntityType {Guard, Monster, Outcast, Hero, Rival};
 
 class Combat: public iDrawable{
+	public:
+		bool player_credit;
+		int experience_worth;
+
 	protected:
 		Attack* attack_loadout[MAX_ATTACKS];
 		EntityType my_type;
@@ -33,6 +37,7 @@ class Combat: public iDrawable{
 		virtual void deal_with_attack(Attack* attack);
 		void set_my_type(EntityType);
 		void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
+		EntityType Combat::get_my_type(void);
 
 	protected:
 		int calculate_health(int);

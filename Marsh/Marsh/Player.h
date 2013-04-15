@@ -62,6 +62,7 @@ class Player: public Combat{
 	int keyboard_delay;
 
 	public:
+		int experience;
 		QuestManager* quest_manager;
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
@@ -69,6 +70,7 @@ class Player: public Combat{
 		Equipment** get_inventory(void);
 		bool add_to_inventory(Equipment*);
 		virtual void deal_with_attack(Attack* attack);
+		void credit_death(Combat*);
 
 	
 	private:

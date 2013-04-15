@@ -12,6 +12,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->keyboard_counter = 0;
 	this->keyboard_delay = 4;
 	this->quest_manager = new QuestManager();
+	this->experience = 0;
 	// TODO implement a constructor
 	}
 
@@ -50,6 +51,13 @@ void Player::update(void) {
 
 }
 
+void Player::credit_death(Combat* enemy){
+	this->quest_manager->killed_entity(enemy->get_my_type());
+	if(enemy->player_credit){
+		this->experience += enemy->experience_worth;
+	}
+	this->my_world->removal_queue->push_back(enemy);	
+}
 
 
 void Player::listen_to_keyboard(void) {
