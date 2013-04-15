@@ -39,7 +39,22 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 
-		Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	QuestReward r;
+	r.gold = 1;
+	 
+	QuestDescription des;
+	des.text = (char*)malloc(sizeof(char)*10);
+	
+	KillObjective* objective;
+	objective = new KillObjective(EntityType::Monster, 2);
+
+	Quest* quest = new Quest(des, objective);
+	quest->add_reward(r);
+
+	objective->register_objective(quest);
+	this->playa->quest_manager->flush_queues();
+
+	Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
 
@@ -72,6 +87,7 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(d7);
 
 	Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp"));
+	rambo_sheep->set_my_type(EntityType::Monster);
 	rambo_sheep->set_stats(103, 0, 0, 0, 0);
 	rambo_sheep->set_world(this->current_world);
 	this->current_world->insert_entity(rambo_sheep);
