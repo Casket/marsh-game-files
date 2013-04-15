@@ -14,6 +14,8 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->quest_manager = new QuestManager();
 	this->experience = 0;
 	// TODO implement a constructor
+	this->inventory = (Equipment**)malloc(sizeof(Equipment*)*MAX_HELD_ITEMS);
+	this->set_new_inventory();
 	}
 
 Player::~Player(void){
@@ -26,13 +28,19 @@ Equipment** Player::get_inventory(void) {
 
 bool Player::add_to_inventory(Equipment* e) {
 	for (int i=0; i < MAX_HELD_ITEMS; i++) {
-		if (this->inventory[i] != NULL){
+		if (this->inventory[i] == NULL){
 			this->inventory[i] = e;
 			return true;
 		}
 	}
 	// inventory is full, so it wasn't added
 	return false;
+}
+
+void Player::set_new_inventory(void) {
+	for (int i=0; i<MAX_HELD_ITEMS; i++) {
+		this->inventory[i] = NULL;
+	}
 }
 
 void Player::deal_with_attack(Attack* attack){

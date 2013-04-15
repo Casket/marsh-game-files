@@ -2,7 +2,7 @@
 #define PLAYER_H 1
 
 #define EXPERIENCE_MULTIPLIER 1.5
-#define MAX_HELD_ITEMS 10
+#define MAX_HELD_ITEMS 11
 #define BASE_EXPERIENCE_TO_LEVEL 100 // TODO fine tune the game
 #define MAX_ITEM_STACK_SIZE 20
 
@@ -46,6 +46,7 @@ enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book,
 
 typedef struct Equipment{
 	char* name;
+	char* description;
 	int item_id;
 	int vitality, focus, intelligence, willpower;
 	bool equipped;
@@ -56,7 +57,7 @@ typedef struct Equipment{
 }Equipment;
 
 class Player: public Combat{
-	Equipment* inventory[MAX_HELD_ITEMS];	
+	Equipment** inventory;	
 	int level, current_experience;
 	int keyboard_counter;
 	int keyboard_delay;
@@ -68,7 +69,7 @@ class Player: public Combat{
 		~Player(void);
 		virtual void update(void);
 		Equipment** get_inventory(void);
-		bool add_to_inventory(Equipment*);
+		bool add_to_inventory(Equipment* equip);
 		virtual void deal_with_attack(Attack* attack);
 		void credit_death(Combat*);
 
@@ -80,7 +81,7 @@ class Player: public Combat{
 		void accept_movement(void);
 		void check_casting(void);
 		void accept_interaction(void);
-
+		void set_new_inventory(void);
 
 };
 
