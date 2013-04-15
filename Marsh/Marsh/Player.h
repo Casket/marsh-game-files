@@ -2,7 +2,7 @@
 #define PLAYER_H 1
 
 #define EXPERIENCE_MULTIPLIER 1.5
-#define MAX_HELD_ITEMS 50
+#define MAX_HELD_ITEMS 10
 #define BASE_EXPERIENCE_TO_LEVEL 100 // TODO fine tune the game
 #define MAX_ITEM_STACK_SIZE 20
 
