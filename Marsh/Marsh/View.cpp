@@ -3,6 +3,7 @@
 using namespace std;
 
 int pick_cast_color(Attack* attack);
+std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len);
 
 View::View(Player* hero){
 	this->playa = hero;
@@ -18,7 +19,8 @@ View::View(Player* hero){
 		HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	this->resource_bars[1] = create_sub_bitmap(this->ui_image, CAST_BAR_X_POS, 
 		CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
-	this->console = create_sub_bitmap(this->ui_image, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
+	this->clear_console = create_sub_bitmap(this->ui_image, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
+	this->in_use_console = create_bitmap(CONSOLE_WIDTH, CONSOLE_HEIGHT);
 
 }
 
@@ -158,8 +160,10 @@ void View::draw_active_world(void){
 }
 
 void View::draw_to_screen(void){
+	acquire_screen();
 	blit(this->world_buffer, screen, 0,0,0,0, VISIBLE_W, VISIBLE_H);
 	blit(this->ui_buffer, screen, 0, 0, 0, SCREEN_H - UI_HEIGHT, UI_WIDTH, UI_HEIGHT);
+	release_screen();
 }
 
 void draw_status(Player* hero, BITMAP* buffer){
@@ -191,17 +195,63 @@ void draw_dialogs(BITMAP* buffer){
 
 }
 
+void View::print_to_console(std::string str){
+	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, 
+		this->clear_console->w, this->clear_console->h);
+
+	int max_line_len = 35;
+	int line_height = 10;
+	int x = 17;
+	int y = 18;
+	int len = str.length();
+	int i = 0;
+	while (i < len){
+		std::pair<int, std::string> cur_line = substr_word_boundaries(str, i, max_line_len);
+		textprintf_ex(this->in_use_console,font,x,y,
+			makecol(255,255,255),-1,cur_line.second.c_str());
+		i = cur_line.first;
+		y += line_height;
+		if (y > CONSOLE_HEIGHT - line_height)
+			break; // bad news, it won't all fit... you suck
+	}
+}
+
+std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len){
+	int len = str.length();
+	bool saw_space = false;
+	int last_word_ending_pos = pos;
+
+	int i=0;
+	while (i < max_len){
+		if (i > len)
+			break;
+		if ((str.at(pos+i) == ' ')  && !saw_space){
+			last_word_ending_pos = pos+i;
+			saw_space = true;
+		} else if (str.at(pos+i) != ' ')
+			saw_space = false;
+		i++;
+	}
+
+	// should now have a pos to stop the substring
+	int sub_len = last_word_ending_pos - pos;
+	std::string ret_str = str.substr(pos, sub_len);
+
+	// now get a forward index, skipping spaces
+	while (str.at(last_word_ending_pos) == ' ')
+		last_word_ending_pos++;
+
+	return std::pair<int, std::string>(last_word_ending_pos, ret_str);
+}
+
 void View::draw_interface(Player* hero){
 	blit(this->resource_bars[0], this->ui_buffer, 0, 0, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	blit(this->resource_bars[0], this->ui_buffer, 0, 0, MANA_BAR_X_POS, MANA_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	blit(this->resource_bars[1], this->ui_buffer, 0, 0, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
 	draw_status(hero, this->ui_buffer);
 	//draw_dialogs(this->buffer);
-
-
+	blit(this->in_use_console, this->ui_buffer, 0, 0, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 }
-
-
 
 void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){
 	int left_x = this->playa->get_x_pos() - buffer->w/2;

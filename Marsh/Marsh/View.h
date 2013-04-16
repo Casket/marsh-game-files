@@ -36,7 +36,8 @@ class View{
 		BITMAP* ui_buffer;
 		BITMAP* resource_bars[2];
 		BITMAP* spell_slot;
-		BITMAP* console;
+		BITMAP* clear_console;
+		BITMAP* in_use_console;
 		Player* playa;
 		World* current_world;
 		World* loaded_worlds[MAX_NUMBER_WORLDS];
@@ -55,6 +56,7 @@ class View{
 		void draw_sprites(BITMAP*, Tile***, int, int);
 		void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
 		void draw_to_screen(void);
+		void print_to_console(std::string str);
 };
 
 #endif
