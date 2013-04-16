@@ -12,10 +12,15 @@ using namespace std;
 
 class View{
 	public:
-		BITMAP* buffer;
+		BITMAP* world_buffer;
+		BITMAP* ui_buffer;
+		BITMAP* resource_bars[2];
+		BITMAP* spell_slot;
+		BITMAP* console;
 		Player* playa;
 		World* current_world;
 		World* loaded_worlds[MAX_NUMBER_WORLDS];
+		BITMAP* ui_image;
 
 
 		View(Player* hero);

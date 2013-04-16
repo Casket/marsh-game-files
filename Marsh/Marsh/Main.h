@@ -30,7 +30,24 @@ class Attack;
 #include "KillObjective.h"
 #include "Quest.h"
 
-
+#define VISIBLE_W 1400
+#define VISIBLE_H 770
+#define UI_WIDTH 1400
+#define UI_HEIGHT 230
+#define MANA_BAR_X_POS 828
+#define MANA_BAR_Y_POS 43
+#define HEALTH_BAR_X_POS 1093
+#define HEALTH_BAR_Y_POS 43
+#define RESOURCE_BAR_WIDTH 258
+#define RESOURCE_BAR_HEIGHT 33
+#define CAST_BAR_X_POS 590
+#define CAST_BAR_Y_POS 40
+#define CAST_BAR_WIDTH 220
+#define CAST_BAR_HEIGHT 80
+#define CONSOLE_X_POS 43
+#define CONSOLE_Y_POS 42
+#define CONSOLE_WIDTH 312
+#define CONSOLE_HEIGHT 155
 
 using namespace std;
 

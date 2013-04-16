@@ -4,11 +4,20 @@ using namespace std;
 
 View::View(Player* hero){
 	this->playa = hero;
-	this->buffer = create_bitmap(SCREEN_W + PAD, SCREEN_H + PAD);
-	clear_bitmap(this->buffer);
+	this->world_buffer = create_bitmap(VISIBLE_W, VISIBLE_H);
+	clear_bitmap(this->world_buffer);
 	for (int i=0; i < MAX_NUMBER_WORLDS; i++)
 		this->loaded_worlds[i] = NULL;
 	this->current_world = NULL;
+	this->ui_image = load_bitmap("Resources//MarshUI4.bmp", NULL);
+	this->ui_buffer = create_bitmap(UI_WIDTH, UI_HEIGHT);
+	blit(this->ui_image, ui_buffer, 0, 0, 0, 0, this->ui_image->w, this->ui_image->h);
+	this->resource_bars[0] = create_sub_bitmap(this->ui_image, HEALTH_BAR_X_POS, 
+		HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH, RESOURCE_BAR_HEIGHT);
+	this->resource_bars[1] = create_sub_bitmap(this->ui_image, CAST_BAR_X_POS, 
+		CAST_BAR_Y_POS, CAST_BAR_WIDTH, CAST_BAR_HEIGHT);
+	this->console = create_sub_bitmap(this->ui_image, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
+	
 }
 
 View::~View(void){
@@ -18,8 +27,8 @@ View::~View(void){
 		if (this->loaded_worlds[i] != NULL)
 			delete this->loaded_worlds[i];
 	}
-	if (this->buffer != NULL)
-		destroy_bitmap(this->buffer);
+	if (this->world_buffer != NULL)
+		destroy_bitmap(this->world_buffer);
 
 
 	//TODO FIX THIS CAUSE ITS BAD
@@ -127,19 +136,19 @@ void View::update(void){
 }
 
 void View::draw_active_world(void){
-	//clear_bitmap(this->buffer);
+	//clear_bitmap(this->world_buffer);
 
 	int tile_wide = this->current_world->get_tiles_wide();
 	int tile_high = this->current_world->get_tiles_high();
 	Tile*** tiles = this->current_world->get_tile_map();
 
-	draw_sprites(this->buffer, tiles, tile_wide, tile_high);
-	draw_drawables(this->buffer, this->current_world->get_visible_entities());
+	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
+	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
 
 	
-	//masked_blit(this->playa->get_image()->get_current_frame(), this->buffer,
+	//masked_blit(this->playa->get_image()->get_current_frame(), this->world_buffer,
 	//	0,0, SCREEN_W/2, SCREEN_H/2, 32, 30);
-	//draw_interface(this->playa);
+	draw_interface(this->playa);
 	draw_to_screen();
 
 	this->current_world->remove_destroyed();
@@ -153,7 +162,7 @@ void View::draw_to_screen(void){
 	x -= SCREEN_W/2;
 	int y = this->playa->get_y_pos();
 	y -= SCREEN_H/2;
-	blit(this->buffer, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
+	blit(this->world_buffer, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
 }
 
 void draw_status(Player* hero, BITMAP* buffer){
@@ -165,26 +174,29 @@ void draw_dialogs(BITMAP* buffer){
 }
 
 void View::draw_interface(Player* hero){
-	draw_status(hero, this->buffer);
-	draw_dialogs(this->buffer);
+	blit(this->ui_image, screen, 0, 0, 0, SCREEN_H - 230, this->ui_image->w, this->ui_image->h);
+
+
+	//draw_status(hero, this->buffer);
+	//draw_dialogs(this->buffer);
 }
 
 
 
 void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){
-	int left_x = this->playa->get_x_pos() - SCREEN_W/2;
+	int left_x = this->playa->get_x_pos() - buffer->w/2;
 	int start_j = left_x / 32;
 	if (start_j < 0)
 		start_j = 0;
-	int end_j = (left_x + SCREEN_W) / 32;
+	int end_j = (left_x + buffer->w) / 32;
 	if (++end_j > tile_wide)
 		end_j = tile_wide;
 
-	int top_y = this->playa->get_y_pos() - SCREEN_H/2;
+	int top_y = this->playa->get_y_pos() - buffer->h/2;
 	int start_i = top_y / 32;
 	if (start_i < 0)
 		start_i = 0;
-	int end_i = (top_y + SCREEN_H) / 32;
+	int end_i = (top_y + buffer->h) / 32;
 	if (++end_i > tile_high)
 		end_i = tile_high;
 
@@ -197,14 +209,13 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 					j*TILE_SIZE - left_x + TILE_SIZE, i*TILE_SIZE - top_y + TILE_SIZE, makecol(255, 255, 255));
 			*/ 
 			// draw the background image for starters
-			//draw_drawables(buffer, tile_map[i][j]->contents);
 		}
 	}
 }
 
 void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
-	int xshift = this->playa->get_x_pos() - SCREEN_W/2;
-	int yshift = this->playa->get_y_pos() - SCREEN_H/2;
+	int xshift = this->playa->get_x_pos() - buffer->w/2;
+	int yshift = this->playa->get_y_pos() - buffer->h/2;
 
 	std::list<iDrawable*>::iterator iter;
 	for (iter = sprites->begin(); iter != sprites->end(); ++iter){
@@ -215,14 +226,10 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 		int height = frame->h;
 		masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, 154, 154);
 
-		
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
-			 
-			
-
 	}
 }
 
