@@ -2,6 +2,8 @@
 
 using namespace std;
 
+int pick_cast_color(Attack* attack);
+
 View::View(Player* hero){
 	this->playa = hero;
 	this->world_buffer = create_bitmap(VISIBLE_W, VISIBLE_H);
@@ -11,13 +13,13 @@ View::View(Player* hero){
 	this->current_world = NULL;
 	this->ui_image = load_bitmap("Resources//MarshUI4.bmp", NULL);
 	this->ui_buffer = create_bitmap(UI_WIDTH, UI_HEIGHT);
-	blit(this->ui_image, ui_buffer, 0, 0, 0, 0, this->ui_image->w, this->ui_image->h);
+	blit(this->ui_image, this->ui_buffer, 0, 0, 0, 0, this->ui_image->w, this->ui_image->h);
 	this->resource_bars[0] = create_sub_bitmap(this->ui_image, HEALTH_BAR_X_POS, 
-		HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH, RESOURCE_BAR_HEIGHT);
+		HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	this->resource_bars[1] = create_sub_bitmap(this->ui_image, CAST_BAR_X_POS, 
-		CAST_BAR_Y_POS, CAST_BAR_WIDTH, CAST_BAR_HEIGHT);
+		CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
 	this->console = create_sub_bitmap(this->ui_image, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
-	
+
 }
 
 View::~View(void){
@@ -50,10 +52,10 @@ void View::load_world(char* filename){
 
 	QuestReward r;
 	r.gold = 1;
-	 
+
 	QuestDescription des;
 	des.text = (char*)malloc(sizeof(char)*10);
-	
+
 	KillObjective* objective;
 	objective = new KillObjective(EntityType::Monster, 2);
 
@@ -127,7 +129,7 @@ void View::put_world_in_loaded(World* world){
 
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
-	
+
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
 		(*iter)->update();
@@ -145,7 +147,7 @@ void View::draw_active_world(void){
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
 
-	
+
 	//masked_blit(this->playa->get_image()->get_current_frame(), this->world_buffer,
 	//	0,0, SCREEN_W/2, SCREEN_H/2, 32, 30);
 	draw_interface(this->playa);
@@ -156,17 +158,33 @@ void View::draw_active_world(void){
 }
 
 void View::draw_to_screen(void){
-	textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"World size %d", this->current_world->active_entities->size());		
-
-	int x = this->playa->get_x_pos();
-	x -= SCREEN_W/2;
-	int y = this->playa->get_y_pos();
-	y -= SCREEN_H/2;
-	blit(this->world_buffer, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
+	blit(this->world_buffer, screen, 0,0,0,0, VISIBLE_W, VISIBLE_H);
+	blit(this->ui_buffer, screen, 0, 0, 0, SCREEN_H - UI_HEIGHT, UI_WIDTH, UI_HEIGHT);
 }
 
 void draw_status(Player* hero, BITMAP* buffer){
+	int max_health = 31; //hero->get_max_health();
+	int cur_health = 15; //hero->get_health();
+	double px_per_h =  (double) RESOURCE_BAR_WIDTH / (double) max_health;  //total_pixs / total_health
 
+	rectfill(buffer, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, HEALTH_BAR_X_POS + px_per_h*cur_health, HEALTH_BAR_Y_POS + RESOURCE_BAR_HEIGHT, HEALTH_COLOR);
+
+	int max_mana = 20; //hero->get_max_mana();
+	int cur_mana = 20; //hero->get_mana();
+	double px_per_m = (double) RESOURCE_BAR_WIDTH / (double)max_mana;
+	rectfill(buffer, MANA_BAR_X_POS, MANA_BAR_Y_POS, MANA_BAR_X_POS + px_per_m*cur_mana, MANA_BAR_Y_POS + RESOURCE_BAR_HEIGHT, MANA_COLOR);
+
+	if (hero->casted_spell != NULL){
+		int charge_time = hero->casted_spell->get_charge_time();
+		int time = hero->casting_timer;
+		double px_per_c = (double) CAST_BAR_WIDTH / (double)charge_time;
+
+		rectfill(buffer, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_X_POS + px_per_c*time, CAST_BAR_Y_POS + CAST_BAR_HEIGHT, pick_cast_color(hero->casted_spell));
+	}
+}
+
+int pick_cast_color(Attack* attack){
+	return makecol(255, 255, 255);
 }
 
 void draw_dialogs(BITMAP* buffer){
@@ -174,11 +192,13 @@ void draw_dialogs(BITMAP* buffer){
 }
 
 void View::draw_interface(Player* hero){
-	blit(this->ui_image, screen, 0, 0, 0, SCREEN_H - 230, this->ui_image->w, this->ui_image->h);
-
-
-	//draw_status(hero, this->buffer);
+	blit(this->resource_bars[0], this->ui_buffer, 0, 0, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
+	blit(this->resource_bars[0], this->ui_buffer, 0, 0, MANA_BAR_X_POS, MANA_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
+	blit(this->resource_bars[1], this->ui_buffer, 0, 0, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
+	draw_status(hero, this->ui_buffer);
 	//draw_dialogs(this->buffer);
+
+
 }
 
 
@@ -205,8 +225,8 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
 			/*if (!tile_map[i][j]->can_walk)
-				rect(buffer, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, 
-					j*TILE_SIZE - left_x + TILE_SIZE, i*TILE_SIZE - top_y + TILE_SIZE, makecol(255, 255, 255));
+			rect(buffer, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, 
+			j*TILE_SIZE - left_x + TILE_SIZE, i*TILE_SIZE - top_y + TILE_SIZE, makecol(255, 255, 255));
 			*/ 
 			// draw the background image for starters
 		}

@@ -19,7 +19,7 @@ class Combat: public iDrawable{
 		bool player_credit;
 		int experience_worth;
 
-	protected:
+//	protected:
 		Attack* attack_loadout[MAX_ATTACKS];
 		EntityType my_type;
 		int health, mana, armor;
