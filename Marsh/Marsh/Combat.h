@@ -12,14 +12,13 @@
 #include "Main.h"
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival};
 
 class Combat: public iDrawable{
 	public:
 		bool player_credit;
 		int experience_worth;
 
-	protected:
+//	protected:
 		Attack* attack_loadout[MAX_ATTACKS];
 		EntityType my_type;
 		int health, armor, max_health;
@@ -27,6 +26,7 @@ class Combat: public iDrawable{
 		bool casting;
 		int casting_timer;
 		Attack* casted_spell;
+		
 		
 	
 	public:

@@ -9,6 +9,8 @@ class Attack;
 #include <allegro.h>
 #include <list>
 #include <string>
+#include <vector>
+#include <cmath>
 #include "Sprite.h"
 #include "Ground_Sprite.h"
 #include "Solid_Sprite.h"
@@ -19,7 +21,7 @@ class Attack;
 #include "Attack.h"
 #include "Combat.h"
 #include "Player.h"
-#include "Guard.h"
+#include "Town_Guard.h"
 #include "Player_Sprite.h"
 #include "World.h"
 #include "View.h"
@@ -30,7 +32,10 @@ class Attack;
 #include "KillObjective.h"
 #include "Quest.h"
 
-
+#define VISIBLE_W 1400
+#define VISIBLE_H 770
+#define UI_WIDTH 1400
+#define UI_HEIGHT 230
 
 using namespace std;
 

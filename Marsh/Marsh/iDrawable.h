@@ -8,6 +8,8 @@ class World;
 
 using namespace std;
 
+enum EntityType {Guard, Monster, Outcast, Hero, Rival};
+
 class iDrawable{
 public:
 	Sprite* image;
@@ -16,8 +18,9 @@ public:
 	World* my_world;
 	int reference_horizontal, reference_vertical;
 	int bounding_width, bounding_height;
-	bool can_walk_left, can_walk_right, can_walk_up, can_walk_down;
+	bool can_walk_left, can_walk_right, can_walk_up, can_walk_down, targeted;
 	int movement_counter;
+	EntityType my_type;
 
 public:
 	iDrawable(int x, int y, int vel, int vel_d, Sprite* img);

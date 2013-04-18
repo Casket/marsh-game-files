@@ -7,6 +7,7 @@ bool keyrel(int k);
 Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 :Combat(x, y, vel, vel_d, img)
 {
+	this->my_type = Hero;
 	this->casting = false;
 	this->casting_timer = 0;
 	this->keyboard_counter = 0;

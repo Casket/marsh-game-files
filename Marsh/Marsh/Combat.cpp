@@ -18,6 +18,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
+	this->targeted = false;
 	this->player_credit = false;
 	this->experience_worth = 10;
 }
