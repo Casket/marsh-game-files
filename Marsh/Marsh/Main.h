@@ -9,6 +9,8 @@ class Attack;
 #include <allegro.h>
 #include <list>
 #include <string>
+#include <vector>
+#include <cmath>
 #include "Sprite.h"
 #include "Ground_Sprite.h"
 #include "Solid_Sprite.h"
@@ -19,7 +21,7 @@ class Attack;
 #include "Attack.h"
 #include "Combat.h"
 #include "Player.h"
-#include "Guard.h"
+#include "Town_Guard.h"
 #include "Player_Sprite.h"
 #include "World.h"
 #include "View.h"

@@ -7,6 +7,7 @@
 #define TEST_WORLD_SIZE 75
 
 #include "Main.h"
+class Guard;
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class View{
 		Player* playa;
 		World* current_world;
 		World* loaded_worlds[MAX_NUMBER_WORLDS];
+		
 
 
 		View(Player* hero);

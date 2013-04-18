@@ -1,5 +1,6 @@
 #include "Main.h"
 
+
 using namespace std;
 
 View::View(Player* hero){
@@ -38,8 +39,25 @@ void View::load_world(char* filename){
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
+	
+	std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
+	std::pair<int, Direction> test = std::make_pair(-1, N);
+	ways->insert(ways->end(), test);
+	std::pair<int, Direction> test2 = std::make_pair(30, S);
+	ways->insert(ways->end(), test2);
+	//std::pair<int, Direction> test3 = std::make_pair(3, W);
+	//ways->insert(ways->end(), test3);
+	//std::pair<int, Direction> test4 = std::make_pair(30, E);
+	//ways->insert(ways->end(), test4);
+	std::pair<int, Direction> test5 = std::make_pair(-1,N);
+	ways->insert(ways->end(), test5);
+	
 
-		Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//chicken.bmp", S, 5, 1, 16, 16),ways); 
+	g->set_world(this->current_world);
+	this->current_world->insert_entity(g);
+
+	Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
 	d->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d);
 
