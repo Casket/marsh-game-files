@@ -368,10 +368,10 @@ void World::remove_entity(iDrawable* dat){
 std::list<iDrawable*>* World::get_visible_entities(void){
 	this->visible_entities->clear();
 
-	int left_most = this->playa->get_x_pos() - SCREEN_W - PAD;
+	int left_most = this->playa->get_x_pos() - VISIBLE_W - PAD;
 	int right_most = left_most + 2*SCREEN_W + PAD;
 
-	int top_most = this->playa->get_y_pos() - SCREEN_H - PAD;
+	int top_most = this->playa->get_y_pos() - VISIBLE_H - PAD;
 	int bottom_most = top_most + 2*SCREEN_H + PAD;
 
 	std::list<iDrawable*>::iterator iter;

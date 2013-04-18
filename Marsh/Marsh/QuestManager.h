@@ -32,7 +32,6 @@ public:
 	void killed_entity(EntityType);
 	void interacted_with(EntityType);
 
-private:
 	void flush_queues(void);
 };
 

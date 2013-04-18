@@ -20,6 +20,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->mana = calculate_mana(this->willpower);
 	this->casted_spell = NULL;
 	this->targeted = false;
+	this->player_credit = false;
+	this->experience_worth = 10;
 }
 
 Combat::~Combat(void) {
@@ -35,6 +37,10 @@ void Combat::set_stats(int vitality, int intelligence, int focus, int willpower,
 	this->armor = armor;
 	this->health = calculate_health(this->vitality);
 	this->mana = calculate_mana(this->willpower);
+}
+
+EntityType Combat::get_my_type(void){
+	return this->my_type;
 }
 
 void Combat::set_my_type(EntityType e) {
@@ -169,8 +175,13 @@ void Combat::deal_with_attack(Attack* attack){
 	if(armor == 0)
 		armor = 1;
 	this->health -= (attack->base_damage*attack->get_my_caster()->intelligence)/armor;
-	if(this->health <= 0){
-		this->my_world->remove_entity(this);	
+	if(!this->player_credit){
+		if(attack->get_my_caster() == Player_Accessor::get_player()){
+			this->player_credit = true;
+		}
+	}
+	if(this->health <= 0){	
+		Player_Accessor::get_player()->credit_death(this);
 	}
 	attack->start_death_sequence();
 }
