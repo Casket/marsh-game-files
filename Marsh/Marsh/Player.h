@@ -61,6 +61,8 @@ class Player: public Combat{
 	int level, current_experience;
 	int keyboard_counter;
 	int keyboard_delay;
+	BITMAP* clear_console;
+	BITMAP* in_use_console;
 
 	public:
 		int experience;
@@ -72,6 +74,8 @@ class Player: public Combat{
 		bool add_to_inventory(Equipment* equip);
 		virtual void deal_with_attack(Attack* attack);
 		void credit_death(Combat*);
+		void display_to_user(std::string message);
+		void set_consoles(BITMAP* clear, BITMAP* in_use);
 
 	
 	private:

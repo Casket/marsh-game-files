@@ -7,10 +7,10 @@
 
 #define TEST_WORLD_SIZE 75
 
-#define MANA_BAR_X_POS 828
-#define MANA_BAR_Y_POS 50
-#define HEALTH_BAR_X_POS 1093
+#define HEALTH_BAR_X_POS 828
 #define HEALTH_BAR_Y_POS 50
+#define MANA_BAR_X_POS 1093
+#define MANA_BAR_Y_POS 50
 #define RESOURCE_BAR_WIDTH 258
 #define RESOURCE_BAR_HEIGHT 20
 #define CAST_BAR_X_POS 590
@@ -21,10 +21,12 @@
 #define CONSOLE_Y_POS 42
 #define CONSOLE_WIDTH 312
 #define CONSOLE_HEIGHT 155
+#define BACK_LAYER_X 585
+#define BACK_LAYER_Y 40
 
 
-#define HEALTH_COLOR makecol(255, 0, 0)
-#define MANA_COLOR makecol(128, 128, 255)
+#define HEALTH_COLOR makecol(165, 33, 33)
+#define MANA_COLOR makecol(33, 104, 165)
 
 #include "Main.h"
 
@@ -35,6 +37,7 @@ class View{
 		BITMAP* world_buffer;
 		BITMAP* ui_buffer;
 		BITMAP* resource_bars[2];
+		BITMAP* behind_bars;
 		BITMAP* spell_slot;
 		BITMAP* clear_console;
 		BITMAP* in_use_console;
@@ -56,7 +59,6 @@ class View{
 		void draw_sprites(BITMAP*, Tile***, int, int);
 		void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
 		void draw_to_screen(void);
-		void print_to_console(std::string str);
 };
 
 #endif
