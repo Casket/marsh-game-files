@@ -29,6 +29,7 @@
 #define MANA_COLOR makecol(33, 104, 165)
 
 #include "Main.h"
+class Guard;
 
 using namespace std;
 
@@ -45,7 +46,6 @@ class View{
 		World* current_world;
 		World* loaded_worlds[MAX_NUMBER_WORLDS];
 		BITMAP* ui_image;
-
 
 		View(Player* hero);
 		~View(void);

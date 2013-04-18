@@ -19,6 +19,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->health = calculate_health(this->vitality);
 	this->mana = calculate_mana(this->willpower);
 	this->casted_spell = NULL;
+	this->targeted = false;
 	this->player_credit = false;
 	this->experience_worth = 10;
 }

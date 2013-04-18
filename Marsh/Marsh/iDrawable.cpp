@@ -15,7 +15,6 @@ iDrawable::~iDrawable(void){
 		delete this->image;
 }
 
-
 void iDrawable::set_sprite(Sprite* spr){
 	this->image = spr;
 }
@@ -102,7 +101,8 @@ void iDrawable::check_collisions(void){
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
-
+		
+		
 		
 		check_walkable(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height, 
