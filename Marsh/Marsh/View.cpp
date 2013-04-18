@@ -58,10 +58,6 @@ void View::load_world(char* filename){
 	ways->insert(ways->end(), test);
 	std::pair<int, Direction> test2 = std::make_pair(30, S);
 	ways->insert(ways->end(), test2);
-	//std::pair<int, Direction> test3 = std::make_pair(3, W);
-	//ways->insert(ways->end(), test3);
-	//std::pair<int, Direction> test4 = std::make_pair(30, E);
-	//ways->insert(ways->end(), test4);
 	std::pair<int, Direction> test5 = std::make_pair(-1,N);
 	ways->insert(ways->end(), test5);
 	

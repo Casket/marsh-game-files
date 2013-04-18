@@ -156,6 +156,7 @@ void Player::check_casting(void) {
 void Player::accept_aiming(void) {
 	Direction old_dir = this->image->get_facing();
 	Direction new_dir = old_dir;
+	
 	if (keyrel(AIM_LEFT)) {
 		switch(old_dir) {
 			case N:
@@ -168,13 +169,13 @@ void Player::accept_aiming(void) {
 				new_dir = W;
 				break;
 			case S:
-				new_dir = SE;
+				new_dir = SW;
 				break;
 			case SW:
-				new_dir = S;
+				new_dir = W;
 				break;
 			case SE:
-				new_dir = E;
+				new_dir = S;
 				break;
 			case E:
 				new_dir = NE;
@@ -196,13 +197,13 @@ void Player::accept_aiming(void) {
 				new_dir = N;
 				break;
 			case S:
-				new_dir = SW;
+				new_dir = SE;
 				break;
 			case SW:
-				new_dir = W;
+				new_dir = S;
 				break;
 			case SE:
-				new_dir = S;
+				new_dir = E;
 				break;
 			case E:
 				new_dir = SE;
