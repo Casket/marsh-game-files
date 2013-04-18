@@ -58,7 +58,7 @@ typedef struct Equipment{
 
 class Player: public Combat{
 	Equipment** inventory;	
-	int level, current_experience;
+	int level, current_experience, mana, max_mana;
 	int keyboard_counter;
 	int keyboard_delay;
 
@@ -72,10 +72,12 @@ class Player: public Combat{
 		bool add_to_inventory(Equipment* equip);
 		virtual void deal_with_attack(Attack* attack);
 		void credit_death(Combat*);
+		virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
 
 	
 	private:
 		// private stuff
+		int calculate_mana(int);
 		void listen_to_keyboard(void);
 		void accept_aiming(void);
 		void accept_movement(void);

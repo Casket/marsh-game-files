@@ -17,7 +17,6 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);
-	this->mana = calculate_mana(this->willpower);
 	this->casted_spell = NULL;
 	this->player_credit = false;
 	this->experience_worth = 10;
@@ -35,7 +34,7 @@ void Combat::set_stats(int vitality, int intelligence, int focus, int willpower,
 	this->willpower = willpower;
 	this->armor = armor;
 	this->health = calculate_health(this->vitality);
-	this->mana = calculate_mana(this->willpower);
+	this->max_health = this->health;
 }
 
 EntityType Combat::get_my_type(void){
@@ -49,11 +48,6 @@ void Combat::set_my_type(EntityType e) {
 int Combat::calculate_health(int stat){
 	return stat;
 	//TODO add some calculation here
-}
-
-int Combat::calculate_mana(int stat) {
-	return stat;
-	// TODO do some calculation
 }
 
 void Combat::casting_update(void) {

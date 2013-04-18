@@ -93,6 +93,13 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(rambo_sheep);
 	rambo_sheep->set_boundary_value(30, 30, 2, 2);
 
+	Combat* rambo_sheep2 = new Combat(1000,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp"));
+	rambo_sheep2->set_my_type(EntityType::Monster);
+	rambo_sheep2->set_stats(99, 0, 0, 0, 0);
+	rambo_sheep2->set_world(this->current_world);
+	this->current_world->insert_entity(rambo_sheep2);
+	rambo_sheep2->set_boundary_value(30, 30, 2, 2);
+
 	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);
 	this->current_world->insert_entity(att);
