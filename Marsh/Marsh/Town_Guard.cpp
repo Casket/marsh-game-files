@@ -16,20 +16,22 @@ Town_Guard::Town_Guard(int x, int y, int vel, int vel_d, Sprite* img, std::vecto
 	this->paused  = false;
 	this->initial_detection = true;
 	this->target = NULL;
-
+	
 }
 Town_Guard::~Town_Guard(void){
 
 }
 
 void Town_Guard::update(void){
+	bool update_move;
+
 	check_collisions();	
 	
 	if(this->on_patrol){	
 		patrol();
 	}else if(this->in_combat){
 		
-		move_towards();
+		update_move = move_towards();
 
 		if((this->target->alive)){
 			
@@ -344,7 +346,7 @@ void Town_Guard::update(void){
 			moved = move(S);
 		//you are there
 		}else{
-			return false;	
+			this->launch_attack(0);	
 		}
-		return true;
+		return moved;
 	}
