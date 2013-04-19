@@ -75,9 +75,11 @@ class Player: public Combat{
 		bool add_to_inventory(Equipment* equip);
 		virtual void deal_with_attack(Attack* attack);
 		void credit_death(Combat*);
+		void credit_interaction(EntityType et);
 		virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
 		void display_to_user(std::string message);
 		void set_consoles(BITMAP* clear, BITMAP* in_use);
+		bool wants_to_talk(void);
 
 	
 	private:

@@ -70,6 +70,14 @@ void iDrawable::set_y_pos(int y){
 	this->y_pos = y;
 }
 
+void iDrawable::set_my_type(EntityType et){
+	this->my_type = et;
+}
+
+EntityType iDrawable::get_my_type(void){
+	return this->my_type;
+}
+
 void iDrawable::speak(void){};
 void iDrawable::append_dialogue(std::string message){};
 void iDrawable::clear_dialogue(void){};
@@ -94,28 +102,28 @@ void iDrawable::check_collisions(void){
 	this->can_walk_right = true;
 	this->can_walk_up = true;
 
-	bool* blocked_facing;
+	bool* unblocked_facing;
 	if (this->my_type == Hero){
 		switch(facing){
 	case N:
-		blocked_facing = &this->can_walk_up;
+		unblocked_facing = &this->can_walk_up;
 		break;
 	case S:
-		blocked_facing = &this->can_walk_down;
+		unblocked_facing = &this->can_walk_down;
 		break;
 	case E:
-		blocked_facing = &this->can_walk_right;
+		unblocked_facing = &this->can_walk_right;
 		break;
 	case W:
-		blocked_facing = &this->can_walk_left;
+		unblocked_facing = &this->can_walk_left;
 		break;
 	default:
-		blocked_facing = &this->can_walk_up;
+		unblocked_facing = &this->can_walk_up;
 		// eh whatever
 		break;
 		}
 	} else
-		blocked_facing = &this->can_walk_up;
+		unblocked_facing = &this->can_walk_up;
 
 	int check_x, check_y, check_width, check_height;
 
@@ -131,15 +139,15 @@ void iDrawable::check_collisions(void){
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
 
-		bool was_blocked_flag = *blocked_facing ? true : false;
+		bool was_unblocked_flag = *unblocked_facing ? true : false;
 
 		this->check_walkable(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height, 
 			left_right_skew, top_bottom_skew);
 
-		if (this->my_type == Hero && check->can_speak && *blocked_facing && !was_blocked_flag){
-			Player_Accessor::get_player()->interacting = true;
-			check->speak();
+		if (this->my_type == Hero && check->can_speak && !(*unblocked_facing) && was_unblocked_flag){
+			if (Player_Accessor::hero->wants_to_talk())
+				check->speak();
 		}
 
 	}

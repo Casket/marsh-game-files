@@ -4,7 +4,6 @@
 using namespace std;
 
 int pick_cast_color(Attack* attack);
-std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len);
 
 View::View(Player* hero){
 	this->playa = hero;
@@ -67,6 +66,17 @@ void View::load_world(char* filename){
 	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//chicken.bmp", S, 5, 1, 16, 16),ways); 
 	g->set_world(this->current_world);
 	this->current_world->insert_entity(g);
+
+	Combat* talker = new Combat(100,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
+	talker->set_world(this->current_world);
+	talker->can_speak = true;
+	talker->append_dialogue("I used to be an adventurer like you, until I took an arrow to the knee");
+	talker->append_dialogue("How does a rogue beat a paladin?  He pickpockets his hearth stone.");
+	talker->append_dialogue("I wondered why the baseball was getting bigger.  Then it hit me.");
+	talker->append_dialogue("I used to have a fear of hurdles, but I got over it.");
+	talker->append_dialogue("I see you have some graph paper.  You must be plotting something.");
+	this->current_world->insert_entity(talker);
+	talker->set_boundary_value(40, 40, 0, 0);
 
 	QuestReward r;
 	r.gold = 1;

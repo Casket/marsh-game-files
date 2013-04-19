@@ -31,6 +31,7 @@ class Attack;
 #include "RetrieveObjective.h"
 #include "KillObjective.h"
 #include "Quest.h"
+#include "QuestGiver.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
@@ -47,6 +48,7 @@ public:
 	static void create_player(int x, int y, Sprite* img, int w, int h, int x_in, int y_in){
 		Player_Accessor::hero = new Player(x, y, 0, 0, img);
 		Player_Accessor::hero->set_boundary_value(w, h, x_in, y_in);
+		Player_Accessor::hero->set_my_type(EntityType::Hero);
 	}
 
 	static Player* get_player(void){

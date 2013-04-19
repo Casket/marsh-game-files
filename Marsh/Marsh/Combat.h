@@ -14,43 +14,45 @@ using namespace std;
 
 
 class Combat: public iDrawable{
-	public:
-		bool player_credit;
-		int experience_worth;
+public:
+	bool player_credit;
+	int experience_worth;
 
-//	protected:
-		Attack* attack_loadout[MAX_ATTACKS];
-		EntityType my_type;
-		int health, armor, max_health;
-		int vitality, intelligence, focus, willpower; // combat stats
-		bool casting;
-		int casting_timer;
-		Attack* casted_spell;
-		std::vector<std::string>* dialogue;
-		int current_dialogue;
-		
-		
-	
-	public:
-		Combat(int x, int y, int vel, int vel_d, Sprite* img);
-		~Combat(void);
-		void initiate_attack(Attack*);
-		virtual void update(void);
-		virtual void deal_with_attack(Attack* attack);
-		void set_my_type(EntityType);
-		virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
-		EntityType Combat::get_my_type(void);
-		int get_current_health(void);
-		int get_max_health(void);
+	//	protected:
+	Attack* attack_loadout[MAX_ATTACKS];
+	int health, armor, max_health;
+	int vitality, intelligence, focus, willpower; // combat stats
+	bool casting;
+	int casting_timer;
+	Attack* casted_spell;
+	std::vector<std::string>* dialogue;
+	int current_dialogue;
+	bool should_free_player;
+	bool has_player_hostage;
 
-	protected:
-		int calculate_health(int);
-		void casting_update(void);
-		void launch_attack(int);
-		virtual void check_collisions(void);
-		virtual void append_dialogue(std::string);
-		virtual void clear_dialogue(void);
-		virtual void speak(void);
+
+
+public:
+	Combat(int x, int y, int vel, int vel_d, Sprite* img);
+	~Combat(void);
+	void initiate_attack(Attack*);
+	virtual void update(void);
+	virtual void deal_with_attack(Attack* attack);
+	void set_my_type(EntityType);
+	virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
+	EntityType Combat::get_my_type(void);
+	int get_current_health(void);
+	int get_max_health(void);
+	virtual void append_dialogue(std::string);
+	virtual void clear_dialogue(void);
+	virtual void speak(void);
+
+
+protected:
+	int calculate_health(int);
+	void casting_update(void);
+	void launch_attack(int);
+	virtual void check_collisions(void);
 
 
 
