@@ -63,7 +63,7 @@ void View::load_world(char* filename){
 	ways->insert(ways->end(), test5);
 	
 
-	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//chicken.bmp", S, 5, 1, 16, 16),ways); 
+	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 	g->set_world(this->current_world);
 	this->current_world->insert_entity(g);
 

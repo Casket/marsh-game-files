@@ -29,7 +29,7 @@ void QuestGiver::append_dialogue(std::string message){
 }
 
 void QuestGiver::append_post_dialogue(std::string message){
-	this->post_quest_dialoge->push_back(message);
+	this.post_quest_dialoge->push_back(message);
 }
 
 void QuestGiver::append_pre_dialogue(std::string message){
