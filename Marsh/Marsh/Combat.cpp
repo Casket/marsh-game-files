@@ -22,11 +22,15 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->player_credit = false;
 	this->experience_worth = 10;
 	this->dialogue = new std::vector<std::string>();
+	this->current_dialogue = 0;
+	this->should_free_player = false;
+	this->has_player_hostage = false;
 }
 
 Combat::~Combat(void) {
 	if(casted_spell != NULL)
 		delete casted_spell;
+	delete this->dialogue;
 }
 
 void Combat::set_stats(int vitality, int intelligence, int focus, int willpower, int armor) {
@@ -121,6 +125,11 @@ void Combat::launch_attack(int attack_num) {
 
 void Combat::update(){
 	check_collisions();
+
+	if (this->has_player_hostage){
+		if (Player_Accessor::hero->wants_to_talk())
+			this->speak();
+	}
 }
 
 void Combat::check_collisions(void){
@@ -186,15 +195,27 @@ void Combat::append_dialogue(std::string message){
 		this->dialogue = new std::vector<std::string>();
 	this->dialogue->push_back(message);
 }
+
 void Combat::clear_dialogue(void){
 	this->dialogue->clear();
 }
 
 void Combat::speak(void){
+	if (this->should_free_player){
+		Player_Accessor::get_player()->interacting = false;
+		this->has_player_hostage = false;
+		this->should_free_player = false;
+		Player_Accessor::get_player()->display_to_user("");
+		return;
+	}
 	if (this->dialogue->empty())
 		return;
+	Player_Accessor::get_player()->interacting = true;
+	this->has_player_hostage = true;
 	Player_Accessor::get_player()->display_to_user(this->dialogue->at(this->current_dialogue++));
-	if (this->current_dialogue >= this->dialogue->size())
+	if (this->current_dialogue >= this->dialogue->size()){
 		this->current_dialogue = 0;
+		this->should_free_player = true;
+	}
 
 }

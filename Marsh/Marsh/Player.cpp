@@ -62,18 +62,25 @@ void Player::deal_with_attack(Attack* attack){
 
 }
 
+bool Player::wants_to_talk(void){
+	return keyrel(INTERACT_KEY);
+	//return key[INTERACT_KEY];
+	//return true;
+}
+
 
 void Player::update(void) {
+	check_collisions();
 	if (this->interacting)
 		return; // interaction is controlled by the giver
 	// need to figure out where this guy wants to go
-	check_collisions();
+
 	listen_to_keyboard();
 
 	if (this->casting)
 		casting_update();
 
-
+	clear_keybuf();
 }
 
 void Player::credit_death(Combat* enemy){
@@ -82,6 +89,10 @@ void Player::credit_death(Combat* enemy){
 		this->experience += enemy->experience_worth;
 	}
 	this->my_world->removal_queue->push_back(enemy);	
+}
+
+void Player::credit_interaction(EntityType et){
+	this->quest_manager->interacted_with(et);
 }
 
 
@@ -354,14 +365,16 @@ void print_to_console(std::string str, BITMAP* cons){
 }
 
 std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len){
-	int len = str.length();
+	int len = str.length() - pos;
 	bool saw_space = false;
 	int last_word_ending_pos = pos;
 
 	int i=0;
 	while (i < max_len){
-		if (i > len)
+		if (i >= len){
+			last_word_ending_pos = pos+i;
 			break;
+		}
 		if ((str.at(pos+i) == ' ')  && !saw_space){
 			last_word_ending_pos = pos+i;
 			saw_space = true;
@@ -371,13 +384,14 @@ std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int
 	}
 
 	// should now have a pos to stop the substring
-	int sub_len = last_word_ending_pos - pos;
+	int sub_len = last_word_ending_pos - pos + 1;
 	std::string ret_str = str.substr(pos, sub_len);
 
 	// now get a forward index, skipping spaces
+	if (!(i >= len)){
 	while (str.at(last_word_ending_pos) == ' ')
 		last_word_ending_pos++;
-
+	}
 	return std::pair<int, std::string>(last_word_ending_pos, ret_str);
 }
 
