@@ -212,7 +212,8 @@ void start_game(void) {
 	
 	std::string super_long = "Human Rights First (formerly known as the Lawyers Committee for Human Rights) is a nonprofit, nonpartisan human rights organization based in New York City and Washington, D.C. Since its founding in 1978, the organization has focused on protecting the rights of refugees, supporting human rights defenders around the world, and pressing for the U.S. government’s full participation in the international human rights system. In recent years, the organization also has turned its attention to the erosion of human rights in the U.S. in the post-9/11 period; to the rise in anti-Semitic, racist and anti-Muslim hate crimes and other forms of discrimination in Europe; and to war crimes and crimes against humanity in places like Darfur. The work of Human Rights First is based on the principle that core human rights protections apply universally, and thus extend to everyone by virtue of their humanity. While the organization draws on international law and diplomacy to advance its advocacy, it also recognizes and starts from the premise that long-term change is most likely to occur from within a society. Its slogan is \"American ideals, universal value\".";
 
-	our_viewer->print_to_console(super_long);
+	hero->display_to_user(super_long);
+	hero->set_my_type(Hero);
 
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
@@ -236,7 +237,7 @@ void start_game(void) {
 
 		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
 		//	SCREEN_W/2, SCREEN_H/2, 32,30);
-		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
+		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", Hero);		
 		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
 		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		

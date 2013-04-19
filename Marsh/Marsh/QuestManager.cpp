@@ -54,12 +54,18 @@ void QuestManager::received_item(int id){
 void QuestManager::killed_entity(EntityType et){
 	std::pair<std::multimap<EntityType, Quest*>::iterator, std::multimap<EntityType, Quest*>::iterator> range;
 	range = this->tracking_kills->equal_range(et);
+	std::list<std::pair<EntityType, Quest*>> delete_ls;
 
 	for (std::multimap<EntityType, Quest*>::iterator it=range.first; it!=range.second; ++it){
 		Quest* interested_quest = it->second;
 		bool flag = interested_quest->mark_progress();
 		if (flag)
-			this->tracking_kills->erase(it);
+			delete_ls.push_back(*it);
+	}
+
+	for (std::list<std::pair<EntityType, Quest*>>::iterator it = delete_ls.begin(); it!= delete_ls.end(); ++it)
+	{
+		this->tracking_kills->erase(it->first);
 	}
 
 	this->flush_queues();

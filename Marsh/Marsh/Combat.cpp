@@ -17,11 +17,14 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);
-	this->mana = calculate_mana(this->willpower);
 	this->casted_spell = NULL;
 	this->targeted = false;
 	this->player_credit = false;
 	this->experience_worth = 10;
+	this->dialogue = new std::vector<std::string>();
+	this->current_dialogue = 0;
+	this->should_free_player = false;
+	this->has_player_hostage = false;
 }
 
 Combat::~Combat(void) {
@@ -36,7 +39,7 @@ void Combat::set_stats(int vitality, int intelligence, int focus, int willpower,
 	this->willpower = willpower;
 	this->armor = armor;
 	this->health = calculate_health(this->vitality);
-	this->mana = calculate_mana(this->willpower);
+	this->max_health = this->health;
 }
 
 EntityType Combat::get_my_type(void){
@@ -50,11 +53,6 @@ void Combat::set_my_type(EntityType e) {
 int Combat::calculate_health(int stat){
 	return stat;
 	//TODO add some calculation here
-}
-
-int Combat::calculate_mana(int stat) {
-	return stat;
-	// TODO do some calculation
 }
 
 void Combat::casting_update(void) {
@@ -75,7 +73,7 @@ void Combat::casting_update(void) {
 		// TODO put the casted spell into the world
 		int spell_x = this->get_reference_x();
 		int spell_y = this->get_reference_y();
-		
+
 		switch(this->image->get_facing()){
 			case N:
 				spell_y -= this->get_bounding_height();
@@ -121,11 +119,16 @@ void Combat::launch_attack(int attack_num) {
 		this->casting = true;
 		this->casted_spell = this->attack_loadout[attack_num];
 	}
-	
+
 }
 
 void Combat::update(){
 	check_collisions();
+
+	if (this->has_player_hostage){
+		if (Player_Accessor::hero->wants_to_talk())
+			this->speak();
+	}
 }
 
 void Combat::check_collisions(void){
@@ -164,8 +167,8 @@ void Combat::check_collisions(void){
 	for (int i=0; i < 4; i++){
 		if (!nearby[i]->can_walk)
 			check_walkable(my_x, my_y, my_height, my_width, 
-				nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE, 
-				left_right_skew, top_bottom_skew);
+			nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE, 
+			left_right_skew, top_bottom_skew);
 	}
 }
 
@@ -184,4 +187,33 @@ void Combat::deal_with_attack(Attack* attack){
 		Player_Accessor::get_player()->credit_death(this);
 	}
 	attack->start_death_sequence();
+}
+
+void Combat::append_dialogue(std::string message){
+	if (this->dialogue == NULL)
+		this->dialogue = new std::vector<std::string>();
+	this->dialogue->push_back(message);
+}
+void Combat::clear_dialogue(void){
+	this->dialogue->clear();
+}
+
+void Combat::speak(void){
+	if (this->should_free_player){
+		Player_Accessor::get_player()->interacting = false;
+		this->has_player_hostage = false;
+		this->should_free_player = false;
+		Player_Accessor::get_player()->display_to_user("");
+		return;
+	}
+	if (this->dialogue->empty())
+		return;
+	Player_Accessor::get_player()->interacting = true;
+	this->has_player_hostage = true;
+	Player_Accessor::get_player()->display_to_user(this->dialogue->at(this->current_dialogue++));
+	if (this->current_dialogue >= this->dialogue->size()){
+		this->current_dialogue = 0;
+		this->should_free_player = true;
+	}
+
 }

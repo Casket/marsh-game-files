@@ -3,6 +3,8 @@
 using namespace std;
 
 bool keyrel(int k);
+void print_to_console(std::string, BITMAP*);
+std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len);
 
 Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 :Combat(x, y, vel, vel_d, img)
@@ -17,10 +19,22 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	// TODO implement a constructor
 	this->inventory = (Equipment**)malloc(sizeof(Equipment*)*MAX_HELD_ITEMS);
 	this->set_new_inventory();
+	this->interacting = false;
 	}
 
 Player::~Player(void){
 
+}
+
+void Player::set_stats(int vit, int intel, int focus, int will, int armor){
+	Combat::set_stats(vit, intel, focus, will, armor);
+	this->mana = calculate_mana(intel);
+	this->max_mana = this->mana;
+}
+
+int Player::calculate_mana(int stat) {
+	return stat;
+	// TODO do some calculation
 }
 
 Equipment** Player::get_inventory(void) {
@@ -48,16 +62,25 @@ void Player::deal_with_attack(Attack* attack){
 
 }
 
+bool Player::wants_to_talk(void){
+	return keyrel(INTERACT_KEY);
+	//return key[INTERACT_KEY];
+	//return true;
+}
+
 
 void Player::update(void) {
-	// need to figure out where this guy wants to go
 	check_collisions();
+	if (this->interacting)
+		return; // interaction is controlled by the giver
+	// need to figure out where this guy wants to go
+
 	listen_to_keyboard();
 
 	if (this->casting)
 		casting_update();
 
-
+	clear_keybuf();
 }
 
 void Player::credit_death(Combat* enemy){
@@ -66,6 +89,10 @@ void Player::credit_death(Combat* enemy){
 		this->experience += enemy->experience_worth;
 	}
 	this->my_world->removal_queue->push_back(enemy);	
+}
+
+void Player::credit_interaction(EntityType et){
+	this->quest_manager->interacted_with(et);
 }
 
 
@@ -306,6 +333,66 @@ void Player::accept_movement(void) {
 			this->image->update();
 	//}
 	
+}
+
+void Player::set_consoles(BITMAP* clear, BITMAP* in_use){
+	this->clear_console = clear;
+	this->in_use_console = in_use;
+}
+
+void Player::display_to_user(std::string message){
+	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, 
+		this->clear_console->w, this->clear_console->h);
+	print_to_console(message, this->in_use_console);
+}
+
+void print_to_console(std::string str, BITMAP* cons){
+	int max_line_len = 35;
+	int line_height = 10;
+	int x = 17;
+	int y = 18;
+	int len = str.length();
+	int i = 0;
+	while (i < len){
+		std::pair<int, std::string> cur_line = substr_word_boundaries(str, i, max_line_len);
+		textprintf_ex(cons,font,x,y,
+			makecol(255,255,255),-1,cur_line.second.c_str());
+		i = cur_line.first;
+		y += line_height;
+		if (y > CONSOLE_HEIGHT - line_height)
+			break; // bad news, it won't all fit... you suck
+	}
+}
+
+std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len){
+	int len = str.length() - pos;
+	bool saw_space = false;
+	int last_word_ending_pos = pos;
+
+	int i=0;
+	while (i < max_len){
+		if (i >= len){
+			last_word_ending_pos = pos+i;
+			break;
+		}
+		if ((str.at(pos+i) == ' ')  && !saw_space){
+			last_word_ending_pos = pos+i;
+			saw_space = true;
+		} else if (str.at(pos+i) != ' ')
+			saw_space = false;
+		i++;
+	}
+
+	// should now have a pos to stop the substring
+	int sub_len = last_word_ending_pos - pos + 1;
+	std::string ret_str = str.substr(pos, sub_len);
+
+	// now get a forward index, skipping spaces
+	if (!(i >= len)){
+	while (str.at(last_word_ending_pos) == ' ')
+		last_word_ending_pos++;
+	}
+	return std::pair<int, std::string>(last_word_ending_pos, ret_str);
 }
 
 

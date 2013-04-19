@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\QuestGiver.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\QuestManager.cpp"
 				>
 			</File>
@@ -308,6 +312,10 @@
 			</File>
 			<File
 				RelativePath=".\Quest.h"
+				>
+			</File>
+			<File
+				RelativePath=".\QuestGiver.h"
 				>
 			</File>
 			<File

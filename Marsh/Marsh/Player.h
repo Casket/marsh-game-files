@@ -30,7 +30,7 @@
 
 #define MOVEMENT_DELTA 2
 
-
+#define INTERACT_KEY KEY_SPACE
 
 #include "Main.h"
 #include "Sprite.h"
@@ -58,13 +58,16 @@ typedef struct Equipment{
 
 class Player: public Combat{
 	Equipment** inventory;	
-	int level, current_experience;
+	int level, current_experience, mana, max_mana;
 	int keyboard_counter;
 	int keyboard_delay;
+	BITMAP* clear_console;
+	BITMAP* in_use_console;
 
 	public:
 		int experience;
 		QuestManager* quest_manager;
+		bool interacting;
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
 		virtual void update(void);
@@ -72,10 +75,16 @@ class Player: public Combat{
 		bool add_to_inventory(Equipment* equip);
 		virtual void deal_with_attack(Attack* attack);
 		void credit_death(Combat*);
+		void credit_interaction(EntityType et);
+		virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
+		void display_to_user(std::string message);
+		void set_consoles(BITMAP* clear, BITMAP* in_use);
+		bool wants_to_talk(void);
 
 	
 	private:
 		// private stuff
+		int calculate_mana(int);
 		void listen_to_keyboard(void);
 		void accept_aiming(void);
 		void accept_movement(void);

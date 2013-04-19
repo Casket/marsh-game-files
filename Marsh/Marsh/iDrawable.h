@@ -8,7 +8,7 @@ class World;
 
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival};
+enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker};
 
 class iDrawable{
 public:
@@ -20,6 +20,7 @@ public:
 	int bounding_width, bounding_height;
 	bool can_walk_left, can_walk_right, can_walk_up, can_walk_down, targeted;
 	int movement_counter;
+	bool can_speak;
 	EntityType my_type;
 
 public:
@@ -40,12 +41,18 @@ public:
 	int get_reference_x(void);
 	int get_reference_y(void);
 	bool alive;
-
 	virtual void update(void) = 0;
 	virtual void deal_with_attack(Attack* attack) = 0;
 	virtual void check_collisions(void);
-	
+	virtual void speak(void);
+	void append_dialogue(std::string message);
+	void clear_dialogue(void);
+	void set_my_type(EntityType et);
+	EntityType get_my_type(void);
+
 	virtual void check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
+
+private:
 
 };
 
