@@ -30,7 +30,7 @@ void Quest::begin_quest(void){
 }
 
 void Quest::end_quest(void){
-	Player_Accessor::get_player()->display_to_user("Congradulations, you've completed your quest of: \n" + this->description.text);
+	Player_Accessor::get_player()->display_to_user("Congratulations, you've completed your quest of: \n" + this->description.text);
 	Player_Accessor::get_player()->experience+=10;
 }
 

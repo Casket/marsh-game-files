@@ -322,6 +322,7 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
+			
 	}
 }
 
