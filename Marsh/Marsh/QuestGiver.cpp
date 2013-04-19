@@ -46,6 +46,8 @@ void QuestGiver::speak(void){
 	if (this->should_give_quest){
 		this->quest_to_give->begin_quest();
 		this->should_free_player = true;
+		this->should_give_quest = false;
+		this->delivered_quest = true;
 	}
 
 	if (this->should_free_player){

@@ -8,7 +8,7 @@ class World;
 
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker};
+enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken};
 
 class iDrawable{
 public:
