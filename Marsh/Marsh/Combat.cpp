@@ -30,7 +30,6 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 Combat::~Combat(void) {
 	if(casted_spell != NULL)
 		delete casted_spell;
-	delete this->dialogue;
 }
 
 void Combat::set_stats(int vitality, int intelligence, int focus, int willpower, int armor) {
@@ -195,7 +194,6 @@ void Combat::append_dialogue(std::string message){
 		this->dialogue = new std::vector<std::string>();
 	this->dialogue->push_back(message);
 }
-
 void Combat::clear_dialogue(void){
 	this->dialogue->clear();
 }
