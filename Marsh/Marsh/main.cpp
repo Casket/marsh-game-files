@@ -36,7 +36,7 @@ void show_intro(void);
 void save_game(void);
 void load_game(void);
 void show_inv(void);
-void show_screen(int);
+void show_screen(Equipment*);
 World* generate_world(void); // TODO add world identifying thingymahinger
 View* create_view(Player*);
 
@@ -45,7 +45,9 @@ int game_state = INTRO_GAME;
 BITMAP* buffer;
 FONT *font1;
 FONT *font2;
+FONT *font3;
 SAMPLE *theme;
+BITMAP *inv_screen_bitmap;
 int mute = 0;
 
 int main(void)
@@ -54,6 +56,7 @@ int main(void)
 	set_up_game();
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
+	font3 = load_font("font3.pcx",NULL,NULL);
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -76,7 +79,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("Resources//friday_map.txt");
+	v->load_world("Resources//bigTest_empty.txt");
 	return v;
 }
 
@@ -110,15 +113,32 @@ void set_up_game(void) {
 	install_int(timer_frame_counter, 1000);
 	install_int(timer_game_rester, FRAME_RATE_DELAY);
 
-	// default data for inventory
+	// default data for inventory - TEST DATA
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 1, 16, 16);
 	Player_Accessor::create_player(300, 400, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
 	Equipment* equip = new Equipment();
-	equip->name = "Empty";
-	equip->description = "There is no description for this item.";
+	Equipment* equip1 = new Equipment();
+	Equipment* equip2 = new Equipment();
+	equip1->name = "Cloth Armor";
+	equip1->description = "+5 Defense";
+	equip1->item_id = 0;
+	equip1->equipped = false;
+	equip1->equipable = true;
+	equip1->number_held = 1;
+	hero->add_to_inventory(equip1);
+	equip2->name = "Long Sword";
+	equip2->description = "+5 Attack";
+	equip2->item_id = 1;
+	equip2->equipped = false;
+	equip2->equipable = true;
+	equip2->number_held = 1;
+	hero->add_to_inventory(equip2);
+	equip->name = "None";
+	equip->description = "Filler test";
 	equip->item_id = -1;
-	int i = 0;
+	equip->number_held = -1;
+	int i = 2;
 	while (i<MAX_HELD_ITEMS) {
 		hero->add_to_inventory(equip);
 		i += 1;
@@ -209,10 +229,7 @@ void start_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 
 	View *our_viewer= create_view(hero);
-	
-	std::string super_long = "Human Rights First (formerly known as the Lawyers Committee for Human Rights) is a nonprofit, nonpartisan human rights organization based in New York City and Washington, D.C. Since its founding in 1978, the organization has focused on protecting the rights of refugees, supporting human rights defenders around the world, and pressing for the U.S. government’s full participation in the international human rights system. In recent years, the organization also has turned its attention to the erosion of human rights in the U.S. in the post-9/11 period; to the rise in anti-Semitic, racist and anti-Muslim hate crimes and other forms of discrimination in Europe; and to war crimes and crimes against humanity in places like Darfur. The work of Human Rights First is based on the principle that core human rights protections apply universally, and thus extend to everyone by virtue of their humanity. While the organization draws on international law and diplomacy to advance its advocacy, it also recognizes and starts from the premise that long-term change is most likely to occur from within a society. Its slogan is \"American ideals, universal value\".";
 
-	hero->display_to_user(super_long);
 	hero->set_my_type(Hero);
 
 	while(game_state == IN_GAME) {
@@ -237,7 +254,7 @@ void start_game(void) {
 
 		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
 		//	SCREEN_W/2, SCREEN_H/2, 32,30);
-		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", Hero);		
+		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
 		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
@@ -259,11 +276,11 @@ void save_game(void) {
 }
 
 void show_inv(void) { // show inventory items in a list as well as quanitty (click each item to view what they do)
-	BITMAP *inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	Player* hero = Player_Accessor::get_player();
 	int menu_sel = 0;
 	Equipment** inventory = hero->get_inventory();
-	int max_sel = 11;
+	int max_sel = MAX_HELD_ITEMS;
 
 	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
 		if (keypressed()) {
@@ -274,17 +291,17 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
 				case KEY_ENTER:
 					switch (menu_sel) {
-				case 0: show_screen(inventory[0]->item_id); break; 
-				case 1: show_screen(inventory[1]->item_id); break; 
-				case 2: show_screen(inventory[2]->item_id); break; 
-				case 3: show_screen(inventory[3]->item_id); break; 
-				case 4: show_screen(inventory[4]->item_id); break; 
-				case 5: show_screen(inventory[5]->item_id); break;
-				case 6: show_screen(inventory[6]->item_id); break;
-				case 7: show_screen(inventory[7]->item_id); break;
-				case 8: show_screen(inventory[8]->item_id); break;
-				case 9: show_screen(inventory[9]->item_id); break;
-				case 10: show_screen(inventory[10]->item_id); break;
+				case 0: show_screen(inventory[0]); break; 
+				case 1: show_screen(inventory[1]); break; 
+				case 2: show_screen(inventory[2]); break; 
+				case 3: show_screen(inventory[3]); break; 
+				case 4: show_screen(inventory[4]); break; 
+				case 5: show_screen(inventory[5]); break;
+				case 6: show_screen(inventory[6]); break;
+				case 7: show_screen(inventory[7]); break;
+				case 8: show_screen(inventory[8]); break;
+				case 9: show_screen(inventory[9]); break;
+				case 10: show_screen(inventory[10]); break;
 				case 11: game_state=IN_GAME; goto exit_loop;
 					} break;
 			}
@@ -294,66 +311,55 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		// drawing
 		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
-		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Inventory");
-		if (menu_sel != 0) { 
-			textprintf_ex(buffer, font, 50,  140, makecol(0,255,255), -1, "(%d) %s", inventory[0]->number_held, inventory[0]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  140, makecol(255,255,255), -1, "%s", inventory[0]->description);
+		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Character");
+		textprintf_ex(buffer, font3, 50, 160, makecol(56,235,181), -1, "Inventory");
+		textprintf_ex(buffer, font3, 350, 160, makecol(56,235,181), -1, "Equipment");
+		textprintf_ex(buffer, font3, 650, 160, makecol(56,235,181), -1, "Stats");
+		textprintf_ex(buffer, font, 350, 260, makecol(236,221,9), -1, "Armor");
+		textprintf_ex(buffer, font, 350, 280, makecol(236,221,9), -1, "Weapon");
+		textprintf_ex(buffer, font, 350, 300, makecol(236,221,9), -1, "Helmet");
+		textprintf_ex(buffer, font, 350, 320, makecol(236,221,9), -1, "Boots");
+		textprintf_ex(buffer, font, 350, 340, makecol(236,221,9), -1, "Jewelry");
+		
+		int count = 0;
+		int start_x = 50;
+		int start_y = 260;
+		while (count < MAX_HELD_ITEMS) {
+			if (inventory[count]->equipable == true) {
+				if (inventory[count]->equipped == true) {
+					if (inventory[count]->item_id == 0) {
+						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
+					} else {
+						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
+					}
+				} else {
+					if (inventory[count]->item_id == 0) {
+						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "");
+					} else {
+						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "");
+					}
+				}
+			}
+			if (menu_sel != count) { 
+				textprintf_ex(buffer, font, start_x,  start_y, makecol(0,255,255), -1, "(%d) %s", inventory[count]->number_held, inventory[count]->name);
+			} else {	
+				if (inventory[count]->equipable == true) {
+					if (inventory[count]->equipped == false) {
+						textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s [Enter to equip]", inventory[count]->description);
+					} else {
+						textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s [Enter to unequip]", inventory[count]->description);
+					}
+				} else {
+					textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s", inventory[count]->description);
+				}
+			}
+			count+=1;
+			start_y+=20;
 		}
-		if (menu_sel != 1) {
-			textprintf_ex(buffer, font, 50,  160, makecol(0,255,255), -1, "(%d) %s", inventory[1]->number_held, inventory[1]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  160, makecol(255,255,255), -1, "%s", inventory[1]->description);
-		}
-		if (menu_sel != 2) { 
-			textprintf_ex(buffer, font, 50,  180, makecol(0,255,255), -1, "(%d) %s", inventory[2]->number_held, inventory[2]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  180, makecol(255,255,255), -1, "%s", inventory[2]->description);
-		} 
-		if (menu_sel != 3) { 
-			textprintf_ex(buffer, font, 50,  200, makecol(0,255,255), -1, "(%d) %s", inventory[3]->number_held, inventory[3]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  200, makecol(255,255,255), -1, "%s", inventory[3]->description);
-		} 
-		if (menu_sel != 4) { 
-			textprintf_ex(buffer, font, 50,  220, makecol(0,255,255), -1, "(%d) %s", inventory[4]->number_held, inventory[4]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  220, makecol(255,255,255), -1, "%s", inventory[4]->description);
-		} 
-		if (menu_sel != 5) { 
-			textprintf_ex(buffer, font, 50,  240, makecol(0,255,255), -1, "(%d) %s", inventory[5]->number_held, inventory[5]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  240, makecol(255,255,255), -1, "%s", inventory[5]->description);
-		} 
-		if (menu_sel != 6) { 
-			textprintf_ex(buffer, font, 50,  260, makecol(0,255,255), -1, "(%d) %s", inventory[6]->number_held, inventory[6]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  260, makecol(255,255,255), -1, "%s",inventory[6]->description);
-		} 
-		if (menu_sel != 7) { 
-			textprintf_ex(buffer, font, 50,  280, makecol(0,255,255), -1, "(%d) %s", inventory[7]->number_held, inventory[7]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  280, makecol(255,255,255), -1, "%s", inventory[7]->description);
-		} 
-		if (menu_sel != 8) { 
-			textprintf_ex(buffer, font, 50,  300, makecol(0,255,255), -1, "(%d) %s", inventory[8]->number_held, inventory[8]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  300, makecol(255,255,255), -1, "%s", inventory[8]->description);
-		} 
-		if (menu_sel != 9) { 
-			textprintf_ex(buffer, font, 50,  320, makecol(0,255,255), -1, "(%d) %s", inventory[9]->number_held, inventory[9]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  320, makecol(255,255,255), -1, "%s", inventory[9]->description);
-		} 
-		if (menu_sel != 10) { 
-			textprintf_ex(buffer, font, 50,  340, makecol(0,255,255), -1, "(%d) %s", inventory[10]->number_held, inventory[10]->name);
-		} else {
-			textprintf_ex(buffer, font, 50,  340, makecol(255,255,255), -1, "%s", inventory[10]->description);
-		} 
 		if (menu_sel == 11) {
-			textprintf_ex(buffer, font1, 50,  400, makecol(255,0,51), -1, "Return");
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "Return");
 		} else {
-			textprintf_ex(buffer, font1, 50,  400, makecol(255,255,0), -1, "RETURN");
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "RETURN");
 		} 
 
 		// draw to screen
@@ -365,6 +371,16 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 	return;
 }
 
-void show_screen(int inv_id) {
-	return; // do something with clicked item
+void show_screen(Equipment* equip) {
+	if (equip->item_id == -1) {
+		return;
+	}
+	if (equip->equipable == true) {
+		if (equip->equipped == false) {
+			equip->equipped = true;
+		} else {
+			equip->equipped = false;
+		}
+	}
+	//return; // do something with clicked item
 }

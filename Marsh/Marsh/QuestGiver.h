@@ -14,6 +14,7 @@ public:
 	bool should_free_player;
 	bool has_player_hostage;
 	bool delivered_quest;
+	bool should_give_quest;
 	Quest* quest_to_give;
 
 
@@ -21,6 +22,8 @@ public:
 	~QuestGiver(void);
 
 	virtual void append_dialogue(std::string);
+	void append_post_dialogue(std::string);
+	void append_pre_dialogue(std::string);
 	virtual void clear_dialogue(void);
 	virtual void speak(void);
 

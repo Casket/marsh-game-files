@@ -25,11 +25,13 @@ void Quest::add_objective(IQuestObjective* obj){
 }
 
 void Quest::begin_quest(void){
-
+	this->objectives->front()->register_objective(this);
+	Player_Accessor::get_player()->display_to_user("You've started your new quest.\n" + this->description.text);
 }
 
 void Quest::end_quest(void){
-
+	Player_Accessor::get_player()->display_to_user("Congradulations, you've completed your quest of: \n" + this->description.text);
+	Player_Accessor::get_player()->experience+=10;
 }
 
 bool Quest::mark_progress(void){
@@ -38,6 +40,7 @@ bool Quest::mark_progress(void){
 	if (flag){
 		this->objectives->pop_front();
 		if (this->objectives->empty()){
+			end_quest();
 			// quest is over, reward the player
 		} else
 			this->objectives->front()->register_objective(this);

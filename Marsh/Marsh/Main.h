@@ -30,6 +30,7 @@ class Attack;
 #include "IQuestObjective.h"
 #include "RetrieveObjective.h"
 #include "KillObjective.h"
+#include "InteractObjective.h"
 #include "Quest.h"
 #include "QuestGiver.h"
 
