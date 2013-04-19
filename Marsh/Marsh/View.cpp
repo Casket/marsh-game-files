@@ -78,6 +78,7 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(talker);
 	talker->set_boundary_value(40, 40, 0, 0);
 
+
 	QuestReward r;
 	r.gold = 1;
 
