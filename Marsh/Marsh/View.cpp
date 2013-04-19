@@ -68,6 +68,7 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(g);
 
 	Combat* talker = new Combat(100,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
+	talker->set_my_type(EntityType::Speaker);
 	talker->set_world(this->current_world);
 	talker->can_speak = true;
 	talker->append_dialogue("I used to be an adventurer like you, until I took an arrow to the knee");
@@ -98,7 +99,7 @@ void View::load_world(char* filename){
 	r.gold = 1;
 
 	QuestDescription des;
-	des.text = (char*)malloc(sizeof(char)*10);
+	des.text = "Go kill two killer rambo sheep";
 
 	KillObjective* objective;
 	objective = new KillObjective(EntityType::Monster, 2);
@@ -106,7 +107,19 @@ void View::load_world(char* filename){
 	Quest* quest = new Quest(des, objective);
 	quest->add_reward(r);
 
-	objective->register_objective(quest);
+	quest->begin_quest();
+
+	des.text = "Go talk to the barrel";
+
+	InteractObjective* inter_objective;
+	inter_objective = new InteractObjective(EntityType::Speaker, 1);
+
+	Quest* quest2 = new Quest(des, inter_objective);
+	quest2->add_reward(r);
+
+	quest2->begin_quest();
+
+	
 	this->playa->quest_manager->flush_queues();
 
 

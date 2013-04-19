@@ -11,7 +11,7 @@ typedef struct QuestReward{
 }QuestReward;
 
 typedef struct QuestDescription{
-	char* text;
+	std::string text;
 }QuestDescription;
 
 class Quest{

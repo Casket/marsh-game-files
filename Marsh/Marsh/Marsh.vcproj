@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\InteractObjective.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\IQuestObjective.cpp"
 				>
 			</File>
@@ -284,6 +288,10 @@
 			</File>
 			<File
 				RelativePath=".\iDrawable.h"
+				>
+			</File>
+			<File
+				RelativePath=".\InteractObjective.h"
 				>
 			</File>
 			<File
