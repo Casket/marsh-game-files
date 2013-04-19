@@ -134,7 +134,6 @@ void set_up_game(void) {
 	equip2->equipable = true;
 	equip2->number_held = 1;
 	hero->add_to_inventory(equip2);
-	
 	equip->name = "None";
 	equip->description = "Filler test";
 	equip->item_id = -1;
@@ -314,17 +313,33 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Character");
 		textprintf_ex(buffer, font3, 50, 160, makecol(56,235,181), -1, "Inventory");
-		textprintf_ex(buffer, font3, 200, 160, makecol(56,235,181), -1, "Equipment");
-		textprintf_ex(buffer, font, 200, 260, makecol(236,221,9), -1, "No Armor");
-		textprintf_ex(buffer, font, 200, 280, makecol(236,221,9), -1, "No Weapon");
-		textprintf_ex(buffer, font, 200, 300, makecol(236,221,9), -1, "No Helmet");
-		textprintf_ex(buffer, font, 200, 320, makecol(236,221,9), -1, "No Boots");
-		textprintf_ex(buffer, font, 200, 340, makecol(236,221,9), -1, "No Jewelry");
+		textprintf_ex(buffer, font3, 350, 160, makecol(56,235,181), -1, "Equipment");
+		textprintf_ex(buffer, font3, 650, 160, makecol(56,235,181), -1, "Stats");
+		textprintf_ex(buffer, font, 350, 260, makecol(236,221,9), -1, "Armor");
+		textprintf_ex(buffer, font, 350, 280, makecol(236,221,9), -1, "Weapon");
+		textprintf_ex(buffer, font, 350, 300, makecol(236,221,9), -1, "Helmet");
+		textprintf_ex(buffer, font, 350, 320, makecol(236,221,9), -1, "Boots");
+		textprintf_ex(buffer, font, 350, 340, makecol(236,221,9), -1, "Jewelry");
 		
 		int count = 0;
 		int start_x = 50;
 		int start_y = 260;
 		while (count < MAX_HELD_ITEMS) {
+			if (inventory[count]->equipable == true) {
+				if (inventory[count]->equipped == true) {
+					if (inventory[count]->item_id == 0) {
+						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
+					} else {
+						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
+					}
+				} else {
+					if (inventory[count]->item_id == 0) {
+						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "");
+					} else {
+						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "");
+					}
+				}
+			}
 			if (menu_sel != count) { 
 				textprintf_ex(buffer, font, start_x,  start_y, makecol(0,255,255), -1, "(%d) %s", inventory[count]->number_held, inventory[count]->name);
 			} else {	
@@ -342,9 +357,9 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 			start_y+=20;
 		}
 		if (menu_sel == 11) {
-			textprintf_ex(buffer, font1, start_x,  start_y+20*MAX_HELD_ITEMS+90, makecol(255,0,51), -1, "Return");
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "Return");
 		} else {
-			textprintf_ex(buffer, font1, start_x,  start_y+20*MAX_HELD_ITEMS+90, makecol(255,255,0), -1, "RETURN");
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "RETURN");
 		} 
 
 		// draw to screen
@@ -362,25 +377,10 @@ void show_screen(Equipment* equip) {
 	}
 	if (equip->equipable == true) {
 		if (equip->equipped == false) {
-			if (equip->item_id == 0) { // fix this to use the enum EquipmentType
-				textprintf_ex(buffer, font, 200, 260, makecol(236,145,9), -1, "%s (%s)", equip->name, equip->description);
-				equip->equipped = true;
-			} 
-			if (equip->item_id == 1) {
-				textprintf_ex(buffer, font, 200, 280, makecol(236,145,9), -1, "%s (%s)", equip->name, equip->description);
-				equip->equipped = true;
-			}
-		} else { // change back
-			if (equip->item_id == 0) { 
-				textprintf_ex(buffer, font, 200, 260, makecol(236,221,9), -1, "No Armor");
-				equip->equipped = false;
-			} 
-			if (equip->item_id == 1) {
-				textprintf_ex(buffer, font, 200, 280, makecol(236,221,9), -1, "No Weapon");
-				equip->equipped = false;
-			}
+			equip->equipped = true;
+		} else {
+			equip->equipped = false;
 		}
 	}
-	blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
-	return; // do something with clicked item
+	//return; // do something with clicked item
 }
