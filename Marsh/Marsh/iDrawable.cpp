@@ -78,6 +78,10 @@ EntityType iDrawable::get_my_type(void){
 	return this->my_type;
 }
 
+Attack* iDrawable::fetch_me_as_attack(void){
+	return NULL;
+}
+
 void iDrawable::speak(void){};
 void iDrawable::append_dialogue(std::string message){};
 void iDrawable::clear_dialogue(void){};

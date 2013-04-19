@@ -8,7 +8,7 @@ class World;
 
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken};
+enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken, Wallop};
 
 class iDrawable{
 public:
@@ -49,6 +49,7 @@ public:
 	void clear_dialogue(void);
 	void set_my_type(EntityType et);
 	EntityType get_my_type(void);
+	virtual Attack* fetch_me_as_attack(void);
 
 	virtual void check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
 

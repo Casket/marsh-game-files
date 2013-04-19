@@ -238,14 +238,14 @@ void View::draw_to_screen(void){
 }
 
 void draw_status(Player* hero, BITMAP* buffer){
-	int max_health = 31; //hero->get_max_health();
-	int cur_health = 15; //hero->get_health();
+	int max_health = hero->get_max_health();
+	int cur_health = hero->get_current_health();
 	double px_per_h =  (double) RESOURCE_BAR_WIDTH / (double) max_health;  //total_pixs / total_health
 
 	rectfill(buffer, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, HEALTH_BAR_X_POS + px_per_h*cur_health, HEALTH_BAR_Y_POS + RESOURCE_BAR_HEIGHT, HEALTH_COLOR);
 
-	int max_mana = 20; //hero->get_max_mana();
-	int cur_mana = 20; //hero->get_mana();
+	int max_mana = hero->get_max_mana();
+	int cur_mana = hero->get_current_mana();
 	double px_per_m = (double) RESOURCE_BAR_WIDTH / (double)max_mana;
 	rectfill(buffer, MANA_BAR_X_POS, MANA_BAR_Y_POS, MANA_BAR_X_POS + px_per_m*cur_mana, MANA_BAR_Y_POS + RESOURCE_BAR_HEIGHT, MANA_COLOR);
 

@@ -10,10 +10,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,1);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,10);
+	this->attack_loadout[0]->my_type = Wallop;
 	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
 	this->attack_loadout[1] = new Attack(800, 800, 10, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26, 26), 100, 0, 0, 3, 0, 100);
+	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);
@@ -25,6 +27,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->current_dialogue = 0;
 	this->should_free_player = false;
 	this->has_player_hostage = false;
+	this->casting_timer = 0;
 }
 
 Combat::~Combat(void) {
@@ -53,6 +56,15 @@ void Combat::set_my_type(EntityType e) {
 int Combat::calculate_health(int stat){
 	return stat;
 	//TODO add some calculation here
+}
+
+int Combat::get_current_health(void){
+	return this->health;
+}
+
+
+int Combat::get_max_health(void){
+	return this->max_health;
 }
 
 void Combat::casting_update(void) {
@@ -184,7 +196,9 @@ void Combat::deal_with_attack(Attack* attack){
 		}
 	}
 	if(this->health <= 0){	
-		Player_Accessor::get_player()->credit_death(this);
+		if (this->player_credit)
+			Player_Accessor::get_player()->credit_death(this);
+		this->my_world->removal_queue->push_back(this);
 	}
 	attack->start_death_sequence();
 }

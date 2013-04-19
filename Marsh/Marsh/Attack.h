@@ -31,6 +31,7 @@ public:
 		Combat* get_my_caster(void);
 		int get_charge_time(void);
 		void start_death_sequence(void);
+		virtual Attack* fetch_me_as_attack(void);
 
 	protected:
 		// super private methods go here

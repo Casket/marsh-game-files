@@ -11,7 +11,6 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 {
 	this->my_type = Hero;
 	this->casting = false;
-	this->casting_timer = 0;
 	this->keyboard_counter = 0;
 	this->keyboard_delay = 4;
 	this->quest_manager = new QuestManager();
@@ -20,7 +19,8 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->inventory = (Equipment**)malloc(sizeof(Equipment*)*MAX_HELD_ITEMS);
 	this->set_new_inventory();
 	this->interacting = false;
-	}
+
+}
 
 Player::~Player(void){
 
@@ -58,10 +58,6 @@ void Player::set_new_inventory(void) {
 	}
 }
 
-void Player::deal_with_attack(Attack* attack){
-
-}
-
 bool Player::wants_to_talk(void){
 	return keyrel(INTERACT_KEY);
 	//return key[INTERACT_KEY];
@@ -87,12 +83,19 @@ void Player::credit_death(Combat* enemy){
 	this->quest_manager->killed_entity(enemy->get_my_type());
 	if(enemy->player_credit){
 		this->experience += enemy->experience_worth;
-	}
-	this->my_world->removal_queue->push_back(enemy);	
+	}	
 }
 
 void Player::credit_interaction(EntityType et){
 	this->quest_manager->interacted_with(et);
+}
+
+int Player::get_current_mana(void){
+	return this->mana;
+}
+
+int Player::get_max_mana(void){
+	return this->max_mana;
 }
 
 
@@ -111,7 +114,7 @@ void Player::listen_to_keyboard(void) {
 void Player::accept_interaction(void) {
 	// TODO implement this
 	//if (this->keyboard_counter++ <= this->keyboard_delay)
-		//return;
+	//return;
 	this->keyboard_counter = 0;
 	if(keyrel(KEY_Q)){
 		this->get_image()->wearing_mask = !this->get_image()->wearing_mask;
@@ -120,32 +123,32 @@ void Player::accept_interaction(void) {
 
 bool keyrel(int k)
 {
-    static bool initialized = false;
-    static bool keyp[KEY_MAX];
- 
-    if(!initialized)
-    {
-        // Set the keyp (key pressed) flags to false
-        for(int i = 0; i < KEY_MAX; i++) keyp[i] = false;
-        initialized = true;
-    }
- 
-    // Now for the checking
-    // Check if the key was pressed
-    if(key[k] && !keyp[k])
-    {
-        // Set the flag and return
-        keyp[k] = true;
-        return false;
-    }
-    else if(!key[k] && keyp[k])
-    {
-        // The key was released
-        keyp[k] = false;
-        return true;
-    }
-    // Nothing happened?
-    return false;
+	static bool initialized = false;
+	static bool keyp[KEY_MAX];
+
+	if(!initialized)
+	{
+		// Set the keyp (key pressed) flags to false
+		for(int i = 0; i < KEY_MAX; i++) keyp[i] = false;
+		initialized = true;
+	}
+
+	// Now for the checking
+	// Check if the key was pressed
+	if(key[k] && !keyp[k])
+	{
+		// Set the flag and return
+		keyp[k] = true;
+		return false;
+	}
+	else if(!key[k] && keyp[k])
+	{
+		// The key was released
+		keyp[k] = false;
+		return true;
+	}
+	// Nothing happened?
+	return false;
 }
 
 void Player::check_casting(void) {
@@ -183,7 +186,7 @@ void Player::check_casting(void) {
 void Player::accept_aiming(void) {
 	Direction old_dir = this->image->get_facing();
 	Direction new_dir = old_dir;
-	
+
 	if (keyrel(AIM_LEFT)) {
 		switch(old_dir) {
 			case N:
@@ -327,12 +330,12 @@ void Player::accept_movement(void) {
 	}
 
 	//if (this->can_walk){
-		this->x_pos = new_x;
-		this->y_pos = new_y;
-		if (walking)
-			this->image->update();
+	this->x_pos = new_x;
+	this->y_pos = new_y;
+	if (walking)
+		this->image->update();
 	//}
-	
+
 }
 
 void Player::set_consoles(BITMAP* clear, BITMAP* in_use){
@@ -389,8 +392,8 @@ std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int
 
 	// now get a forward index, skipping spaces
 	if (!(i >= len)){
-	while (str.at(last_word_ending_pos) == ' ')
-		last_word_ending_pos++;
+		while (str.at(last_word_ending_pos) == ' ')
+			last_word_ending_pos++;
 	}
 	return std::pair<int, std::string>(last_word_ending_pos, ret_str);
 }

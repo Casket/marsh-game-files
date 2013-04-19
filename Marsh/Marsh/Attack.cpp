@@ -11,11 +11,16 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->tree_depth_level = tree_depth;
 	this->expiration_date = exp_date;
 	this->charge_time = charge_time;
+	this->my_type = Wallop;
 }
 
 Attack::~Attack(void)
 {
 
+}
+
+Attack* Attack::fetch_me_as_attack(void){
+	return this;
 }
 
 void Attack::update(void){
@@ -75,6 +80,12 @@ bool Attack::detect_collisions(void){
 			continue;
 		if (check == this->my_caster)
 			continue;
+		if (check->my_type == Wallop){
+			Attack* check_attack = check->fetch_me_as_attack();
+			if (check_attack->my_caster == this->my_caster)
+				continue;
+		}
+
 		check_x = check->get_reference_x();
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
