@@ -88,7 +88,7 @@ void View::load_world(char* filename){
 	Quest* farm_quest = new Quest(kill_chickens, obj);
 	farm_quest->add_reward(lootz);
 
-	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 1000, 800, 0, 0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0,0, 32, 32));
+	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 800, 800, 0, 0, new Solid_Sprite("Resources//people//nice_folk.bmp", 0,0, 32, 32));
 	farmer_bob->set_world(this->current_world);
 	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
 	farmer_bob->append_post_dialogue("Thanks for helping out.");
