@@ -74,14 +74,20 @@ void QuestManager::killed_entity(EntityType et){
 void QuestManager::interacted_with(EntityType et){
 	std::pair<std::multimap<EntityType, Quest*>::iterator, std::multimap<EntityType, Quest*>::iterator> range;
 	range = this->tracking_interaction->equal_range(et);
+	std::list<std::pair<EntityType, Quest*>> delete_ls;
 
 	for (std::multimap<EntityType, Quest*>::iterator it=range.first; it!=range.second; ++it){
 		Quest* interested_quest = it->second;
 		bool flag = interested_quest->mark_progress();
 		if (flag)
-			this->tracking_interaction->erase(it);
+			delete_ls.push_back(*it);
 	}
 
+	for (std::list<std::pair<EntityType, Quest*>>::iterator it = delete_ls.begin(); it!= delete_ls.end(); ++it)
+	{
+		this->tracking_interaction->erase(it->first);
+	}
+	
 	this->flush_queues();
 }
 

@@ -1,4 +1,4 @@
-#include "Main.h"
+/*#include "Main.h"
 #include "QuestGiver.h"
 
 
@@ -54,3 +54,4 @@ void QuestGiver::speak(void){
 
 
 }
+*/

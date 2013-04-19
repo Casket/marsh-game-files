@@ -1,4 +1,4 @@
-#ifndef QUEST_GIVER_H
+/*#ifndef QUEST_GIVER_H
 #define QUEST_GIVER_H 1
 
 #include "Main.h"
@@ -27,4 +27,4 @@ public:
 };
 
 
-#endif
+#endif*/

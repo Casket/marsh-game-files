@@ -214,6 +214,7 @@ void Combat::speak(void){
 	if (this->current_dialogue >= this->dialogue->size()){
 		this->current_dialogue = 0;
 		this->should_free_player = true;
+		Player_Accessor::get_player()->credit_interaction(this->get_my_type());
 	}
 
 }
