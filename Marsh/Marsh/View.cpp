@@ -79,6 +79,21 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(talker);
 	talker->set_boundary_value(40, 40, 0, 0);
 
+	QuestDescription kill_chickens;
+	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
+	QuestReward lootz;
+	lootz.gold = 1;
+	KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
+	Quest* farm_quest = new Quest(kill_chickens, obj);
+	farm_quest->add_reward(lootz);
+
+	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 100, 800, 0, 0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0,0, 32, 32));
+	farmer_bob->set_world(this->current_world);
+	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
+	farmer_bob->append_post_dialogue("Thanks for helping out.");
+	farmer_bob->can_speak = true;
+	this->current_world->insert_entity(farmer_bob);
+	farmer_bob->set_boundary_value(30, 30, 0, 0);
 
 	QuestReward r;
 	r.gold = 1;

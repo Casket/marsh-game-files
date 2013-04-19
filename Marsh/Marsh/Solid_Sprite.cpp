@@ -6,6 +6,16 @@ Solid_Sprite::Solid_Sprite(char* file_name)
 	
 }
 
+Solid_Sprite::Solid_Sprite(char* file_name, int src_x, int src_y, int width, int height)
+:Sprite(file_name, W, 0, 0, 0, 0)
+{
+	BITMAP* temp_bmp = create_bitmap(width, height);
+	BITMAP* sheet = this->sprite_sheet;
+	blit(sheet, temp_bmp, src_x, src_y, 0, 0, width, height);
+	this->sprite_sheet = temp_bmp;
+	destroy_bitmap(sheet);
+}
+
 Solid_Sprite::~Solid_Sprite(void) {
 
 }
