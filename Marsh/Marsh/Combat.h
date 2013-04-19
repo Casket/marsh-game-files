@@ -25,6 +25,8 @@ class Combat: public iDrawable{
 		bool casting;
 		int casting_timer;
 		Attack* casted_spell;
+		std::vector<std::string>* dialogue;
+		int current_dialogue;
 		
 		
 	
@@ -44,6 +46,10 @@ class Combat: public iDrawable{
 		void casting_update(void);
 		void launch_attack(int);
 		virtual void check_collisions(void);
+		virtual void append_dialogue(std::string);
+		virtual void clear_dialogue(void);
+		virtual void speak(void);
+
 
 
 };

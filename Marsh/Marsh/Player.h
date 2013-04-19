@@ -30,7 +30,7 @@
 
 #define MOVEMENT_DELTA 2
 
-
+#define INTERACT_KEY KEY_SPACE
 
 #include "Main.h"
 #include "Sprite.h"
@@ -67,6 +67,7 @@ class Player: public Combat{
 	public:
 		int experience;
 		QuestManager* quest_manager;
+		bool interacting;
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
 		virtual void update(void);

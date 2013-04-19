@@ -8,6 +8,7 @@ iDrawable::iDrawable(int x, int y, int vel, int vel_d, Sprite* img){
 	this->movement_counter = 0;
 	this->image = img;
 	this->alive = true;
+	this->can_speak = false;
 }
 
 iDrawable::~iDrawable(void){
@@ -69,6 +70,10 @@ void iDrawable::set_y_pos(int y){
 	this->y_pos = y;
 }
 
+void iDrawable::speak(void){};
+void iDrawable::append_dialogue(std::string message){};
+void iDrawable::clear_dialogue(void){};
+
 void iDrawable::check_collisions(void){
 	std::list<iDrawable*>* entities = this->get_world()->get_active_entities();
 	int my_x = this->get_reference_x();
@@ -89,6 +94,29 @@ void iDrawable::check_collisions(void){
 	this->can_walk_right = true;
 	this->can_walk_up = true;
 
+	bool* blocked_facing;
+	if (this->my_type == Hero){
+		switch(facing){
+	case N:
+		blocked_facing = &this->can_walk_up;
+		break;
+	case S:
+		blocked_facing = &this->can_walk_down;
+		break;
+	case E:
+		blocked_facing = &this->can_walk_right;
+		break;
+	case W:
+		blocked_facing = &this->can_walk_left;
+		break;
+	default:
+		blocked_facing = &this->can_walk_up;
+		// eh whatever
+		break;
+		}
+	} else
+		blocked_facing = &this->can_walk_up;
+
 	int check_x, check_y, check_width, check_height;
 
 	std::list<iDrawable*>::iterator iter;
@@ -97,17 +125,23 @@ void iDrawable::check_collisions(void){
 		iDrawable* check = (*iter);
 		if (check == this)
 			continue;
+
 		check_x = check->get_reference_x();
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
-		
-		
-		
-		check_walkable(my_x, my_y, my_height, my_width, 
+
+		bool was_blocked_flag = *blocked_facing ? true : false;
+
+		this->check_walkable(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height, 
 			left_right_skew, top_bottom_skew);
-			
+
+		if (this->my_type == Hero && check->can_speak && *blocked_facing && !was_blocked_flag){
+			Player_Accessor::get_player()->interacting = true;
+			check->speak();
+		}
+
 	}
 
 

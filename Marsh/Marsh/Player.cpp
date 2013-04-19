@@ -19,6 +19,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	// TODO implement a constructor
 	this->inventory = (Equipment**)malloc(sizeof(Equipment*)*MAX_HELD_ITEMS);
 	this->set_new_inventory();
+	this->interacting = false;
 	}
 
 Player::~Player(void){
@@ -52,6 +53,8 @@ void Player::deal_with_attack(Attack* attack){
 
 
 void Player::update(void) {
+	if (this->interacting)
+		return; // interaction is controlled by the giver
 	// need to figure out where this guy wants to go
 	check_collisions();
 	listen_to_keyboard();

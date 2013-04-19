@@ -22,6 +22,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->targeted = false;
 	this->player_credit = false;
 	this->experience_worth = 10;
+	this->dialogue = new std::vector<std::string>();
 }
 
 Combat::~Combat(void) {
@@ -75,7 +76,7 @@ void Combat::casting_update(void) {
 		// TODO put the casted spell into the world
 		int spell_x = this->get_reference_x();
 		int spell_y = this->get_reference_y();
-		
+
 		switch(this->image->get_facing()){
 			case N:
 				spell_y -= this->get_bounding_height();
@@ -121,7 +122,7 @@ void Combat::launch_attack(int attack_num) {
 		this->casting = true;
 		this->casted_spell = this->attack_loadout[attack_num];
 	}
-	
+
 }
 
 void Combat::update(){
@@ -164,8 +165,8 @@ void Combat::check_collisions(void){
 	for (int i=0; i < 4; i++){
 		if (!nearby[i]->can_walk)
 			check_walkable(my_x, my_y, my_height, my_width, 
-				nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE, 
-				left_right_skew, top_bottom_skew);
+			nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE, 
+			left_right_skew, top_bottom_skew);
 	}
 }
 
@@ -184,4 +185,22 @@ void Combat::deal_with_attack(Attack* attack){
 		Player_Accessor::get_player()->credit_death(this);
 	}
 	attack->start_death_sequence();
+}
+
+void Combat::append_dialogue(std::string message){
+	if (this->dialogue == NULL)
+		this->dialogue = new std::vector<std::string>();
+	this->dialogue->push_back(message);
+}
+void Combat::clear_dialogue(void){
+	this->dialogue->clear();
+}
+
+void Combat::speak(void){
+	if (this->dialogue->empty())
+		return;
+	Player_Accessor::get_player()->display_to_user(this->dialogue->at(this->current_dialogue++));
+	if (this->current_dialogue >= this->dialogue->size())
+		this->current_dialogue = 0;
+
 }
