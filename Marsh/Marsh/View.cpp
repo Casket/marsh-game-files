@@ -1,4 +1,5 @@
 #include "Main.h"
+class QuestGiver;
 
 
 using namespace std;
@@ -48,7 +49,7 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(45, 34);
+	this->current_world = new World(100, 100);
 	this->current_world->load_world(filename);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
@@ -63,11 +64,11 @@ void View::load_world(char* filename){
 	ways->insert(ways->end(), test5);
 	
 
-	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//chicken.bmp", S, 5, 1, 16, 16),ways); 
+	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 	g->set_world(this->current_world);
 	this->current_world->insert_entity(g);
 
-	Combat* talker = new Combat(100,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
+	Combat* talker = new Combat(400,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
 	talker->set_my_type(EntityType::Speaker);
 	talker->set_world(this->current_world);
 	talker->can_speak = true;
@@ -87,7 +88,7 @@ void View::load_world(char* filename){
 	Quest* farm_quest = new Quest(kill_chickens, obj);
 	farm_quest->add_reward(lootz);
 
-	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 100, 800, 0, 0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0,0, 32, 32));
+	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 1000, 800, 0, 0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0,0, 32, 32));
 	farmer_bob->set_world(this->current_world);
 	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
 	farmer_bob->append_post_dialogue("Thanks for helping out.");
@@ -155,19 +156,26 @@ void View::load_world(char* filename){
 	d7->set_boundary_value(35, 30, 60, 123);
 	this->current_world->insert_entity(d7);
 
-	Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp"));
+	Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
 	rambo_sheep->set_my_type(EntityType::Monster);
 	rambo_sheep->set_stats(103, 0, 0, 0, 0);
 	rambo_sheep->set_world(this->current_world);
 	this->current_world->insert_entity(rambo_sheep);
 	rambo_sheep->set_boundary_value(30, 30, 2, 2);
 
-	Combat* rambo_sheep2 = new Combat(1000,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp"));
+	Combat* rambo_sheep2 = new Combat(1000, 800, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 33, 0, 30, 30));
 	rambo_sheep2->set_my_type(EntityType::Monster);
 	rambo_sheep2->set_stats(99, 0, 0, 0, 0);
 	rambo_sheep2->set_world(this->current_world);
 	this->current_world->insert_entity(rambo_sheep2);
 	rambo_sheep2->set_boundary_value(30, 30, 2, 2);
+
+	Combat* chicken = new Combat(500, 1000, 0, 0, new Solid_Sprite("Resources//Misc//chicken.bmp", 0, 0, 30, 30));
+	chicken->set_my_type(EntityType::Chicken);
+	chicken->set_stats(99, 0, 0, 0, 0);
+	chicken->set_world(this->current_world);
+	this->current_world->insert_entity(chicken);
+	chicken->set_boundary_value(30, 30, 2, 2);
 
 	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);

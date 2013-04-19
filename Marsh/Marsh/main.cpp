@@ -76,7 +76,7 @@ END_OF_MAIN()
 
 View* create_view(Player* hero){
 	View* v = new View(hero);
-	v->load_world("Resources//friday_map.txt");
+	v->load_world("Resources//bigTest_empty.txt");
 	return v;
 }
 
@@ -209,10 +209,7 @@ void start_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 
 	View *our_viewer= create_view(hero);
-	
-	std::string super_long = "Human Rights First (formerly known as the Lawyers Committee for Human Rights) is a nonprofit, nonpartisan human rights organization based in New York City and Washington, D.C. Since its founding in 1978, the organization has focused on protecting the rights of refugees, supporting human rights defenders around the world, and pressing for the U.S. government’s full participation in the international human rights system. In recent years, the organization also has turned its attention to the erosion of human rights in the U.S. in the post-9/11 period; to the rise in anti-Semitic, racist and anti-Muslim hate crimes and other forms of discrimination in Europe; and to war crimes and crimes against humanity in places like Darfur. The work of Human Rights First is based on the principle that core human rights protections apply universally, and thus extend to everyone by virtue of their humanity. While the organization draws on international law and diplomacy to advance its advocacy, it also recognizes and starts from the premise that long-term change is most likely to occur from within a society. Its slogan is \"American ideals, universal value\".";
 
-	hero->display_to_user(super_long);
 	hero->set_my_type(Hero);
 
 	while(game_state == IN_GAME) {
