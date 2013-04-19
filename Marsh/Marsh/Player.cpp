@@ -26,6 +26,17 @@ Player::~Player(void){
 
 }
 
+void Player::set_stats(int vit, int intel, int focus, int will, int armor){
+	Combat::set_stats(vit, intel, focus, will, armor);
+	this->mana = calculate_mana(intel);
+	this->max_mana = this->mana;
+}
+
+int Player::calculate_mana(int stat) {
+	return stat;
+	// TODO do some calculation
+}
+
 Equipment** Player::get_inventory(void) {
 	return this->inventory;
 }

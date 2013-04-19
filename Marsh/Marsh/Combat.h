@@ -20,7 +20,8 @@ class Combat: public iDrawable{
 
 //	protected:
 		Attack* attack_loadout[MAX_ATTACKS];
-		int health, mana, armor;
+		EntityType my_type;
+		int health, armor, max_health;
 		int vitality, intelligence, focus, willpower; // combat stats
 		bool casting;
 		int casting_timer;
@@ -37,12 +38,13 @@ class Combat: public iDrawable{
 		virtual void update(void);
 		virtual void deal_with_attack(Attack* attack);
 		void set_my_type(EntityType);
-		void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
+		virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
 		EntityType Combat::get_my_type(void);
+		int get_current_health(void);
+		int get_max_health(void);
 
 	protected:
 		int calculate_health(int);
-		int calculate_mana(int);
 		void casting_update(void);
 		void launch_attack(int);
 		virtual void check_collisions(void);
