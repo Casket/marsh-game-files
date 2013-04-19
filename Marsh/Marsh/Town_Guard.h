@@ -19,7 +19,7 @@ class Town_Guard:public Combat{
 	bool on_patrol, up_or_down, initial_detection, in_combat, paused, x_or_y;
 	std::vector<std::pair<int,Direction>>* waypoints, path, ret_path;
 	iDrawable* target;
-	int patrol_node, patrol_frame_count, flip_frames;
+	int patrol_node, patrol_frame_count, flip_frames, reset_node;
 	
 
 	public:
@@ -42,7 +42,8 @@ class Town_Guard:public Combat{
 		void reverse(std::pair<int, Direction> cur_node);
 		void other_check_collisions(void);
 		void find_path(void);
-		bool move_towards(void);
+		void move_towards(void);
+		void reset(void);
 };
 
 #endif
