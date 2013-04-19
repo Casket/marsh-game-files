@@ -79,6 +79,7 @@ void View::load_world(char* filename){
 
 	Quest* quest = new Quest(des, objective);
 	quest->add_reward(r);
+	quest->begin_quest();
 
 	objective->register_objective(quest);
 	this->playa->quest_manager->flush_queues();
