@@ -5,9 +5,11 @@
 
 using namespace std;
 
-World::World(int tiles_w, int tiles_h){
-	this->tiles_wide = tiles_w;
-	this->tiles_high = tiles_h;
+World::World(WorldName this_world){
+	this->my_name = this_world;
+	
+	//this->tiles_wide = tiles_w;
+	//this->tiles_high = tiles_h;
 	this->active_entities = new std::list<iDrawable*>();
 	this->visible_entities = new std::list<iDrawable*>();
 	this->removal_queue = new std::list<iDrawable*>();
@@ -275,25 +277,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int size_y){
 	return NULL;
 }
-/*
-char* file = (char*)malloc(sizeof(char) * 100);
-
-if(type[0] == ' '){
-strcpy_s(file, sizeof(char) * 100, "variable.bmp");	
-}else{
-//
-}
-
-Solid_Sprite* image = new Solid_Sprite(file);	
-
-int x_num = list_to_int(x, size_x);//these two are used
-int y_num = list_to_int(y, size_y);//to convert a char array([1,2,3]) to the int 123
-
-Drawable* to_draw = new Drawable(x_num,y_num,0,0,image);
-
-return to_draw;
-}
-*/
+// TODO: make world name conversion including world sizes accordingly
 
 //converts [4,2,0] to 420 or something like that based on the given and the size
 int World::list_to_int(char* given, int size){

@@ -23,6 +23,10 @@ Attack* Attack::fetch_me_as_attack(void){
 	return this;
 }
 
+int Attack::get_mana_cost(void){
+	return 5;
+}
+
 void Attack::update(void){
 	this->get_image()->update();
 	if (!detect_collisions()){

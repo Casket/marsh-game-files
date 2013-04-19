@@ -7,12 +7,14 @@ class Portal : public iDrawable{
 	
 public:
 	WorldName portal_to;
+	bool activated;
 
 public:
 	Portal(int x, int y, Sprite* img, WorldName togo);
 	~Portal(void);
 	virtual void update(void);
 	virtual void deal_with_attack(Attack* attack);
+	virtual Portal* fetch_me_as_portal(void);
 
 
 };

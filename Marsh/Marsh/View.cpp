@@ -1,5 +1,6 @@
 #include "Main.h"
 class QuestGiver;
+class Portal;
 
 
 using namespace std;
@@ -206,8 +207,16 @@ void View::update(void){
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
 		(*iter)->update();
+		if ((*iter)->my_type == StarGate){
+			Portal* gateway = (*iter)->fetch_me_as_portal();
+			if (gateway->activated)
+				this->switch_current_world(gateway->portal_to);
+		}
 	}
+}
 
+void View::switch_current_world(WorldName desired_world){
+	
 }
 
 void View::draw_active_world(void){

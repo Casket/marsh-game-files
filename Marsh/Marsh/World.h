@@ -27,8 +27,9 @@ public:
 	std::list<iDrawable*> *visible_entities;
 	std::list<iDrawable*> *removal_queue;
 	Player* playa;
+	WorldName my_name;
 
-	World(int tiles_w, int tiles_h);
+	World(WorldName this_world);
 	~World();
 	void load_world(char* load_file);
 	void load_mission(char* mission_file);

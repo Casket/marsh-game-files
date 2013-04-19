@@ -4,6 +4,8 @@ Portal::Portal(int x, int y, Sprite *img, WorldName togo)
 :iDrawable(x, y, 0, 0, img)
 {
 	//this->portal_to = togo;	
+	this->my_type = StarGate;
+	this->activated = false;
 }
 
 Portal::~Portal(void){
@@ -29,8 +31,12 @@ void Portal::update(void){
 
 	if (!this->can_walk_down || !this->can_walk_left ||
 		!this->can_walk_right || !this->can_walk_up){
-			// TODO implemented world swapping
+			
 	}
+}
+
+Portal* Portal::fetch_me_as_portal(void){
+	return this;
 }
 
 void Portal::deal_with_attack(Attack *attack){
