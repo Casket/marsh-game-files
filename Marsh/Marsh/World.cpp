@@ -83,7 +83,7 @@ void World::load_world(char* filename){
 				int inner_index = 0; 
 				int outer_index = 1;
 				//drawables the format of the line will be @type(2)+xpos(...)+ypos!
-				char* type = (char*)malloc((sizeof(char)) * 8);
+				char* type = (char*)malloc((sizeof(char)) * 100);
 				char* x = (char*)malloc((sizeof(char)) * 8);
 				char* y = (char*)malloc((sizeof(char)) * 8);
 
@@ -273,28 +273,14 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 //creates a drawable object from the code given 
 Drawable* World::make_drawable(char* type, char* x, char* y, int size_x, int size_y){
-	return NULL;
+	Drawable* d = new Drawable(list_to_int(x),list_to_int(y), , 0,0, new Solid_Sprite(type));
+	d->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d);
+	
+	Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+	d->set_boundary_value(35, 30, 60, 123);
+	this->current_world->insert_entity(d);
 }
-/*
-char* file = (char*)malloc(sizeof(char) * 100);
-
-if(type[0] == ' '){
-strcpy_s(file, sizeof(char) * 100, "variable.bmp");	
-}else{
-//
-}
-
-Solid_Sprite* image = new Solid_Sprite(file);	
-
-int x_num = list_to_int(x, size_x);//these two are used
-int y_num = list_to_int(y, size_y);//to convert a char array([1,2,3]) to the int 123
-
-Drawable* to_draw = new Drawable(x_num,y_num,0,0,image);
-
-return to_draw;
-}
-*/
-
 //converts [4,2,0] to 420 or something like that based on the given and the size
 int World::list_to_int(char* given, int size){
 	int num_return = 0;
