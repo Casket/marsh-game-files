@@ -413,7 +413,7 @@ void World::make_drawable(char* type, char* x, char* y, int size_x, int size_y, 
 
 	}else if(type_str.compare( "barrel")==0){
 
-		new_d->set_boundary_value(29,2,0,7);
+		new_d->set_boundary_value(29,23,0,7);
 
 	}else if(type_str.compare( "bed_double")==0){
 
