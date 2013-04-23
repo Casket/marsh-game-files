@@ -33,6 +33,7 @@ class Attack;
 #include "InteractObjective.h"
 #include "Quest.h"
 #include "QuestGiver.h"
+#include "OptionPresenter.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
@@ -40,6 +41,8 @@ class Attack;
 #define UI_HEIGHT 230
 
 using namespace std;
+
+bool keyrel(int k);
 
 
 class Player_Accessor{

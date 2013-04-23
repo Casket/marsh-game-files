@@ -11,8 +11,7 @@ View::View(Player* hero){
 	this->playa = hero;
 	this->world_buffer = create_bitmap(VISIBLE_W, VISIBLE_H);
 	clear_bitmap(this->world_buffer);
-	for (int i=0; i < MAX_NUMBER_WORLDS; i++)
-		this->loaded_worlds[i] = NULL;
+	this->loaded_worlds = new std::map<WorldName, World*>();
 	this->current_world = NULL;
 	this->ui_image = load_bitmap("Resources//MarshUI5.bmp", NULL);
 	this->ui_buffer = create_bitmap(UI_WIDTH, UI_HEIGHT);
@@ -31,17 +30,29 @@ View::View(Player* hero){
 View::~View(void){
 	if (this->playa != NULL)
 		delete this->playa;
-	for (int i=0; i < MAX_NUMBER_WORLDS; i++){
-		if (this->loaded_worlds[i] != NULL)
-			delete this->loaded_worlds[i];
+
+	std::map<WorldName, World*>::iterator start = this->loaded_worlds->begin();
+	std::map<WorldName, World*>::iterator finish = this->loaded_worlds->end();
+	for ( ; start != finish; start++){
+		delete (*start).second;
 	}
+
+	delete this->loaded_worlds;
+
 	if (this->world_buffer != NULL)
 		destroy_bitmap(this->world_buffer);
-
+	if (this->ui_buffer != NULL)
+		destroy_bitmap(this->ui_buffer);
+	destroy_bitmap(this->ui_image);
+	destroy_bitmap(this->resource_bars[0]);
+	destroy_bitmap(this->resource_bars[1]);
+	destroy_bitmap(this->clear_console);
+	destroy_bitmap(this->in_use_console);
+	destroy_bitmap(this->behind_bars);
 
 	//TODO FIX THIS CAUSE ITS BAD
-	delete this->current_world;
-	this->current_world = NULL;
+	//delete this->current_world;
+	//this->current_world = NULL;
 }
 
 
@@ -50,12 +61,22 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(100, 100);
+
+
+	this->current_world = new World(main_world);
 	this->current_world->load_world(filename);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
-	
+
+	this->insert_testing_entities();
+}
+
+void View::put_world_in_loaded(World* world){
+	this->loaded_worlds->insert(std::pair<WorldName, World*>(world->my_name, world));
+}
+
+void View::insert_testing_entities(void){
 	std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
 	ways->insert(ways->end(), test);
@@ -63,7 +84,7 @@ void View::load_world(char* filename){
 	ways->insert(ways->end(), test2);
 	std::pair<int, Direction> test5 = std::make_pair(-1,N);
 	ways->insert(ways->end(), test5);
-	
+
 
 	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 	g->set_world(this->current_world);
@@ -121,12 +142,12 @@ void View::load_world(char* filename){
 
 	quest2->begin_quest();
 
-	
+
 	this->playa->quest_manager->flush_queues();
 
 
 	Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d->set_boundary_value(35, 30, 60, 123);
+	d->set_boundary_value(0, 0, 0, 0);
 	this->current_world->insert_entity(d);
 
 	Drawable* d1 = new Drawable(650, 149, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
@@ -183,23 +204,12 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(att);
 	att->set_world(this->current_world);*/
 
-	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), main_world);
+	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), small_map);
 	port->set_boundary_value(100, 100, 0, 0);
 	port->set_world(this->current_world);
 	this->current_world->insert_entity(port);
-
 }
 
-void View::put_world_in_loaded(World* world){
-	for (int i=0; i < MAX_NUMBER_WORLDS; i++) {
-		if (this->loaded_worlds[i] == NULL) {
-			this->loaded_worlds[i] = world;
-		} else {
-			if (world->equals(this->loaded_worlds[i]))
-				return;
-		}
-	}
-}
 
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
@@ -216,7 +226,20 @@ void View::update(void){
 }
 
 void View::switch_current_world(WorldName desired_world){
-	
+	switch(desired_world){
+	case small_map:
+		this->load_world("friday_map.txt");
+		break;
+	case large_test:
+		this->load_world("testMap2.txt");
+		break;
+	case main_world:
+		this->load_world("bigTest_empty.txt");
+		break;
+	default:
+		this->load_world("bigTest_empty.txt");
+		break;
+	}
 }
 
 void View::draw_active_world(void){
@@ -331,7 +354,7 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
-			
+
 	}
 }
 

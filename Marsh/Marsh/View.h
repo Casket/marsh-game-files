@@ -29,6 +29,7 @@
 #define MANA_COLOR makecol(33, 104, 165)
 
 #include "Main.h"
+#include <map>
 class Guard;
 class Portal;
 
@@ -45,7 +46,7 @@ class View{
 		BITMAP* in_use_console;
 		Player* playa;
 		World* current_world;
-		World* loaded_worlds[MAX_NUMBER_WORLDS];
+		std::map<WorldName, World*>* loaded_worlds;
 		BITMAP* ui_image;
 
 		View(Player* hero);
@@ -61,6 +62,9 @@ class View{
 		void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
 		void draw_to_screen(void);
 		void switch_current_world(WorldName desired_world);
+
+private:
+	void insert_testing_entities(void);
 };
 
 #endif

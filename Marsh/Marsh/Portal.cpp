@@ -31,7 +31,7 @@ void Portal::update(void){
 
 	if (!this->can_walk_down || !this->can_walk_left ||
 		!this->can_walk_right || !this->can_walk_up){
-			
+			this->activated = true;
 	}
 }
 

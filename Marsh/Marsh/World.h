@@ -15,7 +15,7 @@ typedef struct Tile{
 	bool can_walk;
 }Tile;
 
-enum WorldName{ main_world };
+enum WorldName{ main_world, small_map, large_test};
 // TODO GABE TYPE THIS SHIT, thank you
 
 class World{

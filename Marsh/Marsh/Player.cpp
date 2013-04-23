@@ -61,8 +61,6 @@ void Player::set_new_inventory(void) {
 
 bool Player::wants_to_talk(void){
 	return keyrel(INTERACT_KEY);
-	//return key[INTERACT_KEY];
-	//return true;
 }
 
 
