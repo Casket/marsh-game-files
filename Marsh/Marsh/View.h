@@ -51,7 +51,7 @@ class View{
 
 		View(Player* hero);
 		~View(void);
-		void load_world(char* world_file);
+		void load_world(WorldName world);
 		void update(void);
 		void destroy_worlds(void);
 		void draw_active_world(void);

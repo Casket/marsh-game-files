@@ -22,6 +22,7 @@ View::View(Player* hero){
 		CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
 	this->clear_console = create_sub_bitmap(this->ui_image, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->in_use_console = create_bitmap(CONSOLE_WIDTH, CONSOLE_HEIGHT);
+	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->behind_bars = load_bitmap("Resources//MarshUI5_background.bmp", NULL);
 	hero->set_consoles(this->clear_console, this->in_use_console);
 
@@ -56,15 +57,11 @@ View::~View(void){
 }
 
 
-void View::load_world(char* filename){
+void View::load_world(WorldName world){
 	if (this->current_world != NULL){
 		put_world_in_loaded(this->current_world);
 	}
-
-
-
-	this->current_world = new World(main_world);
-	this->current_world->load_world(filename);
+	this->current_world = new World(world);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
@@ -77,7 +74,8 @@ void View::put_world_in_loaded(World* world){
 }
 
 void View::insert_testing_entities(void){
-	std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
+	
+	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
 	ways->insert(ways->end(), test);
 	std::pair<int, Direction> test2 = std::make_pair(30, S);
@@ -199,15 +197,16 @@ void View::insert_testing_entities(void){
 	this->current_world->insert_entity(chicken);
 	chicken->set_boundary_value(30, 30, 2, 2);
 
-	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
+	Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);
 	this->current_world->insert_entity(att);
-	att->set_world(this->current_world);*/
+	att->set_world(this->current_world);
 
 	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), small_map);
 	port->set_boundary_value(100, 100, 0, 0);
 	port->set_world(this->current_world);
 	this->current_world->insert_entity(port);
+*/
 }
 
 
@@ -220,25 +219,8 @@ void View::update(void){
 		if ((*iter)->my_type == StarGate){
 			Portal* gateway = (*iter)->fetch_me_as_portal();
 			if (gateway->activated)
-				this->switch_current_world(gateway->portal_to);
+				this->load_world(gateway->portal_to);
 		}
-	}
-}
-
-void View::switch_current_world(WorldName desired_world){
-	switch(desired_world){
-	case small_map:
-		this->load_world("friday_map.txt");
-		break;
-	case large_test:
-		this->load_world("testMap2.txt");
-		break;
-	case main_world:
-		this->load_world("bigTest_empty.txt");
-		break;
-	default:
-		this->load_world("bigTest_empty.txt");
-		break;
 	}
 }
 
@@ -252,9 +234,6 @@ void View::draw_active_world(void){
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
 
-
-	//masked_blit(this->playa->get_image()->get_current_frame(), this->world_buffer,
-	//	0,0, SCREEN_W/2, SCREEN_H/2, 32, 30);
 	draw_interface(this->playa);
 	draw_to_screen();
 
@@ -326,6 +305,10 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 
 	for (int i=start_i; i<end_i; i++){
 		for (int j=start_j; j<end_j; j++){
+			int x_test = j*TILE_SIZE - left_x;
+			int y_test =  i*TILE_SIZE - top_y;
+			BITMAP* testBMP = tile_map[i][j]->background_image->get_current_frame();
+			Tile* testTile = tile_map[i][j];
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
 			/*if (!tile_map[i][j]->can_walk)

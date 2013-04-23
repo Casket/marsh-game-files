@@ -3,9 +3,10 @@
 Portal::Portal(int x, int y, Sprite *img, WorldName togo)
 :iDrawable(x, y, 0, 0, img)
 {
-	//this->portal_to = togo;	
+	this->portal_to = togo;	
 	this->my_type = StarGate;
 	this->activated = false;
+	
 }
 
 Portal::~Portal(void){

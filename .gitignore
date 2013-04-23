@@ -2,6 +2,8 @@
 */Debug/*
 /Debug/
 text.txt
+Marsh/Marsh/Debug/*
+Marsh/Marsh/Release/*
 Marsh/*
 
 #but leave resources and .cpp/.h files
