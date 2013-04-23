@@ -119,16 +119,18 @@ void set_up_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 	Equipment* equip = new Equipment();
 	Equipment* equip1 = new Equipment();
-	Equipment* equip2 = new Equipment();
+	Equipment* equip2 = new Equipment(); 
 	equip1->name = "Cloth Armor";
-	equip1->description = "+5 Defense";
+	equip1->vitality = 5;
+	equip1->description = "+5 Vit";
 	equip1->item_id = 0;
 	equip1->equipped = false;
 	equip1->equipable = true;
 	equip1->number_held = 1;
 	hero->add_to_inventory(equip1);
 	equip2->name = "Long Sword";
-	equip2->description = "+5 Attack";
+	equip2->description = "+5 Wp";
+	equip2->willpower = 5;
 	equip2->item_id = 1;
 	equip2->equipped = false;
 	equip2->equipable = true;
@@ -320,6 +322,12 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		textprintf_ex(buffer, font, 350, 300, makecol(236,221,9), -1, "Helmet");
 		textprintf_ex(buffer, font, 350, 320, makecol(236,221,9), -1, "Boots");
 		textprintf_ex(buffer, font, 350, 340, makecol(236,221,9), -1, "Jewelry");
+		textprintf_ex(buffer, font, 650, 260, makecol(236,221,9), -1, "Vitality");
+		textprintf_ex(buffer, font, 650, 280, makecol(236,221,9), -1, "Willpower");
+		textprintf_ex(buffer, font, 650, 300, makecol(236,221,9), -1, "Intelligence");
+		textprintf_ex(buffer, font, 650, 320, makecol(236,221,9), -1, "Focus");
+		textprintf_ex(buffer, font, 710, 300, makecol(236,145,9), -1, "0");
+		textprintf_ex(buffer, font, 710, 320, makecol(236,145,9), -1, "0");
 		
 		int count = 0;
 		int start_x = 50;
@@ -329,14 +337,18 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 				if (inventory[count]->equipped == true) {
 					if (inventory[count]->item_id == 0) {
 						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
+						textprintf_ex(buffer, font, 710, 260, makecol(236,145,9), -1, "%s", inventory[count]->vitality);
 					} else {
 						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
+						textprintf_ex(buffer, font, 710, 280, makecol(236,145,9), -1, "%s", inventory[count]->willpower);
 					}
 				} else {
 					if (inventory[count]->item_id == 0) {
 						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "");
+						textprintf_ex(buffer, font, 710, 260, makecol(236,145,9), -1, "0");
 					} else {
 						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "");
+						textprintf_ex(buffer, font, 710, 280, makecol(236,145,9), -1, "0");
 					}
 				}
 			}
