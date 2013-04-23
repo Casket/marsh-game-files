@@ -83,8 +83,17 @@ void Player::update(void) {
 void Player::credit_death(Combat* enemy){
 	this->quest_manager->killed_entity(enemy->get_my_type());
 	if(enemy->player_credit){
-		this->experience += enemy->experience_worth;
+		grant_experience(enemy->experience_worth);
 	}	
+}
+
+void Player::grant_experience(int experience_worth){
+	this->experience += experience_worth;
+	if(this->experience >= EXPERIENCE_TO_LEVEL){
+		this->experience -= EXPERIENCE_TO_LEVEL;
+		//TODO make level-up happen
+	}
+
 }
 
 void Player::credit_interaction(EntityType et){

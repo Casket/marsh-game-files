@@ -7,9 +7,10 @@ using namespace std;
 
 World::World(WorldName this_world){
 	this->my_name = this_world;
-	
-	//this->tiles_wide = tiles_w;
-	//this->tiles_high = tiles_h;
+	int tiles_w = 0;
+	int tiles_h = 0;
+	this->tiles_wide = tiles_w;
+	this->tiles_high = tiles_h;
 	this->active_entities = new std::list<iDrawable*>();
 	this->visible_entities = new std::list<iDrawable*>();
 	this->removal_queue = new std::list<iDrawable*>();

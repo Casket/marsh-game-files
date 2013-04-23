@@ -50,7 +50,7 @@ void View::load_world(char* filename){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(100, 100);
+	this->current_world = new World(main_world);
 	this->current_world->load_world(filename);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
@@ -265,6 +265,12 @@ void draw_status(Player* hero, BITMAP* buffer){
 
 		rectfill(buffer, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_X_POS + px_per_c*time, CAST_BAR_Y_POS + CAST_BAR_HEIGHT, pick_cast_color(hero->casted_spell));
 	}
+
+	int max_exp = EXPERIENCE_TO_LEVEL;
+	int cur_exp = hero->experience;
+	double px_per_e = (double) EXP_BAR_WIDTH / (double)max_exp;
+	rectfill(buffer, EXP_BAR_X_POS, EXP_BAR_Y_POS, EXP_BAR_X_POS + px_per_e*cur_exp, EXP_BAR_Y_POS + EXP_BAR_HEIGHT, EXP_COLOR);
+	
 }
 
 int pick_cast_color(Attack* attack){
