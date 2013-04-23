@@ -7,8 +7,8 @@ using namespace std;
 
 World::World(WorldName this_world){
 
-	this->tiles_high = 20;
-	this->tiles_wide = 20;
+	this->tiles_high = 0;
+	this->tiles_wide = 0;
 	this->my_name = this_world;
 	this->active_entities = new std::list<iDrawable*>();
 	this->visible_entities = new std::list<iDrawable*>();
@@ -614,7 +614,7 @@ WorldName World::get_WorldName(char* name, int name_size){
 	for(int i = 0; i < name_size;i++){
 		worldName.append(1,name[i]);
 	}
-	if(worldName.compare("test_map")){
+	if(worldName.compare("test_map")==0){
 		return test_map;
 	}
 	else{
@@ -630,6 +630,8 @@ void World::make_portal(char* back_ground_tiles){
 	char* worldName = (char*)malloc((sizeof(char)) * 20);
 	char* x = (char*)malloc((sizeof(char)) * 8);
 	char* y = (char*)malloc((sizeof(char)) * 8);
+	char* x_targ = (char*)malloc((sizeof(char)) * 8);
+	char* y_targ = (char*)malloc((sizeof(char)) * 8);
 
 	while(back_ground_tiles[outer_index] != '+'){
 		worldName[inner_index] = back_ground_tiles[outer_index];
@@ -651,19 +653,42 @@ void World::make_portal(char* back_ground_tiles){
 	inner_index = 0;
 
 	while(back_ground_tiles[outer_index] != '+'){
-		if(back_ground_tiles[outer_index] == '!'){
-			break;
-		}
 		y[inner_index] = back_ground_tiles[outer_index];
 		inner_index += 1;
 		outer_index += 1;
+	}
+		outer_index += 1;
+		int size_y = inner_index;
+		inner_index = 0;
+	
+	while(back_ground_tiles[outer_index] != '+'){
+		x_targ[inner_index] = back_ground_tiles[outer_index];
+		inner_index += 1;
+		outer_index += 1;
+	}
+	//grabs ypos and records num of digits xpos was 
+	outer_index += 1;
+	int size_tar = inner_index;
+	inner_index = 0;
+
+	while(back_ground_tiles[outer_index] != '+'){
+		if(back_ground_tiles[outer_index] == '!'){
+			break;
+		}
+
+		y_targ[inner_index] = back_ground_tiles[outer_index];
+		inner_index += 1;
+		outer_index += 1;
+	}
 
 		int x_pos = list_to_int(x,size_x);
 		int y_pos = list_to_int(y,inner_index);
-		WorldName converted_name = get_WorldName(worldName, name_size);		
-		iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name);
+		int x_tar = list_to_int(x_targ, size_tar); 
+		int y_tar = list_to_int(y_targ, inner_index);
+		WorldName converted_name = get_WorldName(worldName, name_size);
+
+		iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name, x_tar, y_tar);
 		new_portal->set_boundary_value(32, 32, 0, 0);
 		insert_entity(new_portal);
 
-	}
 }

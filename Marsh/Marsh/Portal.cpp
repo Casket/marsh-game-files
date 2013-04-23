@@ -1,12 +1,13 @@
 #include "Portal.h"
 
-Portal::Portal(int x, int y, Sprite *img, WorldName togo)
+Portal::Portal(int x, int y, Sprite *img, WorldName togo, int targ_x, int targ_y)
 :iDrawable(x, y, 0, 0, img)
 {
 	this->portal_to = togo;	
 	this->my_type = StarGate;
 	this->activated = false;
-	
+	this->target_x_pos = targ_x;
+	this->target_y_pos = targ_y;	
 }
 
 Portal::~Portal(void){

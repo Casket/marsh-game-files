@@ -218,8 +218,12 @@ void View::update(void){
 		(*iter)->update();
 		if ((*iter)->my_type == StarGate){
 			Portal* gateway = (*iter)->fetch_me_as_portal();
-			if (gateway->activated)
+			if (gateway->activated){
+				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
+				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
 				this->load_world(gateway->portal_to);
+
+			}
 		}
 	}
 }
