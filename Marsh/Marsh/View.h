@@ -30,6 +30,7 @@
 
 #include "Main.h"
 class Guard;
+class Portal;
 
 using namespace std;
 
@@ -49,7 +50,7 @@ class View{
 
 		View(Player* hero);
 		~View(void);
-		void load_world(char* world_file);
+		void load_world(WorldName world);
 		void update(void);
 		void destroy_worlds(void);
 		void draw_active_world(void);
@@ -59,6 +60,7 @@ class View{
 		void draw_sprites(BITMAP*, Tile***, int, int);
 		void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
 		void draw_to_screen(void);
+		void switch_current_world(WorldName desired_world);
 };
 
 #endif

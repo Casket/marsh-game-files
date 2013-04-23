@@ -1,5 +1,6 @@
 #include "Main.h"
 class QuestGiver;
+class Portal;
 
 
 using namespace std;
@@ -44,18 +45,18 @@ View::~View(void){
 }
 
 
-void View::load_world(char* filename){
+void View::load_world(WorldName world){
 	if (this->current_world != NULL){
 		put_world_in_loaded(this->current_world);
 	}
 
-	this->current_world = new World(100, 100);
-	this->current_world->load_world(filename);
+	this->current_world = new World(world);
+	
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 	
-	std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
+	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
 	ways->insert(ways->end(), test);
 	std::pair<int, Direction> test2 = std::make_pair(30, S);
@@ -177,15 +178,16 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(chicken);
 	chicken->set_boundary_value(30, 30, 2, 2);
 
-	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
+	Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);
 	this->current_world->insert_entity(att);
-	att->set_world(this->current_world);*/
+	att->set_world(this->current_world);
 
 	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), main_world);
 	port->set_boundary_value(100, 100, 0, 0);
 	port->set_world(this->current_world);
 	this->current_world->insert_entity(port);
+*/
 
 }
 
@@ -206,8 +208,16 @@ void View::update(void){
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
 		(*iter)->update();
+		if ((*iter)->my_type == StarGate){
+			Portal* gateway = (*iter)->fetch_me_as_portal();
+			if (gateway->activated)
+				this->switch_current_world(gateway->portal_to);
+		}
 	}
+}
 
+void View::switch_current_world(WorldName desired_world){
+	
 }
 
 void View::draw_active_world(void){
@@ -294,6 +304,10 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 
 	for (int i=start_i; i<end_i; i++){
 		for (int j=start_j; j<end_j; j++){
+			int x_test = j*TILE_SIZE - left_x;
+			int y_test =  i*TILE_SIZE - top_y;
+			BITMAP* testBMP = tile_map[i][j]->background_image->get_current_frame();
+			Tile* testTile = tile_map[i][j];
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
 			/*if (!tile_map[i][j]->can_walk)

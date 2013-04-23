@@ -19,6 +19,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->inventory = (Equipment**)malloc(sizeof(Equipment*)*MAX_HELD_ITEMS);
 	this->set_new_inventory();
 	this->interacting = false;
+	this->set_stats(400, 500, 100, 100, 5);
 
 }
 
@@ -107,7 +108,8 @@ void Player::listen_to_keyboard(void) {
 		// deal with all other potential input
 		accept_movement();
 		accept_interaction();
-		check_casting();
+		if (this->mana > 0)
+			check_casting();
 	}
 }
 
@@ -180,6 +182,12 @@ void Player::check_casting(void) {
 	}
 	if (desired_attack < 0)
 		return;
+	this->mana -= this->attack_loadout[desired_attack]->get_mana_cost();
+	if (this->mana <= 0){
+		this->display_to_user("I need more mana.");
+		this->mana = 0;
+
+	}
 	this->launch_attack(desired_attack);
 }
 

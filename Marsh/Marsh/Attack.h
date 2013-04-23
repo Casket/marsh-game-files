@@ -32,6 +32,7 @@ public:
 		int get_charge_time(void);
 		void start_death_sequence(void);
 		virtual Attack* fetch_me_as_attack(void);
+		int get_mana_cost(void);
 
 	protected:
 		// super private methods go here

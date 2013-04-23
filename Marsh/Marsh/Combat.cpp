@@ -28,6 +28,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->should_free_player = false;
 	this->has_player_hostage = false;
 	this->casting_timer = 0;
+	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 }
 
 Combat::~Combat(void) {

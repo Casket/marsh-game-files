@@ -49,7 +49,7 @@ public:
 	static void create_player(int x, int y, Sprite* img, int w, int h, int x_in, int y_in){
 		Player_Accessor::hero = new Player(x, y, 0, 0, img);
 		Player_Accessor::hero->set_boundary_value(w, h, x_in, y_in);
-		Player_Accessor::hero->set_my_type(EntityType::Hero);
+		Player_Accessor::hero->set_my_type(Hero);
 	}
 
 	static Player* get_player(void){
