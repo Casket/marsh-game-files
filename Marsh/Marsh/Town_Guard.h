@@ -33,7 +33,8 @@ class Town_Guard:public Combat{
 	
 	protected:
 		virtual void check_collisions(void);
-		
+		void detour_obstruction(void);
+		bool get_current_facing_flag(void);
 
 
 	private:

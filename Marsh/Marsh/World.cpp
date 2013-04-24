@@ -38,7 +38,7 @@ World::~World(void){
 
 void World::load_world(){
 
-	char back_ground_tiles[700];
+	char items[700];
 
 	//opens the file-stream
 	fstream fin;
@@ -56,9 +56,13 @@ void World::load_world(){
 		//begin moving line by line down the file
 		while(!fin.eof()){
 
-			fin.getline(back_ground_tiles, 500);
+			int constant_index = 0;
+			std::pair<char*,int> values;
 
-			if (strcmp(back_ground_tiles, "") == 0){
+
+			fin.getline(items, 600);
+
+			if (strcmp(items, "") == 0){
 				break;
 			}
 
@@ -66,42 +70,33 @@ void World::load_world(){
 
 			if(other_row_count == 0){
 
-				char* x = (char*)malloc((sizeof(char)) * 8);
-				char* y = (char*)malloc((sizeof(char)) * 8);
-				int outer_index = 0;
-				int inner_index = 0;
+				//pull out x
+				values = pull_out(items, constant_index);
 
-				//grabs xpos
-				while(back_ground_tiles[outer_index] != '+'){
-					x[inner_index] = back_ground_tiles[outer_index];
-					inner_index += 1;
-					outer_index += 1;
-				}
-				//grabs ypos and records num of digits xpos was 
-				outer_index += 1;
-				int size_x = inner_index;
-				inner_index = 0;
+				this->tiles_wide = list_to_int(values.first, values.second); 
 
-				while(back_ground_tiles[outer_index] != '+' && back_ground_tiles[outer_index] != '!'){
-					y[inner_index] = back_ground_tiles[outer_index];
-					inner_index += 1;
-					outer_index += 1;
-				}
+				constant_index += (values.second + 1);
 
-				this->tiles_wide = list_to_int(x,size_x); 
-				this->tiles_high = list_to_int(y,inner_index);
+				values = pull_out(items, constant_index);
+
+				this->tiles_high = list_to_int(values.first, values.second);
 
 				make_world();
+
 				other_row_count+=1;
 
-			}else if(back_ground_tiles[0] == '@'){
+			}else if(items[0] == '@'){
 
-				designate_drawable(back_ground_tiles);
+				make_drawable(items);
 
 				//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
-			}else if(back_ground_tiles[0] == '#'){
-				
-				make_portal(back_ground_tiles);
+			}else if(items[0] == '#'){
+
+				make_portal(items);
+
+			}else if(items[0] == '~'){
+
+				make_AI(items);
 
 			}else{
 				int size = 2*this->tiles_wide;
@@ -111,8 +106,8 @@ void World::load_world(){
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 				for(int i = 0; i < size ; i+=2){
-					first = back_ground_tiles[i];
-					second = back_ground_tiles[i+1];
+					first = items[i];
+					second = items[i+1];
 					convert_to_tile(first, second, row_count,i/2);
 				}
 				row_count += 1;
@@ -123,6 +118,20 @@ void World::load_world(){
 	}else{
 		return;
 	}
+}
+std::pair<char*, int> World::pull_out(char* items, int index){
+
+	char* x = (char*)malloc((sizeof(char)) * 25);
+	int size = 0;
+
+	while(items[index] != '+' && items[index] != '!'){
+		x[size] = items[index];
+		index ++;
+		size ++;
+	}
+
+	return std::make_pair(x, size);
+
 }
 Tile*** World::get_tile_map(void){
 	return this->tile_map;
@@ -388,7 +397,7 @@ void World::make_world(){
 
 
 }
-void World::make_drawable(char* type, char* x, char* y, int size_x, int size_y, int type_size){
+void World::designate_drawable(char* type, char* x, char* y, int size_x, int size_y, int type_size){
 
 	int x_pos = list_to_int(x,size_x);
 	int y_pos = list_to_int(y,size_y);
@@ -396,11 +405,9 @@ void World::make_drawable(char* type, char* x, char* y, int size_x, int size_y, 
 	std::string type_str;
 	char* filename = (char*)malloc((sizeof(char)) * (100));
 	strcpy_s(filename,sizeof(char) * 100,"Resources//drawable_images//");
-	for(int i = 0; i < type_size;i++){
-		type_str.append(1,type[i]);
-	}
-	strcat(filename, type_str.c_str());
-	strcat(filename,".bmp");
+	type_str = to_string(type, type_size);
+	strcat_s(filename,(sizeof(char)) * (100), type_str.c_str());
+	strcat_s(filename,(sizeof(char)) * (100),".bmp");
 	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite(filename));
 
 	if(type_str.compare( "aisles")==0){
@@ -539,7 +546,7 @@ void World::make_drawable(char* type, char* x, char* y, int size_x, int size_y, 
 		new_d->set_boundary_value(64,32,0,32);
 
 	}else{
-
+		throw std::exception("Invalid drawable");
 	}
 
 	insert_entity(new_d);
@@ -553,59 +560,40 @@ char* World::get_file(){
 		return "";
 	}
 }
-void World::designate_drawable(char* back_ground_tiles){
+void World::make_drawable(char* items){
 
-
-	int inner_index = 0; 
-	int outer_index = 1;
+	int constant_index = 1;
+	std::pair<char*,int> type, x, y;
 	//drawables the format of the line will be @type(2)+xpos(...)+ypos!
-	char* type = (char*)malloc((sizeof(char)) * 20);
-	char* x = (char*)malloc((sizeof(char)) * 8);
-	char* y = (char*)malloc((sizeof(char)) * 8);
 	bool not_escaped = true;
+
 
 	while(not_escaped){
 
 
 		//grabs type
-		while(back_ground_tiles[outer_index] != '+'){
-			type[inner_index] = back_ground_tiles[outer_index];
-			inner_index += 1;
-			outer_index += 1;
-		}
-		int type_size = inner_index;
-		outer_index += 1;
-		inner_index = 0;
+		type = pull_out(items, constant_index);
+
+		constant_index += type.second + 1;
+
 		//grabs xpos
-		while(back_ground_tiles[outer_index] != '+'){
-			x[inner_index] = back_ground_tiles[outer_index];
-			inner_index += 1;
-			outer_index += 1;
-		}
+		x = pull_out(items, constant_index);
+
+		constant_index += x.second + 1;
 		//grabs ypos and records num of digits xpos was 
-		outer_index += 1;
-		int size_x = inner_index;
-		inner_index = 0;
 
-		while(back_ground_tiles[outer_index] != '+'){
-			if(back_ground_tiles[outer_index] == '!'){
-				not_escaped = false;
-				break;
-			}
-			y[inner_index] = back_ground_tiles[outer_index];
-			inner_index += 1;
-			outer_index += 1;
+		y = pull_out(items, constant_index);
+
+		int check = constant_index + y.second;
+
+		if(items[check] == '!'){
+			not_escaped	= false;
 		}
 
-		outer_index += 1;
-
+		constant_index += (y.second + 1);
 		//passes the things gathered to another function that will make the object
-		make_drawable(type, x, y, size_x, inner_index, type_size);
-		inner_index =0;
+		designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
 	}
-	free(type);
-	free(x);
-	free(y);
 }
 WorldName World::get_WorldName(char* name, int name_size){
 
@@ -618,7 +606,7 @@ WorldName World::get_WorldName(char* name, int name_size){
 		return test_map;
 	}
 	else{
-		//
+		throw std::exception("Broke");
 	}
 	return main_world;
 
@@ -658,10 +646,10 @@ void World::make_portal(char* back_ground_tiles){
 		inner_index += 1;
 		outer_index += 1;
 	}
-		outer_index += 1;
-		int size_y = inner_index;
-		inner_index = 0;
-	
+	outer_index += 1;
+	int size_y = inner_index;
+	inner_index = 0;
+
 	while(back_ground_tiles[outer_index] != '+'){
 		x_targ[inner_index] = back_ground_tiles[outer_index];
 		inner_index += 1;
@@ -682,14 +670,178 @@ void World::make_portal(char* back_ground_tiles){
 		outer_index += 1;
 	}
 
-		int x_pos = list_to_int(x,size_x);
-		int y_pos = list_to_int(y,inner_index);
-		int x_tar = list_to_int(x_targ, size_tar); 
-		int y_tar = list_to_int(y_targ, inner_index);
-		WorldName converted_name = get_WorldName(worldName, name_size);
+	int x_pos = list_to_int(x,size_x);
+	int y_pos = list_to_int(y,inner_index);
+	int x_tar = list_to_int(x_targ, size_tar); 
+	int y_tar = list_to_int(y_targ, inner_index);
+	WorldName converted_name = get_WorldName(worldName, name_size);
 
-		iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name, x_tar, y_tar);
-		new_portal->set_boundary_value(32, 32, 0, 0);
-		insert_entity(new_portal);
+	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name, x_tar, y_tar);
+	new_portal->set_boundary_value(32, 32, 0, 0);
+	insert_entity(new_portal);
+
+}
+
+void World::make_AI(char* items){
+
+	int constant_index = 1;
+	std::pair<char*, int> values;
+
+	values = pull_out(items, constant_index);
+	std::string type;
+
+	constant_index += (values.second + 1);
+
+	type = to_string(values.first, values.second);
+
+	if(type.compare("OptionPresenter") == 0){
+
+		make_op(items, constant_index);
+
+	}else if(type.compare("Guard") == 0){
+
+	}else{
+		throw std::exception("Invalid AI");
+	}
+
+}
+
+void World::make_op(char* items, int constant_index){	
+
+	std::pair<Quest*, int> quest_data;
+	std::pair<char*, int> values = pull_out(items, constant_index);
+	std::string dialouge;
+
+	//file
+	char* filename = (char*)malloc((sizeof(char)) * (constant_index));
+
+	strcpy_s(filename, (sizeof(char)) * (constant_index), values.first);
+
+	constant_index += (values.second + 1);
+
+	//x
+	values = pull_out(items, constant_index);
+
+	int x_pos  = list_to_int(values.first, values.second);
+
+	constant_index += (values.second + 1);
+
+	//y
+	values = pull_out(items, constant_index);
+
+	int y_pos  = list_to_int(values.first, values.second);
+
+	constant_index += (values.second + 1);
+
+	//make the guy
+	OptionPresenter* character = new OptionPresenter(x_pos, y_pos, 0, 0, new Player_Sprite(filename, S, 5, 1, 16, 16));
+
+	//set values
+	character->set_boundary_value(30, 30, 0, 0);
+	character->set_world(this);
+
+	//add number of quests
+	values = pull_out(items, constant_index);
+	int number_of_quests  = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);	
+
+	//create the quests
+	for(int j = 0; j < number_of_quests; j++){
+		quest_data = make_quest(items, constant_index);
+		character->append_quest(quest_data.first);
+		constant_index = quest_data.second;
+	}
+
+	//dialouge
+	make_dialouge_op(items, constant_index, character);
+
+}
+EntityType World::get_entityType(char* to_convert, int convert_size){
+
+	std::string str = to_string(to_convert, convert_size);
+
+	if(str.compare("Tg")==0){
+		return Guard;
+	}else if(str.compare("Mon")==0){
+		return Monster;
+	}else if(str.compare("Out")==0){
+		return Outcast;
+	}else if(str.compare("Riv")==0){
+		return Rival;
+	}else if(str.compare("Ch")==0){
+		return Chicken;
+	}else{
+		throw std::exception("Invalid entity code");
+	}
+
+}
+std::string World::to_string(char* to_convert, int size){
+
+	std::string str;
+	for(int i =0; i < size;i++){
+		str.append(1,to_convert[i]);
+	}
+
+	return str;
+}
+std::pair<Quest*, int> World::make_quest(char* items, int constant_index){
+
+	std::pair<char*,int> values;
+	QuestDescription quest_desc;
+	values = pull_out(items, constant_index);
+	quest_desc.text = values.first;
+	constant_index += (values.second + 1);	
+	QuestReward loot;
+	values = pull_out(items, constant_index);
+	loot.gold = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+	IQuestObjective* obj;
+	if(items[constant_index] == 'K'){
+		constant_index += 1;
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		EntityType ent = get_entityType(values.first, values.second);
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		obj = new KillObjective(ent, list_to_int(values.first, values.second));
+
+	}else if(items[constant_index] == 'R'){
+		constant_index += 1;
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		int item_id= list_to_int(values.first, values.second);
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		obj = new RetrieveObjective(item_id, list_to_int(values.first, values.second));
+	}else{
+		throw std::exception("Wrong objective code");
+	}
+
+	Quest* quest = new Quest(quest_desc, obj);
+	quest->add_reward(loot);
+
+	return std::make_pair(quest, constant_index);
+}
+void World::make_dialouge_op(char* items, int constant_index, OptionPresenter* op){
+	std::pair<char*,int> values;
+	while(items[constant_index] != '!'){
+
+		constant_index+=1;
+
+		if(items[constant_index] == '^'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_pre_dialogue(to_string(values.first, values.second));
+
+		}else if(items[constant_index] == '*'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_post_dialogue(to_string(values.first, values.second));
+		}else{
+			throw std::exception("dialouge OP code error");
+		}
+
+		constant_index += (values.second);
+	}
 
 }
