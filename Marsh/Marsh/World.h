@@ -31,7 +31,7 @@ public:
 	World(WorldName this_world);
 	~World();
 	void load_world();
-	void load_mission(char* mission_file);
+	void load_mission(char*);
 	Tile*** get_tile_map(void);
 	int get_tiles_wide(void);
 	int get_tiles_high(void);
@@ -45,16 +45,22 @@ public:
 	
 
 private:
-	void convert_to_tile(char a, char b, int pos_x, int pos_y);
-	int find_x(char b);
-	int list_to_int(char* given, int size);
-	void make_drawable(char* type, char* x, char* y, int size_x, int size_y,int type_size);
+	std::pair<char*, int> pull_out(char*, int);
+	void convert_to_tile(char, char, int, int);
+	int find_x(char);
+	int list_to_int(char*, int);
+	void designate_drawable(char*, char*, char*, int, int,int);
 	void make_world();
-	void drawble_info_finder(char* type);
+	void drawble_info_finder(char*);
 	char* get_file();
-	void designate_drawable(char* back_ground_tiles);
+	void make_drawable(char*);
 	static WorldName get_WorldName(char*,int);
 	void make_portal(char*);
+	void make_AI(char*);
+	void make_OP(char*);
+	EntityType get_entityType(char*,int);
+	std::string to_string(char*, int);
+
 	
 	// room for expansion packs! (and easter eggs, and stuffz)
 
