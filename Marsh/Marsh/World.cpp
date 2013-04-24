@@ -95,7 +95,7 @@ void World::load_world(){
 				make_portal(items);
 
 			}else if(items[0] == '~'){
-				
+
 				make_AI(items);
 
 			}else{
@@ -566,21 +566,21 @@ void World::make_drawable(char* items){
 	std::pair<char*,int> type, x, y;
 	//drawables the format of the line will be @type(2)+xpos(...)+ypos!
 	bool not_escaped = true;
-	
+
 
 	while(not_escaped){
 
-		
+
 		//grabs type
 		type = pull_out(items, constant_index);
 
 		constant_index += type.second + 1;
 
-			//grabs xpos
+		//grabs xpos
 		x = pull_out(items, constant_index);
 
 		constant_index += x.second + 1;
-			//grabs ypos and records num of digits xpos was 
+		//grabs ypos and records num of digits xpos was 
 
 		y = pull_out(items, constant_index);
 
@@ -606,7 +606,7 @@ WorldName World::get_WorldName(char* name, int name_size){
 		return test_map;
 	}
 	else{
-		//
+		throw std::exception("Broke");
 	}
 
 }
@@ -682,21 +682,20 @@ void World::make_portal(char* back_ground_tiles){
 }
 
 void World::make_AI(char* items){
-	
+
 	int constant_index = 1;
 	std::pair<char*, int> values;
-	
+
 	values = pull_out(items, constant_index);
 	std::string type;
-	
-	constant_index += (values.first + 1);
+
+	constant_index += (values.second + 1);
 
 	type = to_string(values.first, values.second);
-	
+
 	if(type.compare("OptionPresenter") == 0){
-		
 
-
+		make_op(items, constant_index);
 
 	}else if(type.compare("Guard") == 0){
 
@@ -706,35 +705,36 @@ void World::make_AI(char* items){
 
 }
 
-void World::make_OP(char* items, int constant_index){	
+void World::make_op(char* items, int constant_index){	
 
+	std::pair<Quest*, int> quest_data;
 	std::pair<char*, int> values = pull_out(items, constant_index);
 	std::string dialouge;
-	
+
 	//file
 	char* filename = (char*)malloc((sizeof(char)) * (constant_index));
 
 	strcpy_s(filename, (sizeof(char)) * (constant_index), values.first);
-	
+
 	constant_index += (values.second + 1);
-	
+
 	//x
 	values = pull_out(items, constant_index);
-	
+
 	int x_pos  = list_to_int(values.first, values.second);
-	
+
 	constant_index += (values.second + 1);
-	
+
 	//y
 	values = pull_out(items, constant_index);
-	
+
 	int y_pos  = list_to_int(values.first, values.second);
-	
+
 	constant_index += (values.second + 1);
-	
+
 	//make the guy
-	iDrawable* character = new OptionPresenter(x_pos, y_pos, 0, 0, new Player_Sprite(filename, S, 5, 1, 16, 16));
-	
+	OptionPresenter* character = new OptionPresenter(x_pos, y_pos, 0, 0, new Player_Sprite(filename, S, 5, 1, 16, 16));
+
 	//set values
 	character->set_boundary_value(30, 30, 0, 0);
 	character->set_world(this);
@@ -743,37 +743,22 @@ void World::make_OP(char* items, int constant_index){
 	values = pull_out(items, constant_index);
 	int number_of_quests  = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1);	
-	
+
 	//create the quests
 	for(int j = 0; j < number_of_quests; j++){
-		QuestDescription quest;
-		values = pull_out(items, constant_index);
-		quest.text = values.first;
-		constant_index += (values.second + 1);	
-		QuestReward loot;
-		values = pull_out(items, constant_index);
-		loot.gold = list_to_int(values.first, values.second);
-		constant_index += (values.second + 1);
-		if(items[constant_index] == 'K'){
-			constant_index += 1;
-			value = pull_out(items, constant_index);
-
-			constant_index += (values.second + 1);
-			
-			
-		}else if(items[constant_index] == 'R'){
-			constant_index += 1;
-			RetrieveObjective* obj = new RetrieveObjective()
-		}
-
-
+		quest_data = make_quest(items, constant_index);
+		character->append_quest(quest_data.first);
+		constant_index = quest_data.second;
 	}
+
+	//dialouge
+	make_dialouge_op(items, constant_index, character);
 
 }
 EntityType World::get_entityType(char* to_convert, int convert_size){
-	
+
 	std::string str = to_string(to_convert, convert_size);
-	
+
 	if(str.compare("Tg")==0){
 		return Guard;
 	}else if(str.compare("Mon")==0){
@@ -792,9 +777,70 @@ EntityType World::get_entityType(char* to_convert, int convert_size){
 std::string World::to_string(char* to_convert, int size){
 
 	std::string str;
-	for(int i =0; i < convert_size;i++){
-		str.append(to_convert[i]);
+	for(int i =0; i < size;i++){
+		str.append(1,to_convert[i]);
 	}
 
 	return str;
+}
+std::pair<Quest*, int> World::make_quest(char* items, int constant_index){
+
+	std::pair<char*,int> values;
+	QuestDescription quest_desc;
+	values = pull_out(items, constant_index);
+	quest_desc.text = values.first;
+	constant_index += (values.second + 1);	
+	QuestReward loot;
+	values = pull_out(items, constant_index);
+	loot.gold = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+	IQuestObjective* obj;
+	if(items[constant_index] == 'K'){
+		constant_index += 1;
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		EntityType ent = get_entityType(values.first, values.second);
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		obj = new KillObjective(ent, list_to_int(values.first, values.second));
+
+	}else if(items[constant_index] == 'R'){
+		constant_index += 1;
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		int item_id= list_to_int(values.first, values.second);
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		obj = new RetrieveObjective(item_id, list_to_int(values.first, values.second));
+	}else{
+		throw std::exception("Wrong objective code");
+	}
+
+	Quest* quest = new Quest(quest_desc, obj);
+	quest->add_reward(loot);
+
+	return std::make_pair(quest, constant_index);
+}
+void World::make_dialouge_op(char* items, int constant_index, OptionPresenter* op){
+	std::pair<char*,int> values;
+	while(items[constant_index] != '!'){
+
+		constant_index+=1;
+
+		if(items[constant_index] == '^'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_pre_dialogue(to_string(values.first, values.second));
+
+		}else if(items[constant_index] == '*'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_post_dialogue(to_string(values.first, values.second));
+		}else{
+			throw std::exception("dialouge OP code error");
+		}
+
+		constant_index += (values.second);
+	}
+
 }

@@ -4,6 +4,9 @@
 
 #include "Main.h"
 
+class Quest;
+class OptionPresenter;
+
 using namespace std;
 class Ground_Sprite;
 
@@ -57,9 +60,11 @@ private:
 	static WorldName get_WorldName(char*,int);
 	void make_portal(char*);
 	void make_AI(char*);
-	void make_OP(char*);
+	void make_op(char*, int);
 	EntityType get_entityType(char*,int);
 	std::string to_string(char*, int);
+	std::pair<Quest*, int> make_quest(char*,int);
+	void make_dialouge_op(char*, int, OptionPresenter*);
 
 	
 	// room for expansion packs! (and easter eggs, and stuffz)
