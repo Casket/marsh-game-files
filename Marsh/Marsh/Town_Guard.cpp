@@ -34,6 +34,9 @@ void Town_Guard::update(void){
 
 	check_collisions();	
 
+	if (this->movement_blocked){
+		this->detour_obstruction();	
+	}
 
 	if(this->on_patrol){	
 		patrol();
@@ -44,6 +47,21 @@ void Town_Guard::update(void){
 
 	}
 }
+
+void Town_Guard::detour_obstruction(void){
+	// start off figuring out which direction to go
+	int blocker_x = this->blocking_entity->get_reference_x();
+	int blocker_y = this->blocking_entity->get_reference_y();
+
+	int blocker_width = this->blocking_entity->get_bounding_width();
+	int blocker_height = this->blocking_entity->get_bounding_height();
+	
+	Direction blocked_way = this->image->get_facing();
+
+
+
+}
+
 void Town_Guard::patrol(){
 
 	std::pair<int, Direction> current;
@@ -145,6 +163,7 @@ void Town_Guard::detect_enemies(iDrawable* to_check){
 	if(type_check == Monster || type_check == Outcast){
 		this->target = to_check;
 		this->on_patrol = false;
+		this->in_combat = true;
 
 	}else if(type_check == Hero){
 		if(to_check->get_image()->wearing_mask){
@@ -247,24 +266,47 @@ void Town_Guard::other_check_collisions(void){
 		if(get_visible_to_guard(check)){
 			detect_enemies(check);
 		}else{
-			//
+			continue;
 		}
 
 		if (check == this)
 			continue;
+
 		check_x = check->get_reference_x();
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
-
-
+		
+		bool previously_not_blocked = get_current_facing_flag();
 
 		check_walkable(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height, 
 			left_right_skew, top_bottom_skew);
 
+		if (check != Player_Accessor::hero && 
+			previously_not_blocked && !get_current_facing_flag()){
+				// this uber if means that the guard has been blocked by the current 
+				//entity which is guranteed to not be the player, maybe, hell if i know
+			this->movement_blocked = true;
+			this->blocking_entity = check;
+		}
+
 	}
 }
+
+bool Town_Guard::get_current_facing_flag(void){
+	switch(this->image->get_facing()){
+	case N:
+		return this->can_walk_up;
+	case S:
+		return this->can_walk_down;
+	case E:
+		return this->can_walk_right;
+	case W:
+		return this->can_walk_left;
+	}
+}
+
 void Town_Guard::find_path(){
 
 }
@@ -392,6 +434,9 @@ void Town_Guard::move_towards(){
 		}
 	}
 }
+
+
+
 void Town_Guard::reset(){
 	if(this->reset_node == -1){
 		this->on_patrol = true;

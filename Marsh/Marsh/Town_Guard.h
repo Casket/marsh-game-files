@@ -20,7 +20,9 @@ class Town_Guard:public Combat{
 	std::vector<std::pair<int,Direction>>* waypoints, path, ret_path;
 	iDrawable* target;
 	int patrol_node, patrol_frame_count, flip_frames, reset_node;
-	
+	bool movement_blocked;
+	iDrawable* blocking_entity;
+	int frame_counter_for_direction_change;
 
 	public:
 		Town_Guard(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,Direction>>* waypoints);

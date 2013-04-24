@@ -76,8 +76,7 @@ void Player_Sprite::update(void) {
 			current_frame = state_multiplier*EAST_START;
 		if (current_frame < state_multiplier*EAST_START)
 			current_frame = state_multiplier*EAST_START;
-		break;
-		
+		break;		
 	default:
 		// means that they are facing in a non-cardinal direction
 		// probably should't update

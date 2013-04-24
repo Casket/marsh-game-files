@@ -74,6 +74,32 @@ void View::put_world_in_loaded(World* world){
 }
 
 void View::insert_testing_entities(void){
+
+	QuestDescription kill_chickens;
+	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
+	QuestReward lootz;
+	lootz.gold = 1;
+	KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
+	Quest* farm_quest = new Quest(kill_chickens, obj);
+	farm_quest->add_reward(lootz);
+
+	RetrieveObjective* item_obj = new RetrieveObjective(10, 1);
+	QuestDescription item;
+	item.text = "You need to get some items for me because I like stuff.";
+	Quest* quest2 = new Quest(item, item_obj);
+	quest2->add_reward(lootz);
+
+	OptionPresenter* farmer_bob = new OptionPresenter(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+	farmer_bob->set_world(this->current_world);
+	farmer_bob->append_quest(farm_quest);
+	farmer_bob->append_quest(quest2);
+	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
+	farmer_bob->append_pre_dialogue("Would you like to [1] kill chickens or [2] retrieve fancy items?");
+	farmer_bob->append_post_dialogue("Thanks for helping out.");
+	farmer_bob->can_speak = true;
+	this->current_world->insert_entity(farmer_bob);
+	farmer_bob->set_boundary_value(30, 30, 0, 0);
+
 	
 	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
@@ -99,22 +125,6 @@ void View::insert_testing_entities(void){
 	talker->append_dialogue("I see you have some graph paper.  You must be plotting something.");
 	this->current_world->insert_entity(talker);
 	talker->set_boundary_value(40, 40, 0, 0);
-
-	QuestDescription kill_chickens;
-	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
-	QuestReward lootz;
-	lootz.gold = 1;
-	KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
-	Quest* farm_quest = new Quest(kill_chickens, obj);
-	farm_quest->add_reward(lootz);
-
-	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 800, 800, 0, 0, new Solid_Sprite("Resources//people//nice_folk.bmp", 0,0, 32, 32));
-	farmer_bob->set_world(this->current_world);
-	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
-	farmer_bob->append_post_dialogue("Thanks for helping out.");
-	farmer_bob->can_speak = true;
-	this->current_world->insert_entity(farmer_bob);
-	farmer_bob->set_boundary_value(30, 30, 0, 0);
 
 	QuestReward r;
 	r.gold = 1;

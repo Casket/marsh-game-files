@@ -1,7 +1,13 @@
 #ifndef SPRITE_H
 #define SPRITE_H 1
 
+#define NORTH_START 12
 
+#define SOUTH_START 0
+
+#define EAST_START 8
+
+#define WEST_START 4
 
 #include <allegro.h>
 
@@ -34,6 +40,7 @@ public:
 	virtual void set_facing(Direction);
 	bool get_lighted(void);
 	void set_lighted(bool);
+	virtual void force_direction_update(Direction dir);
 	bool wearing_mask;
 
 

@@ -47,6 +47,7 @@ void QuestGiver::clear_dialogue(void){
 }
 
 void QuestGiver::speak(void){
+	Combat::face_speaker();
 	if (this->should_give_quest){
 		this->quest_to_give->begin_quest();
 		Player_Accessor::get_player()->quest_manager->flush_queues();

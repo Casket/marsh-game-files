@@ -46,6 +46,7 @@ public:
 	virtual void append_dialogue(std::string);
 	virtual void clear_dialogue(void);
 	virtual void speak(void);
+	void face_speaker(void);
 
 
 protected:

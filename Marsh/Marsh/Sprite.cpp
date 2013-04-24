@@ -40,3 +40,23 @@ Sprite* Sprite::clone(Direction dir){
 	return NULL;
 }
 
+void Sprite::force_direction_update(Direction dir){
+	this->facing = dir;
+	switch (dir){
+		case N:
+			this->animation_frame = NORTH_START;
+			break;
+		case S:
+			this->animation_frame = SOUTH_START;
+			break;
+		case E:
+			this->animation_frame = EAST_START;
+			break;
+		case W:
+			this->animation_frame = WEST_START;
+			break;
+		default:
+			break;
+	}
+}
+
