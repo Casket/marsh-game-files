@@ -75,6 +75,11 @@ void View::put_world_in_loaded(World* world){
 
 void View::insert_testing_entities(void){
 
+	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
+	test_transp->set_world(this->current_world);
+	test_transp->get_image()->is_translucent = true;
+	this->current_world->insert_entity(test_transp);
+
 	QuestDescription kill_chickens;
 	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
 	QuestReward lootz;
@@ -100,7 +105,7 @@ void View::insert_testing_entities(void){
 	this->current_world->insert_entity(farmer_bob);
 	farmer_bob->set_boundary_value(30, 30, 0, 0);
 
-	
+
 	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
 	ways->insert(ways->end(), test);
@@ -216,7 +221,7 @@ void View::insert_testing_entities(void){
 	port->set_boundary_value(100, 100, 0, 0);
 	port->set_world(this->current_world);
 	this->current_world->insert_entity(port);
-*/
+	*/
 }
 
 
@@ -225,7 +230,6 @@ void View::update(void){
 
 
 	std::list<iDrawable*>::iterator iter;
-	iter++;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
 		(*iter)->update();
 		if ((*iter)->my_type == StarGate){
@@ -347,8 +351,12 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 		int y = (*iter)->get_y_pos();
 		int width = frame->w;
 		int height = frame->h;
-		masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, 154, 154);
 
+		if ((*iter)->get_image()->is_translucent){
+			draw_trans_sprite(buffer, frame, x-xshift, y-yshift);
+		} else {
+			masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, width, height);
+		}
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,

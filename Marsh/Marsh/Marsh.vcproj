@@ -304,6 +304,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ItemBestower.h"
+				>
+			</File>
+			<File
 				RelativePath=".\KillObjective.h"
 				>
 			</File>

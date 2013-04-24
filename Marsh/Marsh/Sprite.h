@@ -42,6 +42,7 @@ public:
 	void set_lighted(bool);
 	virtual void force_direction_update(Direction dir);
 	bool wearing_mask;
+	bool is_translucent;
 
 
 private:

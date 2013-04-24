@@ -102,6 +102,7 @@ void set_up_game(void) {
 
 	set_color_depth(COLOR_DEPTH);
 	set_gfx_mode(MODE, SCREENW, SCREENH, 0,0);
+	set_alpha_blender();
 
 	srand(time(NULL));
 
