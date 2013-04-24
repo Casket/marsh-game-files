@@ -10,6 +10,9 @@
 #define WEST_START 4
 
 #include <allegro.h>
+#include <string>
+
+using namespace std;
 
 // States for the sprites, will add as needed and whatnots
 enum SpriteState{ Normal, Casting, Explosion, Grazing, Winning};
@@ -24,13 +27,13 @@ protected:
 	int sheet_cols, sheet_rows, total_frames;
 	bool lighted;
 	SpriteState current_state;
-	char* file;
+	std::string file;
 	
 
 public:
-	Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
+	Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
 	~Sprite(void);
-	void load_sprite_sheet(char* name);
+	void load_sprite_sheet(std::string name);
 	virtual BITMAP* get_current_frame(void) = 0;
 	virtual void update(void) = 0;
 	virtual void casting_update(void) = 0;

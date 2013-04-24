@@ -17,6 +17,7 @@ QuestGiver::QuestGiver(Quest* give, int x, int y, int vel, int vel_d, Sprite* im
 	this->delivered_quest = false;
 	this->should_give_quest = false;
 	this->quest_to_give = give;
+	this->can_speak = true;
 
 }
 QuestGiver::~QuestGiver(void){

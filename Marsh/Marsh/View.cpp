@@ -75,7 +75,22 @@ void View::put_world_in_loaded(World* world){
 
 void View::insert_testing_entities(void){
 
-	QuestDescription kill_chickens;
+	if(this->current_world->my_name == main_world){
+		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
+		std::pair<int, int> test = std::make_pair(120, 1000);
+		ways->insert(ways->end(), test);
+		std::pair<int, int> test2 = std::make_pair(120, 800);
+		ways->insert(ways->end(), test2);
+
+
+		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		g->set_boundary_value(32,18,0,14);
+		g->set_world(this->current_world);
+		this->current_world->insert_entity(g);
+	}
+
+
+	/*	QuestDescription kill_chickens;
 	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
 	QuestReward lootz;
 	lootz.gold = 1;
@@ -100,19 +115,6 @@ void View::insert_testing_entities(void){
 	this->current_world->insert_entity(farmer_bob);
 	farmer_bob->set_boundary_value(30, 30, 0, 0);
 
-	
-	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
-	std::pair<int, Direction> test = std::make_pair(-1, N);
-	ways->insert(ways->end(), test);
-	std::pair<int, Direction> test2 = std::make_pair(30, S);
-	ways->insert(ways->end(), test2);
-	std::pair<int, Direction> test5 = std::make_pair(-1,N);
-	ways->insert(ways->end(), test5);
-
-
-	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
-	g->set_world(this->current_world);
-	this->current_world->insert_entity(g);
 
 	Combat* talker = new Combat(400,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
 	talker->set_my_type(EntityType::Speaker);
@@ -216,7 +218,7 @@ void View::insert_testing_entities(void){
 	port->set_boundary_value(100, 100, 0, 0);
 	port->set_world(this->current_world);
 	this->current_world->insert_entity(port);
-*/
+	*/
 }
 
 

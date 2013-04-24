@@ -15,9 +15,9 @@ class Ground_Sprite: public Sprite{
 		BITMAP* sprite_sheet;
 		int frame, total_frames, x, y;
 
-		Ground_Sprite(char* file_name, int x, int y);
+		Ground_Sprite(std::string file_name, int x, int y);
 		~Ground_Sprite(void);
-		void load_sprite_sheet(char* name);
+		void load_sprite_sheet(std::string name);
 		void update(void);
 		void casting_update(void);
 		void check_casting(void);

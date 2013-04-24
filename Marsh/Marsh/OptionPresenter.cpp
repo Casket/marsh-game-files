@@ -14,6 +14,7 @@ OptionPresenter::OptionPresenter(int x, int y, int vel, int vel_d, Sprite* img)
 	this->delivered_quest = false;
 	this->should_give_quest = false;
 	this->should_free_player = false;
+	this->can_speak = true;
 }
 
 OptionPresenter::~OptionPresenter(void){
