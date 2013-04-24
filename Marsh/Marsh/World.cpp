@@ -620,6 +620,7 @@ WorldName World::get_WorldName(char* name, int name_size){
 	else{
 		//
 	}
+	return main_world;
 
 }
 

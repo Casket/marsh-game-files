@@ -223,7 +223,9 @@ void View::insert_testing_entities(void){
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
 
+
 	std::list<iDrawable*>::iterator iter;
+	iter++;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
 		(*iter)->update();
 		if ((*iter)->my_type == StarGate){

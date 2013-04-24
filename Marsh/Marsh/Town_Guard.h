@@ -46,6 +46,8 @@ class Town_Guard:public Combat{
 		void find_path(void);
 		void move_towards(void);
 		void reset(void);
+		void detour_obstruction(void);
+		bool get_current_facing_flag(void);
 };
 
 #endif
