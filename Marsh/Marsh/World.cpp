@@ -612,6 +612,7 @@ WorldName World::get_WorldName(std::string name, int name_size){
 	}else{
 		throw std::exception("Broke");
 	}
+	return main_world;
 
 }
 

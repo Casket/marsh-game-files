@@ -91,6 +91,11 @@ void View::insert_testing_entities(void){
 
 
 	/*	QuestDescription kill_chickens;
+	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
+	test_transp->set_world(this->current_world);
+	test_transp->get_image()->is_translucent = true;
+	this->current_world->insert_entity(test_transp);
+
 	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
 	QuestReward lootz;
 	lootz.gold = 1;
@@ -115,6 +120,19 @@ void View::insert_testing_entities(void){
 	this->current_world->insert_entity(farmer_bob);
 	farmer_bob->set_boundary_value(30, 30, 0, 0);
 
+
+	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
+	std::pair<int, Direction> test = std::make_pair(-1, N);
+	ways->insert(ways->end(), test);
+	std::pair<int, Direction> test2 = std::make_pair(30, S);
+	ways->insert(ways->end(), test2);
+	std::pair<int, Direction> test5 = std::make_pair(-1,N);
+	ways->insert(ways->end(), test5);
+
+
+	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+	g->set_world(this->current_world);
+	this->current_world->insert_entity(g);
 
 	Combat* talker = new Combat(400,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
 	talker->set_my_type(EntityType::Speaker);
@@ -224,6 +242,7 @@ void View::insert_testing_entities(void){
 
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
+
 
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
@@ -347,8 +366,12 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 		int y = (*iter)->get_y_pos();
 		int width = frame->w;
 		int height = frame->h;
-		masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, 154, 154);
 
+		if ((*iter)->get_image()->is_translucent){
+			draw_trans_sprite(buffer, frame, x-xshift, y-yshift);
+		} else {
+			masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, width, height);
+		}
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,

@@ -15,6 +15,7 @@ Sprite::Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows
 	this->current_state = Normal;
 	this->file = file_name;
 	this->wearing_mask = false;
+	this->is_translucent = false;
 
 	this->sprite_sheet = load_bitmap(file_name.c_str(), NULL);
 	if (this->sprite_sheet == NULL)
