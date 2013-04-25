@@ -33,6 +33,7 @@ class Attack;
 #include "InteractObjective.h"
 #include "Quest.h"
 #include "QuestGiver.h"
+#include "OptionPresenter.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
@@ -40,6 +41,8 @@ class Attack;
 #define UI_HEIGHT 230
 
 using namespace std;
+
+bool keyrel(int k);
 
 
 class Player_Accessor{
@@ -49,7 +52,7 @@ public:
 	static void create_player(int x, int y, Sprite* img, int w, int h, int x_in, int y_in){
 		Player_Accessor::hero = new Player(x, y, 0, 0, img);
 		Player_Accessor::hero->set_boundary_value(w, h, x_in, y_in);
-		Player_Accessor::hero->set_my_type(EntityType::Hero);
+		Player_Accessor::hero->set_my_type(Hero);
 	}
 
 	static Player* get_player(void){

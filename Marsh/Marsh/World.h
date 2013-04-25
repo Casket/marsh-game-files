@@ -15,8 +15,7 @@ typedef struct Tile{
 	bool can_walk;
 }Tile;
 
-enum WorldName{ main_world };
-// TODO GABE TYPE THIS SHIT, thank you
+enum WorldName{main_world,town,marsh_n,marsh_s,test_map};
 
 class World{
 public:
@@ -31,7 +30,7 @@ public:
 
 	World(WorldName this_world);
 	~World();
-	void load_world(char* load_file);
+	void load_world();
 	void load_mission(char* mission_file);
 	Tile*** get_tile_map(void);
 	int get_tiles_wide(void);
@@ -43,12 +42,19 @@ public:
 	void remove_entity(iDrawable*);
 	void set_player(Player*);
 	void remove_destroyed(void);
+	
 
 private:
 	void convert_to_tile(char a, char b, int pos_x, int pos_y);
 	int find_x(char b);
 	int list_to_int(char* given, int size);
-	Drawable* make_drawable(char* type, char* x, char* y, int size_x, int size_y);
+	void make_drawable(char* type, char* x, char* y, int size_x, int size_y,int type_size);
+	void make_world();
+	void drawble_info_finder(char* type);
+	char* get_file();
+	void designate_drawable(char* back_ground_tiles);
+	static WorldName get_WorldName(char*,int);
+	void make_portal(char*);
 	
 	// room for expansion packs! (and easter eggs, and stuffz)
 

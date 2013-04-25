@@ -1,6 +1,10 @@
 #include "Main.h"
 #include "QuestGiver.h"
 
+using namespace std;
+
+bool keyrel(int k);
+
 
 QuestGiver::QuestGiver(Quest* give, int x, int y, int vel, int vel_d, Sprite* img)
 :Combat(x, y, vel, vel_d, img)

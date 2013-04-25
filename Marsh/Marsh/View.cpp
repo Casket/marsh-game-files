@@ -11,8 +11,7 @@ View::View(Player* hero){
 	this->playa = hero;
 	this->world_buffer = create_bitmap(VISIBLE_W, VISIBLE_H);
 	clear_bitmap(this->world_buffer);
-	for (int i=0; i < MAX_NUMBER_WORLDS; i++)
-		this->loaded_worlds[i] = NULL;
+	this->loaded_worlds = new std::map<WorldName, World*>();
 	this->current_world = NULL;
 	this->ui_image = load_bitmap("Resources//MarshUI5.bmp", NULL);
 	this->ui_buffer = create_bitmap(UI_WIDTH, UI_HEIGHT);
@@ -23,6 +22,7 @@ View::View(Player* hero){
 		CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
 	this->clear_console = create_sub_bitmap(this->ui_image, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->in_use_console = create_bitmap(CONSOLE_WIDTH, CONSOLE_HEIGHT);
+	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->behind_bars = load_bitmap("Resources//MarshUI5_background.bmp", NULL);
 	hero->set_consoles(this->clear_console, this->in_use_console);
 
@@ -31,39 +31,64 @@ View::View(Player* hero){
 View::~View(void){
 	if (this->playa != NULL)
 		delete this->playa;
-	for (int i=0; i < MAX_NUMBER_WORLDS; i++){
-		if (this->loaded_worlds[i] != NULL)
-			delete this->loaded_worlds[i];
+
+	std::map<WorldName, World*>::iterator start = this->loaded_worlds->begin();
+	std::map<WorldName, World*>::iterator finish = this->loaded_worlds->end();
+	for ( ; start != finish; start++){
+		delete (*start).second;
 	}
+
+	delete this->loaded_worlds;
+
 	if (this->world_buffer != NULL)
 		destroy_bitmap(this->world_buffer);
-
+	if (this->ui_buffer != NULL)
+		destroy_bitmap(this->ui_buffer);
+	destroy_bitmap(this->ui_image);
+	destroy_bitmap(this->resource_bars[0]);
+	destroy_bitmap(this->resource_bars[1]);
+	destroy_bitmap(this->clear_console);
+	destroy_bitmap(this->in_use_console);
+	destroy_bitmap(this->behind_bars);
 
 	//TODO FIX THIS CAUSE ITS BAD
-	delete this->current_world;
-	this->current_world = NULL;
+	//delete this->current_world;
+	//this->current_world = NULL;
 }
 
 
-void View::load_world(char* filename){
+void View::load_world(WorldName world){
 	if (this->current_world != NULL){
 		put_world_in_loaded(this->current_world);
 	}
-
-	this->current_world = new World(main_world);
-	this->current_world->load_world(filename);
+	this->current_world = new World(world);
 	this->current_world->set_player(this->playa);
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
-	
-	std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
+
+	//this->insert_testing_entities();
+	Combat* rambo_sheep = new Combat(200,250, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
+	rambo_sheep->set_my_type(EntityType::Monster);
+	rambo_sheep->set_stats(103, 0, 0, 0, 0);
+	rambo_sheep->set_world(this->current_world);
+	this->current_world->insert_entity(rambo_sheep);
+	rambo_sheep->set_boundary_value(30, 30, 2, 2);
+}
+
+void View::put_world_in_loaded(World* world){
+	this->loaded_worlds->insert(std::pair<WorldName, World*>(world->my_name, world));
+}
+
+void View::insert_testing_entities(void){
+
+	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
 	ways->insert(ways->end(), test);
 	std::pair<int, Direction> test2 = std::make_pair(30, S);
 	ways->insert(ways->end(), test2);
 	std::pair<int, Direction> test5 = std::make_pair(-1,N);
 	ways->insert(ways->end(), test5);
-	
+
 
 	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 	g->set_world(this->current_world);
@@ -121,12 +146,12 @@ void View::load_world(char* filename){
 
 	quest2->begin_quest();
 
-	
+
 	this->playa->quest_manager->flush_queues();
 
 
 	Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d->set_boundary_value(35, 30, 60, 123);
+	d->set_boundary_value(0, 0, 0, 0);
 	this->current_world->insert_entity(d);
 
 	Drawable* d1 = new Drawable(650, 149, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
@@ -178,28 +203,18 @@ void View::load_world(char* filename){
 	this->current_world->insert_entity(chicken);
 	chicken->set_boundary_value(30, 30, 2, 2);
 
-	/*Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
+	Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
 	att->set_boundary_value(28, 28, 4, 4);
 	this->current_world->insert_entity(att);
-	att->set_world(this->current_world);*/
+	att->set_world(this->current_world);
 
-	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), main_world);
+	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), small_map);
 	port->set_boundary_value(100, 100, 0, 0);
 	port->set_world(this->current_world);
 	this->current_world->insert_entity(port);
-
+	*/
 }
 
-void View::put_world_in_loaded(World* world){
-	for (int i=0; i < MAX_NUMBER_WORLDS; i++) {
-		if (this->loaded_worlds[i] == NULL) {
-			this->loaded_worlds[i] = world;
-		} else {
-			if (world->equals(this->loaded_worlds[i]))
-				return;
-		}
-	}
-}
 
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
@@ -209,14 +224,14 @@ void View::update(void){
 		(*iter)->update();
 		if ((*iter)->my_type == StarGate){
 			Portal* gateway = (*iter)->fetch_me_as_portal();
-			if (gateway->activated)
-				this->switch_current_world(gateway->portal_to);
+			if (gateway->activated){
+				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
+				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
+				this->load_world(gateway->portal_to);
+
+			}
 		}
 	}
-}
-
-void View::switch_current_world(WorldName desired_world){
-	
 }
 
 void View::draw_active_world(void){
@@ -229,9 +244,6 @@ void View::draw_active_world(void){
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
 
-
-	//masked_blit(this->playa->get_image()->get_current_frame(), this->world_buffer,
-	//	0,0, SCREEN_W/2, SCREEN_H/2, 32, 30);
 	draw_interface(this->playa);
 	draw_to_screen();
 
@@ -270,7 +282,7 @@ void draw_status(Player* hero, BITMAP* buffer){
 	int cur_exp = hero->experience;
 	double px_per_e = (double) EXP_BAR_WIDTH / (double)max_exp;
 	rectfill(buffer, EXP_BAR_X_POS, EXP_BAR_Y_POS, EXP_BAR_X_POS + px_per_e*cur_exp, EXP_BAR_Y_POS + EXP_BAR_HEIGHT, EXP_COLOR);
-	
+
 }
 
 int pick_cast_color(Attack* attack){
@@ -309,6 +321,10 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 
 	for (int i=start_i; i<end_i; i++){
 		for (int j=start_j; j<end_j; j++){
+			int x_test = j*TILE_SIZE - left_x;
+			int y_test =  i*TILE_SIZE - top_y;
+			BITMAP* testBMP = tile_map[i][j]->background_image->get_current_frame();
+			Tile* testTile = tile_map[i][j];
 			masked_blit(tile_map[i][j]->background_image->get_current_frame(),
 				buffer, 0,0, j*TILE_SIZE - left_x, i*TILE_SIZE - top_y, TILE_SIZE, TILE_SIZE);
 			/*if (!tile_map[i][j]->can_walk)
@@ -337,7 +353,7 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
-			
+
 	}
 }
 

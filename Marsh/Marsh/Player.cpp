@@ -61,8 +61,6 @@ void Player::set_new_inventory(void) {
 
 bool Player::wants_to_talk(void){
 	return keyrel(INTERACT_KEY);
-	//return key[INTERACT_KEY];
-	//return true;
 }
 
 
@@ -92,6 +90,7 @@ void Player::grant_experience(int experience_worth){
 	if(this->experience >= EXPERIENCE_TO_LEVEL){
 		this->experience -= EXPERIENCE_TO_LEVEL;
 		//TODO make level-up happen
+		display_to_user("You have leveled up!");
 	}
 
 }

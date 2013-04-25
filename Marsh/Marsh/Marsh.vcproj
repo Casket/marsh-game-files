@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OptionPresenter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Player.cpp"
 				>
 			</File>
@@ -304,6 +308,10 @@
 			</File>
 			<File
 				RelativePath=".\Main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OptionPresenter.h"
 				>
 			</File>
 			<File

@@ -14,7 +14,7 @@
 #define EXP_BAR_X_POS 215
 #define EXP_BAR_Y_POS 210
 #define EXP_BAR_WIDTH 970
-#define EXP_BAR_HEIGHT 15
+#define EXP_BAR_HEIGHT 5
 #define RESOURCE_BAR_WIDTH 258
 #define RESOURCE_BAR_HEIGHT 20
 #define CAST_BAR_X_POS 590
@@ -34,38 +34,42 @@
 #define EXP_COLOR makecol(255,255,255)
 
 #include "Main.h"
+#include <map>
 class Guard;
 class Portal;
 
 using namespace std;
 
 class View{
-public:
-	BITMAP* world_buffer;
-	BITMAP* ui_buffer;
-	BITMAP* resource_bars[2];
-	BITMAP* behind_bars;
-	BITMAP* spell_slot;
-	BITMAP* clear_console;
-	BITMAP* in_use_console;
-	Player* playa;
-	World* current_world;
-	World* loaded_worlds[MAX_NUMBER_WORLDS];
-	BITMAP* ui_image;
+	public:
+		BITMAP* world_buffer;
+		BITMAP* ui_buffer;
+		BITMAP* resource_bars[2];
+		BITMAP* behind_bars;
+		BITMAP* spell_slot;
+		BITMAP* clear_console;
+		BITMAP* in_use_console;
+		Player* playa;
+		World* current_world;
+		std::map<WorldName, World*>* loaded_worlds;
+		BITMAP* ui_image;
 
-	View(Player* hero);
-	~View(void);
-	void load_world(char* world_file);
-	void update(void);
-	void destroy_worlds(void);
-	void draw_active_world(void);
-	void save_game(void);
-	void put_world_in_loaded(World* world);
-	void draw_interface(Player*);
-	void draw_sprites(BITMAP*, Tile***, int, int);
-	void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
-	void draw_to_screen(void);
-	void switch_current_world(WorldName desired_world);
+		View(Player* hero);
+		~View(void);
+		void load_world(WorldName world);
+		void update(void);
+		void destroy_worlds(void);
+		void draw_active_world(void);
+		void save_game(void);
+		void put_world_in_loaded(World* world);
+		void draw_interface(Player*);
+		void draw_sprites(BITMAP*, Tile***, int, int);
+		void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
+		void draw_to_screen(void);
+		void switch_current_world(WorldName desired_world);
+
+private:
+	void insert_testing_entities(void);
 };
 
 #endif
