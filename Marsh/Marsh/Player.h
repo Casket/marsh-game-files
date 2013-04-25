@@ -28,7 +28,7 @@
 #define CAST_TEN KEY_0
 #define OPEN_MENU KEY_ESC	// TODO define that
 
-#define MOVEMENT_DELTA 2
+#define MOVEMENT_DELTA 4
 
 #define INTERACT_KEY KEY_SPACE
 

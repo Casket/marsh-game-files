@@ -17,6 +17,7 @@ QuestGiver::QuestGiver(Quest* give, int x, int y, int vel, int vel_d, Sprite* im
 	this->delivered_quest = false;
 	this->should_give_quest = false;
 	this->quest_to_give = give;
+	this->can_speak = true;
 
 }
 QuestGiver::~QuestGiver(void){
@@ -47,6 +48,7 @@ void QuestGiver::clear_dialogue(void){
 }
 
 void QuestGiver::speak(void){
+	Combat::face_speaker();
 	if (this->should_give_quest){
 		this->quest_to_give->begin_quest();
 		Player_Accessor::get_player()->quest_manager->flush_queues();

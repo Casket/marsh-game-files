@@ -1,12 +1,12 @@
 #include "Solid_Sprite.h"
 
-Solid_Sprite::Solid_Sprite(char* file_name)
+Solid_Sprite::Solid_Sprite(std::string file_name)
 :Sprite(file_name, W, 0,0,0,0)
 {
 	
 }
 
-Solid_Sprite::Solid_Sprite(char* file_name, int src_x, int src_y, int width, int height)
+Solid_Sprite::Solid_Sprite(std::string file_name, int src_x, int src_y, int width, int height)
 :Sprite(file_name, W, 0, 0, 0, 0)
 {
 	BITMAP* temp_bmp = create_bitmap(width, height);

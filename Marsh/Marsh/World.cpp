@@ -38,14 +38,14 @@ World::~World(void){
 
 void World::load_world(){
 
-	char back_ground_tiles[700];
+	std::string items;
 
 	//opens the file-stream
 	fstream fin;
 
-	char* filename = get_file();
+	std::string filename = get_file(this->my_name);
 
-	fin.open(filename, ios::in);
+	fin.open(filename.c_str(), ios::in);
 
 
 	if(fin.is_open()){
@@ -56,9 +56,13 @@ void World::load_world(){
 		//begin moving line by line down the file
 		while(!fin.eof()){
 
-			fin.getline(back_ground_tiles, 500);
+			int constant_index = 0;
+			std::pair<std::string,int> values;
 
-			if (strcmp(back_ground_tiles, "") == 0){
+
+			std::getline(fin, items);
+
+			if (items.compare("") == 0){
 				break;
 			}
 
@@ -66,42 +70,33 @@ void World::load_world(){
 
 			if(other_row_count == 0){
 
-				char* x = (char*)malloc((sizeof(char)) * 8);
-				char* y = (char*)malloc((sizeof(char)) * 8);
-				int outer_index = 0;
-				int inner_index = 0;
+				//pull out x
+				values = pull_out(items, constant_index);
 
-				//grabs xpos
-				while(back_ground_tiles[outer_index] != '+'){
-					x[inner_index] = back_ground_tiles[outer_index];
-					inner_index += 1;
-					outer_index += 1;
-				}
-				//grabs ypos and records num of digits xpos was 
-				outer_index += 1;
-				int size_x = inner_index;
-				inner_index = 0;
+				this->tiles_wide = list_to_int(values.first, values.second); 
 
-				while(back_ground_tiles[outer_index] != '+' && back_ground_tiles[outer_index] != '!'){
-					y[inner_index] = back_ground_tiles[outer_index];
-					inner_index += 1;
-					outer_index += 1;
-				}
+				constant_index += (values.second + 1);
 
-				this->tiles_wide = list_to_int(x,size_x); 
-				this->tiles_high = list_to_int(y,inner_index);
+				values = pull_out(items, constant_index);
+
+				this->tiles_high = list_to_int(values.first, values.second);
 
 				make_world();
+
 				other_row_count+=1;
 
-			}else if(back_ground_tiles[0] == '@'){
+			}else if(items.at(0) == '@'){
 
-				designate_drawable(back_ground_tiles);
+				make_drawable(items);
 
 				//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
-			}else if(back_ground_tiles[0] == '#'){
-				
-				make_portal(back_ground_tiles);
+			}else if(items.at(0) == '#'){
+
+				make_portal(items);
+
+			}else if(items.at(0) == '~'){
+
+				make_AI(items);
 
 			}else{
 				int size = 2*this->tiles_wide;
@@ -111,8 +106,8 @@ void World::load_world(){
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 				for(int i = 0; i < size ; i+=2){
-					first = back_ground_tiles[i];
-					second = back_ground_tiles[i+1];
+					first = items.at(i);
+					second = items.at(i+1);
 					convert_to_tile(first, second, row_count,i/2);
 				}
 				row_count += 1;
@@ -123,6 +118,20 @@ void World::load_world(){
 	}else{
 		return;
 	}
+}
+std::pair<std::string, int> World::pull_out(std::string items, int index){
+
+	std::string x;
+	int size = 0;
+
+	while(items.at(index) != '+' && items.at(index) != '!'){
+		x.append(1,items.at(index));
+		index ++;
+		size ++;
+	}
+
+	return std::make_pair(x, size);
+
 }
 Tile*** World::get_tile_map(void){
 	return this->tile_map;
@@ -258,11 +267,11 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 
-int World::list_to_int(char* given, int size){
+int World::list_to_int(std::string given, int size){
 	int num_return = 0;
 
 	for(int i = 0; i < size; i++){
-		char char_int = given[i];
+		char char_int = given.at(i);
 		int start_int = ((int)char_int)-48;
 
 		for(int j = 0; j < size - i - 1;j++){
@@ -310,8 +319,11 @@ int World::find_x(char b){
 }
 
 bool World::equals(World* w){
+	if(this->my_name == w->my_name){
+		return true;
+	}
+	
 	return false;
-	// TODO WRITE THIS, eventually
 }
 
 
@@ -388,253 +400,234 @@ void World::make_world(){
 
 
 }
-void World::make_drawable(char* type, char* x, char* y, int size_x, int size_y, int type_size){
+void World::designate_drawable(std::string type, std::string x, std::string y, int size_x, int size_y, int type_size){
 
 	int x_pos = list_to_int(x,size_x);
 	int y_pos = list_to_int(y,size_y);
 	Drawable* new_d;
-	std::string type_str;
-	char* filename = (char*)malloc((sizeof(char)) * (100));
-	strcpy_s(filename,sizeof(char) * 100,"Resources//drawable_images//");
-	for(int i = 0; i < type_size;i++){
-		type_str.append(1,type[i]);
-	}
-	strcat(filename, type_str.c_str());
-	strcat(filename,".bmp");
-	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite(filename));
 
-	if(type_str.compare( "aisles")==0){
+	std::string filename;
+	filename.append("Resources//drawable_images//");
+	filename.append(type);
+	filename.append(".bmp");
+
+	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite((char*)filename.c_str()));
+	
+	if(type.compare( "aisles")==0){
 
 		new_d->set_boundary_value(160,32,0,32);
 
-	}else if(type_str.compare("altar")==0){
+	}else if(type.compare("altar")==0){
 
 		new_d->set_boundary_value(72,32,2,18);
 
-	}else if(type_str.compare( "barrel")==0){
+	}else if(type.compare( "barrel")==0){
 
 		new_d->set_boundary_value(29,23,0,7);
 
-	}else if(type_str.compare( "bed_double")==0){
+	}else if(type.compare( "bed_double")==0){
 
 		new_d->set_boundary_value(64,64,0,0);
 
-	}else if(type_str.compare( "bed_house")==0){
+	}else if(type.compare( "bed_house")==0){
 
 		new_d->set_boundary_value(32,64,0,0);
 
-	}else if(type_str.compare( "bed_hut")==0){
+	}else if(type.compare( "bed_hut")==0){
 
 		new_d->set_boundary_value(32,64,0,0);
 
-	}else if(type_str.compare( "beer")==0){
+	}else if(type.compare( "beer")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "bookshelf")==0){
+	}else if(type.compare( "bookshelf")==0){
 
 		new_d->set_boundary_value(64,32,0,32);
 
-	}else if(type_str.compare( "box")==0){
+	}else if(type.compare( "box")==0){
 
 		new_d->set_boundary_value(32,24,0,8);
 
-	}else if(type_str.compare( "chest")==0){
+	}else if(type.compare( "chest")==0){
 
 		new_d->set_boundary_value(32,32,0,0);
 
-	}else if(type_str.compare( "dirt_clump")==0){
+	}else if(type.compare( "dirt_clump")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "door_front")==0){
+	}else if(type.compare( "door_front")==0){
 
 
-	}else if(type_str.compare( "dresser")==0){
+	}else if(type.compare( "dresser")==0){
 
 		new_d->set_boundary_value(32,32,0,32);
 
-	}else if(type_str.compare( "fireplace")==0){
+	}else if(type.compare( "fireplace")==0){
 
 		new_d->set_boundary_value(67,64,0,0);
 
-	}else if(type_str.compare( "flowers")==0){
+	}else if(type.compare( "flowers")==0){
 
 		new_d->set_boundary_value(0,0,0,0);		
 
-	}else if(type_str.compare( "grass_tuft")==0){
+	}else if(type.compare( "grass_tuft")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "grass_tuft_marsh")==0){
+	}else if(type.compare( "grass_tuft_marsh")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "kitchen_cabinet")==0){
+	}else if(type.compare( "kitchen_cabinet")==0){
 
 		new_d->set_boundary_value(32,40,0,24);
 
-	}else if(type_str.compare( "kitchen_stuff")==0){
+	}else if(type.compare( "kitchen_stuff")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "mirror")==0){
+	}else if(type.compare( "mirror")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "organ")==0){
+	}else if(type.compare( "organ")==0){
 
 		new_d->set_boundary_value(63,34,15,30);
 
-	}else if(type_str.compare( "oven")==0){
+	}else if(type.compare( "oven")==0){
 
 		new_d->set_boundary_value(32,32,0,32);
 
-	}else if(type_str.compare( "piano")==0){
+	}else if(type.compare( "piano")==0){
 
 		new_d->set_boundary_value(63,34,15,30);
 
-	}else if(type_str.compare( "portrait")==0){
+	}else if(type.compare( "portrait")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare( "stairs_down_right")==0){
+	}else if(type.compare( "stairs_down_right")==0){
 
 
-	}else if(type_str.compare( "stairs_left")==0){
+	}else if(type.compare( "stairs_left")==0){
 
 
-	}else if(type_str.compare( "stairs_right")==0){
+	}else if(type.compare( "stairs_right")==0){
 
 
-	}else if(type_str.compare( "statue")==0){
+	}else if(type.compare( "statue")==0){
 
 		new_d->set_boundary_value(32,32,0,32);
 
-	}else if(type_str.compare( "table_hut")==0){
+	}else if(type.compare( "table_hut")==0){
 
 		new_d->set_boundary_value(32,27,0,5);
 
-	}else if(type_str.compare( "throne")==0){
+	}else if(type.compare( "throne")==0){
 
 		new_d->set_boundary_value(67,32,0,32);
 
-	}else if(type_str.compare("tree_pine")==0){
+	}else if(type.compare("tree_pine")==0){
 
 		new_d->set_boundary_value(35,30,60,123);
 
-	}else if(type_str.compare("tree_stump")==0){
+	}else if(type.compare("tree_stump")==0){
 
 		new_d->set_boundary_value(27,18,2,7);
 
-	}else if(type_str.compare("watchtower")==0){
+	}else if(type.compare("watchtower")==0){
 
 
-	}else if(type_str.compare("wine")==0){
+	}else if(type.compare("wine")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
-	}else if(type_str.compare("wine_cabinet")==0){
+	}else if(type.compare("wine_cabinet")==0){
 
 		new_d->set_boundary_value(64,32,0,32);
 
 	}else{
-
+		throw std::exception("Invalid drawable");
 	}
 
 	insert_entity(new_d);
-	free(filename);
+
 }
 
-char* World::get_file(){
-	if(this->my_name == test_map){
+std::string World::get_file(WorldName name){
+	if(name == test_map){
 		return "Resources//maps//ATestMap.txt";
+	}else if(name == main_world){
+		return "Resources//maps//friday_map.txt";
 	}else{
-		return "";
+		throw std::exception("No world");
 	}
 }
-void World::designate_drawable(char* back_ground_tiles){
+void World::make_drawable(std::string items){
 
-
-	int inner_index = 0; 
-	int outer_index = 1;
+	int constant_index = 1;
+	std::pair<std::string,int> type, x, y;
 	//drawables the format of the line will be @type(2)+xpos(...)+ypos!
-	char* type = (char*)malloc((sizeof(char)) * 20);
-	char* x = (char*)malloc((sizeof(char)) * 8);
-	char* y = (char*)malloc((sizeof(char)) * 8);
 	bool not_escaped = true;
+
 
 	while(not_escaped){
 
 
 		//grabs type
-		while(back_ground_tiles[outer_index] != '+'){
-			type[inner_index] = back_ground_tiles[outer_index];
-			inner_index += 1;
-			outer_index += 1;
-		}
-		int type_size = inner_index;
-		outer_index += 1;
-		inner_index = 0;
+		type = pull_out(items, constant_index);
+
+		constant_index += type.second + 1;
+
 		//grabs xpos
-		while(back_ground_tiles[outer_index] != '+'){
-			x[inner_index] = back_ground_tiles[outer_index];
-			inner_index += 1;
-			outer_index += 1;
-		}
+		x = pull_out(items, constant_index);
+
+		constant_index += x.second + 1;
 		//grabs ypos and records num of digits xpos was 
-		outer_index += 1;
-		int size_x = inner_index;
-		inner_index = 0;
 
-		while(back_ground_tiles[outer_index] != '+'){
-			if(back_ground_tiles[outer_index] == '!'){
-				not_escaped = false;
-				break;
-			}
-			y[inner_index] = back_ground_tiles[outer_index];
-			inner_index += 1;
-			outer_index += 1;
+		y = pull_out(items, constant_index);
+
+		int check = constant_index + y.second;
+
+		if(items.at(check) == '!'){
+			not_escaped	= false;
 		}
 
-		outer_index += 1;
-
+		constant_index += (y.second + 1);
 		//passes the things gathered to another function that will make the object
-		make_drawable(type, x, y, size_x, inner_index, type_size);
-		inner_index =0;
+		designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
 	}
-	free(type);
-	free(x);
-	free(y);
 }
-WorldName World::get_WorldName(char* name, int name_size){
+WorldName World::get_WorldName(std::string name, int name_size){
 
-	std::string worldName;
+	std::string worldName = name;
 
-	for(int i = 0; i < name_size;i++){
-		worldName.append(1,name[i]);
-	}
+
 	if(worldName.compare("test_map")==0){
 		return test_map;
+	}else if(worldName.compare("main_world") == 0){
+		return main_world;
+	}else{
+		throw std::exception("Broke");
 	}
-	else{
-		//
-	}
+	return main_world;
 
 }
 
-void World::make_portal(char* back_ground_tiles){
+void World::make_portal(std::string items){
 	int outer_index = 1;
 	int inner_index = 0;
 
-	char* worldName = (char*)malloc((sizeof(char)) * 20);
-	char* x = (char*)malloc((sizeof(char)) * 8);
-	char* y = (char*)malloc((sizeof(char)) * 8);
-	char* x_targ = (char*)malloc((sizeof(char)) * 8);
-	char* y_targ = (char*)malloc((sizeof(char)) * 8);
+	std::string worldName;
+	std::string x;
+	std::string y;
+	std::string x_targ;
+	std::string y_targ;
 
-	while(back_ground_tiles[outer_index] != '+'){
-		worldName[inner_index] = back_ground_tiles[outer_index];
+	while(items.at(outer_index) != '+'){
+		worldName.append(1, items.at(outer_index));
 		inner_index += 1;
 		outer_index += 1;
 	}
@@ -642,8 +635,8 @@ void World::make_portal(char* back_ground_tiles){
 	outer_index += 1;
 	inner_index = 0;
 	//grabs xpos
-	while(back_ground_tiles[outer_index] != '+'){
-		x[inner_index] = back_ground_tiles[outer_index];
+	while(items.at(outer_index) != '+'){
+		x.append(1, items.at(outer_index));
 		inner_index += 1;
 		outer_index += 1;
 	}
@@ -652,17 +645,17 @@ void World::make_portal(char* back_ground_tiles){
 	int size_x = inner_index;
 	inner_index = 0;
 
-	while(back_ground_tiles[outer_index] != '+'){
-		y[inner_index] = back_ground_tiles[outer_index];
+	while(items.at(outer_index) != '+'){
+		y.append(1, items.at(outer_index));
 		inner_index += 1;
 		outer_index += 1;
 	}
-		outer_index += 1;
-		int size_y = inner_index;
-		inner_index = 0;
-	
-	while(back_ground_tiles[outer_index] != '+'){
-		x_targ[inner_index] = back_ground_tiles[outer_index];
+	outer_index += 1;
+	int size_y = inner_index;
+	inner_index = 0;
+
+	while(items.at(outer_index) != '+'){
+		x_targ.append(1, items.at(outer_index));
 		inner_index += 1;
 		outer_index += 1;
 	}
@@ -671,24 +664,205 @@ void World::make_portal(char* back_ground_tiles){
 	int size_tar = inner_index;
 	inner_index = 0;
 
-	while(back_ground_tiles[outer_index] != '+'){
-		if(back_ground_tiles[outer_index] == '!'){
+	while(items.at(outer_index) != '+'){
+		if(items.at(outer_index) == '!'){
 			break;
 		}
 
-		y_targ[inner_index] = back_ground_tiles[outer_index];
+		y_targ.append(1, items.at(outer_index));
 		inner_index += 1;
 		outer_index += 1;
 	}
 
-		int x_pos = list_to_int(x,size_x);
-		int y_pos = list_to_int(y,inner_index);
-		int x_tar = list_to_int(x_targ, size_tar); 
-		int y_tar = list_to_int(y_targ, inner_index);
-		WorldName converted_name = get_WorldName(worldName, name_size);
+	int x_pos = list_to_int(x,size_x);
+	int y_pos = list_to_int(y,inner_index);
+	int x_tar = list_to_int(x_targ, size_tar); 
+	int y_tar = list_to_int(y_targ, inner_index);
+	WorldName converted_name = get_WorldName(worldName, name_size);
 
-		iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name, x_tar, y_tar);
-		new_portal->set_boundary_value(32, 32, 0, 0);
-		insert_entity(new_portal);
+	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name, x_tar, y_tar);
+	new_portal->set_boundary_value(32, 32, 0, 0);
+	insert_entity(new_portal);
+
+}
+
+void World::make_AI(std::string items){
+
+	int constant_index = 1;
+
+	std::pair<std::string, int> values;
+
+	values = pull_out(items, constant_index);
+	std::string type;
+
+	constant_index += (values.second + 1);
+
+	type = values.first;
+
+	if(type.compare("OptionPresenter") == 0){
+
+		make_op(items, constant_index);
+
+	}else if(type.compare("Guard") == 0){
+
+	}else{
+		throw std::exception("Invalid AI");
+	}
+
+}
+
+void World::make_op(std::string items, int constant_index){	
+
+	std::pair<Quest*, int> quest_data;
+	std::pair<std::string, int> values = pull_out(items, constant_index);
+	std::string dialouge;
+
+	//file
+	std::string filename;
+	
+	filename = values.first;
+
+	constant_index += (values.second + 1);
+
+	//x
+	values = pull_out(items, constant_index);
+
+	int x_pos  = list_to_int(values.first, values.second);
+
+	constant_index += (values.second + 1);
+
+	//y
+	values = pull_out(items, constant_index);
+
+	int y_pos  = list_to_int(values.first, values.second);
+
+	constant_index += (values.second + 1);
+
+	//make the guy
+	OptionPresenter* character = new OptionPresenter(x_pos, y_pos, 0, 0, new Player_Sprite((char*)filename.c_str(), S, 5, 1, 16, 16));
+
+	//set values
+	character->set_boundary_value(30, 30, 0, 0);
+	character->set_world(this);
+
+	//add number of quests
+	values = pull_out(items, constant_index);
+	int number_of_quests  = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);	
+
+	//create the quests
+	for(int j = 0; j < number_of_quests; j++){
+		quest_data = make_quest(items, constant_index);
+		character->append_quest(quest_data.first);
+		constant_index = quest_data.second;
+	}
+
+	//dialouge
+	make_dialouge_op(items, constant_index, character);
+
+	//put in the d
+	this->insert_entity(character);
+
+}
+EntityType World::get_entityType(std::string to_convert){
+
+	std::string str = to_convert;
+
+	if(str.compare("Tg")==0){
+		return Guard;
+	}else if(str.compare("Mon")==0){
+		return Monster;
+	}else if(str.compare("Out")==0){
+		return Outcast;
+	}else if(str.compare("Riv")==0){
+		return Rival;
+	}else if(str.compare("Ch")==0){
+		return Chicken;
+	}else{
+		throw std::exception("Invalid entity code");
+	}
+
+}
+std::string World::to_string(std::string to_convert, int size){
+
+	std::string str;
+	for(int i =0; i < size;i++){
+		str.append(1,to_convert[i]);
+	}
+
+	return str;
+}
+std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
+
+	std::pair<std::string,int> values;
+	QuestDescription quest_desc;
+	//quest desc
+	values = pull_out(items, constant_index);
+
+	quest_desc.text = values.first;
+		
+	constant_index += (values.second + 1);	
+	QuestReward loot;
+	//loot (gold)
+	values = pull_out(items, constant_index);
+	loot.gold = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+	IQuestObjective* obj;
+
+	if(items[constant_index] == 'K'){
+		constant_index += 1;
+		//target type
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		EntityType ent = get_entityType(values.first);
+		//number to kill
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		obj = new KillObjective(ent, list_to_int(values.first, values.second));
+
+	}else if(items[constant_index] == 'R'){
+		constant_index += 1;
+		//target id
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		int item_id= list_to_int(values.first, values.second);
+		//number required
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		obj = new RetrieveObjective(item_id, list_to_int(values.first, values.second));
+	}else{
+		throw std::exception("Wrong objective code");
+	}
+
+	Quest* quest = new Quest(quest_desc, obj);
+	quest->add_reward(loot);
+
+	return std::make_pair(quest, constant_index);
+}
+void World::make_dialouge_op(std::string items, int constant_index, OptionPresenter* op){
+	std::pair<std::string,int> values;
+	
+	while(true){
+
+		char check = items.at(constant_index);
+		if( check == '^'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_pre_dialogue(to_string(values.first, values.second));
+
+		}else if(items.at(constant_index) == '*'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_post_dialogue(to_string(values.first, values.second));
+		}else{
+			throw std::exception("dialouge OP code error");
+		}
+
+		constant_index += (values.second + 1);
+
+		if(items.at(constant_index-1) == '!'){
+			break;
+		}
+	}
 
 }

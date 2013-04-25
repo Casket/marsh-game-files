@@ -81,6 +81,55 @@ void View::put_world_in_loaded(World* world){
 
 void View::insert_testing_entities(void){
 
+<<<<<<< HEAD
+=======
+	if(this->current_world->my_name == main_world){
+		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
+		std::pair<int, int> test = std::make_pair(120, 1000);
+		ways->insert(ways->end(), test);
+		std::pair<int, int> test2 = std::make_pair(120, 800);
+		ways->insert(ways->end(), test2);
+
+
+		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		g->set_boundary_value(32,18,0,14);
+		g->set_world(this->current_world);
+		this->current_world->insert_entity(g);
+	}
+
+
+	/*	QuestDescription kill_chickens;
+	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
+	test_transp->set_world(this->current_world);
+	test_transp->get_image()->is_translucent = true;
+	this->current_world->insert_entity(test_transp);
+
+	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
+	QuestReward lootz;
+	lootz.gold = 1;
+	KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
+	Quest* farm_quest = new Quest(kill_chickens, obj);
+	farm_quest->add_reward(lootz);
+
+	RetrieveObjective* item_obj = new RetrieveObjective(10, 1);
+	QuestDescription item;
+	item.text = "You need to get some items for me because I like stuff.";
+	Quest* quest2 = new Quest(item, item_obj);
+	quest2->add_reward(lootz);
+
+	OptionPresenter* farmer_bob = new OptionPresenter(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+	farmer_bob->set_world(this->current_world);
+	farmer_bob->append_quest(farm_quest);
+	farmer_bob->append_quest(quest2);
+	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
+	farmer_bob->append_pre_dialogue("Would you like to [1] kill chickens or [2] retrieve fancy items?");
+	farmer_bob->append_post_dialogue("Thanks for helping out.");
+	farmer_bob->can_speak = true;
+	this->current_world->insert_entity(farmer_bob);
+	farmer_bob->set_boundary_value(30, 30, 0, 0);
+
+
+>>>>>>> 59923be3b1787809571c372baaa36d0009cb63c1
 	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
 	ways->insert(ways->end(), test);
@@ -105,22 +154,6 @@ void View::insert_testing_entities(void){
 	talker->append_dialogue("I see you have some graph paper.  You must be plotting something.");
 	this->current_world->insert_entity(talker);
 	talker->set_boundary_value(40, 40, 0, 0);
-
-	QuestDescription kill_chickens;
-	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
-	QuestReward lootz;
-	lootz.gold = 1;
-	KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
-	Quest* farm_quest = new Quest(kill_chickens, obj);
-	farm_quest->add_reward(lootz);
-
-	QuestGiver* farmer_bob = new QuestGiver(farm_quest, 800, 800, 0, 0, new Solid_Sprite("Resources//people//nice_folk.bmp", 0,0, 32, 32));
-	farmer_bob->set_world(this->current_world);
-	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
-	farmer_bob->append_post_dialogue("Thanks for helping out.");
-	farmer_bob->can_speak = true;
-	this->current_world->insert_entity(farmer_bob);
-	farmer_bob->set_boundary_value(30, 30, 0, 0);
 
 	QuestReward r;
 	r.gold = 1;
@@ -218,6 +251,7 @@ void View::insert_testing_entities(void){
 
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
+
 
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
@@ -347,8 +381,12 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 		int y = (*iter)->get_y_pos();
 		int width = frame->w;
 		int height = frame->h;
-		masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, 154, 154);
 
+		if ((*iter)->get_image()->is_translucent){
+			draw_trans_sprite(buffer, frame, x-xshift, y-yshift);
+		} else {
+			masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, width, height);
+		}
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,

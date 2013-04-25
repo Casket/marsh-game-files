@@ -45,6 +45,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				OpenMP="true"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -300,6 +301,10 @@
 			</File>
 			<File
 				RelativePath=".\IQuestObjective.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ItemBestower.h"
 				>
 			</File>
 			<File

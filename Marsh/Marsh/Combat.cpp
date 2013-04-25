@@ -213,6 +213,27 @@ void Combat::clear_dialogue(void){
 	this->dialogue->clear();
 }
 
+void Combat::face_speaker(void){
+	Direction players_dir = Player_Accessor::get_player()->get_image()->get_facing();
+	Direction old_dir = this->image->get_facing();
+	switch (players_dir){
+		case N:
+			this->image->set_facing(S);
+			break;
+		case S:
+			this->image->set_facing(N);
+			break;
+		case E:
+			this->image->set_facing(W);
+			break;
+		case W:
+			this->image->set_facing(E);
+			break;
+	}
+	if (old_dir != this->image->get_facing())
+		this->image->force_direction_update(this->image->get_facing());
+}
+
 void Combat::speak(void){
 	if (this->should_free_player){
 		Player_Accessor::get_player()->interacting = false;

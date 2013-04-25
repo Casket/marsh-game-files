@@ -4,6 +4,9 @@
 
 #include "Main.h"
 
+class Quest;
+class OptionPresenter;
+
 using namespace std;
 class Ground_Sprite;
 
@@ -31,7 +34,7 @@ public:
 	World(WorldName this_world);
 	~World();
 	void load_world();
-	void load_mission(char* mission_file);
+	void load_mission(std::string);
 	Tile*** get_tile_map(void);
 	int get_tiles_wide(void);
 	int get_tiles_high(void);
@@ -45,16 +48,24 @@ public:
 	
 
 private:
-	void convert_to_tile(char a, char b, int pos_x, int pos_y);
-	int find_x(char b);
-	int list_to_int(char* given, int size);
-	void make_drawable(char* type, char* x, char* y, int size_x, int size_y,int type_size);
+	static std::pair<std::string, int> pull_out(std::string, int);
+	static std::string to_string(std::string, int);
+	static int find_x(char);
+	static int list_to_int(std::string, int);
+	static std::string get_file(WorldName);
+	static WorldName get_WorldName(std::string,int);
+	static EntityType get_entityType(std::string);
+	void convert_to_tile(char, char, int, int);
+	void designate_drawable(std::string, std::string, std::string, int, int,int);
 	void make_world();
-	void drawble_info_finder(char* type);
-	char* get_file();
-	void designate_drawable(char* back_ground_tiles);
-	static WorldName get_WorldName(char*,int);
-	void make_portal(char*);
+	void make_drawable(std::string);
+	void make_portal(std::string);
+	void make_AI(std::string);
+	void make_op(std::string, int);
+	void make_dialouge_op(std::string, int, OptionPresenter*);
+	std::pair<Quest*, int> make_quest(std::string,int);
+	
+
 	
 	// room for expansion packs! (and easter eggs, and stuffz)
 

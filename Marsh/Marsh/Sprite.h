@@ -1,9 +1,18 @@
 #ifndef SPRITE_H
 #define SPRITE_H 1
 
+#define NORTH_START 12
 
+#define SOUTH_START 0
+
+#define EAST_START 8
+
+#define WEST_START 4
 
 #include <allegro.h>
+#include <string>
+
+using namespace std;
 
 // States for the sprites, will add as needed and whatnots
 enum SpriteState{ Normal, Casting, Explosion, Grazing, Winning};
@@ -18,13 +27,13 @@ protected:
 	int sheet_cols, sheet_rows, total_frames;
 	bool lighted;
 	SpriteState current_state;
-	char* file;
+	std::string file;
 	
 
 public:
-	Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
+	Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
 	~Sprite(void);
-	void load_sprite_sheet(char* name);
+	void load_sprite_sheet(std::string name);
 	virtual BITMAP* get_current_frame(void) = 0;
 	virtual void update(void) = 0;
 	virtual void casting_update(void) = 0;
@@ -34,7 +43,9 @@ public:
 	virtual void set_facing(Direction);
 	bool get_lighted(void);
 	void set_lighted(bool);
+	virtual void force_direction_update(Direction dir);
 	bool wearing_mask;
+	bool is_translucent;
 
 
 private:

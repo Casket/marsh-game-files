@@ -13,9 +13,12 @@ OptionPresenter::OptionPresenter(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->delivered_quest = false;
 	this->should_give_quest = false;
+	this->should_free_player = false;
+	this->can_speak = true;
 }
 
 OptionPresenter::~OptionPresenter(void){
+	
 	delete this->pre_quest_dialogue;
 	delete this->post_quest_dialogue;
 	delete this->presentable_quests;
@@ -83,6 +86,7 @@ void OptionPresenter::clear_dialogue(void){
 }
 
 void OptionPresenter::speak(void){
+	Combat::face_speaker();
 	if (this->should_free_player){
 		Player_Accessor::get_player()->interacting = false;
 		this->has_player_hostage = false;
@@ -104,7 +108,11 @@ void OptionPresenter::speak(void){
 		this->should_free_player = false;
 		this->should_give_quest = false;
 
-		if (this->current_dialogue < this->pre_quest_dialogue->size())
+		if (this->current_dialogue < this->pre_quest_dialogue->size()){
 			Player_Accessor::get_player()->display_to_user(this->pre_quest_dialogue->at(this->current_dialogue++));
+			if (this->current_dialogue >= this->pre_quest_dialogue->size() - 1){
+				this->should_give_quest = true;
+			}
+		}
 	}
 }
