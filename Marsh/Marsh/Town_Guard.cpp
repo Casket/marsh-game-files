@@ -65,13 +65,7 @@ void Town_Guard::increment_patrol(void){
 			this->patrol_node++;
 			this->patrolling_forward = true;
 		}
-	}
-
-	if (this->patrol_node < 0 || this->patrol_node > 1){
-		int a = 0;
-		int b = 2;
-	}
-		
+	}	
 }
 
 std::pair<int, int> Town_Guard::detour_obstruction(void){

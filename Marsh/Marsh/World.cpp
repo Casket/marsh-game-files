@@ -5,6 +5,8 @@
 
 using namespace std;
 
+volatile int execution_count = 0;
+
 World::World(WorldName this_world){
 
 	this->tiles_high = 0;
@@ -105,11 +107,19 @@ void World::load_world(){
 				char second = ' ';
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
+
+
+#pragma omp parallel for num_threads(4) schedule(dynamic)
 				for(int i = 0; i < size ; i+=2){
+					int t_count = omp_get_num_threads();
+					int my_c = omp_get_thread_num();
 					first = items.at(i);
 					second = items.at(i+1);
 					convert_to_tile(first, second, row_count,i/2);
+					
 				}
+
+				
 				row_count += 1;
 			}
 		}
@@ -235,6 +245,10 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	}else if(a == '5'){
 
 		sprite_x = find_x(b);
+		if (sprite_x == 2){
+			int br = -1;
+		}
+
 		sprite_y = 0;
 
 		strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//walls.bmp");
@@ -322,7 +336,7 @@ bool World::equals(World* w){
 	if(this->my_name == w->my_name){
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -412,7 +426,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 	filename.append(".bmp");
 
 	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite((char*)filename.c_str()));
-	
+
 	if(type.compare( "aisles")==0){
 
 		new_d->set_boundary_value(160,32,0,32);
@@ -719,7 +733,7 @@ void World::make_op(std::string items, int constant_index){
 
 	//file
 	std::string filename;
-	
+
 	filename = values.first;
 
 	constant_index += (values.second + 1);
@@ -800,7 +814,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 	values = pull_out(items, constant_index);
 
 	quest_desc.text = values.first;
-		
+
 	constant_index += (values.second + 1);	
 	QuestReward loot;
 	//loot (gold)
@@ -841,7 +855,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 }
 void World::make_dialouge_op(std::string items, int constant_index, OptionPresenter* op){
 	std::pair<std::string,int> values;
-	
+
 	while(true){
 
 		char check = items.at(constant_index);
