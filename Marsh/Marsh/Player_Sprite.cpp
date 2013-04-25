@@ -3,7 +3,7 @@
 using namespace std;
 
 
-Player_Sprite::Player_Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames)
+Player_Sprite::Player_Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames)
 :Sprite(file_name, cur_dir, ani_delay, rows, cols, total_frames)
 {
 	this->wearing_mask = false;

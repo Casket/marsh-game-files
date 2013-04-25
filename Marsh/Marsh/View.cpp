@@ -75,12 +75,27 @@ void View::put_world_in_loaded(World* world){
 
 void View::insert_testing_entities(void){
 
+	if(this->current_world->my_name == main_world){
+		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
+		std::pair<int, int> test = std::make_pair(120, 1000);
+		ways->insert(ways->end(), test);
+		std::pair<int, int> test2 = std::make_pair(120, 800);
+		ways->insert(ways->end(), test2);
+
+
+		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		g->set_boundary_value(32,18,0,14);
+		g->set_world(this->current_world);
+		this->current_world->insert_entity(g);
+	}
+
+
+	/*	QuestDescription kill_chickens;
 	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
 	test_transp->set_world(this->current_world);
 	test_transp->get_image()->is_translucent = true;
 	this->current_world->insert_entity(test_transp);
 
-	QuestDescription kill_chickens;
 	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
 	QuestReward lootz;
 	lootz.gold = 1;

@@ -1,7 +1,8 @@
 #include "Sprite.h"
 
+using namespace std;
 
-Sprite::Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames){
+Sprite::Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames){
 	this->animation_counter = 0;
 	this->animation_delay = ani_delay;
 	this->animation_frame = 0;
@@ -16,7 +17,7 @@ Sprite::Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int 
 	this->wearing_mask = false;
 	this->is_translucent = false;
 
-	this->sprite_sheet = load_bitmap(file_name, NULL);
+	this->sprite_sheet = load_bitmap(file_name.c_str(), NULL);
 	if (this->sprite_sheet == NULL)
 		exit(0);
 }
@@ -25,8 +26,8 @@ Sprite::~Sprite(void) {
 	destroy_bitmap(this->sprite_sheet);
 }
 
-void Sprite::load_sprite_sheet(char* name) {
-	this->sprite_sheet = load_bitmap(name, NULL);
+void Sprite::load_sprite_sheet(std::string name) {
+	this->sprite_sheet = load_bitmap(name.c_str(), NULL);
 }
 
 Direction Sprite::get_facing(void) {

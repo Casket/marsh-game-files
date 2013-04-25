@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Attack_Sprite::Attack_Sprite(char* file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames, int width, int height)
+Attack_Sprite::Attack_Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames, int width, int height)
 							 :Sprite(file_name, cur_dir, ani_delay, rows, cols, total_frames)
 {
 	this->width = width;

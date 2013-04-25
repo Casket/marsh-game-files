@@ -8,8 +8,8 @@ class Solid_Sprite: public Sprite{
 	int img_width, img_height;
 
 	public:
-		Solid_Sprite(char* file_name);
-		Solid_Sprite(char* file_name, int src_x, int src_y, int width, int height);
+		Solid_Sprite(std::string file_name);
+		Solid_Sprite(std::string file_name, int src_x, int src_y, int width, int height);
 		~Solid_Sprite(void);
 		void load_sprite_sheet(char* name);
 		void set_lighted(bool light);
