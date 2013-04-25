@@ -34,18 +34,27 @@ void Town_Guard::update(void){
 
 	if (this->movement_blocked){
 		std::pair<int, int> unblocked_coord = detour_obstruction();
-		this->move_towards(unblocked_coord);
+		bool reached_dest = this->move_towards(unblocked_coord);
+		if(reached_dest){
+
+			this->movement_blocked = false;
+		}
 		return;
 	}
 
 	if (this->in_combat){
 		// has found a target to attack, let's move toward said target
-		bool reached_destination = this->move_towards(
+		bool reached = this->move_towards(
 			std::pair<int, int>(this->target->get_reference_x(), this->target->get_reference_y()));
+		if(reached){
+			this->launch_attack(0);
+		}
+
 		return;
 	}
 
 	bool reached_destination = this->move_towards(this->waypoints->at(this->patrol_node));
+
 	if (reached_destination){
 		this->increment_patrol();
 	}
@@ -53,6 +62,7 @@ void Town_Guard::update(void){
 }
 
 void Town_Guard::increment_patrol(void){
+
 	if (this->patrolling_forward){
 		this->patrol_node++;
 		if (this->patrol_node >= this->waypoints->size()){
@@ -100,27 +110,6 @@ std::pair<int, int> Town_Guard::detour_obstruction(void){
 	return target_coord;
 }
 
-void Town_Guard::patrol(){
-
-	/*	std::pair<int, Direction> current;
-	current = this->waypoints->at(this->patrol_node);
-
-	if(current.first < 0){
-	this->up_or_down = !this->up_or_down;
-	}else{
-	//
-	}
-
-	if(up_or_down){
-	forward(current);
-	}else{
-	reverse(current);
-	}
-
-	*/
-
-
-}
 void Town_Guard::forward(std::pair<int, Direction> cur_node){
 	if(this->patrol_frame_count > 0){
 		this->paused = !move(cur_node.second);
@@ -322,10 +311,10 @@ void Town_Guard::other_check_collisions(void){
 			left_right_skew, top_bottom_skew);
 
 		if (previously_not_blocked && !get_current_facing_flag()){
-				// this uber if means that the guard has been blocked by the current 
-				//entity which is guranteed to not be the player, maybe, hell if i know
-				this->movement_blocked = true;
-				this->blocking_entity = check;
+			// this uber if means that the guard has been blocked by the current 
+			//entity which is guranteed to not be the player, maybe, hell if i know
+			this->movement_blocked = true;
+			this->blocking_entity = check;
 		}
 
 	}
@@ -359,9 +348,7 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 	int my_height = this->get_bounding_height();
 	//you are there
 	if(((0-my_width < x_dif) && (x_dif < my_width)) && ((0-my_height < y_dif) && (y_dif< my_height))){
-		if (this->in_combat){
-			this->launch_attack(0);	
-		} 
+
 		return true; // reached destination
 	}
 	//go left and down
@@ -371,11 +358,10 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(S);
 		}
-
-		this->flip_frames -= 1;
-		if(this->flip_frames == 0){
-			this->x_or_y = !(this->x_or_y);
-			this->flip_frames = FRAME_CONST;
+		this->flip_frames -= 1; 
+		if(this->flip_frames == 0){ 
+			this->x_or_y = !(this->x_or_y); 
+			this->flip_frames = FRAME_CONST; 
 		}
 
 		//go right and up
@@ -385,12 +371,12 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(N);
 		}
-
-		this->flip_frames -= 1;
-		if(this->flip_frames == 0){
-			this->x_or_y = !(this->x_or_y);
-			this->flip_frames = FRAME_CONST;
+		this->flip_frames -= 1; 
+		if(this->flip_frames == 0){ 
+			this->x_or_y = !(this->x_or_y); 
+			this->flip_frames = FRAME_CONST; 
 		}
+
 
 		//go left and down
 	}else if((x_dif < 0) && (y_dif > 0)){
@@ -399,12 +385,12 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(S);
 		}
-
-		this->flip_frames -= 1;
-		if(this->flip_frames == 0){
-			this->x_or_y = !(this->x_or_y);
-			this->flip_frames = FRAME_CONST;
+		this->flip_frames -= 1; 
+		if(this->flip_frames == 0){ 
+			this->x_or_y = !(this->x_or_y); 
+			this->flip_frames = FRAME_CONST; 
 		}
+
 
 		//go left and up
 	}else if((x_dif < 0) && (y_dif < 0)){
@@ -414,11 +400,12 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 			moved = move(N);
 		}
 
-		this->flip_frames -= 1;
-		if(this->flip_frames == 0){
-			this->x_or_y = !(this->x_or_y);
-			this->flip_frames = FRAME_CONST;
+		this->flip_frames -= 1; 
+		if(this->flip_frames == 0){ 
+			this->x_or_y = !(this->x_or_y); 
+			this->flip_frames = FRAME_CONST; 
 		}
+
 		//go left
 	}else if((x_dif < 0) && ((-5 < y_dif) && (y_dif < 5))){
 		moved = move(W);

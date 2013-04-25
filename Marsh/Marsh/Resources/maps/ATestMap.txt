@@ -22,3 +22,10 @@
 @oven+132+120+kitchen_stuff+171+123+kitchen_cabinet+214+107+bookshelf+131+285+table_hut+181+182+box+370+153+box+406+151+box+385+132+box+383+162+wine+386+146+barrel+485+151+barrel+456+189+wine_cabinet+405+285+beer+456+156!
 #main_world+306+153+400+400!
 ~OptionPresenter+Resources//people//nice_folk.bmp+400+385+2+Chickens are up in here eating our food.Kill one chicken and claim your rewards.+1+KCh+1+"You need to get some items for me because I like stuff.+1+R10+1+^Howdy, how would you like to help me out?+^Would you like to [1] kill chickens or [2] retrieve fancy items?+*Thanks for helping out.!
+#main_world12+4000+32+32+32!
+#main_world12+4000+64+32+64!
+#main_world12+4000+96+32+96!
+#main_world12+4000+128+32+128!
+#main_world12+4000+160+32+160!
+#main_world12+4000+192+32+192!
+
