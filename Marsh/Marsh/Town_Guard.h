@@ -1,7 +1,7 @@
 #ifndef GUARD_H
 #define GUARD_H 1
 
-#define TG_DELTA 2
+#define TG_DELTA 1
 #define ERR 5
 #define DETECTION_RANGE 400
 #define FRAME_CONST 20

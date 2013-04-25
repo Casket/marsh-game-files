@@ -326,6 +326,10 @@ int World::find_x(char b){
 		return 12;
 	}else if(b == 'D'){
 		return 13;
+	}else if(b == 'E'){
+		return 14;
+	}else if(b == 'F'){
+		return 15;
 	}else{
 		throw std::exception("Invalid Tile code");
 	}
@@ -472,7 +476,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "door_front")==0){
-
+		
 
 	}else if(type.compare( "dresser")==0){
 
@@ -523,13 +527,16 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "stairs_down_right")==0){
-
-
+		
+		new_d->set_boundary_value(0,0,0,0);
+		
 	}else if(type.compare( "stairs_left")==0){
-
+		
+		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "stairs_right")==0){
-
+		
+		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "statue")==0){
 
@@ -575,6 +582,24 @@ std::string World::get_file(WorldName name){
 		return "Resources//maps//ATestMap.txt";
 	}else if(name == main_world){
 		return "Resources//maps//friday_map.txt";
+	}else if(name == main_world11){
+		return "Resources//maps//main_world11.txt";
+	}else if(name == main_world12){
+		return "Resources//maps//main_world12.txt";
+	}else if(name == main_world13){
+		return "Resources//maps//main_world13.txt";
+	}else if(name == main_world14){
+		return "Resources//maps//main_world14.txt";
+	}else if(name == main_world15){
+		return "Resources//maps//main_world15.txt";
+	}else if(name == main_world16){
+		return "Resources//maps//main_world16.txt";
+	}else if(name == main_world17){
+		return "Resources//maps//main_world17.txt";
+	}else if(name == main_world18){
+		return "Resources//maps//main_world18.txt";
+	}else if(name == main_world19){
+		return "Resources//maps//main_world19.txt";
 	}else{
 		throw std::exception("No world");
 	}
@@ -623,7 +648,26 @@ WorldName World::get_WorldName(std::string name, int name_size){
 		return test_map;
 	}else if(worldName.compare("main_world") == 0){
 		return main_world;
-	}else{
+	}else if(worldName.compare("main_world11") == 0){
+		return main_world11;
+	}else if(worldName.compare("main_world12") == 0){
+		return main_world12;
+	}else if(worldName.compare("main_world13") == 0){
+		return main_world13;
+	}else if(worldName.compare("main_world14") == 0){
+		return main_world14;
+	}else if(worldName.compare("main_world15") == 0){
+		return main_world15;
+	}else if(worldName.compare("main_world16") == 0){
+		return main_world16;
+	}else if(worldName.compare("main_world17") == 0){
+		return main_world17;
+	}else if(worldName.compare("main_world18") == 0){
+		return main_world18;
+	}else if(worldName.compare("main_world19") == 0){
+		return main_world19;
+	}
+	else{
 		throw std::exception("Broke");
 	}
 	return main_world;
