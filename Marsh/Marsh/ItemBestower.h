@@ -13,7 +13,7 @@ public:
 	bool should_free_player;
 	bool has_player_hostage;
 	bool delivered_quest;
-	bool should_give_quest;
+	bool should_give_items;
 	bool should_bestow_all;
 
 
@@ -25,4 +25,5 @@ public:
 	void append_pre_dialogue(std::string);
 	virtual void clear_dialogue(void);
 	virtual void speak(void);
+	virtual void update(void);
 };

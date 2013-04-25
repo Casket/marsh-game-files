@@ -202,6 +202,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ItemBestower.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\KillObjective.cpp"
 				>
 			</File>
