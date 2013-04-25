@@ -58,7 +58,7 @@ void Town_Guard::detour_obstruction(void){
 	
 	Direction blocked_way = this->image->get_facing();
 
-
+	
 
 }
 
