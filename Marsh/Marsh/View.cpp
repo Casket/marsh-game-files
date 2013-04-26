@@ -67,13 +67,13 @@ void View::load_world(WorldName world){
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 
-	//this->insert_testing_entities();
-	Combat* rambo_sheep = new Combat(200,250, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
-	rambo_sheep->set_my_type(EntityType::Monster);
-	rambo_sheep->set_stats(103, 0, 0, 0, 0);
-	rambo_sheep->set_world(this->current_world);
-	this->current_world->insert_entity(rambo_sheep);
-	rambo_sheep->set_boundary_value(30, 30, 2, 2);
+	this->insert_testing_entities();
+	//Combat* rambo_sheep = new Combat(200,250, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
+	//rambo_sheep->set_my_type(EntityType::Monster);
+	//rambo_sheep->set_stats(103, 0, 0, 0, 0);
+	//rambo_sheep->set_world(this->current_world);
+	//this->current_world->insert_entity(rambo_sheep);
+	//rambo_sheep->set_boundary_value(30, 30, 2, 2);
 }
 
 void View::put_world_in_loaded(World* world){
