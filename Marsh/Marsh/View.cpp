@@ -88,6 +88,9 @@ void View::insert_testing_entities(void){
 		ways->insert(ways->end(), test);
 		std::pair<int, int> test2 = std::make_pair(120, 800);
 		ways->insert(ways->end(), test2);
+		std::pair<int, int> test3 = std::make_pair(100, 800);
+		ways->insert(ways->end(), test3);
+
 		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
 		shop->bestow_all_items = false;
 
