@@ -5,6 +5,8 @@
 
 using namespace std;
 
+volatile int execution_count = 0;
+
 World::World(WorldName this_world){
 
 	this->tiles_high = 0;
@@ -105,11 +107,19 @@ void World::load_world(){
 				char second = ' ';
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
+
+
+#pragma omp parallel for num_threads(4) schedule(dynamic)
 				for(int i = 0; i < size ; i+=2){
+					int t_count = omp_get_num_threads();
+					int my_c = omp_get_thread_num();
 					first = items.at(i);
 					second = items.at(i+1);
 					convert_to_tile(first, second, row_count,i/2);
+					
 				}
+
+				
 				row_count += 1;
 			}
 		}
@@ -235,6 +245,10 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	}else if(a == '5'){
 
 		sprite_x = find_x(b);
+		if (sprite_x == 2){
+			int br = -1;
+		}
+
 		sprite_y = 0;
 
 		strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//walls.bmp");
@@ -312,6 +326,10 @@ int World::find_x(char b){
 		return 12;
 	}else if(b == 'D'){
 		return 13;
+	}else if(b == 'E'){
+		return 14;
+	}else if(b == 'F'){
+		return 15;
 	}else{
 		throw std::exception("Invalid Tile code");
 	}
@@ -322,7 +340,7 @@ bool World::equals(World* w){
 	if(this->my_name == w->my_name){
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -412,7 +430,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 	filename.append(".bmp");
 
 	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite((char*)filename.c_str()));
-	
+
 	if(type.compare( "aisles")==0){
 
 		new_d->set_boundary_value(160,32,0,32);
@@ -458,7 +476,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "door_front")==0){
-
+		
 
 	}else if(type.compare( "dresser")==0){
 
@@ -509,13 +527,16 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "stairs_down_right")==0){
-
-
+		
+		new_d->set_boundary_value(0,0,0,0);
+		
 	}else if(type.compare( "stairs_left")==0){
-
+		
+		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "stairs_right")==0){
-
+		
+		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "statue")==0){
 
@@ -561,6 +582,24 @@ std::string World::get_file(WorldName name){
 		return "Resources//maps//ATestMap.txt";
 	}else if(name == main_world){
 		return "Resources//maps//friday_map.txt";
+	}else if(name == main_world11){
+		return "Resources//maps//main_world11.txt";
+	}else if(name == main_world12){
+		return "Resources//maps//main_world12.txt";
+	}else if(name == main_world13){
+		return "Resources//maps//main_world13.txt";
+	}else if(name == main_world14){
+		return "Resources//maps//main_world14.txt";
+	}else if(name == main_world15){
+		return "Resources//maps//main_world15.txt";
+	}else if(name == main_world16){
+		return "Resources//maps//main_world16.txt";
+	}else if(name == main_world17){
+		return "Resources//maps//main_world17.txt";
+	}else if(name == main_world18){
+		return "Resources//maps//main_world18.txt";
+	}else if(name == main_world19){
+		return "Resources//maps//main_world19.txt";
 	}else{
 		throw std::exception("No world");
 	}
@@ -609,7 +648,26 @@ WorldName World::get_WorldName(std::string name, int name_size){
 		return test_map;
 	}else if(worldName.compare("main_world") == 0){
 		return main_world;
-	}else{
+	}else if(worldName.compare("main_world11") == 0){
+		return main_world11;
+	}else if(worldName.compare("main_world12") == 0){
+		return main_world12;
+	}else if(worldName.compare("main_world13") == 0){
+		return main_world13;
+	}else if(worldName.compare("main_world14") == 0){
+		return main_world14;
+	}else if(worldName.compare("main_world15") == 0){
+		return main_world15;
+	}else if(worldName.compare("main_world16") == 0){
+		return main_world16;
+	}else if(worldName.compare("main_world17") == 0){
+		return main_world17;
+	}else if(worldName.compare("main_world18") == 0){
+		return main_world18;
+	}else if(worldName.compare("main_world19") == 0){
+		return main_world19;
+	}
+	else{
 		throw std::exception("Broke");
 	}
 	return main_world;
@@ -719,7 +777,7 @@ void World::make_op(std::string items, int constant_index){
 
 	//file
 	std::string filename;
-	
+
 	filename = values.first;
 
 	constant_index += (values.second + 1);
@@ -800,7 +858,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 	values = pull_out(items, constant_index);
 
 	quest_desc.text = values.first;
-		
+
 	constant_index += (values.second + 1);	
 	QuestReward loot;
 	//loot (gold)
@@ -841,7 +899,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 }
 void World::make_dialouge_op(std::string items, int constant_index, OptionPresenter* op){
 	std::pair<std::string,int> values;
-	
+
 	while(true){
 
 		char check = items.at(constant_index);

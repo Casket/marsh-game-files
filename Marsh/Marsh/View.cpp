@@ -1,3 +1,4 @@
+#include <omp.h>
 #include "Main.h"
 class QuestGiver;
 class Portal;
@@ -250,7 +251,6 @@ void View::insert_testing_entities(void){
 void View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
 
-
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
 		(*iter)->update();
@@ -264,6 +264,7 @@ void View::update(void){
 			}
 		}
 	}
+
 }
 
 void View::draw_active_world(void){

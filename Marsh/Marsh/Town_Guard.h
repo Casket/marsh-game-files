@@ -1,7 +1,7 @@
 #ifndef GUARD_H
 #define GUARD_H 1
 
-#define TG_DELTA 2
+#define TG_DELTA 1
 #define ERR 5
 #define DETECTION_RANGE 400
 #define FRAME_CONST 20
@@ -24,7 +24,7 @@ class Town_Guard:public Combat{
 	std::vector<std::pair<int,Direction>>* path, ret_path;
 	iDrawable* target;
 	int patrol_frame_count, flip_frames, reset_node;
-	unsigned int patrol_node;
+	int patrol_node;
 	bool movement_blocked;
 	iDrawable* blocking_entity;
 	int frame_counter_for_direction_change;

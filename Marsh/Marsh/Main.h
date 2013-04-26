@@ -11,6 +11,7 @@ class Attack;
 #include <string>
 #include <vector>
 #include <cmath>
+#include <omp.h>
 #include "Sprite.h"
 #include "Ground_Sprite.h"
 #include "Solid_Sprite.h"
