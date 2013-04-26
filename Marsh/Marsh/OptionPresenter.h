@@ -15,7 +15,7 @@ public:
 	bool should_free_player;
 	bool has_player_hostage;
 	bool delivered_quest;
-	bool should_give_quest;
+	bool should_give_options;
 
 
 	OptionPresenter(int x, int y, int vel, int vel_d, Sprite* img);

@@ -12,7 +12,7 @@ OptionPresenter::OptionPresenter(int x, int y, int vel, int vel_d, Sprite* img)
 	this->current_dialogue = 0;
 	this->has_player_hostage = false;
 	this->delivered_quest = false;
-	this->should_give_quest = false;
+	this->should_give_options = false;
 	this->should_free_player = false;
 	this->can_speak = true;
 }
@@ -25,7 +25,7 @@ OptionPresenter::~OptionPresenter(void){
 }
 
 void OptionPresenter::update(void){
-	if (!this->should_give_quest)
+	if (!this->should_give_options)
 		return;
 
 	int key_pressed = -1;
@@ -52,7 +52,7 @@ void OptionPresenter::update(void){
 	} 
 
 	if (key_pressed > 0){
-		this->should_give_quest = false;
+		this->should_give_options = false;
 		this->has_player_hostage = false;
 		this->delivered_quest = true;
 		this->presentable_quests->at(key_pressed - 1)->begin_quest();
@@ -106,12 +106,11 @@ void OptionPresenter::speak(void){
 		Player_Accessor::get_player()->interacting = true;
 		this->has_player_hostage = true;
 		this->should_free_player = false;
-		this->should_give_quest = false;
 
 		if (this->current_dialogue < this->pre_quest_dialogue->size()){
 			Player_Accessor::get_player()->display_to_user(this->pre_quest_dialogue->at(this->current_dialogue++));
 			if (this->current_dialogue >= this->pre_quest_dialogue->size() - 1){
-				this->should_give_quest = true;
+				this->should_give_options = true;
 			}
 		}
 	}

@@ -83,6 +83,13 @@ void View::insert_testing_entities(void){
 		std::pair<int, int> test2 = std::make_pair(120, 800);
 		ways->insert(ways->end(), test2);
 
+		ItemBestower* farmer_bob = new ItemBestower(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+		farmer_bob->set_world(this->current_world);
+		farmer_bob->append_dialogue("Have a gander at my wares.  [1] Mana Potion (20g) [2] Health Potion (15g) [3] Fluffy Kitten Companion (1,000,000g)");
+		farmer_bob->can_speak = true;
+		this->current_world->insert_entity(farmer_bob);
+		farmer_bob->set_boundary_value(30, 30, 0, 0);
+
 
 		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);

@@ -122,6 +122,7 @@ void set_up_game(void) {
 	Equipment* equip1 = new Equipment();
 	Equipment* equip2 = new Equipment(); 
 	equip1->name = "Cloth Armor";
+	equip1->type = Tunic;
 	equip1->vitality = 5;
 	equip1->description = "+5 Vit";
 	equip1->item_id = 0;
@@ -130,6 +131,7 @@ void set_up_game(void) {
 	equip1->number_held = 1;
 	hero->add_to_inventory(equip1);
 	equip2->name = "Long Sword";
+	equip2->type = Dagger;
 	equip2->description = "+5 Wp";
 	equip2->willpower = 5;
 	equip2->item_id = 1;
@@ -282,7 +284,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	Player* hero = Player_Accessor::get_player();
 	int menu_sel = 0;
-	Equipment** inventory = hero->get_inventory();
+	std::vector<Equipment*> inventory = *hero->get_inventory();
 	int max_sel = MAX_HELD_ITEMS;
 
 	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
@@ -329,19 +331,19 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		textprintf_ex(buffer, font, 650, 320, makecol(236,221,9), -1, "Focus");
 		textprintf_ex(buffer, font, 710, 300, makecol(236,145,9), -1, "0");
 		textprintf_ex(buffer, font, 710, 320, makecol(236,145,9), -1, "0");
-		
+
 		int count = 0;
 		int start_x = 50;
 		int start_y = 260;
-		while (count < MAX_HELD_ITEMS) {
+		while (count < inventory.size()) {
 			if (inventory[count]->equipable == true) {
 				if (inventory[count]->equipped == true) {
 					if (inventory[count]->item_id == 0) {
 						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
-						textprintf_ex(buffer, font, 710, 260, makecol(236,145,9), -1, "%s", inventory[count]->vitality);
+						textprintf_ex(buffer, font, 710, 260, makecol(236,145,9), -1, "%d", hero->vitality);
 					} else {
 						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
-						textprintf_ex(buffer, font, 710, 280, makecol(236,145,9), -1, "%s", inventory[count]->willpower);
+						textprintf_ex(buffer, font, 710, 280, makecol(236,145,9), -1, "%d", hero->willpower);
 					}
 				} else {
 					if (inventory[count]->item_id == 0) {
@@ -378,7 +380,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		// draw to screen
 		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
 	}
-	exit_loop: ;
+exit_loop: ;
 
 	destroy_bitmap(inv_screen_bitmap);
 	return;
@@ -390,10 +392,28 @@ void show_screen(Equipment* equip) {
 	}
 	if (equip->equipable == true) {
 		if (equip->equipped == false) {
-			equip->equipped = true;
+			Player_Accessor::get_player()->equip_item(equip);
 		} else {
-			equip->equipped = false;
+			Player_Accessor::get_player()->unequip_item(equip);
 		}
 	}
 	//return; // do something with clicked item
+}
+
+Equipment* get_new_equipment(void){
+	Equipment* item = (Equipment*)malloc(sizeof(Equipment));
+	item->name = "";
+	item->description = "";
+	item->item_id = -1;
+	item->vitality = 0;
+	item->focus = 0;
+	item->intelligence = 0;
+	item->willpower = 0;
+	item->armor = 0;
+	item->equipped = false;
+	item->equipable = false;
+	item->stackable = false;
+	item->number_held = 0;
+	item->type = Unitialized;
+	return item;
 }
