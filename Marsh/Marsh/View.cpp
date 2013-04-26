@@ -67,7 +67,7 @@ void View::load_world(WorldName world){
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 
-	this->insert_testing_entities();
+	//this->insert_testing_entities();
 }
 
 void View::put_world_in_loaded(World* world){
@@ -82,6 +82,8 @@ void View::insert_testing_entities(void){
 		ways->insert(ways->end(), test);
 		std::pair<int, int> test2 = std::make_pair(120, 800);
 		ways->insert(ways->end(), test2);
+		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
+		shop->bestow_all_items = false;
 
 		ItemBestower* farmer_bob = new ItemBestower(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
 		farmer_bob->set_world(this->current_world);
@@ -89,7 +91,33 @@ void View::insert_testing_entities(void){
 		farmer_bob->can_speak = true;
 		this->current_world->insert_entity(farmer_bob);
 		farmer_bob->set_boundary_value(30, 30, 0, 0);
+		Equipment* manapot = get_new_equipment();
+		manapot->intelligence = 100;
+		manapot->number_held = 1;
+		manapot->description = "A mana potion to help you on your adventures.";
+		manapot->item_id = 17;
+		manapot->stackable = true;
+		manapot->name = "Weak Mana Potion";
+		
+		farmer_bob->append_inventory(manapot, 20);
+		
+		Equipment* healthpot = get_new_equipment();
+		healthpot->vitality = 300;
+		healthpot->number_held = 1;
+		healthpot->description = "A healing potion to assist you during your various adventures into the darkness.";
+		healthpot->name = "Super Powerful Healing Potion";
+		healthpot->item_id = 19;
+		healthpot->stackable = true;
 
+		farmer_bob->append_inventory(healthpot, 15);
+
+		Equipment* companion = get_new_equipment();
+		companion->description = "A fluffy kitty who will smite your enemies with cuteness.";
+		companion->name = "Mr. Biggles Worth";
+		companion->number_held = 1;
+		companion->stackable = false;
+		companion->item_id = 197;
+		farmer_bob->append_inventory(companion, 1000000);
 
 		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);

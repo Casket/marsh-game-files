@@ -9,10 +9,8 @@ public:
 	std::vector<std::string>* dialogue;
 	std::vector<std::pair<Equipment*, int>>* inventory;
 	int current_dialogue;
-	bool should_free_player;
-	bool has_player_hostage;
 	bool should_give_items;
-	bool should_bestow_all;
+	bool bestow_all_items;
 
 
 	ItemBestower(int x, int y, int vel, int vel_d, Sprite* img);

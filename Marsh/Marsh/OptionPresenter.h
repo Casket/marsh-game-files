@@ -12,8 +12,6 @@ public:
 	std::vector<std::string>* post_quest_dialogue;
 	std::vector<Quest*>* presentable_quests;
 	int current_dialogue;
-	bool should_free_player;
-	bool has_player_hostage;
 	bool delivered_quest;
 	bool should_give_options;
 

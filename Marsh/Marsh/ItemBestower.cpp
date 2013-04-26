@@ -9,12 +9,11 @@ ItemBestower::ItemBestower(int x, int y, int vel, int vel_d, Sprite* img)
 :Combat(x, y, vel, vel_d, img){
 	this->dialogue = new std::vector<std::string>();
 	this->inventory = new std::vector<std::pair<Equipment*, int>>();
-	int current_dialogue = 0;
-	bool should_free_player = false;
-	bool has_player_hostage = false;
-	bool delivered_quest  = false;
-	bool should_give_quest = false;
-	bool should_bestow_all = false;
+	this->current_dialogue = 0;
+	this->should_free_player = false;
+	this->has_player_hostage = false;
+	this->should_give_items = false;
+	this->bestow_all_items = false;
 }
 ItemBestower::~ItemBestower(void){
 	delete this->dialogue;
@@ -25,38 +24,52 @@ void ItemBestower::update(void){
 	if (!this->should_give_items)
 		return;
 
-	if (this->should_bestow_all){
+	if (this->bestow_all_items){
 		
 	} else {
 
 		int key_pressed = -1;
 		if (keyrel(KEY_1)){
-			key_pressed = 1;
+			key_pressed = 0;
 		} else if (keyrel(KEY_2)){
-			key_pressed = 2;
+			key_pressed = 1;
 		} else if (keyrel(KEY_3)){
-			key_pressed = 3;
+			key_pressed = 2;
 		} else if (keyrel(KEY_4)){
-			key_pressed = 4;
+			key_pressed = 3;
 		} else if (keyrel(KEY_5)){
-			key_pressed = 5;
+			key_pressed = 4;
 		} else if (keyrel(KEY_6)){
-			key_pressed = 6;
+			key_pressed = 5;
 		} else if (keyrel(KEY_7)){
-			key_pressed = 7;
+			key_pressed = 6;
 		} else if (keyrel(KEY_8)){
-			key_pressed = 8;
+			key_pressed = 7;
 		} else if (keyrel(KEY_9)){
-			key_pressed = 9;
+			key_pressed = 8;
 		} else if (keyrel(KEY_0)){
-			key_pressed = 10;
+			key_pressed = 9;
 		}
 
-		if (key_pressed > 0){
-			bool success = Player_Accessor::get_player()->add_to_inventory(this->inventory->at(key_pressed).first);
-			if (!success)
-				Player_Accessor::get_player()->display_to_user("Your inventory is full.  Please make some room before taking more items.");
+		if (key_pressed >= 0 && key_pressed < this->inventory->size()){
+			Player* hero = Player_Accessor::get_player();
+			if (hero->gold >= this->inventory->at(key_pressed).second){
+				hero->gold -= this->inventory->at(key_pressed).second;
+			} else {
+				this->current_dialogue--;
+				this->should_give_items = false;
+				this->should_free_player = false;
+				hero->display_to_user("You need more gold to purchase that item.");
+				return;
+			}
+			int success = hero->add_to_inventory(this->inventory->at(key_pressed).first);
+			if (success == -1)
+				hero->display_to_user("Your inventory is full.  Please make some room before taking more items.");
 			// TODO : remove gold from player's inventory
+			if (success == -2)
+				hero->display_to_user("You can't have duplicate of that.");
+
+			
 		}
 	}
 
@@ -78,6 +91,7 @@ void ItemBestower::clear_dialogue(void){
 void ItemBestower::speak(void){
 	Combat::face_speaker();
 	if (this->should_free_player){
+		Player_Accessor::get_player()->display_to_user("");
 		Player_Accessor::get_player()->interacting = false;
 		this->has_player_hostage = false;
 		this->should_free_player = false;

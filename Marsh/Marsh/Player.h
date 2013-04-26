@@ -59,11 +59,11 @@ typedef struct Equipment{
 class Player: public Combat{
 	std::vector<Equipment*>* inventory;
 	int level, current_experience, mana, max_mana;
-	int gold;
 	BITMAP* clear_console;
 	BITMAP* in_use_console;
 
 	public:
+		int gold;
 		int experience;
 		QuestManager* quest_manager;
 		bool interacting;

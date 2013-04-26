@@ -51,7 +51,7 @@ void OptionPresenter::update(void){
 		key_pressed = 10;
 	} 
 
-	if (key_pressed > 0){
+	if (key_pressed > 0 && key_pressed <= this->presentable_quests->size()){
 		this->should_give_options = false;
 		this->has_player_hostage = false;
 		this->delivered_quest = true;
