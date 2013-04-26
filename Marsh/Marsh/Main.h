@@ -45,6 +45,7 @@ class Attack;
 using namespace std;
 
 bool keyrel(int k);
+Equipment* get_new_equipment(void);
 
 
 class Player_Accessor{

@@ -11,15 +11,14 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 {
 	this->my_type = Hero;
 	this->casting = false;
-	this->keyboard_counter = 0;
-	this->keyboard_delay = 4;
 	this->quest_manager = new QuestManager();
 	this->experience = 0;
 	// TODO implement a constructor
-	this->inventory = (Equipment**)malloc(sizeof(Equipment*)*MAX_HELD_ITEMS);
+	this->inventory = new std::vector<Equipment*>();
 	this->set_new_inventory();
 	this->interacting = false;
 	this->set_stats(400, 500, 100, 100, 5);
+	this->mana = this->max_mana;
 
 }
 
@@ -27,10 +26,83 @@ Player::~Player(void){
 
 }
 
+void Player::unequip_item(Equipment* equip){
+	std::vector<Equipment*>::iterator end = this->inventory->end();
+	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){
+		Equipment* check = (*iter);
+		if (check->item_id == equip->item_id){
+			remove_item_stats(check);
+			check->equipped = false;
+			break;
+		}
+	}
+}
+
+void Player::equip_item(Equipment* equip){
+	if (!equip->equipable)
+		return;
+	EquipmentType equipped_type = equip->type;
+	std::vector<Equipment*>::iterator end = this->inventory->end();
+	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){
+		Equipment* check = (*iter);
+		if (check->equipped && check->type == equipped_type){
+			remove_item_stats(check);
+			break;
+		}
+	}
+	equip->equipped = true;
+	this->vitality += equip->vitality;
+	this->focus += equip->focus;
+	this->intelligence += equip->intelligence;
+	this->willpower += equip->willpower;
+	this->armor += equip->armor;
+	this->max_health = Combat::calculate_health(this->vitality);
+	this->max_mana = this->calculate_mana(this->intelligence);
+
+}
+
+void Player::remove_item_stats(Equipment* check){
+	this->vitality -= check->vitality;
+	this->max_health = Combat::calculate_health(this->vitality);
+	if (this->health > this->max_health)
+		this->health = this->max_health;
+	this->focus -= check->focus;
+	this->intelligence -= check->intelligence;
+	this->max_mana = this->calculate_mana(this->intelligence);
+	if (this->mana > this->max_mana)
+		this->mana = this->max_mana;
+	this->willpower -= check->willpower;
+	this->armor -= check->armor;
+}
+
+void Player::use_consumable(Equipment* cons){
+	if (cons->type != Consumable)
+		return;
+
+	this->health += cons->vitality;
+	this->mana += cons->intelligence;
+
+	cons->number_held--;
+	if (cons->number_held <= 0)
+		remove_from_inventory(cons);
+}
+
+void Player::remove_from_inventory(Equipment* item){
+	std::vector<Equipment*>::iterator end = this->inventory->end();
+	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){
+		Equipment* check = (*iter);
+		if (check->item_id == item->item_id){
+			if (check->equipped)
+				remove_item_stats(check);
+			this->inventory->erase(iter);
+			return;
+		}
+	}
+}
+
 void Player::set_stats(int vit, int intel, int focus, int will, int armor){
 	Combat::set_stats(vit, intel, focus, will, armor);
-	this->mana = calculate_mana(intel);
-	this->max_mana = this->mana;
+	this->max_mana = calculate_mana(intel);
 }
 
 int Player::calculate_mana(int stat) {
@@ -38,25 +110,33 @@ int Player::calculate_mana(int stat) {
 	// TODO do some calculation
 }
 
-Equipment** Player::get_inventory(void) {
+std::vector<Equipment*>* Player::get_inventory(void) {
 	return this->inventory;
 }
 
-bool Player::add_to_inventory(Equipment* e) {
-	for (int i=0; i < MAX_HELD_ITEMS; i++) {
-		if (this->inventory[i] == NULL){
-			this->inventory[i] = e;
-			return true;
+int Player::add_to_inventory(Equipment* e) {
+	if (this->inventory->size() >= MAX_HELD_ITEMS)
+		return -1;
+
+	std::vector<Equipment*>::iterator end = this->inventory->end();
+	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){
+		if ((*iter)->item_id == e->item_id){
+			if (e->stackable) {
+				e->number_held++;
+				return 1;
+			}else 
+				// is anything not stackable?  dunno bro
+				return -2; // you can't have duplicates
 		}
 	}
-	// inventory is full, so it wasn't added
-	return false;
+
+	// player didn't have the item, so give him the e
+	this->inventory->push_back(e);
+	return 1;
 }
 
 void Player::set_new_inventory(void) {
-	for (int i=0; i<MAX_HELD_ITEMS; i++) {
-		this->inventory[i] = NULL;
-	}
+	this->inventory->clear();
 }
 
 bool Player::wants_to_talk(void){
@@ -123,9 +203,6 @@ void Player::listen_to_keyboard(void) {
 
 void Player::accept_interaction(void) {
 	// TODO implement this
-	//if (this->keyboard_counter++ <= this->keyboard_delay)
-	//return;
-	this->keyboard_counter = 0;
 	if(keyrel(KEY_Q)){
 		this->get_image()->wearing_mask = !this->get_image()->wearing_mask;
 	}

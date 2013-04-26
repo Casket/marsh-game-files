@@ -42,13 +42,13 @@ class QuestManager;
 using namespace std;
 
 
-enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book, Key, Dagger, Consumable};
+enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book, Key, Dagger, Consumable, Unitialized};
 
 typedef struct Equipment{
 	char* name;
 	char* description;
 	int item_id;
-	int vitality, focus, intelligence, willpower;
+	int vitality, focus, intelligence, willpower, armor;
 	bool equipped;
 	bool equipable;
 	bool stackable;
@@ -57,10 +57,9 @@ typedef struct Equipment{
 }Equipment;
 
 class Player: public Combat{
-	Equipment** inventory;	
+	std::vector<Equipment*>* inventory;
 	int level, current_experience, mana, max_mana;
-	int keyboard_counter;
-	int keyboard_delay;
+	int gold;
 	BITMAP* clear_console;
 	BITMAP* in_use_console;
 
@@ -71,8 +70,9 @@ class Player: public Combat{
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
 		virtual void update(void);
-		Equipment** get_inventory(void);
-		bool add_to_inventory(Equipment* equip);
+		std::vector<Equipment*>* get_inventory(void);
+		int add_to_inventory(Equipment* equip);
+		void equip_item(Equipment* equip);
 		void credit_death(Combat*);
 		void credit_interaction(EntityType et);
 		virtual void set_stats(int vitality, int intelligence, int focus, int willpower, int armor);
@@ -81,6 +81,10 @@ class Player: public Combat{
 		bool wants_to_talk(void);
 		int get_max_mana(void);
 		int get_current_mana(void);
+		void use_consumable(Equipment* cons);
+		void remove_from_inventory(Equipment*);
+		void unequip_item(Equipment*);
+		void remove_item_stats(Equipment*);
 
 	
 	private:

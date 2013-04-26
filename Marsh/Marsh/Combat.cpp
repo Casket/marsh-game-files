@@ -42,8 +42,8 @@ void Combat::set_stats(int vitality, int intelligence, int focus, int willpower,
 	this->focus = focus;
 	this->willpower = willpower;
 	this->armor = armor;
-	this->health = calculate_health(this->vitality);
-	this->max_health = this->health;
+	this->max_health = calculate_health(this->vitality);
+	this->health = this->max_health;
 }
 
 EntityType Combat::get_my_type(void){
