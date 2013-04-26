@@ -81,8 +81,6 @@ void View::put_world_in_loaded(World* world){
 
 void View::insert_testing_entities(void){
 
-<<<<<<< HEAD
-=======
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
 		std::pair<int, int> test = std::make_pair(120, 1000);
