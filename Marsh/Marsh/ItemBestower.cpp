@@ -25,7 +25,7 @@ void ItemBestower::update(void){
 		return;
 
 	if (this->bestow_all_items){
-		
+
 	} else {
 
 		int key_pressed = -1;
@@ -55,21 +55,25 @@ void ItemBestower::update(void){
 			Player* hero = Player_Accessor::get_player();
 			if (hero->gold >= this->inventory->at(key_pressed).second){
 				hero->gold -= this->inventory->at(key_pressed).second;
-			} else {
-				this->current_dialogue--;
-				this->should_give_items = false;
-				this->should_free_player = false;
-				hero->display_to_user("You need more gold to purchase that item.");
-				return;
-			}
-			int success = hero->add_to_inventory(this->inventory->at(key_pressed).first);
-			if (success == -1)
-				hero->display_to_user("Your inventory is full.  Please make some room before taking more items.");
-			// TODO : remove gold from player's inventory
-			if (success == -2)
-				hero->display_to_user("You can't have duplicate of that.");
+				int success = hero->add_to_inventory(get_item_clone(this->inventory->at(key_pressed).first));
+				if (success == 1)
+					return;
+				if (success == -1)
+					hero->display_to_user("Your inventory is full.  Please make some room before taking more items.");
+				// TODO : remove gold from player's inventory
+				if (success == -2)
+					hero->display_to_user("You can't have duplicate of that.");
 
-			
+			} else {
+				hero->display_to_user("You need more gold to purchase that item.");
+			}
+			this->current_dialogue--;
+			this->should_give_items = false;
+			this->should_free_player = false;
+
+			return;
+
+
 		}
 	}
 
@@ -95,19 +99,20 @@ void ItemBestower::speak(void){
 		Player_Accessor::get_player()->interacting = false;
 		this->has_player_hostage = false;
 		this->should_free_player = false;
+		this->should_give_items = false;
 		this->current_dialogue = 0;
 		return;
 	}
-	
+
 	Player_Accessor::get_player()->interacting = true;
 	this->has_player_hostage = true;
 	this->should_free_player = false;
 	if (this->current_dialogue < this->dialogue->size()){
 		Player_Accessor::get_player()->display_to_user(this->dialogue->at(this->current_dialogue++));
 		if (this->current_dialogue >= this->dialogue->size() - 1){
-				this->should_give_items = true;
-				this->should_free_player = true;
-			}
+			this->should_give_items = true;
+			this->should_free_player = true;
+		}
 	}
 
 

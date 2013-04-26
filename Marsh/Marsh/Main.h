@@ -46,6 +46,7 @@ using namespace std;
 
 bool keyrel(int k);
 Equipment* get_new_equipment(void);
+Equipment* get_item_clone(Equipment* old_item);
 
 
 class Player_Accessor{

@@ -81,7 +81,11 @@ void Player::use_consumable(Equipment* cons){
 		return;
 
 	this->health += cons->vitality;
+	if (this->health > this->max_health)
+		this->health = this->max_health;
 	this->mana += cons->intelligence;
+	if (this->mana > this->max_mana)
+		this->mana = this->max_mana;
 
 	cons->number_held--;
 	if (cons->number_held <= 0)
@@ -141,7 +145,7 @@ void Player::set_new_inventory(void) {
 }
 
 bool Player::wants_to_talk(void){
-	return keyrel(INTERACT_KEY);
+	return keyrel(INTERACT_KEY) && !this->image->wearing_mask;
 }
 
 

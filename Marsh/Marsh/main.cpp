@@ -397,6 +397,10 @@ void show_screen(Equipment* equip) {
 			Player_Accessor::get_player()->unequip_item(equip);
 		}
 	}
+
+	if (equip->type == Consumable && equip->number_held > 0){
+		Player_Accessor::get_player()->use_consumable(equip);
+	}
 	//return; // do something with clicked item
 }
 
@@ -416,4 +420,23 @@ Equipment* get_new_equipment(void){
 	item->number_held = 0;
 	item->type = Unitialized;
 	return item;
+}
+
+Equipment* get_item_clone(Equipment* old_item){
+	Equipment* item = (Equipment*)malloc(sizeof(Equipment));
+	item->name = old_item->name;
+	item->description = old_item->description;
+	item->item_id = old_item->item_id;
+	item->vitality = old_item->vitality;
+	item->focus = old_item->focus;
+	item->intelligence = old_item->intelligence;
+	item->willpower = old_item->willpower;
+	item->armor = old_item->armor;
+	item->equipped = old_item->equipped;
+	item->equipable = old_item->equipable;
+	item->stackable = old_item->stackable;
+	item->number_held = old_item->number_held;
+	item->type = old_item->type;
+	return item;
+
 }

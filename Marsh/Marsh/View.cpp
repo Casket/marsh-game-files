@@ -100,8 +100,9 @@ void View::insert_testing_entities(void){
 		Equipment* manapot = get_new_equipment();
 		manapot->intelligence = 100;
 		manapot->number_held = 1;
-		manapot->description = "A mana potion to help you on your adventures.";
+		manapot->description = "+100 Mana [Enter to drink]";
 		manapot->item_id = 17;
+		manapot->type = Consumable;
 		manapot->stackable = true;
 		manapot->name = "Weak Mana Potion";
 		
@@ -110,9 +111,10 @@ void View::insert_testing_entities(void){
 		Equipment* healthpot = get_new_equipment();
 		healthpot->vitality = 300;
 		healthpot->number_held = 1;
-		healthpot->description = "A healing potion to assist you during your various adventures into the darkness.";
+		healthpot->description = "+300 Health [Enter to drink]";
 		healthpot->name = "Super Powerful Healing Potion";
 		healthpot->item_id = 19;
+		healthpot->type = Consumable;
 		healthpot->stackable = true;
 
 		farmer_bob->append_inventory(healthpot, 15);

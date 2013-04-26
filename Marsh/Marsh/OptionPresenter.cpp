@@ -91,6 +91,7 @@ void OptionPresenter::speak(void){
 		Player_Accessor::get_player()->interacting = false;
 		this->has_player_hostage = false;
 		this->should_free_player = false;
+		Player_Accessor::get_player()->display_to_user("");
 		return;
 	}
 	if (this->delivered_quest){
