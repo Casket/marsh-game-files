@@ -3,7 +3,7 @@
 
 #define EXPERIENCE_MULTIPLIER 1.5
 #define MAX_HELD_ITEMS 11
-#define BASE_EXPERIENCE_TO_LEVEL 100 // TODO fine tune the game
+#define EXPERIENCE_TO_LEVEL 100 // TODO fine tune the game
 #define MAX_ITEM_STACK_SIZE 20
 
 #define MOVE_UP KEY_W
@@ -96,6 +96,7 @@ class Player: public Combat{
 		void check_casting(void);
 		void accept_interaction(void);
 		void set_new_inventory(void);
+		void Player::grant_experience(int experience_worth);
 
 };
 

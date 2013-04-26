@@ -67,7 +67,13 @@ void View::load_world(WorldName world){
 	this->current_world->insert_entity(this->playa);
 	this->playa->set_world(this->current_world);
 
-	//this->insert_testing_entities();
+	this->insert_testing_entities();
+	//Combat* rambo_sheep = new Combat(200,250, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
+	//rambo_sheep->set_my_type(EntityType::Monster);
+	//rambo_sheep->set_stats(103, 0, 0, 0, 0);
+	//rambo_sheep->set_world(this->current_world);
+	//this->current_world->insert_entity(rambo_sheep);
+	//rambo_sheep->set_boundary_value(30, 30, 2, 2);
 }
 
 void View::put_world_in_loaded(World* world){
@@ -155,7 +161,6 @@ void View::insert_testing_entities(void){
 	farmer_bob->can_speak = true;
 	this->current_world->insert_entity(farmer_bob);
 	farmer_bob->set_boundary_value(30, 30, 0, 0);
-
 
 	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
 	std::pair<int, Direction> test = std::make_pair(-1, N);
@@ -338,6 +343,12 @@ void draw_status(Player* hero, BITMAP* buffer){
 
 		rectfill(buffer, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_X_POS + px_per_c*time, CAST_BAR_Y_POS + CAST_BAR_HEIGHT, pick_cast_color(hero->casted_spell));
 	}
+
+	int max_exp = EXPERIENCE_TO_LEVEL;
+	int cur_exp = hero->experience;
+	double px_per_e = (double) EXP_BAR_WIDTH / (double)max_exp;
+	rectfill(buffer, EXP_BAR_X_POS, EXP_BAR_Y_POS, EXP_BAR_X_POS + px_per_e*cur_exp, EXP_BAR_Y_POS + EXP_BAR_HEIGHT, EXP_COLOR);
+
 }
 
 int pick_cast_color(Attack* attack){

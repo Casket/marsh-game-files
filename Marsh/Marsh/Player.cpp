@@ -19,7 +19,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->interacting = false;
 	this->set_stats(400, 500, 100, 100, 5);
 	this->mana = this->max_mana;
-	this->gold = 0;
+	this->gold = 100;
 
 }
 
@@ -162,8 +162,18 @@ void Player::update(void) {
 void Player::credit_death(Combat* enemy){
 	this->quest_manager->killed_entity(enemy->get_my_type());
 	if(enemy->player_credit){
-		this->experience += enemy->experience_worth;
+		grant_experience(enemy->experience_worth);
 	}	
+}
+
+void Player::grant_experience(int experience_worth){
+	this->experience += experience_worth;
+	if(this->experience >= EXPERIENCE_TO_LEVEL){
+		this->experience -= EXPERIENCE_TO_LEVEL;
+		//TODO make level-up happen
+		display_to_user("You have leveled up!");
+	}
+
 }
 
 void Player::credit_interaction(EntityType et){

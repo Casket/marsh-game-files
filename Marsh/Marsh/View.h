@@ -11,6 +11,10 @@
 #define HEALTH_BAR_Y_POS 50
 #define MANA_BAR_X_POS 1093
 #define MANA_BAR_Y_POS 50
+#define EXP_BAR_X_POS 215
+#define EXP_BAR_Y_POS 210
+#define EXP_BAR_WIDTH 970
+#define EXP_BAR_HEIGHT 5
 #define RESOURCE_BAR_WIDTH 258
 #define RESOURCE_BAR_HEIGHT 20
 #define CAST_BAR_X_POS 590
@@ -27,6 +31,7 @@
 
 #define HEALTH_COLOR makecol(165, 33, 33)
 #define MANA_COLOR makecol(33, 104, 165)
+#define EXP_COLOR makecol(255,255,255)
 
 #include "Main.h"
 #include <map>
