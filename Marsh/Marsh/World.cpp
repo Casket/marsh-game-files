@@ -109,7 +109,7 @@ void World::load_world(){
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 
 
-#pragma omp parallel for num_threads(4) schedule(dynamic)
+//#pragma omp parallel for num_threads(4) schedule(dynamic)
 				for(int i = 0; i < size ; i+=2){
 					int t_count = omp_get_num_threads();
 					int my_c = omp_get_thread_num();

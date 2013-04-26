@@ -19,6 +19,7 @@ using namespace std;
 #define SAVE_GAME 4
 #define LOAD_GAME 5
 #define INVENTORY_GAME 6
+#define LEVEL_UP_GAME 7
 
 Player* Player_Accessor::hero;
 
@@ -37,6 +38,7 @@ void save_game(void);
 void load_game(void);
 void show_inv(void);
 void show_screen(Equipment*);
+void show_level_up(void);
 World* generate_world(void); // TODO add world identifying thingymahinger
 View* create_view(Player*);
 
@@ -68,6 +70,7 @@ int main(void)
 		if (game_state == SAVE_GAME) save_game();
 		if (game_state == LOAD_GAME) load_game();
 		if (game_state == INVENTORY_GAME) show_inv();
+		if (game_state == LEVEL_UP_GAME) show_level_up();
 	}
 
 	destroy_bitmap(buffer);
@@ -241,8 +244,11 @@ void start_game(void) {
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
-		if (key[KEY_I]) {
+		if (keyrel(KEY_I)) {
 			show_inv();
+		}
+		if (keyrel(KEY_L)) {
+			show_level_up();
 		}
 
 
@@ -286,8 +292,11 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 	int menu_sel = 0;
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	int max_sel = MAX_HELD_ITEMS;
+	clear_keybuf();
 
 	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
+		if(keyrel(KEY_I))
+				goto exit_loop;
 		if (keypressed()) {
 			int k = readkey();
 			switch(k >> 8) {
@@ -439,4 +448,76 @@ Equipment* get_item_clone(Equipment* old_item){
 	item->type = old_item->type;
 	return item;
 
+}
+
+void addStat(int selection){
+	Player* hero = Player_Accessor::get_player();
+	if(hero->statPoints > 0){
+		switch(selection){
+			case 0: hero->vitality += STAT_INCREASE; break;
+			case 1: hero->willpower += STAT_INCREASE; break;
+			case 2: hero->intelligence += STAT_INCREASE; break;
+			case 3: hero->focus += STAT_INCREASE; break;
+			default: return;
+		}
+		hero->statPoints--;
+	}
+}
+
+void show_level_up(void) { // show level up menu
+	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+	Player* hero = Player_Accessor::get_player();
+	int menu_sel = 0;
+	int max_sel = 4;
+	while (game_state == LEVEL_UP_GAME || game_state == IN_GAME) {
+		if (keypressed()) {
+			int k = readkey();
+			switch(k >> 8) {
+				case KEY_ESC: break;
+				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
+				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
+				case KEY_ENTER:
+					switch (menu_sel) {
+				case 0: addStat(0); break; 
+				case 1: addStat(1); break; 
+				case 2: addStat(2); break; 
+				case 3: addStat(3); break;  
+				case 4: game_state=IN_GAME; goto exit_level_loop;
+					} break;
+			}
+			clear_keybuf();
+		}
+
+		// drawing
+		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
+
+		textprintf_ex(buffer, font, 150, 120, makecol(236,221,9), -1, "Available Stat Points:");
+		textprintf_ex(buffer, font, 360, 120, makecol(236,145,9), -1, "%d", hero->statPoints);
+
+		textprintf_ex(buffer, font, 150, 260, makecol(236,221,9), -1, "Vitality");
+		textprintf_ex(buffer, font, 150, 280, makecol(236,221,9), -1, "Willpower");
+		textprintf_ex(buffer, font, 150, 300, makecol(236,221,9), -1, "Intelligence");
+		textprintf_ex(buffer, font, 150, 320, makecol(236,221,9), -1, "Focus");
+		textprintf_ex(buffer, font, 310, 260, makecol(236,145,9), -1, "%d", hero->vitality);
+		textprintf_ex(buffer, font, 310, 280, makecol(236,145,9), -1, "%d", hero->willpower);
+		textprintf_ex(buffer, font, 310, 300, makecol(236,145,9), -1, "%d", hero->intelligence);
+		textprintf_ex(buffer, font, 310, 320, makecol(236,145,9), -1, "%d", hero->focus);
+
+		int start_x = 50;
+		int start_y = 260;
+
+
+		if (menu_sel == 4) {
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "Return");
+		} else {
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "RETURN");
+		} 
+
+		// draw to screen
+		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
+	}
+exit_level_loop: ;
+
+	destroy_bitmap(inv_screen_bitmap);
+	return;
 }

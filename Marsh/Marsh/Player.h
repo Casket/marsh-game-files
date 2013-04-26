@@ -65,6 +65,7 @@ class Player: public Combat{
 	public:
 		int gold;
 		int experience;
+		int statPoints;
 		QuestManager* quest_manager;
 		bool interacting;
 		Player(int x, int y, int vel, int vel_d, Sprite* img);

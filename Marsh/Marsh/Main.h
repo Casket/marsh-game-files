@@ -41,6 +41,7 @@ class Attack;
 #define VISIBLE_H 770
 #define UI_WIDTH 1400
 #define UI_HEIGHT 230
+#define STAT_INCREASE 10
 
 using namespace std;
 
