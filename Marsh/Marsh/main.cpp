@@ -253,8 +253,8 @@ void start_game(void) {
 
 
 		if (!rested) {
-			//rest(4);
-			//continue;
+			rest(4);
+			continue;
 		}
 		rested = false;
 		ticks++;
