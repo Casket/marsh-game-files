@@ -20,6 +20,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->set_stats(400, 500, 100, 100, 5);
 	this->mana = this->max_mana;
 	this->gold = 100;
+	this->statPoints = 0;
 
 }
 
@@ -175,6 +176,7 @@ void Player::grant_experience(int experience_worth){
 	if(this->experience >= EXPERIENCE_TO_LEVEL){
 		this->experience -= EXPERIENCE_TO_LEVEL;
 		//TODO make level-up happen
+		this->statPoints += 5;
 		display_to_user("You have leveled up!");
 	}
 
