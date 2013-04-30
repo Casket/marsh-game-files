@@ -494,23 +494,34 @@ void show_level_up(void) { // show level up menu
 		textprintf_ex(buffer, font, 150, 120, makecol(236,221,9), -1, "Available Stat Points:");
 		textprintf_ex(buffer, font, 360, 120, makecol(236,145,9), -1, "%d", hero->statPoints);
 
-		textprintf_ex(buffer, font, 150, 260, makecol(236,221,9), -1, "Vitality");
-		textprintf_ex(buffer, font, 150, 280, makecol(236,221,9), -1, "Willpower");
-		textprintf_ex(buffer, font, 150, 300, makecol(236,221,9), -1, "Intelligence");
-		textprintf_ex(buffer, font, 150, 320, makecol(236,221,9), -1, "Focus");
-		textprintf_ex(buffer, font, 310, 260, makecol(236,145,9), -1, "%d", hero->vitality);
-		textprintf_ex(buffer, font, 310, 280, makecol(236,145,9), -1, "%d", hero->willpower);
-		textprintf_ex(buffer, font, 310, 300, makecol(236,145,9), -1, "%d", hero->intelligence);
-		textprintf_ex(buffer, font, 310, 320, makecol(236,145,9), -1, "%d", hero->focus);
+		textprintf_ex(buffer, font, 150, 260, makecol(255,0,51), -1, "Vitality");
+		textprintf_ex(buffer, font, 150, 280, makecol(255,0,51), -1, "Willpower");
+		textprintf_ex(buffer, font, 150, 300, makecol(255,0,51), -1, "Intelligence");
+		textprintf_ex(buffer, font, 150, 320, makecol(255,0,51), -1, "Focus");
+		textprintf_ex(buffer, font, 310, 260, makecol(255,0,51), -1, "%d", hero->vitality);
+		textprintf_ex(buffer, font, 310, 280, makecol(255,0,51), -1, "%d", hero->willpower);
+		textprintf_ex(buffer, font, 310, 300, makecol(255,0,51), -1, "%d", hero->intelligence);
+		textprintf_ex(buffer, font, 310, 320, makecol(255,0,51), -1, "%d", hero->focus);
 
 		int start_x = 50;
 		int start_y = 260;
 
-
+		if(menu_sel == 0){
+			textprintf_ex(buffer, font, 150, 260, makecol(255,255,0), -1, "Vitality");
+		}
+		else if(menu_sel == 1){
+			textprintf_ex(buffer, font, 150, 280, makecol(255,255,0), -1, "Willpower");
+		}
+		else if(menu_sel == 2){
+			textprintf_ex(buffer, font, 150, 300, makecol(255,255,0), -1, "Intelligence");
+		}
+		else if(menu_sel == 3){
+			textprintf_ex(buffer, font, 150, 320, makecol(255,255,0), -1, "Focus");
+		}
 		if (menu_sel == 4) {
-			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "Return");
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "Return");
 		} else {
-			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "RETURN");
+			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "RETURN");
 		} 
 
 		// draw to screen
