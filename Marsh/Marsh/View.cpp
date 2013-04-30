@@ -26,7 +26,7 @@ View::View(Player* hero){
 	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->behind_bars = load_bitmap("Resources//MarshUI5_background.bmp", NULL);
 	hero->set_consoles(this->clear_console, this->in_use_console);
-
+	this->black_overlay = load_tga("Resources//Misc//Special14.tga", NULL);
 }
 
 View::~View(void){
@@ -314,12 +314,11 @@ void View::draw_active_world(void){
 
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
-
+	draw_trans_sprite(this->world_buffer, this->black_overlay, 0,0);
 	draw_interface(this->playa);
 	draw_to_screen();
 
 	this->current_world->remove_destroyed();
-
 }
 
 void View::draw_to_screen(void){

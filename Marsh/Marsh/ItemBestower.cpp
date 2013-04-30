@@ -27,7 +27,6 @@ void ItemBestower::update(void){
 	if (this->bestow_all_items){
 
 	} else {
-
 		int key_pressed = -1;
 		if (keyrel(KEY_1)){
 			key_pressed = 0;

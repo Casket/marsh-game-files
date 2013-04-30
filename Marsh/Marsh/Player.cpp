@@ -28,6 +28,13 @@ Player::~Player(void){
 
 }
 
+void Player::increment_notoriety(int increase){
+	this->notoriety += increase;
+	if (this->notoriety >= NOTORIETY_CAP){
+		// TODO push the game forward
+	}
+}
+
 void Player::unequip_item(Equipment* equip){
 	std::vector<Equipment*>::iterator end = this->inventory->end();
 	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){
@@ -251,25 +258,25 @@ void Player::check_casting(void) {
 
 	int desired_attack = -1;
 
-	if (key[CAST_ONE]) {
+	if (keyrel(CAST_ONE)) {
 		desired_attack = 0;
-	} else if (key[CAST_TWO]) {
+	} else if (keyrel(CAST_TWO)) {
 		desired_attack = 1;
-	} else if (key[CAST_THREE]) {
+	} else if (keyrel(CAST_THREE)) {
 		desired_attack = 2;
-	} else if (key[CAST_FOUR]) {
+	} else if (keyrel(CAST_FOUR)) {
 		desired_attack = 3;
-	} else if (key[CAST_FIVE]) {
+	} else if (keyrel(CAST_FIVE)) {
 		desired_attack = 4;
-	} else if (key[CAST_SIX]) {
+	} else if (keyrel(CAST_SIX)) {
 		desired_attack = 5;
-	} else if (key[CAST_SEVEN]) {
+	} else if (keyrel(CAST_SEVEN)) {
 		desired_attack = 6;
-	} else if (key[CAST_EIGHT]) {
+	} else if (keyrel(CAST_EIGHT)) {
 		desired_attack = 7;
-	} else if (key[CAST_NINE]) {
+	} else if (keyrel(CAST_NINE)) {
 		desired_attack = 8;
-	} else if (key[CAST_TEN]) {
+	} else if (keyrel(CAST_TEN)) {
 		desired_attack = 9;
 	}
 	if (desired_attack < 0)
