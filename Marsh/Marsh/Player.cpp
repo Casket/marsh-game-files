@@ -28,6 +28,13 @@ Player::~Player(void){
 
 }
 
+void Player::increment_notoriety(int increase){
+	this->notoriety += increase;
+	if (this->notoriety >= NOTORIETY_CAP){
+		// TODO push the game forward
+	}
+}
+
 void Player::unequip_item(Equipment* equip){
 	std::vector<Equipment*>::iterator end = this->inventory->end();
 	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){

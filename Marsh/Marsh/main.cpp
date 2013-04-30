@@ -296,7 +296,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 
 	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
 		if(keyrel(KEY_I))
-				goto exit_loop;
+			goto exit_loop;
 		if (keypressed()) {
 			int k = readkey();
 			switch(k >> 8) {
