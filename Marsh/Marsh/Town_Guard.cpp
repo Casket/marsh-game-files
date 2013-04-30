@@ -43,7 +43,7 @@ void Town_Guard::update(void){
 			//
 		}
 	}else{
-		if(this->blocking_entity->my_type == Hero && in_combat && !check){
+		if(this->blocking_entity->my_type == Hero && in_combat){
 			this->launch_attack(0);
 		}
 		else if(this->detour){
@@ -80,10 +80,6 @@ void Town_Guard::update(void){
 	}else{
 		
 	}
-
-	
-
-
 
 /*
 	if (this->movement_blocked){
