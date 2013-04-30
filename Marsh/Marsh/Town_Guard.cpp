@@ -43,7 +43,10 @@ void Town_Guard::update(void){
 			//
 		}
 	}else{
-		if(this->detour){
+		if(this->blocking_entity->my_type == Hero && in_combat){
+			this->launch_attack(0);
+		}
+		else if(this->detour){
 			if(!check){
 				this->detour_pair = this->detour_obstruction();
 				this->target_area = this->detour_pair.first;
@@ -62,7 +65,10 @@ void Town_Guard::update(void){
 	bool reached_dest = this->move_towards(this->target_area);
 	
 	if(reached_dest){
-		if(this->detour){
+		if(this->in_combat){
+			this->launch_attack(0);
+		}
+		else if(this->detour){
 			if(pair_equals(this->target_area, this->detour_pair.first)){
 				this->target_area = this->detour_pair.second;
 			}else{
@@ -70,16 +76,10 @@ void Town_Guard::update(void){
 			}
 		}else if(on_patrol){
 			this->increment_patrol();
-		}else if(this->in_combat){
-			this->launch_attack(0);
 		}
 	}else{
 		
 	}
-
-	
-
-
 
 /*
 	if (this->movement_blocked){
