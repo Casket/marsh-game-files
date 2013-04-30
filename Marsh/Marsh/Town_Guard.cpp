@@ -43,7 +43,7 @@ void Town_Guard::update(void){
 			//
 		}
 	}else{
-		if(this->blocking_entity->my_type == Hero && in_combat){
+		if((this->blocking_entity->my_type == Hero || this->blocking_entity->my_type == Monster || this->blocking_entity->my_type == Outcast) && in_combat){
 			this->launch_attack(0);
 		}
 		else if(this->detour){

@@ -14,6 +14,7 @@
 
 using namespace std;
 
+enum guard_states {steady, pathing, attacking};
 
 class Town_Guard:public Combat{
 
