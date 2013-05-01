@@ -12,6 +12,7 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->expiration_date = exp_date;
 	this->charge_time = charge_time;
 	this->my_type = Wallop;
+	this->distance_traveled = 0;
 }
 
 Attack::~Attack(void)
@@ -29,6 +30,20 @@ int Attack::get_mana_cost(void){
 
 void Attack::update(void){
 	this->get_image()->update();
+	if (!this->alive){
+		if (++this->death_timer >= this->expiration_date){
+			this->get_world()->remove_entity(this);
+		}
+		return;
+	}
+
+	this->distance_traveled += this->velocity;
+	if (this->distance_traveled >= this->range){
+		//this->start_death_sequence();
+		this->get_world()->remove_entity(this);
+	}
+
+	
 	if (!detect_collisions()){
 		if (++this->movement_counter >= this->velocity_delay){
 			switch(this->get_image()->get_facing()){
@@ -143,8 +158,9 @@ bool Attack::detect_hit(int my_x, int my_y, int my_height, int my_width, int che
 
 void Attack::start_death_sequence(void){
 	this->alive = false;
-	this->get_world()->remove_entity(this);
-	//delete this;
+	this->death_timer = 0;
+	this->get_image()->casting_update();
+	this->get_image()->update();
 }
 
 void Attack::set_my_caster(Combat* caster){

@@ -10,11 +10,15 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,10);
+	Attack_Sprite* needle_spr = new Attack_Sprite("Resources//magic//Energy_Needle.bmp", W, 7, 1, 2, 4, 62,21);
+	needle_spr->set_state_frame_counts(0, 3, 0);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,100);
 	this->attack_loadout[0]->my_type = Wallop;
 	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
-	this->attack_loadout[1] = new Attack(800, 800, 10, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26, 26), 100, 0, 0, 3, 0, 100);
+	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	fireball_spr->set_state_frame_counts(0, 5, 3);
+	this->attack_loadout[1] = new Attack(800, 800, 1, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
@@ -127,12 +131,10 @@ void Combat::casting_update(void) {
 }
 
 void Combat::launch_attack(int attack_num) {
-
 	if ((attack_num >= 0) && (attack_num < MAX_ATTACKS )) {
 		this->casting = true;
 		this->casted_spell = this->attack_loadout[attack_num];
 	}
-
 }
 
 void Combat::update(){
@@ -196,12 +198,13 @@ void Combat::deal_with_attack(Attack* attack){
 			this->player_credit = true;
 		}
 	}
+	attack->start_death_sequence();
 	if(this->health <= 0){	
 		if (this->player_credit)
 			Player_Accessor::get_player()->credit_death(this);
 		this->my_world->removal_queue->push_back(this);
 	}
-	attack->start_death_sequence();
+	
 }
 
 void Combat::append_dialogue(std::string message){

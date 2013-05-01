@@ -43,7 +43,10 @@ void Town_Guard::update(void){
 			//
 		}
 	}else{
-		if(this->blocking_entity->my_type == Hero && in_combat){
+		if(this->blocking_entity == NULL){
+			//tell him he is the juggernaut
+		}
+		else if(this->blocking_entity->my_type == Hero && in_combat){
 			this->launch_attack(0);
 		}
 		else if(this->detour){
