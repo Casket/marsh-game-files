@@ -125,6 +125,7 @@ void Attack_Sprite::check_casting(void){
 Sprite* Attack_Sprite::clone(Direction dir){
 	Attack_Sprite* as = new Attack_Sprite(this->file, dir, this->animation_delay, this->sheet_rows, this->sheet_cols, this->total_frames, this->width, this->height);
 	as->set_state_frame_counts(this->frames_to_charge, this->frames_to_move, this->frames_to_impact);
+	as->is_translucent = this->is_translucent;
 	return as;
 
 }

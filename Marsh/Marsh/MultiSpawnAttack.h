@@ -16,7 +16,7 @@ class MultiSpawnAttack: public Attack {
 
 public:
 
-	MultiSpawnAttack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats);
+	MultiSpawnAttack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats, Attack*);
 	~MultiSpawnAttack(void);
 	virtual void update(void);
 	virtual void start_death_sequence(void);

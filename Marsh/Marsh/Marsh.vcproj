@@ -214,6 +214,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MultiSpawnAttack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionPresenter.cpp"
 				>
 			</File>

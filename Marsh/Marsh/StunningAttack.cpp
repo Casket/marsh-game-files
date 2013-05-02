@@ -31,16 +31,16 @@ Attack* StunningAttack::clone(int x, int y, Direction dir){
 }
 
 void StunningAttack::update(void){
+	this->get_image()->update();
 	if (!this->alive){
-		if (++this->death_timer >= this->expiration_date)
-			this->get_world()->remove_entity(this);
+		this->get_world()->remove_entity(this);
 		return;
 	}
 
 	if (this->caught_target == NULL)
 		Attack::update();
 	if (this->caught_target != NULL){
-		if (++this->caught_timer >= this->caught_duration){
+		if (++this->death_timer >= this->expiration_date){
 			Attack::start_death_sequence();
 			this->caught_target->entangled = false;
 		}
@@ -112,6 +112,7 @@ void StunningAttack::entrap_my_target(void){
 
 	target->set_x_pos(center_x);
 	target->set_y_pos(center_y);
+	this->get_image()->casting_update();
 }
 
 void StunningAttack::start_death_sequence(void){

@@ -11,6 +11,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
+
 	Attack_Sprite* needle_spr = new Attack_Sprite("Resources//magic//Energy_Needle.bmp", W, 7, 1, 2, 4, 62,21);
 	needle_spr->set_state_frame_counts(0, 3, 0);
 	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,100);
@@ -20,19 +21,23 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
 	fireball_spr->set_state_frame_counts(0, 5, 3);
 	this->attack_loadout[1] = new Attack(800, 800, 1, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
+
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
-	Attack_Sprite* fire = new Attack_Sprite("Resources//magic/fireball.bmp", W, 5, 1, 5, 8, 26, 26);
-	fire->set_state_frame_counts(0, 5, 3);
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 5, 17, 895/17, 48);
+
+	fire->is_translucent = true;
+	fire->set_state_frame_counts(0, 1, 16);
 	AttackStatistics stats;
 	stats.base_damage = 0;
 	stats.charge_time = 100;
-	stats.exp_date = 100;
+	stats.exp_date = 1000;
 	stats.penetration = 15;
 	stats.range = 250;
 	stats.tree_depth = 2;
-	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fireball_spr, stats);
+	fire->is_translucent = true;
+	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fire, stats);
 	this->attack_loadout[2]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[2]->set_my_caster(this);
 	this->attack_loadout[3] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
