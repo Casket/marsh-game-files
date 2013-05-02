@@ -35,7 +35,7 @@ public:
 		~Attack(void);
 		virtual void update(void);
 		virtual void deal_with_attack(Attack*);
-		virtual Attack* clone(int, int, int, int, Direction);
+		virtual Attack* clone(int, int, Direction);
 		virtual bool detect_collisions(void);
 		void set_my_caster(Combat*);
 		Combat* get_my_caster(void);

@@ -209,7 +209,7 @@ int Attack::get_charge_time(void){
 	return this->charge_time;
 }
 
-Attack* Attack::clone(int x, int y, int intelligence, int focus, Direction dir){
+Attack* Attack::clone(int x, int y, Direction dir){
 	int damage, penetrate, charge;
 	damage = this->base_damage;
 	penetrate = this->penetration;

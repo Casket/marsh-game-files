@@ -218,6 +218,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PersistentAttack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Player.cpp"
 				>
 			</File>
@@ -329,6 +333,10 @@
 			</File>
 			<File
 				RelativePath=".\OptionPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PersistentAttack.h"
 				>
 			</File>
 			<File

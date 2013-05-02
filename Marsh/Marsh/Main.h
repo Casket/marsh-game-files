@@ -38,6 +38,7 @@ class Attack;
 #include "ItemBestower.h"
 #include "MultiSpawnAttack.h"
 #include "StunningAttack.h"
+#include "PersistentAttack.h"
 
 
 #define VISIBLE_W 1400

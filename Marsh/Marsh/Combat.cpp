@@ -24,7 +24,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	Attack_Sprite* fire = new Attack_Sprite("Resources//magic/fireball.bmp", W, 5, 1, 5, 8, 26, 26);
-	fireball_spr->set_state_frame_counts(0, 5, 3);
+	fire->set_state_frame_counts(0, 5, 3);
 	AttackStatistics stats;
 	stats.base_damage = 0;
 	stats.charge_time = 100;
@@ -35,6 +35,10 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fireball_spr, stats);
 	this->attack_loadout[2]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[2]->set_my_caster(this);
+	this->attack_loadout[3] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
+	this->attack_loadout[3]->set_boundary_value(26, 26, 2, 2);
+	this->attack_loadout[3]->set_my_caster(this);
+
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
 	this->targeted = false;
@@ -136,7 +140,7 @@ void Combat::casting_update(void) {
 				spell_x += this->get_bounding_width() / 2;
 				break;
 		}
-		this->casted_spell = this->casted_spell->clone(spell_x, spell_y,this->intelligence,this->focus, this->get_image()->get_facing());
+		this->casted_spell = this->casted_spell->clone(spell_x, spell_y, this->get_image()->get_facing());
 		this->casted_spell->set_world(this->get_world());
 		this->get_world()->insert_entity(this->casted_spell);
 		this->casted_spell = NULL;
