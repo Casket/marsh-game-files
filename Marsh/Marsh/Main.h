@@ -36,6 +36,9 @@ class Attack;
 #include "QuestGiver.h"
 #include "OptionPresenter.h"
 #include "ItemBestower.h"
+#include "MultiSpawnAttack.h"
+#include "StunningAttack.h"
+
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770

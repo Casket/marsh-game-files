@@ -13,6 +13,22 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->charge_time = charge_time;
 	this->my_type = Wallop;
 	this->distance_traveled = 0;
+	this->death_timer = 0;
+}
+
+Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats)
+:iDrawable(x, y, vel, vel_d, img)
+{
+	this->base_damage = stats.base_damage;
+	this->penetration = stats.penetration;
+	this->range = stats.range;
+	this->tree_depth_level = stats.tree_depth;
+	this->expiration_date = stats.exp_date;
+	this->charge_time = stats.charge_time;
+	this->my_type = Wallop;
+	this->distance_traveled = 0;
+	this->death_timer = 0;
+	
 }
 
 Attack::~Attack(void)
@@ -43,8 +59,7 @@ void Attack::update(void){
 		this->get_world()->remove_entity(this);
 	}
 
-	
-	if (!detect_collisions()){
+	if (!this->detect_collisions()){
 		if (++this->movement_counter >= this->velocity_delay){
 			switch(this->get_image()->get_facing()){
 				case N:
@@ -75,11 +90,9 @@ void Attack::update(void){
 					this->set_x_pos(this->get_x_pos() - (int) (this->velocity * ANGLE_SHIFT));
 					this->set_y_pos(this->get_y_pos() - (int) (this->velocity * ANGLE_SHIFT));
 					break;
-
 			}
 		}
 	}
-
 }
 
 bool Attack::detect_collisions(void){
@@ -160,7 +173,6 @@ void Attack::start_death_sequence(void){
 	this->alive = false;
 	this->death_timer = 0;
 	this->get_image()->casting_update();
-	this->get_image()->update();
 }
 
 void Attack::set_my_caster(Combat* caster){

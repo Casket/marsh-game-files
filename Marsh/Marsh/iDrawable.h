@@ -6,10 +6,11 @@
 #include "Main.h"
 class World;
 class Portal;
+class Combat;
 
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken, Wallop, StarGate};
+enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken, Wallop, StarGate, Stationary};
 
 class iDrawable{
 public:
@@ -53,6 +54,7 @@ public:
 	virtual Attack* fetch_me_as_attack(void);
 	virtual void check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
 	virtual Portal* fetch_me_as_portal(void);
+	virtual Combat* fetch_me_as_combat(void);
 
 private:
 

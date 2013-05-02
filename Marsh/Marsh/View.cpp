@@ -132,6 +132,7 @@ void View::insert_testing_entities(void){
 		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
+		g->set_stats(1000, 1000, 100, 100, 100);
 		this->current_world->insert_entity(g);
 	}
 
@@ -297,7 +298,6 @@ void View::update(void){
 				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
 				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
 				this->load_world(gateway->portal_to);
-
 			}
 		}
 	}
@@ -409,7 +409,8 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 	int yshift = this->playa->get_y_pos() - buffer->h/2;
 
 	std::list<iDrawable*>::iterator iter;
-	for (iter = sprites->begin(); iter != sprites->end(); ++iter){
+	std::list<iDrawable*>::iterator end = sprites->end();
+	for (iter = sprites->begin(); iter != end; ++iter){
 		BITMAP* frame = (*iter)->get_image()->get_current_frame();
 		int x = (*iter)->get_x_pos();
 		int y = (*iter)->get_y_pos();

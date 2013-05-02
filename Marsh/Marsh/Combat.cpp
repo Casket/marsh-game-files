@@ -10,6 +10,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
+	this->entangled = false;
 	Attack_Sprite* needle_spr = new Attack_Sprite("Resources//magic//Energy_Needle.bmp", W, 7, 1, 2, 4, 62,21);
 	needle_spr->set_state_frame_counts(0, 3, 0);
 	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,100);
@@ -22,6 +23,18 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
+	Attack_Sprite* fire = new Attack_Sprite("Resources//magic/fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	fireball_spr->set_state_frame_counts(0, 5, 3);
+	AttackStatistics stats;
+	stats.base_damage = 0;
+	stats.charge_time = 100;
+	stats.exp_date = 100;
+	stats.penetration = 15;
+	stats.range = 250;
+	stats.tree_depth = 2;
+	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fireball_spr, stats);
+	this->attack_loadout[2]->set_boundary_value(26, 26, 2, 2);
+	this->attack_loadout[2]->set_my_caster(this);
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
 	this->targeted = false;
@@ -138,6 +151,8 @@ void Combat::launch_attack(int attack_num) {
 }
 
 void Combat::update(){
+	if (this->entangled)
+		return;
 	check_collisions();
 
 	if (this->has_player_hostage){
@@ -187,6 +202,10 @@ void Combat::check_collisions(void){
 	}
 }
 
+Combat* Combat::fetch_me_as_combat(void){
+	return this;
+}
+
 void Combat::deal_with_attack(Attack* attack){
 
 	int armor = this->armor;
@@ -198,13 +217,13 @@ void Combat::deal_with_attack(Attack* attack){
 			this->player_credit = true;
 		}
 	}
+
 	attack->start_death_sequence();
 	if(this->health <= 0){	
 		if (this->player_credit)
 			Player_Accessor::get_player()->credit_death(this);
 		this->my_world->removal_queue->push_back(this);
 	}
-	
 }
 
 void Combat::append_dialogue(std::string message){

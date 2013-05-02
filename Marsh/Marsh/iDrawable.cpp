@@ -86,6 +86,10 @@ Portal* iDrawable::fetch_me_as_portal(void){
 	return NULL;
 }
 
+Combat* iDrawable::fetch_me_as_combat(void){
+	return NULL;
+}
+
 void iDrawable::speak(void){};
 void iDrawable::append_dialogue(std::string message){};
 void iDrawable::clear_dialogue(void){};
