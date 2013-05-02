@@ -10,11 +10,11 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,10);
+	this->attack_loadout[0] = new Attack(800, 800, 4, 10, new Attack_Sprite("Resources//Attack Sprites//Energy_Bolt_2.bmp", W, 5, 1, 0, 4, 47,32), 51,0,0, 0,0,10);
 	this->attack_loadout[0]->my_type = Wallop;
 	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
-	this->attack_loadout[1] = new Attack(800, 800, 10, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26, 26), 100, 0, 0, 3, 0, 100);
+	this->attack_loadout[1] = new Attack(800, 800, 4, 10, new Attack_Sprite("Resources//Attack Sprites//Energy_Wave.bmp", W, 2, 1, 11, 15,60, 47), 51, 0, 0, 3, 0, 10);
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);

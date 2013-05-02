@@ -314,7 +314,6 @@ void View::draw_active_world(void){
 
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
-	draw_trans_sprite(this->world_buffer, this->black_overlay, 0,0);
 	draw_interface(this->playa);
 	draw_to_screen();
 
