@@ -32,6 +32,7 @@ void Town_Guard::update(void){
 	Direction dir_moving = this->get_direction_moving();
 	bool check = this->get_current_facing_flag(dir_moving);
 
+
 	switch (this->current_state){
 		case attack:
 			if(this->blocking_entity == NULL){

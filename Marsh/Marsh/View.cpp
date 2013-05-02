@@ -26,7 +26,6 @@ View::View(Player* hero){
 	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->behind_bars = load_bitmap("Resources//MarshUI5_background.bmp", NULL);
 	hero->set_consoles(this->clear_console, this->in_use_console);
-	this->black_overlay = load_tga("Resources//Misc//Special14.tga", NULL);
 }
 
 View::~View(void){
