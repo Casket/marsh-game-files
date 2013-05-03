@@ -122,6 +122,8 @@ bool Attack::detect_collisions(void){
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
+		if (check_width == 0 && check_height == 0)
+			continue;
 
 
 		if (detect_hit(my_x, my_y, my_height, my_width, 
@@ -206,7 +208,7 @@ void Attack::deal_with_attack(Attack* attack){
 }
 
 int Attack::get_charge_time(void){
-	return this->charge_time;
+	return this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
 }
 
 Attack* Attack::clone(int x, int y, Direction dir){

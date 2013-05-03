@@ -4,6 +4,8 @@
 #include "iDrawable.h"
 #include "Main.h"
 
+#define FOCUS_EFFECT 0.1
+
 class Combat;
 
 using namespace std;

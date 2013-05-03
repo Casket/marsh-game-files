@@ -150,6 +150,8 @@ void iDrawable::check_collisions(void){
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
+		if (check_width == 0 && check_height == 0)
+			continue;
 
 		bool was_unblocked_flag = *unblocked_facing ? true : false;
 

@@ -17,7 +17,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->inventory = new std::vector<Equipment*>();
 	this->set_new_inventory();
 	this->interacting = false;
-	this->set_stats(400, 500, 100, 100, 5);
+	this->set_stats(20, 45, 10, 10, 5);
 	this->mana = this->max_mana;
 	this->gold = 100;
 	this->statPoints = 0;
