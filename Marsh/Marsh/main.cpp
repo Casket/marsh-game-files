@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "LevelUp.h"
 
 
 using namespace std;
@@ -40,7 +41,7 @@ void show_inv(void);
 void show_screen(Equipment*);
 void show_level_up(void);
 World* generate_world(void); // TODO add world identifying thingymahinger
-View* create_view(Player*);
+Marsh::View* create_view(Player*);
 
 // gamestate
 int game_state = INTRO_GAME;
@@ -80,8 +81,8 @@ int main(void)
 }
 END_OF_MAIN()
 
-View* create_view(Player* hero){
-	View* v = new View(hero);
+Marsh::View* create_view(Player* hero){
+	Marsh::View* v = new Marsh::View(hero);
 	v->load_world(test_map);
 	return v;
 }
@@ -236,7 +237,7 @@ void start_game(void) {
 
 	Player*	hero = Player_Accessor::get_player();
 
-	View *our_viewer= create_view(hero);
+	Marsh::View *our_viewer= create_view(hero);
 
 	hero->set_my_type(Hero);
 
@@ -296,7 +297,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 
 	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
 		if(keyrel(KEY_I))
-				goto exit_loop;
+			goto exit_loop;
 		if (keypressed()) {
 			int k = readkey();
 			switch(k >> 8) {
@@ -465,7 +466,32 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
-	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+	//inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+
+	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
+			menu->BringToFront();
+			menu->ShowDialog();
+			//Application::Run(menu);
+/*
+	bool is_done = false;
+	volatile bool* done_ref = &is_done;
+#pragma omp parallel num_threads(2) shared(done_ref)
+	{
+		int my_id = omp_get_thread_num();
+		if (my_id == 0){
+			while(!done_ref){
+				// wait for a while
+			}
+		} else {
+			LevelUp^ menu = gcnew LevelUp();
+			menu->BringToFront();
+			menu->ShowDialog();
+			Application::Run(menu);
+		}
+
+		//	
+
+	}
 	Player* hero = Player_Accessor::get_player();
 	int menu_sel = 0;
 	int max_sel = 4;
@@ -530,5 +556,5 @@ void show_level_up(void) { // show level up menu
 exit_level_loop: ;
 
 	destroy_bitmap(inv_screen_bitmap);
-	return;
+	return;*/
 }

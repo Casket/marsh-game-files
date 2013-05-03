@@ -5,10 +5,12 @@ class Portal;
 
 
 using namespace std;
+using namespace Marsh;
+
 
 int pick_cast_color(Attack* attack);
 
-View::View(Player* hero){
+Marsh::View::View(Player* hero){
 	this->playa = hero;
 	this->world_buffer = create_bitmap(VISIBLE_W, VISIBLE_H);
 	clear_bitmap(this->world_buffer);
@@ -29,7 +31,7 @@ View::View(Player* hero){
 
 }
 
-View::~View(void){
+Marsh::View::~View(void){
 	if (this->playa != NULL)
 		delete this->playa;
 
@@ -58,7 +60,7 @@ View::~View(void){
 }
 
 
-void View::load_world(WorldName world){
+void Marsh::View::load_world(WorldName world){
 	if (this->current_world != NULL){
 		put_world_in_loaded(this->current_world);
 	}
@@ -76,11 +78,11 @@ void View::load_world(WorldName world){
 	//rambo_sheep->set_boundary_value(30, 30, 2, 2);
 }
 
-void View::put_world_in_loaded(World* world){
+void Marsh::View::put_world_in_loaded(World* world){
 	this->loaded_worlds->insert(std::pair<WorldName, World*>(world->my_name, world));
 }
 
-void View::insert_testing_entities(void){
+void Marsh::View::insert_testing_entities(void){
 
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
@@ -286,7 +288,7 @@ void View::insert_testing_entities(void){
 }
 
 
-void View::update(void){
+void Marsh::View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
 
 	std::list<iDrawable*>::iterator iter;
@@ -305,7 +307,7 @@ void View::update(void){
 
 }
 
-void View::draw_active_world(void){
+void Marsh::View::draw_active_world(void){
 	//clear_bitmap(this->world_buffer);
 
 	int tile_wide = this->current_world->get_tiles_wide();
@@ -322,7 +324,7 @@ void View::draw_active_world(void){
 
 }
 
-void View::draw_to_screen(void){
+void Marsh::View::draw_to_screen(void){
 	acquire_screen();
 	blit(this->world_buffer, screen, 0,0,0,0, VISIBLE_W, VISIBLE_H);
 	blit(this->ui_buffer, screen, 0, 0, 0, SCREEN_H - UI_HEIGHT, UI_WIDTH, UI_HEIGHT);
@@ -364,7 +366,7 @@ void draw_dialogs(BITMAP* buffer){
 
 }
 
-void View::draw_interface(Player* hero){
+void Marsh::View::draw_interface(Player* hero){
 	blit(this->behind_bars, this->ui_buffer, 0, 0, BACK_LAYER_X, BACK_LAYER_Y, this->behind_bars->w, this->behind_bars->h);
 	draw_status(hero, this->ui_buffer);
 	masked_blit(this->resource_bars[0], this->ui_buffer, 0, 0, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
@@ -373,7 +375,7 @@ void View::draw_interface(Player* hero){
 	blit(this->in_use_console, this->ui_buffer, 0, 0, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 }
 
-void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){
+void Marsh::View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){
 	int left_x = this->playa->get_x_pos() - buffer->w/2;
 	int start_j = left_x / 32;
 	if (start_j < 0)
@@ -407,7 +409,7 @@ void View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int til
 	}
 }
 
-void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
+void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 	int xshift = this->playa->get_x_pos() - buffer->w/2;
 	int yshift = this->playa->get_y_pos() - buffer->h/2;
 
@@ -432,7 +434,7 @@ void View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites){
 	}
 }
 
-void View::save_game(void){
+void Marsh::View::save_game(void){
 	/*
 	fstream fout;
 	fout.put("default", ios::out);

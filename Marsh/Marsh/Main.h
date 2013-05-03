@@ -37,6 +37,7 @@ class Attack;
 #include "OptionPresenter.h"
 #include "ItemBestower.h"
 
+
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
 #define UI_WIDTH 1400
@@ -44,6 +45,8 @@ class Attack;
 #define STAT_INCREASE 10
 
 using namespace std;
+using namespace Marsh;
+
 
 bool keyrel(int k);
 Equipment* get_new_equipment(void);

@@ -39,6 +39,7 @@ class Guard;
 class Portal;
 
 using namespace std;
+namespace Marsh {
 
 class View{
 	public:
@@ -71,5 +72,6 @@ class View{
 private:
 	void insert_testing_entities(void);
 };
+}
 
 #endif
