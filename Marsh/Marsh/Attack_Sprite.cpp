@@ -12,42 +12,59 @@ Attack_Sprite::Attack_Sprite(std::string file_name, Direction cur_dir, int ani_d
 	this->frames_to_move = this->total_frames;
 	this->frames_to_impact = 0;
 
+	int adjusted_width = width;
+	int adjusted_height = height;
+	int largest = (width > height) ? width : height;
+
 	int rotation_angle = 0;
 	switch(cur_dir){
 		case NW:
+			adjusted_height = largest;
+			adjusted_width = largest;
 			rotation_angle = 32;
 			break;
 		case N:
 			rotation_angle = 64;
+			adjusted_height = width;
+			adjusted_width = height;
 			break;
 		case NE:
 			rotation_angle = 96;
+			adjusted_height = largest;
+			adjusted_width = largest;
 			break;
 		case E:
 			rotation_angle = 128;
 			break;
 		case SE:
 			rotation_angle = 160;
+			adjusted_height = largest;
+			adjusted_width = largest;
 			break;
 		case S:
 			rotation_angle = 192;
+			adjusted_height = width;
+			adjusted_width = height;
 			break;
 		case SW:
 			rotation_angle = 224;
+			adjusted_height = largest;
+			adjusted_width = largest;
 			break;
 		default:
+			// it's WEST
 			rotation_angle = 0;
 			break;
 	}
 
 	for (int i = 0; i < total_frames; i++){
-		this->image_frames[i] = create_bitmap(width, height);
+		this->image_frames[i] = create_bitmap(adjusted_width, adjusted_height);
 		BITMAP* sub_image = create_sub_bitmap(this->sprite_sheet, i*width, 0, width, height);
 		clear_to_color(this->image_frames[i],makecol(255, 0, 255));
-		rotate_sprite(this->image_frames[i], sub_image, 0, 0, itofix(rotation_angle));
+		pivot_sprite(this->image_frames[i], sub_image, (adjusted_width)/2, (adjusted_height)/2, width/2, height/2, itofix(rotation_angle));
 		destroy_bitmap(sub_image);
-
 	}
+
 	this->current_state = AttackMoving;
 	// use moving as the default, because charging is not possible for now
 
@@ -105,6 +122,8 @@ void Attack_Sprite::casting_update(void){
 			break;
 
 		case AttackMoving:
+			if (this->frames_to_impact == 0)
+				break;
 			this->current_state = AttackImpacting;
 			this->animation_frame = this->frames_to_charge+this->frames_to_move;
 			break;
@@ -125,6 +144,7 @@ void Attack_Sprite::check_casting(void){
 Sprite* Attack_Sprite::clone(Direction dir){
 	Attack_Sprite* as = new Attack_Sprite(this->file, dir, this->animation_delay, this->sheet_rows, this->sheet_cols, this->total_frames, this->width, this->height);
 	as->set_state_frame_counts(this->frames_to_charge, this->frames_to_move, this->frames_to_impact);
+	as->is_translucent = this->is_translucent;
 	return as;
 
 }

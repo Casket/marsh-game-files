@@ -375,7 +375,8 @@ std::list<iDrawable*>* World::get_visible_entities(void){
 	int bottom_most = top_most + 2*SCREEN_H + PAD;
 
 	std::list<iDrawable*>::iterator iter;
-	for (iter = this->active_entities->begin(); iter != this->active_entities->end(); ++iter){
+	std::list<iDrawable*>::iterator end = this->active_entities->end();
+	for (iter = this->active_entities->begin(); iter != end; ++iter){
 		if ((*iter)->get_x_pos() >= left_most && (*iter)->get_x_pos() <= right_most){
 			if ((*iter)->get_y_pos() >= top_most && (*iter)->get_y_pos() <= bottom_most){
 				this->visible_entities->push_front((*iter));
@@ -743,7 +744,7 @@ void World::make_portal(std::string items){
 	int y_tar = list_to_int(y_targ, inner_index);
 	WorldName converted_name = get_WorldName(worldName, name_size);
 
-	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",0,0),converted_name, x_tar, y_tar);
+	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, x_tar, y_tar);
 	new_portal->set_boundary_value(32, 32, 0, 0);
 	insert_entity(new_portal);
 

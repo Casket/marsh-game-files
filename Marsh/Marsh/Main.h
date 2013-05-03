@@ -36,6 +36,13 @@ class Attack;
 #include "QuestGiver.h"
 #include "OptionPresenter.h"
 #include "ItemBestower.h"
+#include "MultiSpawnAttack.h"
+#include "StunningAttack.h"
+#include "PersistentAttack.h"
+#include "AttackCharge.h"
+#include "AttackDB.h"
+
+
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
@@ -44,6 +51,8 @@ class Attack;
 #define STAT_INCREASE 10
 
 using namespace std;
+using namespace Marsh;
+
 
 bool keyrel(int k);
 Equipment* get_new_equipment(void);

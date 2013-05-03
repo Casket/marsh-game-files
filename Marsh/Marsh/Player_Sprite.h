@@ -25,10 +25,14 @@ using namespace std;
 
 #define SPRITE_WIDTH 32
 #define SPRITE_HEIGHT 32
+#define FLICKER_FRAME_NUMBER 1000000
 
 
 class Player_Sprite : public Sprite{
 public:
+	BITMAP* blank_frame;
+	bool frame_intial;
+
 	Player_Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
 	~Player_Sprite(void);
 	BITMAP* get_current_frame(void);
@@ -36,7 +40,7 @@ public:
 	virtual void casting_update(void);
 	virtual void check_casting(void);
 	virtual Sprite* clone(Direction);
-
+	void intial_blank_frame(void);
 
 };
 

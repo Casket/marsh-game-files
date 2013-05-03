@@ -20,6 +20,8 @@ Town_Guard::~Town_Guard(void){
 }
 
 void Town_Guard::update(void){
+	if (this->entangled)
+		return;
 	bool dest_reached = false;
 
 	if(this->casting){

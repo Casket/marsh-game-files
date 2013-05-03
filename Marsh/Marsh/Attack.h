@@ -4,9 +4,20 @@
 #include "iDrawable.h"
 #include "Main.h"
 
+#define FOCUS_EFFECT 0.1
+
 class Combat;
 
 using namespace std;
+
+typedef struct AttackStatistics{
+	int base_damage;
+	int penetration; 
+	int range;
+	int tree_depth;
+	int exp_date;
+	int charge_time;
+} AttackStatistics;
 
 enum AttackType {Melee, Fire, Indirect, Energy, Defensive};
 
@@ -18,27 +29,28 @@ public:
 	int tree_depth_level;
 	int death_timer, expiration_date;
 	int charge_time;
+	int mana_cost;
 	Combat* my_caster;
 
 	public:
 		Attack(int x, int y, int vel, int vel_d, Sprite* img, int base_damage, int penetration, int range, int tree_depth, int exp_date, int charge_time);
+		Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats);
 		~Attack(void);
 		virtual void update(void);
 		virtual void deal_with_attack(Attack*);
-		Attack* clone(int, int, int, int, Direction);
-		bool detect_collisions(void);
+		virtual Attack* clone(int, int, Direction);
+		virtual bool detect_collisions(void);
 		void set_my_caster(Combat*);
 		Combat* get_my_caster(void);
 		int get_charge_time(void);
-		void start_death_sequence(void);
+		virtual void start_death_sequence(void);
 		virtual Attack* fetch_me_as_attack(void);
 		int get_mana_cost(void);
+		void set_mana_cost(int);
 
 	protected:
 		// super private methods go here
 		bool detect_hit(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height);
-		
-		
 
 };
 

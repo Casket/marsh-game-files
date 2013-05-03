@@ -13,6 +13,24 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->charge_time = charge_time;
 	this->my_type = Wallop;
 	this->distance_traveled = 0;
+	this->death_timer = 0;
+	this->mana_cost = 0;
+}
+
+Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats)
+:iDrawable(x, y, vel, vel_d, img)
+{
+	this->base_damage = stats.base_damage;
+	this->penetration = stats.penetration;
+	this->range = stats.range;
+	this->tree_depth_level = stats.tree_depth;
+	this->expiration_date = stats.exp_date;
+	this->charge_time = stats.charge_time;
+	this->my_type = Wallop;
+	this->mana_cost = 0;
+	this->distance_traveled = 0;
+	this->death_timer = 0;
+	
 }
 
 Attack::~Attack(void)
@@ -25,7 +43,10 @@ Attack* Attack::fetch_me_as_attack(void){
 }
 
 int Attack::get_mana_cost(void){
-	return 5;
+	return this->mana_cost;
+}
+void Attack::set_mana_cost(int m){
+	this->mana_cost = m;
 }
 
 void Attack::update(void){
@@ -43,8 +64,7 @@ void Attack::update(void){
 		this->get_world()->remove_entity(this);
 	}
 
-	
-	if (!detect_collisions()){
+	if (!this->detect_collisions()){
 		if (++this->movement_counter >= this->velocity_delay){
 			switch(this->get_image()->get_facing()){
 				case N:
@@ -75,11 +95,9 @@ void Attack::update(void){
 					this->set_x_pos(this->get_x_pos() - (int) (this->velocity * ANGLE_SHIFT));
 					this->set_y_pos(this->get_y_pos() - (int) (this->velocity * ANGLE_SHIFT));
 					break;
-
 			}
 		}
 	}
-
 }
 
 bool Attack::detect_collisions(void){
@@ -109,6 +127,8 @@ bool Attack::detect_collisions(void){
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
+		if (check_width == 0 && check_height == 0)
+			continue;
 
 
 		if (detect_hit(my_x, my_y, my_height, my_width, 
@@ -160,7 +180,6 @@ void Attack::start_death_sequence(void){
 	this->alive = false;
 	this->death_timer = 0;
 	this->get_image()->casting_update();
-	this->get_image()->update();
 }
 
 void Attack::set_my_caster(Combat* caster){
@@ -194,10 +213,10 @@ void Attack::deal_with_attack(Attack* attack){
 }
 
 int Attack::get_charge_time(void){
-	return this->charge_time;
+	return this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
 }
 
-Attack* Attack::clone(int x, int y, int intelligence, int focus, Direction dir){
+Attack* Attack::clone(int x, int y, Direction dir){
 	int damage, penetrate, charge;
 	damage = this->base_damage;
 	penetrate = this->penetration;
