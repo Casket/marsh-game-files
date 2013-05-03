@@ -13,7 +13,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 
 	Attack_Sprite* needle_spr = new Attack_Sprite("Resources//magic//Energy_Needle.bmp", W, 7, 1, 2, 4, 62,21);
 	needle_spr->set_state_frame_counts(0, 3, 0);
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,100);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,25);
 	this->attack_loadout[0]->my_type = Wallop;
 	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[0]->set_my_caster(this);
