@@ -10,14 +10,39 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->focus = BASE_FOCUS;
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,0, 0,0,10);
-	this->attack_loadout[0]->my_type = Wallop;
-	this->attack_loadout[0]->set_boundary_value(26, 26, 2, 2);
+	this->entangled = false;
+
+	Attack_Sprite* needle_spr = new Attack_Sprite("Resources//Attack Sprites//Energy_Bolt.bmp", W, 7, 1, 2, 4, 188/4,31);
+	needle_spr->set_state_frame_counts(0, 4, 0);
+	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,100);
+	this->attack_loadout[0]->set_boundary_value(34, 18, 5, 8);
 	this->attack_loadout[0]->set_my_caster(this);
-	this->attack_loadout[1] = new Attack(800, 800, 10, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26, 26), 100, 0, 0, 3, 0, 100);
+	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	fireball_spr->set_state_frame_counts(0, 5, 3);
+	this->attack_loadout[1] = new Attack(800, 800, 2, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
+
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 5, 17, 895/17, 48);
+
+	fire->is_translucent = true;
+	fire->set_state_frame_counts(0, 1, 16);
+	AttackStatistics stats;
+	stats.base_damage = 0;
+	stats.charge_time = 100;
+	stats.exp_date = 1000;
+	stats.penetration = 15;
+	stats.range = 250;
+	stats.tree_depth = 2;
+	fire->is_translucent = true;
+	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fire, stats);
+	this->attack_loadout[2]->set_boundary_value(26, 26, 2, 2);
+	this->attack_loadout[2]->set_my_caster(this);
+	this->attack_loadout[3] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
+	this->attack_loadout[3]->set_boundary_value(26, 26, 2, 2);
+	this->attack_loadout[3]->set_my_caster(this);
+
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
 	this->targeted = false;
@@ -119,7 +144,7 @@ void Combat::casting_update(void) {
 				spell_x += this->get_bounding_width() / 2;
 				break;
 		}
-		this->casted_spell = this->casted_spell->clone(spell_x, spell_y,this->intelligence,this->focus, this->get_image()->get_facing());
+		this->casted_spell = this->casted_spell->clone(spell_x, spell_y, this->get_image()->get_facing());
 		this->casted_spell->set_world(this->get_world());
 		this->get_world()->insert_entity(this->casted_spell);
 		this->casted_spell = NULL;
@@ -127,15 +152,23 @@ void Combat::casting_update(void) {
 }
 
 void Combat::launch_attack(int attack_num) {
-
 	if ((attack_num >= 0) && (attack_num < MAX_ATTACKS )) {
 		this->casting = true;
 		this->casted_spell = this->attack_loadout[attack_num];
+		if (this->casted_spell->get_charge_time() == 0)
+			return;
+		Attack_Sprite* animation = new Attack_Sprite("Resources//Attack Sprites//Charging.bmp", E, 5, 1, 4, 4, 296/4, 76);
+		animation->set_state_frame_counts(0, 4, 0);
+		AttackCharge* charge_amination = new AttackCharge(this->get_x_pos() - 17, this->get_y_pos() - 40, animation, this->casted_spell->get_charge_time());
+		charge_amination->set_boundary_value(0, 0,0, animation->height);
+		charge_amination->set_world(this->get_world());
+		this->get_world()->insert_entity(charge_amination);
 	}
-
 }
 
 void Combat::update(){
+	if (this->entangled)
+		return;
 	check_collisions();
 
 	if (this->has_player_hostage){
@@ -185,23 +218,29 @@ void Combat::check_collisions(void){
 	}
 }
 
+Combat* Combat::fetch_me_as_combat(void){
+	return this;
+}
+
 void Combat::deal_with_attack(Attack* attack){
 
 	int armor = this->armor;
-	if(armor == 0)
-		armor = 1;
-	this->health -= (attack->base_damage*attack->get_my_caster()->intelligence)/armor;
+	int adjusted_armor = armor - attack->penetration;
+	if (adjusted_armor <= 0)
+		adjusted_armor = 1;
+	this->health -= (attack->base_damage*attack->get_my_caster()->intelligence)/adjusted_armor;
 	if(!this->player_credit){
 		if(attack->get_my_caster() == Player_Accessor::get_player()){
 			this->player_credit = true;
 		}
 	}
+
+	attack->start_death_sequence();
 	if(this->health <= 0){	
 		if (this->player_credit)
 			Player_Accessor::get_player()->credit_death(this);
 		this->my_world->removal_queue->push_back(this);
 	}
-	attack->start_death_sequence();
 }
 
 void Combat::append_dialogue(std::string message){

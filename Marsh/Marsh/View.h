@@ -54,6 +54,7 @@ class View{
 		World* current_world;
 		std::map<WorldName, World*>* loaded_worlds;
 		BITMAP* ui_image;
+		BITMAP* black_overlay;
 
 		View(Player* hero);
 		~View(void);

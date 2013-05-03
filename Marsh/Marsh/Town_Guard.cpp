@@ -8,14 +8,11 @@ Town_Guard::Town_Guard(int x, int y, int vel, int vel_d, Sprite* img, std::vecto
 {	
 	this->set_boundary_value(28, 14, 0, 18);
 	this->waypoints = waypoints;
-	this->flip_frames = FRAME_CONST;
 	this->patrol_node = 0;
 	this->casting = false;
-	this->in_combat = false;
 	this->target = NULL;
-	this->movement_blocked = false;
-	this->detour = false;
-	
+	this->current_state = patrol;
+
 
 }
 Town_Guard::~Town_Guard(void){
@@ -23,94 +20,82 @@ Town_Guard::~Town_Guard(void){
 }
 
 void Town_Guard::update(void){
+	if (this->entangled)
+		return;
+	bool dest_reached = false;
 
 	if(this->casting){
 		casting_update();
 		return;
 	}
-	
+
 	check_collisions();
 
-	bool check = this->get_current_facing_flag();
+	Direction dir_moving = this->get_direction_moving();
+	bool check = this->get_current_facing_flag(dir_moving);
 
-	if(check && !this->detour){
-		if(this->in_combat){
-			this->target_area = std::make_pair(this->target->get_x_pos(), this->target->get_y_pos());
-			
-		}else if(this->on_patrol){
-			this->target_area = this->waypoints->at(this->patrol_node);
-		}else{
-			//
-		}
-	}else{
-		if(this->detour){
-			if(!check){
-				this->detour_pair = this->detour_obstruction();
-				this->target_area = this->detour_pair.first;
+
+	switch (this->current_state){
+		case attack:
+			if(this->blocking_entity == NULL){
+				this->current_state = attack_move;
+			}else if(this->blocking_entity != this->target){
+				this->current_state = detour_intial;
 			}else{
-
+				this->launch_attack(0);
 			}
-		}else{
+			break;
+
+		case attack_move:
+
+			move_towards(std::make_pair(this->target->get_x_pos(), this->target->get_y_pos()));
+
+			if(this->blocking_entity == this->target){
+				this->current_state = attack;
+			}else if(!check){
+				this->prev_state = this->current_state;
+				this->current_state = detour_intial;
+			}
+
+			break;
+
+		case detour_intial:
 			this->detour_pair = this->detour_obstruction();
-			this->target_area = this->detour_pair.first;
-			this->detour = true;
-		}
-	}
+			this->current_state = detour_one;
+			break;
 
-
-
-	bool reached_dest = this->move_towards(this->target_area);
-	
-	if(reached_dest){
-		if(this->detour){
-			if(pair_equals(this->target_area, this->detour_pair.first)){
-				this->target_area = this->detour_pair.second;
-			}else{
-				this->detour= false;
+		case detour_one:
+			dest_reached = move_towards(this->detour_pair.first);
+			if(dest_reached){
+				this->current_state = detour_two; 		
 			}
-		}else if(on_patrol){
-			this->increment_patrol();
-		}else if(this->in_combat){
-			this->launch_attack(0);
-		}
-	}else{
-		
+			break;
+
+		case detour_two:
+
+			dest_reached = move_towards(this->detour_pair.second);
+
+			if(dest_reached){
+				this->current_state = this->prev_state;
+			}
+
+			break;
+
+		case patrol:
+
+			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
+
+			if(!check){
+				this->prev_state = this->current_state;
+				this->current_state = detour_intial;
+			}
+
+			if(dest_reached){
+				this->increment_patrol();
+			}
+
+			break;
 	}
-
-	
-
-
-
-/*
-	if (this->movement_blocked){
-		std::pair<int, int> unblocked_coord = detour_obstruction();
-		
-		bool reached_dest = this->move_towards(unblocked_coord);
-		
-		if(reached_dest){
-			this->movement_blocked = false;
-		}
-		return;
-	}
-
-	if (this->in_combat){
-		// has found a target to attack, let's move toward said target
-		bool reached = this->move_towards(
-			std::pair<int, int>(this->target->get_reference_x(), this->target->get_reference_y()));
-		if(reached){
-			this->launch_attack(0);
-		}
-
-		return;
-	}
-
-	bool reached_destination = this->move_towards(this->waypoints->at(this->patrol_node));
-
-	if (reached_destination){
-		this->increment_patrol();
-	}
-
-	*/
 }
 bool pair_equals(std::pair<int, int> p1, std::pair<int, int> p2){
 	if(p1.first == p2.first && p1.second == p2.second){
@@ -313,43 +298,29 @@ void Town_Guard::other_check_collisions(void){
 	for (iter = entities->begin(); iter != end; iter++){
 		iDrawable* check = (*iter);
 
-		if(get_visible_to_guard(check)){
-			if(detect_enemies(check)){
-				this->target = check;
-				this->in_combat = true;
-			}else{
-				//
-			}
-		}else{
+		if (check == this){
 			continue;
 		}
-
-		if (check == this)
-			continue;
 
 		check_x = check->get_reference_x();
 		check_y = check->get_reference_y();
 		check_width = check->get_bounding_width();
 		check_height = check->get_bounding_height();
 
-		bool previously_not_blocked = get_current_facing_flag();
+		bool previously_not_blocked = get_current_facing_flag(this->image->get_facing());
 
 		check_walkable(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height, 
 			left_right_skew, top_bottom_skew);
 
-		if (previously_not_blocked && !get_current_facing_flag()){
-			// this uber if means that the guard has been blocked by the current 
-			//entity which is guranteed to not be the player, maybe, hell if i know
-			this->movement_blocked = true;
+		if (previously_not_blocked && !get_current_facing_flag(this->image->get_facing())){
 			this->blocking_entity = check;
 		}
-
 	}
 }
 
-bool Town_Guard::get_current_facing_flag(void){
-	switch(this->image->get_facing()){
+bool Town_Guard::get_current_facing_flag(Direction dir){
+	switch(dir){
 	case N:
 		return this->can_walk_up;
 	case S:
@@ -382,11 +353,6 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(S);
 		}
-		/*this->flip_frames -= 1; 
-		if(this->flip_frames == 0){ 
-			this->x_or_y = !(this->x_or_y); 
-			this->flip_frames = FRAME_CONST; 
-		}*/
 
 		//go right and up
 	}else if((x_dif > 0) && (y_dif < 0)){
@@ -395,11 +361,6 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(N);
 		}
-		/*this->flip_frames -= 1; 
-		if(this->flip_frames == 0){ 
-			this->x_or_y = !(this->x_or_y); 
-			this->flip_frames = FRAME_CONST; 
-		}*/
 
 
 		//go left and down
@@ -409,12 +370,6 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(S);
 		}
-		/*this->flip_frames -= 1; 
-		if(this->flip_frames == 0){ 
-			this->x_or_y = !(this->x_or_y); 
-			this->flip_frames = FRAME_CONST; 
-		}*/
-
 
 		//go left and up
 	}else if((x_dif < 0) && (y_dif < 0)){
@@ -423,12 +378,6 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 		}else{
 			moved = move(N);
 		}
-
-		/*this->flip_frames -= 1; 
-		if(this->flip_frames == 0){ 
-			this->x_or_y = !(this->x_or_y); 
-			this->flip_frames = FRAME_CONST; 
-		}*/
 
 		//go left
 	}else if((x_dif < 0) && ((-5 < y_dif) && (y_dif < 5))){
@@ -447,6 +396,31 @@ bool Town_Guard::move_towards(std::pair<int, int> coordinate){
 	return false;
 }
 
+Direction Town_Guard::get_direction_moving(){
+
+	int x_dif = (this->target_area.first - this->get_reference_x());
+	int y_dif = (this->target_area.second - this->get_reference_y());
+
+	int my_width = this->get_bounding_width();
+	int my_height = this->get_bounding_height();
+
+	//go left
+	if((x_dif < 0) && ((-5 < y_dif) && (y_dif < 5))){
+		return W;
+		//go right
+	}else if((x_dif > 0) && ((-5 < y_dif) && (y_dif< 5))){
+		return E;
+		//go up
+	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  < 0)){
+		return N;
+		//go down
+	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  > 0)){
+		return S;
+	}
+
+	return this->image->get_facing();
+
+}
 
 
 

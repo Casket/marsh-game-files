@@ -205,6 +205,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AttackCharge.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AttackDB.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Combat.cpp"
 				>
 			</File>
@@ -245,7 +253,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MultiSpawnAttack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionPresenter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PersistentAttack.cpp"
 				>
 			</File>
 			<File
@@ -285,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StunningAttack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Town_Guard.cpp"
 				>
 			</File>
@@ -308,6 +328,14 @@
 			</File>
 			<File
 				RelativePath=".\Attack_Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AttackCharge.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AttackDB.h"
 				>
 			</File>
 			<File
@@ -360,7 +388,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MultiSpawnAttack.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OptionPresenter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PersistentAttack.h"
 				>
 			</File>
 			<File
@@ -397,6 +433,10 @@
 			</File>
 			<File
 				RelativePath=".\Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StunningAttack.h"
 				>
 			</File>
 			<File

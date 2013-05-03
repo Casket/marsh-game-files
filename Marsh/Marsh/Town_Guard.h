@@ -14,23 +14,19 @@
 
 using namespace std;
 
+enum gstate {patrol,attack,attack_move,detour_intial,detour_one,detour_two};
 
 class Town_Guard:public Combat{
 
 	std::vector<std::pair<int, int>>* waypoints;
 	
-	bool on_patrol, in_combat, x_or_y;
-	bool patrolling_forward, detour;
-	std::vector<std::pair<int,Direction>>* path, ret_path;
-	Direction cur_dir;
+	bool x_or_y, patrolling_forward;
 	iDrawable* target;
-	int flip_frames;
 	int patrol_node;
-	bool movement_blocked;
 	iDrawable* blocking_entity;
 	std::pair<int, int> target_area;
 	std::pair<std::pair<int, int>, std::pair<int, int>> detour_pair;
-	std::list<iDrawable*> TargsToChoose; 
+	gstate current_state, prev_state;
 
 	public:
 		Town_Guard(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* waypoints);
@@ -41,7 +37,7 @@ class Town_Guard:public Combat{
 	protected:
 		virtual void check_collisions(void);
 		std::pair<std::pair<int, int>, std::pair<int, int>> detour_obstruction(void);
-		bool get_current_facing_flag(void);
+		bool get_current_facing_flag(Direction);
 
 
 	private:
@@ -52,6 +48,7 @@ class Town_Guard:public Combat{
 		void find_path(void);
 		bool move_towards(std::pair<int, int>);
 		void increment_patrol(void);
+		Direction get_direction_moving(void);
 };
 
 #endif

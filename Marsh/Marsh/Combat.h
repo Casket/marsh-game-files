@@ -23,6 +23,7 @@ public:
 	int health, armor, max_health;
 	int vitality, intelligence, focus, willpower; // combat stats
 	bool casting;
+	bool entangled;
 	int casting_timer;
 	Attack* casted_spell;
 	std::vector<std::string>* dialogue;
@@ -47,6 +48,7 @@ public:
 	virtual void clear_dialogue(void);
 	virtual void speak(void);
 	void face_speaker(void);
+	virtual Combat* fetch_me_as_combat(void);
 
 
 protected:

@@ -5,6 +5,7 @@
 #define MAX_HELD_ITEMS 11
 #define EXPERIENCE_TO_LEVEL 100 // TODO fine tune the game
 #define MAX_ITEM_STACK_SIZE 20
+#define NOTORIETY_CAP 500
 
 #define MOVE_UP KEY_W
 #define MOVE_DOWN KEY_S
@@ -28,7 +29,7 @@
 #define CAST_TEN KEY_0
 #define OPEN_MENU KEY_ESC	// TODO define that
 
-#define MOVEMENT_DELTA 4
+#define MOVEMENT_DELTA 3
 
 #define INTERACT_KEY KEY_SPACE
 
@@ -61,6 +62,7 @@ class Player: public Combat{
 	int level, current_experience, mana, max_mana;
 	BITMAP* clear_console;
 	BITMAP* in_use_console;
+	int notoriety;
 
 	public:
 		int gold;
@@ -86,6 +88,7 @@ class Player: public Combat{
 		void remove_from_inventory(Equipment*);
 		void unequip_item(Equipment*);
 		void remove_item_stats(Equipment*);
+		void increment_notoriety(int increase);
 
 	
 	private:
