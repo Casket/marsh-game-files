@@ -106,6 +106,7 @@ void set_up_game(void) {
 
 	set_color_depth(COLOR_DEPTH);
 	set_gfx_mode(MODE, SCREENW, SCREENH, 0,0);
+	 set_display_switch_mode(SWITCH_PAUSE);
 	set_alpha_blender();
 
 	srand(time(NULL));
@@ -470,8 +471,11 @@ void show_level_up(void) { // show level up menu
 
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 			menu->BringToFront();
+			//menu->Show();
+			menu->StartPosition = FormStartPosition::CenterScreen;
 			menu->ShowDialog();
 			//Application::Run(menu);
+			delete menu;
 /*
 	bool is_done = false;
 	volatile bool* done_ref = &is_done;

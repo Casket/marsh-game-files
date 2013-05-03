@@ -208,6 +208,7 @@ void Attack::deal_with_attack(Attack* attack){
 }
 
 int Attack::get_charge_time(void){
+
 	return this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
 }
 

@@ -184,7 +184,7 @@ void Player::grant_experience(int experience_worth){
 		this->experience -= EXPERIENCE_TO_LEVEL;
 		//TODO make level-up happen
 		this->statPoints += 5;
-		display_to_user("You have leveled up!");
+		display_to_user("You have leveled up! Press L to level up.");
 	}
 
 }
@@ -281,13 +281,21 @@ void Player::check_casting(void) {
 	}
 	if (desired_attack < 0)
 		return;
-	this->mana -= this->attack_loadout[desired_attack]->get_mana_cost();
+	try{
+		Attack* attack = this->attack_loadout[desired_attack];
+		if(attack->my_caster == NULL){
+			return;}
+	this->mana -= attack->get_mana_cost();
 	if (this->mana <= 0){
 		this->display_to_user("I need more mana.");
 		this->mana = 0;
 
 	}
 	this->launch_attack(desired_attack);
+	}catch(...){
+		this->casting = false;
+	return;
+	}
 }
 
 void Player::accept_aiming(void) {
