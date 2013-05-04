@@ -7,14 +7,20 @@ Player_Sprite::Player_Sprite(std::string file_name, Direction cur_dir, int ani_d
 :Sprite(file_name, cur_dir, ani_delay, rows, cols, total_frames)
 {
 	this->wearing_mask = false;
-	// do nothing for now
+	if(this->frame_intial){
+		intial_blank_frame();
+		this->frame_intial = false;
+	}
 }
 
 
 Player_Sprite::~Player_Sprite(void) {
 
 }
-
+void Player_Sprite::intial_blank_frame(void){
+	this->blank_frame = create_bitmap(1,1);
+	clear_to_color(this->blank_frame, makecol(255, 0,255));
+}
 BITMAP* Player_Sprite::get_current_frame(void) {
 	int y = 0;
 	if (!this->lighted)
@@ -25,6 +31,10 @@ BITMAP* Player_Sprite::get_current_frame(void) {
 
 	if (this->facing == None)
 		return this->sprite_sheet;
+
+	if(this->animation_frame == FLICKER_FRAME_NUMBER){
+		return this->blank_frame;
+	}
 
 	BITMAP* pic = create_sub_bitmap(this->sprite_sheet,
 		this->animation_frame*SPRITE_WIDTH, y, SPRITE_WIDTH, SPRITE_HEIGHT);

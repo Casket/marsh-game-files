@@ -14,6 +14,7 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->my_type = Wallop;
 	this->distance_traveled = 0;
 	this->death_timer = 0;
+	this->mana_cost = 0;
 }
 
 Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats)
@@ -26,6 +27,7 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics s
 	this->expiration_date = stats.exp_date;
 	this->charge_time = stats.charge_time;
 	this->my_type = Wallop;
+	this->mana_cost = 0;
 	this->distance_traveled = 0;
 	this->death_timer = 0;
 	
@@ -41,7 +43,10 @@ Attack* Attack::fetch_me_as_attack(void){
 }
 
 int Attack::get_mana_cost(void){
-	return 5;
+	return this->mana_cost;
+}
+void Attack::set_mana_cost(int m){
+	this->mana_cost = m;
 }
 
 void Attack::update(void){
@@ -208,7 +213,6 @@ void Attack::deal_with_attack(Attack* attack){
 }
 
 int Attack::get_charge_time(void){
-
 	return this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
 }
 

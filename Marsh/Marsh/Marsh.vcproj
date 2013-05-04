@@ -245,10 +245,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\LevelUp.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -372,6 +368,10 @@
 			</File>
 			<File
 				RelativePath=".\KillObjective.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LevelUp.cpp"
 				>
 			</File>
 			<File

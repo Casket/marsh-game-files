@@ -467,6 +467,7 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
+
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 			
 			menu->StartPosition = FormStartPosition::CenterScreen;

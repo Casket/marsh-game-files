@@ -29,6 +29,7 @@ public:
 	int tree_depth_level;
 	int death_timer, expiration_date;
 	int charge_time;
+	int mana_cost;
 	Combat* my_caster;
 
 	public:
@@ -45,6 +46,7 @@ public:
 		virtual void start_death_sequence(void);
 		virtual Attack* fetch_me_as_attack(void);
 		int get_mana_cost(void);
+		void set_mana_cost(int);
 
 	protected:
 		// super private methods go here

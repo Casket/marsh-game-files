@@ -2,7 +2,7 @@
 #define COMBAT_H 1
 #define MAX_ATTACKS 10
 
-#define BASE_VIT 1
+#define BASE_VIT 400
 #define BASE_INTEL 1
 #define BASE_FOCUS 1
 #define BASE_WILL 1

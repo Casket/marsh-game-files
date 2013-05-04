@@ -20,10 +20,10 @@ enum Direction {N, S, E, W, NE, NW, SW, SE, None};
 
 class Sprite{
 
+
 protected:
 	BITMAP* sprite_sheet;
 	Direction facing;
-	int animation_frame, animation_delay, animation_counter;
 	int sheet_cols, sheet_rows, total_frames;
 	bool lighted;
 	SpriteState current_state;
@@ -31,6 +31,7 @@ protected:
 	
 
 public:
+	int animation_frame, animation_delay, animation_counter;
 	Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
 	~Sprite(void);
 	void load_sprite_sheet(std::string name);
