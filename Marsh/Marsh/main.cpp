@@ -467,16 +467,14 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
-	//inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
-
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
-			menu->BringToFront();
-			//menu->Show();
+			
 			menu->StartPosition = FormStartPosition::CenterScreen;
+			//this->TopMost = false;
 			menu->ShowDialog();
-			//Application::Run(menu);
 			delete menu;
 /*
+	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	bool is_done = false;
 	volatile bool* done_ref = &is_done;
 #pragma omp parallel num_threads(2) shared(done_ref)
