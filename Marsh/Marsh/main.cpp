@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <winalleg.h>
 
 
 using namespace std;
@@ -246,11 +247,11 @@ void start_game(void) {
 		} 
 		if (keyrel(KEY_I)) {
 			show_inv();
+			
 		}
 		if (keyrel(KEY_L)) {
 			show_level_up();
 		}
-
 
 		if (!rested) {
 			rest(4);
