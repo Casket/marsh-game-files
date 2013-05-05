@@ -5,6 +5,7 @@
 #define ERR 5
 #define DETECTION_RANGE 400
 #define FRAME_CONST 20
+#define ATTACK_RANGE 16
 
 #include "Main.h"
 #include "Sprite.h"
@@ -14,7 +15,7 @@
 
 using namespace std;
 
-enum gstate {patrol,attack,attack_move,detour_intial,detour_one,detour_two};
+enum Gstate {patrol,attack,attack_move,detour_intial,detour_one,detour_two};
 
 class Town_Guard:public Combat{
 
@@ -26,7 +27,7 @@ class Town_Guard:public Combat{
 	iDrawable* blocking_entity;
 	std::pair<int, int> target_area;
 	std::pair<std::pair<int, int>, std::pair<int, int>> detour_pair;
-	gstate current_state, prev_state;
+	Gstate current_state, prev_state;
 
 	public:
 		Town_Guard(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* waypoints);
@@ -49,6 +50,7 @@ class Town_Guard:public Combat{
 		bool move_towards(std::pair<int, int>);
 		void increment_patrol(void);
 		Direction get_direction_moving(void);
+		bool target_in_range(void);
 };
 
 #endif

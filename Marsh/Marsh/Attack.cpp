@@ -225,5 +225,6 @@ Attack* Attack::clone(int x, int y, Direction dir){
 	Attack* result = new Attack(x, y, this->velocity, this->velocity_delay, image, damage, penetrate, this->range, this->tree_depth_level, this->expiration_date, charge);
 	result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 	result->set_my_caster(this->my_caster);
+	result->my_type = Wallop;
 	return result;
 }
