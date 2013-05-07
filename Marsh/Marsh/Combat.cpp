@@ -50,6 +50,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	beamer->set_my_caster(this);
 	this->attack_loadout[2] = beamer;
 
+	this->attack_loadout[3] = attacks->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
+	this->attack_loadout[3]->set_my_caster(this);
+
+	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
+	this->attack_loadout[4]->set_my_caster(this);
+
 /*
 	this->attack_loadout[0]->set_my_caster(this);
 	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
