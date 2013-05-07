@@ -89,6 +89,9 @@ class Player: public Combat{
 		void unequip_item(Equipment*);
 		void remove_item_stats(Equipment*);
 		void increment_notoriety(int increase);
+		virtual void upon_death(void);
+		virtual bool get_visible(iDrawable* check);
+		virtual bool detect_enemies(iDrawable* check);
 
 	
 	private:

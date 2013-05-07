@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <winalleg.h>
+//#include "LevelUp.h"
 
 
 using namespace std;
@@ -41,7 +42,7 @@ void show_inv(void);
 void show_screen(Equipment*);
 void show_level_up(void);
 World* generate_world(void); // TODO add world identifying thingymahinger
-View* create_view(Player*);
+Marsh::View* create_view(Player*);
 
 // gamestate
 int game_state = INTRO_GAME;
@@ -81,9 +82,9 @@ int main(void)
 }
 END_OF_MAIN()
 
-View* create_view(Player* hero){
-	View* v = new View(hero);
-	v->load_world(test_map);
+Marsh::View* create_view(Player* hero){
+	Marsh::View* v = new Marsh::View(hero);
+	v->load_world(main_world16);
 	return v;
 }
 
@@ -106,6 +107,7 @@ void set_up_game(void) {
 
 	set_color_depth(COLOR_DEPTH);
 	set_gfx_mode(MODE, SCREENW, SCREENH, 0,0);
+	set_display_switch_mode(SWITCH_PAUSE);
 	set_alpha_blender();
 
 	srand(time(NULL));
@@ -119,8 +121,8 @@ void set_up_game(void) {
 	install_int(timer_game_rester, FRAME_RATE_DELAY);
 
 	// default data for inventory - TEST DATA
-	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 1, 16, 16);
-	Player_Accessor::create_player(192, 256, img, 28, 14, 0, 18);
+	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
+	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
 	Equipment* equip = new Equipment();
 	Equipment* equip1 = new Equipment();
@@ -156,6 +158,8 @@ void set_up_game(void) {
 
 void show_intro(void) {
 	BITMAP *title_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+	if (!title_screen_bitmap)
+		exit(1);
 	int menu_sel = 0;
 	int max_sel = 3;
 	if (game_state == IN_GAME) max_sel = 4;
@@ -168,11 +172,11 @@ void show_intro(void) {
 				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
 				case KEY_ENTER:
 					switch (menu_sel) {
-				case 0: game_state=IN_GAME; start_game(); break; // new game
-				case 1: game_state=LOAD_GAME; break; // load game
-				case 2: game_state=FINISH_GAME; break; // exit game 
-				case 3: game_state=SAVE_GAME; break; // save game
-				case 4: game_state=IN_GAME; goto exit_loop;
+					case 0: game_state=IN_GAME; start_game(); break; // new game
+					case 1: game_state=LOAD_GAME; break; // load game
+					case 2: game_state=FINISH_GAME; break; // exit game 
+					case 3: game_state=SAVE_GAME; break; // save game
+					case 4: game_state=IN_GAME; goto exit_loop;
 					} break;
 				case KEY_M: {
 					if (mute==0) {
@@ -190,6 +194,7 @@ void show_intro(void) {
 
 		// drawing
 		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
+
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Marsh");
 		if (menu_sel == 0) { // new game
@@ -237,7 +242,7 @@ void start_game(void) {
 
 	Player*	hero = Player_Accessor::get_player();
 
-	View *our_viewer= create_view(hero);
+	Marsh::View *our_viewer= create_view(hero);
 
 	hero->set_my_type(Hero);
 
@@ -266,8 +271,8 @@ void start_game(void) {
 
 		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
 		//	SCREEN_W/2, SCREEN_H/2, 32,30);
-		//textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
-		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos()/32, hero->get_y_pos()/32);
+		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
+		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
 		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
 		clear_keybuf();
@@ -466,7 +471,35 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
-	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+	//inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
+
+//	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
+//			menu->BringToFront();
+			//menu->Show();
+//			menu->StartPosition = FormStartPosition::CenterScreen;
+//			menu->ShowDialog();
+			//Application::Run(menu);
+//			delete menu;
+/*
+	bool is_done = false;
+	volatile bool* done_ref = &is_done;
+#pragma omp parallel num_threads(2) shared(done_ref)
+	{
+		int my_id = omp_get_thread_num();
+		if (my_id == 0){
+			while(!done_ref){
+				// wait for a while
+			}
+		} else {
+			LevelUp^ menu = gcnew LevelUp();
+			menu->BringToFront();
+			menu->ShowDialog();
+			Application::Run(menu);
+		}
+
+		//	
+
+	}
 	Player* hero = Player_Accessor::get_player();
 	int menu_sel = 0;
 	int max_sel = 4;
@@ -531,5 +564,5 @@ void show_level_up(void) { // show level up menu
 exit_level_loop: ;
 
 	destroy_bitmap(inv_screen_bitmap);
-	return;
+	return;*/
 }

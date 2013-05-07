@@ -29,7 +29,7 @@ void Town_Guard::update(void){
 		return;
 	}
 
-	check_collisions();
+	this->check_collisions();
 
 	Direction dir_moving = this->get_direction_moving();
 	bool check = this->get_current_facing_flag(dir_moving);
@@ -37,20 +37,17 @@ void Town_Guard::update(void){
 
 	switch (this->current_state){
 		case attack:
-			if(this->blocking_entity == NULL){
-				this->current_state = attack_move;
-			}else if(this->blocking_entity != this->target){
-				this->current_state = detour_intial;
-			}else{
-				this->launch_attack(0);
-			}
+
+			this->launch_attack(0);
+			this->current_state = attack_move;
+
 			break;
 
 		case attack_move:
 
 			move_towards(std::make_pair(this->target->get_x_pos(), this->target->get_y_pos()));
 
-			if(this->blocking_entity == this->target){
+			if(this->target_in_range()){
 				this->current_state = attack;
 			}else if(!check){
 				this->prev_state = this->current_state;
@@ -60,11 +57,32 @@ void Town_Guard::update(void){
 			break;
 
 		case detour_intial:
+			if(this->blocking_entity == NULL){
+				this->current_state = this->prev_state;
+				return;
+			}
+			if(this->blocking_entity->my_type == Wallop){
+				this->current_state = this->prev_state;
+				return;
+			}
+			if(this->blocking_entity == this->target){
+				this->current_state = attack;
+				return;
+			}
+
 			this->detour_pair = this->detour_obstruction();
 			this->current_state = detour_one;
+
+
 			break;
 
 		case detour_one:
+			if(this->blocking_entity != NULL){	
+				if(this->blocking_entity->x_pos < 0){
+					this->current_state = this->prev_state;
+					return;
+				}
+			}
 			dest_reached = move_towards(this->detour_pair.first);
 			if(dest_reached){
 				this->current_state = detour_two; 		
@@ -76,6 +94,7 @@ void Town_Guard::update(void){
 			dest_reached = move_towards(this->detour_pair.second);
 
 			if(dest_reached){
+				this->blocking_entity = NULL;
 				this->current_state = this->prev_state;
 			}
 
@@ -84,9 +103,10 @@ void Town_Guard::update(void){
 		case patrol:
 
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
+			
+			this->prev_state = this->current_state;
 
 			if(!check){
-				this->prev_state = this->current_state;
 				this->current_state = detour_intial;
 			}
 
@@ -230,7 +250,7 @@ bool Town_Guard::get_visible_to_guard(iDrawable* current){
 
 
 void Town_Guard::check_collisions(void){
-	other_check_collisions();
+	this->other_check_collisions();
 
 	Tile*** map = this->get_world()->get_tile_map();
 	int my_x = this->get_reference_x();
@@ -289,11 +309,13 @@ void Town_Guard::other_check_collisions(void){
 	this->can_walk_left = true;
 	this->can_walk_right = true;
 	this->can_walk_up = true;
+	this->blocking_entity = NULL;
 
 	int check_x, check_y, check_width, check_height;
 
 	std::list<iDrawable*>::iterator iter;
 	std::list<iDrawable*>::iterator end = entities->end();
+	std::list<iDrawable*>* targets = new std::list<iDrawable*>();
 
 	for (iter = entities->begin(); iter != end; iter++){
 		iDrawable* check = (*iter);
@@ -309,6 +331,12 @@ void Town_Guard::other_check_collisions(void){
 
 		bool previously_not_blocked = get_current_facing_flag(this->image->get_facing());
 
+		if(this->get_visible_to_guard(check)){
+			if(this->detect_enemies(check)){
+				targets->push_back(check);
+			}
+		}
+
 		check_walkable(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height, 
 			left_right_skew, top_bottom_skew);
@@ -316,6 +344,39 @@ void Town_Guard::other_check_collisions(void){
 		if (previously_not_blocked && !get_current_facing_flag(this->image->get_facing())){
 			this->blocking_entity = check;
 		}
+	}
+
+	end = targets->end();
+	int closest = 1000000000;
+
+	if(targets->size() > 0 && (this->current_state != attack_move && this->current_state != attack) && this->prev_state != attack_move){
+		for(iter = targets->begin(); iter != end; iter++){
+			iDrawable* potential_tar = (*iter);
+			if(potential_tar->get_my_type() == Hero){
+				this->target = potential_tar;
+				this->current_state = attack_move;
+				break;
+			}else{
+
+				float distance = (((this->x_pos - potential_tar->x_pos) * (this->x_pos - potential_tar->x_pos)) + 
+					((this->y_pos - potential_tar->y_pos) * (this->y_pos - potential_tar->y_pos)));
+				distance = sqrt(distance);
+
+				if(distance < closest){
+					this->target = potential_tar;				
+				}
+			}
+		}
+		return;
+	}else if(targets->size() > 0){
+		return;
+	}else{
+		this->target = NULL;
+		
+		if(this->current_state == attack_move || this->current_state == attack){
+			this->current_state = patrol;
+		}
+		return;
 	}
 }
 
@@ -424,3 +485,42 @@ Direction Town_Guard::get_direction_moving(){
 
 
 
+
+bool Town_Guard::target_in_range(void){
+	Direction cur_dir = this->get_direction_moving(); 
+	int tar_x = this->target->x_pos;
+	int tar_y = this->target->y_pos;
+
+	if(cur_dir == N){
+		int y_dif = this->y_pos - this->target->y_pos - 32;
+		if(y_dif < ATTACK_RANGE && this->x_pos == tar_x){
+			return true;
+		}else{
+			return false;
+		}
+	}else if(cur_dir == S){
+		int y_dif = this->target->y_pos - this->y_pos - 32;
+		if(y_dif < ATTACK_RANGE && this->x_pos == tar_x){
+			return true;
+		}else{
+			return false;
+		}
+	}else if(cur_dir == W){
+		int x_dif = (this->x_pos - this->target->x_pos) - 32;
+		int y_dif = this->y_pos - this->target->y_pos;
+		if(x_dif < ATTACK_RANGE && ((y_dif > -10) && (y_dif < 10))){
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		int x_dif = this->target->x_pos - this->x_pos - 32;
+		int y_dif = this->y_pos - this->target->y_pos;
+		if(x_dif < ATTACK_RANGE && ((y_dif > -10) && (y_dif < 10))){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+}

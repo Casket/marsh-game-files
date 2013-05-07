@@ -15,7 +15,8 @@ StunningAttack::~StunningAttack(void){
 }
 
 Attack* StunningAttack::clone(int x, int y, Direction dir){
-	Sprite* image = this->get_image()->clone(dir);
+	Sprite* image = this->get_image()->clone(W);
+	image->set_facing(dir);
 	AttackStatistics stats;
 	stats.base_damage = this->base_damage;
 	stats.charge_time = this->charge_time;
@@ -44,6 +45,7 @@ void StunningAttack::update(void){
 			Attack::start_death_sequence();
 			this->caught_target->entangled = false;
 		}
+		this->caught_target->entangled = true;
 		this->caught_target->deal_with_attack(this);
 		if (this->caught_target->health <= 0){
 			this->caught_target = NULL;

@@ -2,7 +2,7 @@
 #define COMBAT_H 1
 #define MAX_ATTACKS 10
 
-#define BASE_VIT 1
+#define BASE_VIT 400
 #define BASE_INTEL 1
 #define BASE_FOCUS 1
 #define BASE_WILL 1
@@ -49,6 +49,7 @@ public:
 	virtual void speak(void);
 	void face_speaker(void);
 	virtual Combat* fetch_me_as_combat(void);
+	virtual void upon_death(void);
 
 
 protected:

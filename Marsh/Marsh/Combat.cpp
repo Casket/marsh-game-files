@@ -12,10 +12,16 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
 
-	Attack_Sprite* needle_spr = new Attack_Sprite("Resources//Attack Sprites//Energy_Bolt.bmp", W, 7, 1, 2, 4, 188/4,31);
-	needle_spr->set_state_frame_counts(0, 4, 0);
-	this->attack_loadout[0] = new Attack(800, 800, 2, 10, needle_spr, 100,0,1000, 0,0,100);
-	this->attack_loadout[0]->set_boundary_value(34, 18, 5, 8);
+
+	AttackDB* attacks = new AttackDB();
+	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_BALL);
+	this->attack_loadout[0] = this->attack_loadout[0]->clone(0, 0, W);
+	this->attack_loadout[0]->set_my_caster(this);
+
+
+	
+
+/*
 	this->attack_loadout[0]->set_my_caster(this);
 	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
 	fireball_spr->set_state_frame_counts(0, 5, 3);
@@ -42,6 +48,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[3] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
 	this->attack_loadout[3]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[3]->set_my_caster(this);
+*/
 
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
@@ -54,6 +61,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->casting_timer = 0;
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
+
 }
 
 Combat::~Combat(void) {
@@ -236,11 +244,18 @@ void Combat::deal_with_attack(Attack* attack){
 	}
 
 	attack->start_death_sequence();
-	if(this->health <= 0){	
+	this->get_image()->animation_frame = FLICKER_FRAME_NUMBER;
+
+	if(this->health <= 0){
+		this->health = 0;
 		if (this->player_credit)
 			Player_Accessor::get_player()->credit_death(this);
-		this->my_world->removal_queue->push_back(this);
+		this->upon_death();
 	}
+}
+
+void Combat::upon_death(void){
+	this->my_world->removal_queue->push_back(this);
 }
 
 void Combat::append_dialogue(std::string message){
