@@ -24,6 +24,7 @@ using namespace std;
 #define LEVEL_UP_GAME 7
 
 Player* Player_Accessor::hero;
+View* v;
 
 volatile int ticks, framerate;
 volatile bool rested;
@@ -69,9 +70,6 @@ int main(void)
 
 	while(game_state != FINISH_GAME) {
 		if (game_state == INTRO_GAME) show_intro();
-		if (game_state == SAVE_GAME) save_game();
-		if (game_state == LOAD_GAME) load_game();
-		if (game_state == INVENTORY_GAME) show_inv();
 		if (game_state == LEVEL_UP_GAME) show_level_up();
 	}
 
@@ -172,11 +170,11 @@ void show_intro(void) {
 				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
 				case KEY_ENTER:
 					switch (menu_sel) {
-					case 0: game_state=IN_GAME; start_game(); break; // new game
-					case 1: game_state=LOAD_GAME; break; // load game
-					case 2: game_state=FINISH_GAME; break; // exit game 
-					case 3: game_state=SAVE_GAME; break; // save game
-					case 4: game_state=IN_GAME; goto exit_loop;
+				case 0: game_state=IN_GAME; start_game(); break; // new game
+				case 1: game_state=IN_GAME; load_game(); break; // load game
+				case 2: game_state=FINISH_GAME; break; // exit game 
+				case 3: game_state=IN_GAME; save_game(); break; // save game
+				case 4: game_state=IN_GAME; goto exit_loop;
 					} break;
 				case KEY_M: {
 					if (mute==0) {
@@ -212,12 +210,13 @@ void show_intro(void) {
 		} else {
 			textprintf_ex(buffer, font1, 50,  270, makecol(255,255,255), -1, "EXIT GAME");
 		} 
-		if (menu_sel == 3) { // back to game
-			textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
-		} else {
-			textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
-		} 
 		if (game_state == IN_GAME) {
+			if (menu_sel == 3) { 
+				textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
+			} else {
+				textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
+			} 
+
 			if (menu_sel == 4) {
 				textprintf_ex(buffer, font1, 50,  420, makecol(255,0,51), -1, "Return");
 			} else {
@@ -283,13 +282,83 @@ void start_game(void) {
 }
 
 void load_game(void) {
-	// todo
-	return;
+	int x_pos, y_pos, height, width, ref_x, ref_y;
+	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold;
+	WorldName world;
+	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 1, 16, 16);
+
+	ifstream file1("Save1.marsh");
+	string line;
+	string beg, end;
+	if (file1.is_open()) {
+		while (file1.good()) {
+			getline(file1,line);
+			istringstream iss(line);
+			iss >> beg;
+			iss >> end;
+			if (beg.compare("X-pos") == 0) stringstream(end) >> x_pos;
+			else if (beg.compare("Y-pos") == 0) stringstream(end) >> y_pos;
+			else if (beg.compare("Height") == 0) stringstream(end) >> height;
+			else if (beg.compare("Width") == 0) stringstream(end) >> width;
+			else if (beg.compare("Level") == 0) stringstream(end) >> level;
+			else if (beg.compare("Experience") == 0) stringstream(end) >> experience;
+			else if (beg.compare("Notoriety") == 0) stringstream(end) >> notoriety;
+			else if (beg.compare("Stats") == 0) stringstream(end) >> stats;
+			else if (beg.compare("Mana") == 0) stringstream(end) >> mana;
+			else if (beg.compare("Max-mana") == 0) stringstream(end) >> max_mana;
+			else if (beg.compare("Health") == 0) stringstream(end) >> health;
+			else if (beg.compare("Max-health") == 0) stringstream(end) >> max_health;
+			else if (beg.compare("Gold") == 0) stringstream(end) >> gold;
+			//else if (beg.compare("Inventory") == 0) blahblah;
+			//else if (beg.compare("World") == 0) stringstream(end) >> world;
+		}
+	}
+
+	Player_Accessor::create_player(x_pos, y_pos, img, width, height, 0, 18); 
+	Player*	hero = Player_Accessor::get_player();
+	start_game();
 }
 
 void save_game(void) {
-	//todo
-	return;
+	Player* hero = Player_Accessor::get_player();
+	ofstream file1("Save1.marsh");
+
+	// create player
+	file1 << "X-pos " << hero->get_x_pos() << endl;
+	file1 << "Y-pos " << hero->get_y_pos() << endl;
+	file1 << "Height " << hero->get_bounding_height() << endl;
+	file1 << "Width " << hero->get_bounding_width() << endl;
+
+	// player extras
+	file1 << "Level " << hero->level << endl;
+	file1 << "Experience " << hero->current_experience << endl;
+	file1 << "Notoriety " << hero->notoriety << endl;
+	file1 << "Stats " << hero->statPoints << endl; 
+	file1 << "Mana " << hero->get_current_mana() << endl;
+	file1 << "Max-mana " << hero->get_max_mana() << endl;
+	file1 << "Health " << hero->get_current_health() << endl;
+	file1 << "Max-health " << hero->get_max_health() << endl;
+	file1 << "Gold " << hero->gold << endl;
+	
+//	// player inventory
+	std::string items;
+	std::stringstream line;
+	std::vector<Equipment*> inventory = *hero->get_inventory();
+	std::vector<Equipment*>::iterator end = inventory.end();
+	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
+		line << (*iter)->item_id;
+		line << ",";
+	}
+	items = line.str();
+	file1 << "Inventory " << items << endl;
+
+	// world
+	file1 << "World " << v->current_world->get_WorldName << endl;
+
+	file1.close();
+	cout << "Game saved to Save1.marsh!";
+
+	show_intro();
 }
 
 void show_inv(void) { // show inventory items in a list as well as quanitty (click each item to view what they do)
