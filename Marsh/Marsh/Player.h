@@ -29,7 +29,7 @@
 #define CAST_TEN KEY_0
 #define OPEN_MENU KEY_ESC	// TODO define that
 
-#define MOVEMENT_DELTA 3
+#define MOVEMENT_DELTA 2
 
 #define INTERACT_KEY KEY_SPACE
 

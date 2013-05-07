@@ -15,6 +15,8 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->distance_traveled = 0;
 	this->death_timer = 0;
 	this->mana_cost = 0;
+	this->x_adjustment = 0;
+	this->y_adjustment = 0;
 }
 
 Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats)
@@ -36,6 +38,11 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics s
 Attack::~Attack(void)
 {
 
+}
+
+void Attack::set_position_adjustment(int x, int y){
+	this->x_adjustment = x;
+	this->y_adjustment = y;
 }
 
 Attack* Attack::fetch_me_as_attack(void){
@@ -222,8 +229,33 @@ Attack* Attack::clone(int x, int y, Direction dir){
 	penetrate = this->penetration;
 	charge = this->charge_time;
 	Sprite* image = this->get_image()->clone(dir);
+	
 	Attack* result = new Attack(x, y, this->velocity, this->velocity_delay, image, damage, penetrate, this->range, this->tree_depth_level, this->expiration_date, charge);
-	result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
+
+	switch(dir){
+	case N:
+		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
+		y -= this->y_adjustment;
+		break;
+	case S:
+		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
+		
+		break;
+	case W:
+		result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
+		x -= this->x_adjustment;
+		y -= this->y_adjustment;
+		break;
+	case E:
+		result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
+		y -= this->y_adjustment;
+		break;
+	}
+
+	result->set_x_pos(x);
+	result->set_y_pos(y);
+
+
 	result->set_my_caster(this->my_caster);
 	result->my_type = Wallop;
 	return result;

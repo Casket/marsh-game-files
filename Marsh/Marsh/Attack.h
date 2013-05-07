@@ -30,6 +30,8 @@ public:
 	int death_timer, expiration_date;
 	int charge_time;
 	int mana_cost;
+	int x_adjustment;
+	int y_adjustment;
 	Combat* my_caster;
 
 	public:
@@ -47,6 +49,7 @@ public:
 		virtual Attack* fetch_me_as_attack(void);
 		int get_mana_cost(void);
 		void set_mana_cost(int);
+		void set_position_adjustment(int x, int y);
 
 	protected:
 		// super private methods go here
