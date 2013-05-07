@@ -125,9 +125,67 @@ void AttackDB::populate_damage_spells(void){
 	stats_for_spell.tree_depth = 2;
 	Attack_Sprite* wave = new Attack_Sprite("Resources//Attack Sprites//Energy_Wave.bmp", N, animation_delay, 1, 4, 15, 900/15, 47);
 	wave->set_state_frame_counts(0, 15, 0);
-	Attack* energy_wave = new Attack(0, 0, base_spell_speed, base_spell_v_delay, wave, stats_for_spell);
+	Attack* energy_wave = new PersistentAttack(0, 0, base_spell_speed, base_spell_v_delay, wave, stats_for_spell);
 	energy_wave->set_mana_cost(base_mana+10);
 	energy_wave->set_boundary_value(900/15, 35, 0, 12);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_WAVE, energy_wave));
 	
+}
+void AttackDB::populate_melee(){
+
+	int base_spell_speed = 2;
+	int base_spell_v_delay = 5;
+	int base_spell_damage = 25;
+	int base_spell_penetration = 0;
+	int base_charge_time = 30;
+	int animation_delay = 5;
+	int base_mana = 0;
+		
+	AttackStatistics stats_for_spell;
+
+	//monster melee
+	stats_for_spell.base_damage = base_spell_damage;
+	stats_for_spell.charge_time = base_charge_time - 10;
+	stats_for_spell.exp_date = animation_delay;
+	stats_for_spell.penetration = base_spell_penetration;
+	stats_for_spell.range = NO_RANGE;
+	stats_for_spell.tree_depth = 0;
+	Attack_Sprite* slash = new Attack_Sprite("Resources//Attack Sprites//monster_melee.tga", N, 3, 1, 4,7,315/7, 58);
+	slash->is_translucent = true;
+	slash->set_state_frame_counts(0,7,0);
+	Attack* monster_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, slash, stats_for_spell);
+	monster_melee->set_mana_cost(base_mana);
+	monster_melee->set_boundary_value(315/7, 58, 0,0);
+	this->attacks_by_id->insert(std::pair<int, Attack*>(MONSTER_MELEE, monster_melee));
+
+
+	//guard melee
+	stats_for_spell.base_damage = base_spell_damage;
+	stats_for_spell.charge_time = base_charge_time - 10;
+	stats_for_spell.exp_date = animation_delay;
+	stats_for_spell.penetration = base_spell_penetration;
+	stats_for_spell.range = NO_RANGE;
+	stats_for_spell.tree_depth = 0;
+	Attack_Sprite* gslash = new Attack_Sprite("Resources//Attack Sprites//guard_melee.tga", N, 3, 1, 4,4,252/4, 32);
+	gslash->is_translucent = true;
+	gslash->set_state_frame_counts(0,4,0);
+	Attack* guard_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, gslash, stats_for_spell);
+	monster_melee->set_mana_cost(base_mana);
+	guard_melee->set_boundary_value(252/4, 32, 0,0);
+	this->attacks_by_id->insert(std::pair<int, Attack*>(GUARD_MELEE, guard_melee));
+
+		//guard melee
+	/*stats_for_spell.base_damage = base_spell_damage - 20;
+	stats_for_spell.charge_time = base_charge_time - 10;
+	stats_for_spell.exp_date = animation_delay;
+	stats_for_spell.penetration = base_spell_penetration;
+	stats_for_spell.range = NO_RANGE;
+	stats_for_spell.tree_depth = 0;
+	Attack_Sprite* gslash = new Attack_Sprite("Resources//Attack Sprites//guard_melee.tga", N, 3, 1, 4,4,252/4, 32);
+	gslash->is_translucent = true;
+	gslash->set_state_frame_counts(0,4,0);
+	Attack* guard_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, gslash, stats_for_spell);
+	monster_melee->set_mana_cost(base_mana);
+	guard_melee->set_boundary_value(252/4, 32, 0,0);
+	this->attacks_by_id->insert(std::pair<int, Attack*>(GUARD_MELEE, guard_melee));*/
 }
