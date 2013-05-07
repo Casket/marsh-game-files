@@ -40,7 +40,7 @@ void AttackDB::populate_penetration_spells(void){
 	stats_for_spell.penetration = base_spell_penetration;
 	stats_for_spell.range = LONG_RANGE;
 	stats_for_spell.tree_depth = 1;
-	Attack_Sprite* needle = new Attack_Sprite("Resources//Attack Sprites//Energy_Needle_5.bmp", N, animation_delay, 1, 14, 14, 100, 26);
+	Attack_Sprite* needle = new Attack_Sprite("Resources//Attack Sprites//Energy_Needle.bmp", N, animation_delay, 1, 14, 14, 100, 26);
 	needle->set_state_frame_counts(3, 5, 6);
 	Attack* shadow_needle = new Attack(0, 0, base_spell_speed, base_spell_v_delay, needle, stats_for_spell);
 	shadow_needle->set_boundary_value(34, 17, 2, 4);
