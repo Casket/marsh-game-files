@@ -162,6 +162,8 @@ bool Player::wants_to_talk(void){
 
 void Player::update(void) {
 	check_collisions();
+	if (this->entangled)
+		return;
 	if (this->interacting)
 		return; // interaction is controlled by the giver
 	// need to figure out where this guy wants to go

@@ -66,5 +66,5 @@ void Solid_Sprite::check_casting(void){
 
 Sprite* Solid_Sprite::clone(void){
 	// TODO write this
-	return NULL;
+	return this;
 }
