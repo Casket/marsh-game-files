@@ -65,6 +65,8 @@ Attack_Sprite::Attack_Sprite(std::string file_name, Direction cur_dir, int ani_d
 		destroy_bitmap(sub_image);
 	}
 
+	//delete this->sprite_sheet;
+
 	this->current_state = AttackMoving;
 	// use moving as the default, because charging is not possible for now
 
@@ -74,7 +76,7 @@ Attack_Sprite::~Attack_Sprite(void){
 	for(int i = 0; i < this->total_frames; i++){
 		destroy_bitmap(this->image_frames[i]);	
 	}
-	delete this->image_frames;
+	delete [] this->image_frames;
 }
 
 BITMAP* Attack_Sprite::get_current_frame(void){

@@ -23,6 +23,7 @@ public:
 	bool can_walk_left, can_walk_right, can_walk_up, can_walk_down, targeted;
 	int movement_counter;
 	bool can_speak;
+	bool in_combat;
 	EntityType my_type;
 
 public:
@@ -55,6 +56,8 @@ public:
 	virtual void check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
 	virtual Portal* fetch_me_as_portal(void);
 	virtual Combat* fetch_me_as_combat(void);
+	virtual bool get_visible(iDrawable*);
+	virtual bool detect_enemies(iDrawable*);
 
 private:
 

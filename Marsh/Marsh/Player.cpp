@@ -17,15 +17,18 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->inventory = new std::vector<Equipment*>();
 	this->set_new_inventory();
 	this->interacting = false;
-	this->set_stats(20, 45, 10, 10, 5);
+	this->set_stats(20000, 45, 10, 10, 5);
 	this->mana = this->max_mana;
 	this->gold = 100;
 	this->statPoints = 0;
-
 }
 
 Player::~Player(void){
 
+}
+
+void Player::upon_death(void){
+		
 }
 
 void Player::increment_notoriety(int increase){
@@ -169,6 +172,37 @@ void Player::update(void) {
 		casting_update();
 
 	clear_keybuf();
+}
+
+bool Player::detect_enemies(iDrawable* to_check){
+
+	EntityType type_check = to_check->my_type;
+
+	if(type_check == Monster || type_check == Outcast){
+		return true;
+	}else if(type_check == Hero){
+		if(to_check->get_image()->wearing_mask){
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+}
+
+bool Player::get_visible(iDrawable* current){
+
+	float distance = (((this->x_pos - current->x_pos) * (this->x_pos - current->x_pos)) + 
+		((this->y_pos - current->y_pos) * (this->y_pos - current->y_pos)));
+
+	distance = sqrt(distance);
+
+	if(distance < DETECTION_RANGE){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 void Player::credit_death(Combat* enemy){

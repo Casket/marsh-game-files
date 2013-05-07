@@ -108,20 +108,15 @@ void World::load_world(){
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 
-
-				omp_lock_t readlock;
-				omp_init_lock(&readlock);
-#pragma omp parallel for
-				for(int i = 0; i < size ; i+=2){
-					int t_count = omp_get_num_threads();
-					int my_c = omp_get_thread_num();
-					
-					omp_set_lock(&readlock);
+//				omp_lock_t readlock;
+//				omp_init_lock(&readlock);
+//#pragma omp parallel for
+				for(int i = 0; i < size ; i+=2){					
+//					omp_set_lock(&readlock);
 					first = items.at(i);
 					second = items.at(i+1);
-					omp_unset_lock(&readlock);
+//					omp_unset_lock(&readlock);
 					convert_to_tile(first, second, row_count,i/2);
-					
 				}
 
 				
@@ -417,7 +412,6 @@ void World::make_world(){
 			map[i][j]->col = j;
 			map[i][j]->background_image = sprite;
 			map[i][j]->can_walk = true;
-			map[i][j]->contents = new std::list<iDrawable*>();
 		}
 	}
 	this->tile_map = map;

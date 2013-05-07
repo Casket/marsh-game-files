@@ -134,7 +134,7 @@ void Marsh::View::insert_testing_entities(void){
 		Mob* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
-		g->set_stats(1000, 1000, 100, 100, 100);
+		g->set_stats(1000, 1000, 10000, 10000, 10000);
 		this->current_world->insert_entity(g);
 	}
 

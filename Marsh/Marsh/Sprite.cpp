@@ -23,11 +23,13 @@ Sprite::Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows
 }
 
 Sprite::~Sprite(void) {
-	destroy_bitmap(this->sprite_sheet);
+	if (this->sprite_sheet)
+		destroy_bitmap(this->sprite_sheet);
 }
 
 void Sprite::load_sprite_sheet(std::string name) {
 	this->sprite_sheet = load_bitmap(name.c_str(), NULL);
+	
 }
 
 Direction Sprite::get_facing(void) {

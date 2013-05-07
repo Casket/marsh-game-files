@@ -12,8 +12,10 @@ using namespace std;
 class Ground_Sprite: public Sprite{
 
 	public:
-		BITMAP* sprite_sheet;
+		//BITMAP* sprite_sheet;
 		int frame, total_frames, x, y;
+		BITMAP* frames[13];
+		BITMAP* image;
 
 		Ground_Sprite(std::string file_name, int x, int y);
 		~Ground_Sprite(void);
@@ -22,17 +24,11 @@ class Ground_Sprite: public Sprite{
 		void casting_update(void);
 		void check_casting(void);
 		BITMAP* get_current_frame(void);
-		void change_frame(int frame);
-		BITMAP* frames[13];
+		void change_frame(int frame);		
 		virtual Sprite* clone(void);
-
 
 	private:
 		// shhh... it's for secret cereal
-
-
-
-
 };
 
 

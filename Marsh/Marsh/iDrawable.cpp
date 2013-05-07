@@ -9,6 +9,7 @@ iDrawable::iDrawable(int x, int y, int vel, int vel_d, Sprite* img){
 	this->image = img;
 	this->alive = true;
 	this->can_speak = false;
+	this->in_combat = false;
 }
 
 iDrawable::~iDrawable(void){
@@ -145,6 +146,8 @@ void iDrawable::check_collisions(void){
 		iDrawable* check = (*iter);
 		if (check == this)
 			continue;
+		if (check->my_type == Wallop)
+			continue;
 
 		check_x = check->get_reference_x();
 		check_y = check->get_reference_y();
@@ -152,6 +155,10 @@ void iDrawable::check_collisions(void){
 		check_height = check->get_bounding_height();
 		if (check_width == 0 && check_height == 0)
 			continue;
+
+		if (this->get_visible(check))
+			if (this->detect_enemies(check))
+				this->in_combat = true;
 
 		bool was_unblocked_flag = *unblocked_facing ? true : false;
 
@@ -167,6 +174,14 @@ void iDrawable::check_collisions(void){
 	}
 
 
+}
+
+bool iDrawable::get_visible(iDrawable* check){
+	return false;
+}
+
+bool iDrawable::detect_enemies(iDrawable* check){
+	return false;
 }
 
 void iDrawable::check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew){
