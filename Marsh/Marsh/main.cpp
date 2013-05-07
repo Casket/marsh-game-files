@@ -82,7 +82,7 @@ END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
 	Marsh::View* v = new Marsh::View(hero);
-	v->load_world(main_world16);
+	v->load_world(test_map);
 	return v;
 }
 
@@ -285,7 +285,7 @@ void load_game(void) {
 	int x_pos, y_pos, height, width, ref_x, ref_y;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold;
 	WorldName world;
-	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 1, 16, 16);
+	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 
 	ifstream file1("Save1.marsh");
 	string line;
