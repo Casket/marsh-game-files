@@ -44,7 +44,7 @@ public:
 	void remove_entity(iDrawable*);
 	void set_player(Player*);
 	void remove_destroyed(void);
-	
+	static WorldName get_WorldName(std::string,int);
 
 private:
 	static std::pair<std::string, int> pull_out(std::string, int);
@@ -52,7 +52,6 @@ private:
 	static int find_x(char);
 	static int list_to_int(std::string, int);
 	static std::string get_file(WorldName);
-	static WorldName get_WorldName(std::string,int);
 	static EntityType get_entityType(std::string);
 	void convert_to_tile(char, char, int, int);
 	void designate_drawable(std::string, std::string, std::string, int, int,int);

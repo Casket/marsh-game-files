@@ -401,6 +401,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Mob.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MultiSpawnAttack.cpp"
 				>
 			</File>
@@ -524,6 +528,10 @@
 			</File>
 			<File
 				RelativePath=".\Main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Mob.h"
 				>
 			</File>
 			<File
