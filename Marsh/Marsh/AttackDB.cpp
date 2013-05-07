@@ -9,6 +9,7 @@ AttackDB::AttackDB(void){
 	this->populate_damage_spells();
 	this->populate_penetration_spells();
 	this->populate_utility_spells();
+	this->populate_melee();
 }
 AttackDB::~AttackDB(void){
 	delete this->attacks_by_id;
@@ -155,6 +156,7 @@ void AttackDB::populate_melee(){
 	slash->set_state_frame_counts(0,7,0);
 	Attack* monster_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, slash, stats_for_spell);
 	monster_melee->set_mana_cost(base_mana);
+	monster_melee->set_position_adjustment(0, 40);
 	monster_melee->set_boundary_value(315/7, 58, 0,0);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(MONSTER_MELEE, monster_melee));
 
@@ -170,7 +172,8 @@ void AttackDB::populate_melee(){
 	gslash->is_translucent = true;
 	gslash->set_state_frame_counts(0,4,0);
 	Attack* guard_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, gslash, stats_for_spell);
-	monster_melee->set_mana_cost(base_mana);
+	guard_melee->set_mana_cost(base_mana);
+	guard_melee->set_position_adjustment(0, 40);
 	guard_melee->set_boundary_value(252/4, 32, 0,0);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(GUARD_MELEE, guard_melee));
 
