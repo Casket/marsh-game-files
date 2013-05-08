@@ -14,6 +14,13 @@ AttackDB::~AttackDB(void){
 	delete this->attacks_by_id;
 }
 
+AttackDB::AttackDB(int x){
+	this->attacks_by_id = new std::map<int, Attack*>();
+	this->populate_damage_spells();
+	this->populate_penetration_spells();
+	this->populate_utility_spells();
+}
+
 Attack* AttackDB::fetch_attack(int attack_id){
 	std::map<int, Attack*>::iterator location;
 	location = this->attacks_by_id->find(attack_id);

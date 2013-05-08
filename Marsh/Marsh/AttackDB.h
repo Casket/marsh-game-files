@@ -32,6 +32,7 @@ class AttackDB {
 
 public:
 	AttackDB(void);
+	AttackDB(int);
 	~AttackDB(void);
 	Attack* fetch_attack(int attack_id);
 

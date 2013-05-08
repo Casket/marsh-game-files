@@ -242,6 +242,12 @@ void start_game(void) {
 
 	hero->set_my_type(Hero);
 
+	//LevelUp^ menu = gcnew LevelUp(NULL);			
+	//menu->StartPosition = FormStartPosition::CenterScreen;
+	//menu->Show();
+	//menu->Close();
+	//delete menu;
+
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
@@ -471,7 +477,6 @@ void show_level_up(void) { // show level up menu
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 			
 			menu->StartPosition = FormStartPosition::CenterScreen;
-			//this->TopMost = false;
 			menu->ShowDialog();
 			delete menu;
 /*
