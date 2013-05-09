@@ -41,17 +41,7 @@ void TeleportAttack::update(void){
 	this->get_world()->remove_entity(this);
 }
 
-bool drawable_in_drawable(iDrawable* target, iDrawable* check){
-	int check_x = check->get_reference_x();
-	int check_y = check->get_reference_y();
-	int check_width = check->get_bounding_width();
-	int check_height = check->get_bounding_height();
-
-	int my_x = target->get_reference_x();
-	int my_y = target->get_reference_y();
-	int my_width = target->get_bounding_width();
-	int my_height = target->get_bounding_height();
-
+bool check_walkable_area(int my_x, int my_y, int my_width, int my_height, int check_x, int check_y, int check_width, int check_height){
 	if (my_y <= (check_y + check_height) && (my_y) >= check_y){
 		if (check_x <= (my_x + my_width) && check_x >= (my_x)){
 			return true;
@@ -83,6 +73,57 @@ bool drawable_in_drawable(iDrawable* target, iDrawable* check){
 			return true;
 		}
 	}
+	return false;
+}
+
+bool drawable_in_drawable(int x, int y, iDrawable* target, iDrawable* check){
+	int check_x = check->get_reference_x();
+	int check_y = check->get_reference_y();
+	int check_width = check->get_bounding_width();
+	int check_height = check->get_bounding_height();
+
+	int my_x = x;
+	int my_y = y;
+	int my_width = target->get_bounding_width();
+	int my_height = target->get_bounding_height();
+
+	return check_walkable_area(my_x, my_y, my_width, my_height, check_x, check_y, check_width, check_height);
+}
+
+bool check_walkable_tiles(int x, int y, iDrawable* target){
+	Tile*** map = target->get_world()->get_tile_map();
+	int my_x = x;
+	int my_y = y;
+	int my_width = target->get_bounding_width();
+	int my_height = target->get_bounding_height();
+	int top_bottom_skew = 0;
+	int left_right_skew = 0;
+	Direction facing = target->get_image()->get_facing();
+
+	Tile* nearby[4];
+
+	int delta = 2;
+
+	// what tile is his top left corner in?
+	nearby[0] = map[(y - delta) / TILE_SIZE][(x- delta) / TILE_SIZE];
+
+	// top right?
+	nearby[1] = map[(y - delta) / TILE_SIZE][(x + my_width + delta) / TILE_SIZE];
+
+	// bottom left
+	nearby[2] = map[(y + my_height + delta) / TILE_SIZE][(x - delta) / TILE_SIZE];
+
+	// bottom right
+	nearby[3] = map[(y + my_height + delta) / TILE_SIZE][(x + my_width + delta) / TILE_SIZE];
+
+	for (int i=0; i < 4; i++){
+		if (!nearby[i]->can_walk)
+			if (check_walkable_area(my_x, my_y, my_height, my_width, 
+				nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE))
+				return true;
+	}
+	return false;
+
 }
 
 bool TeleportAttack::check_new_coord(int x, int y){
@@ -90,24 +131,22 @@ bool TeleportAttack::check_new_coord(int x, int y){
 
 	std::list<iDrawable*>* entities = this->get_world()->get_active_entities();
 	std::list<iDrawable*>::iterator end = entities->end();
-	int my_x = this->get_reference_x();
-	int my_y = this->get_reference_y();
-	int my_width = this->get_bounding_width();
-	int my_height = this->get_bounding_height();
+
+	if (check_walkable_tiles(x, y, target))
+		return false;
+
 	for (std::list<iDrawable*>::iterator iter = entities->begin(); iter != end; ++iter){
 		iDrawable* check = (*iter);
-		if (check == this)
+		if (check == target)
 			continue;
 		if (check->my_type == Wallop)
 			continue;
-
 		if (check->get_bounding_width() == 0 && check->get_bounding_height() == 0)
 			continue;
-
-		if(drawable_in_drawable(target, check))
+		if(drawable_in_drawable(x, y, target, check))
 			return false;
 	}
-	return false;
+	return true;
 }
 
 Attack* TeleportAttack::clone(int x, int y, Direction dir){
