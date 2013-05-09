@@ -1,5 +1,7 @@
 #include "Main.h"
 
+#include "ProtectionAttack.h"
+
 using namespace std;
 
 Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
@@ -59,6 +61,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
+	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//Energy_Bolt.bmp", W, 5, 1, 4, 4, 188/4, 31);
+	ward_img->set_state_frame_counts(0, 4, 0);
+	
+	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
+	this->attack_loadout[5]->set_boundary_value(50, 50, 0, 0);
+	this->attack_loadout[5]->set_my_caster(this);
 /*
 	this->attack_loadout[0]->set_my_caster(this);
 	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
