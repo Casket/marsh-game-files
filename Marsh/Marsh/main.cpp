@@ -247,6 +247,8 @@ void start_game(void) {
 
 	hero->set_my_type(Hero);
 
+	//BITMAP* overlay = load_tga("Resources//Misc//overlay.tga", NULL);
+	
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
@@ -269,6 +271,7 @@ void start_game(void) {
 		our_viewer->update();
 		//hero->update();
 		our_viewer->draw_active_world();
+		//draw_trans_sprite(screen, overlay, 0, 0);
 
 		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
 		//	SCREEN_W/2, SCREEN_H/2, 32,30);
@@ -278,6 +281,7 @@ void start_game(void) {
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
 		clear_keybuf();
 	}
+	destroy_bitmap(overlay);
 
 	//delete hero;
 	delete our_viewer;
