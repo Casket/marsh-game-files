@@ -461,6 +461,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TeleportAttack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Town_Guard.cpp"
 				>
 			</File>
@@ -592,6 +596,10 @@
 			</File>
 			<File
 				RelativePath=".\StunningAttack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TeleportAttack.h"
 				>
 			</File>
 			<File

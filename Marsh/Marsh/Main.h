@@ -42,6 +42,7 @@ class Attack;
 #include "PersistentAttack.h"
 #include "AttackCharge.h"
 #include "AttackDB.h"
+#include "TeleportAttack.h"
 
 
 

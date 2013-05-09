@@ -313,6 +313,8 @@ void Marsh::View::draw_active_world(void){
 	int tile_high = this->current_world->get_tiles_high();
 	Tile*** tiles = this->current_world->get_tile_map();
 
+	clear_bitmap(this->world_buffer);
+
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
 	draw_interface(this->playa);

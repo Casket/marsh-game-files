@@ -77,10 +77,10 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	*/
-	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 5, 17, 895/17, 48);
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
 
 	fire->is_translucent = true;
-	fire->set_state_frame_counts(0, 1, 16);
+	fire->set_state_frame_counts(0, 1, 10);
 	
 	stats.base_damage = 0;
 	stats.charge_time = 100;
@@ -90,12 +90,16 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	stats.tree_depth = 2;
 	fire->is_translucent = true;
 	this->attack_loadout[6] = new StunningAttack(800, 800, 1, 10, fire, stats);
-	this->attack_loadout[6]->set_boundary_value(26, 26, 2, 2);
+	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
 	this->attack_loadout[6]->set_my_caster(this);
+	this->attack_loadout[6]->set_position_adjustment(0, 20);
 	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
 	this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
 	this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[7]->set_my_caster(this);
+
+	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fireball_spr, stats, 100);
+	this->attack_loadout[8]->set_my_caster(this);
 
 
 	this->health = calculate_health(this->vitality);

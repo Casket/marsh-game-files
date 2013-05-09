@@ -170,10 +170,7 @@ void iDrawable::check_collisions(void){
 			if (Player_Accessor::hero->wants_to_talk())
 				check->speak();
 		}
-
 	}
-
-
 }
 
 bool iDrawable::get_visible(iDrawable* check){
