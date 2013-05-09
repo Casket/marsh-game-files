@@ -24,7 +24,8 @@ using namespace std;
 #define LEVEL_UP_GAME 7
 
 Player* Player_Accessor::hero;
-View* v;
+Marsh::View* v;
+WorldName world_name;
 
 volatile int ticks, framerate;
 volatile bool rested;
@@ -62,6 +63,7 @@ int main(void)
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
 	font3 = load_font("font3.pcx",NULL,NULL);
+	world_name = test_map;
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -81,8 +83,8 @@ int main(void)
 END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
-	Marsh::View* v = new Marsh::View(hero);
-	v->load_world(test_map);
+	v = new Marsh::View(hero);
+	v->load_world(world_name);
 	return v;
 }
 
@@ -282,9 +284,9 @@ void start_game(void) {
 }
 
 void load_game(void) {
-	int x_pos, y_pos, height, width, ref_x, ref_y;
+	int x_pos, y_pos, height, width;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold;
-	WorldName world;
+	int world;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 
 	ifstream file1("Save1.marsh");
@@ -310,12 +312,11 @@ void load_game(void) {
 			else if (beg.compare("Max-health") == 0) stringstream(end) >> max_health;
 			else if (beg.compare("Gold") == 0) stringstream(end) >> gold;
 			//else if (beg.compare("Inventory") == 0) blahblah;
-			//else if (beg.compare("World") == 0) stringstream(end) >> world;
+			else if (beg.compare("World") == 0) stringstream(end) >> world;
 		}
 	}
-
-	Player_Accessor::create_player(x_pos, y_pos, img, width, height, 0, 18); 
-	Player*	hero = Player_Accessor::get_player();
+	world_name = static_cast<WorldName>(world);
+	Player_Accessor::create_player(x_pos, y_pos, img, width, height, 0, 18);
 	start_game();
 }
 
@@ -353,7 +354,8 @@ void save_game(void) {
 	file1 << "Inventory " << items << endl;
 
 	// world
-	file1 << "World " << v->current_world->get_WorldName << endl;
+	int world = v->current_world->my_name;
+	file1 << "World " << world << endl;
 
 	file1.close();
 	cout << "Game saved to Save1.marsh!";
