@@ -45,6 +45,7 @@ class Mob:public Combat{
 		virtual void increment_patrol(void);
 		virtual Direction get_direction_moving(void);
 		virtual bool target_in_range(void);
+		virtual void choose_attack(void);
 };
 
 #endif

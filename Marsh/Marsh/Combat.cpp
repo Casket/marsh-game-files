@@ -19,12 +19,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 
 
 	AttackDB* attacks = new AttackDB();
-	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_BALL);
+	this->attack_loadout[0] = attacks->fetch_attack(GUARD_MELEE);
 	this->attack_loadout[0] = this->attack_loadout[0]->clone(0, 0, W);
 	this->attack_loadout[0]->set_my_caster(this);
 
-	Attack_Sprite* death = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_end.bmp", N, 5, 1, 3, 3, 80, 60);
-	death->set_state_frame_counts(0, 1, 2);
+	Attack_Sprite* death = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2.bmp", N, 10, 1, 3, 3, 76, 59);
+	death->set_state_frame_counts(0, 2, 2);
 	AttackStatistics stats;
 	stats.base_damage = 0;
 	stats.charge_time = 100;
@@ -40,8 +40,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 
 	this->attack_loadout[1] = death_beam;
 	
-	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_charge.bmp", N, 5, 1, 1, 1, 50, 19);
-	shooter_img->set_state_frame_counts(0, 1, 0);
+	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2_charge.bmp", N, 5, 1, 1, 1, 120, 55);
+	shooter_img->set_state_frame_counts(0, 2, 0);
 
 	stats.base_damage = 0;
 	stats.charge_time = 100;
@@ -49,8 +49,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	stats.penetration = 15;
 	stats.range = 250;
 	stats.tree_depth = 2;
-	MultiSpawnAttack* beamer = new MultiSpawnAttack(800, 800, 2, 10, shooter_img, stats, death_beam, 30);
-	beamer->set_position_adjustment(20, 0);
+	MultiSpawnAttack* beamer = new MultiSpawnAttack(800, 800, 2, 10, shooter_img, stats, death_beam, 20);
+	beamer->set_position_adjustment(50, 0);
 	beamer->set_boundary_value(50, 19, 0, 0);
 	beamer->set_my_caster(this);
 	this->attack_loadout[2] = beamer;

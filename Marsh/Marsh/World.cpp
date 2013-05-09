@@ -1123,6 +1123,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 
 	return std::make_pair(quest, constant_index);
 }
+
 void World::make_dialouge_op(std::string items, int constant_index, OptionPresenter* op){
 	std::pair<std::string,int> values;
 

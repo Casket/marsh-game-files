@@ -418,6 +418,7 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 		BITMAP* frame = (*iter)->get_image()->get_current_frame();
 		int x = (*iter)->get_x_pos();
 		int y = (*iter)->get_y_pos();
+
 		int width = frame->w;
 		int height = frame->h;
 
