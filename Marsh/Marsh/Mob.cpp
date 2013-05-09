@@ -14,6 +14,7 @@ Mob::Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<in
 	this->current_state = patrol;
 
 
+
 }
 Mob::~Mob(void){
 	
@@ -37,15 +38,18 @@ void Mob::update(void){
 
 	switch (this->current_state){
 		case attack:
+			if(this->target->alive){
+				this->target_area = std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
+			}
 
-			this->launch_attack(0);
 			this->current_state = attack_move;
-
+			this->launch_attack(0);
 			break;
 
 		case attack_move:
-
-			move_towards(std::make_pair(this->target->get_x_pos(), this->target->get_y_pos()));
+			this->target_area = std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
+			
+			move_towards(this->target_area);
 
 			if(this->target_in_range()){
 				this->current_state = attack;
@@ -522,5 +526,9 @@ bool Mob::target_in_range(void){
 			return false;
 		}
 	}
+
+}
+void Mob::choose_attack(void){
+
 
 }
