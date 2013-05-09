@@ -223,6 +223,10 @@ int Attack::get_charge_time(void){
 	return this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
 }
 
+iDrawable* Attack::get_above_target(void){
+	return this->my_caster;
+}
+
 Attack* Attack::clone(int x, int y, Direction dir){
 	int damage, penetrate, charge;
 	damage = this->base_damage;

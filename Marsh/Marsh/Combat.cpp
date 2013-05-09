@@ -1,5 +1,7 @@
 #include "Main.h"
 
+#include "ProtectionAttack.h"
+
 using namespace std;
 
 Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
@@ -11,6 +13,9 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
+
+	for (int i=0; i < MAX_ATTACKS; i++)
+		this->attack_loadout[i] = NULL;
 
 
 	AttackDB* attacks = new AttackDB();
@@ -56,20 +61,28 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
+	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 50, 1, 7, 7, 480/7-2, 65);
+	ward_img->set_state_frame_counts(0, 7, 0);
+	ward_img->is_translucent = true;
+	
+	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
+	this->attack_loadout[5]->set_boundary_value(50, 50, 0, 0);
+	this->attack_loadout[5]->set_my_caster(this);
 /*
 	this->attack_loadout[0]->set_my_caster(this);
-	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	
 	fireball_spr->set_state_frame_counts(0, 5, 3);
 	this->attack_loadout[1] = new Attack(800, 800, 2, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
 
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
-	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 5, 17, 895/17, 48);
+	*/
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
 
 	fire->is_translucent = true;
-	fire->set_state_frame_counts(0, 1, 16);
-	AttackStatistics stats;
+	fire->set_state_frame_counts(0, 1, 10);
+	
 	stats.base_damage = 0;
 	stats.charge_time = 100;
 	stats.exp_date = 1000;
@@ -77,13 +90,18 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	stats.range = 250;
 	stats.tree_depth = 2;
 	fire->is_translucent = true;
-	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fire, stats);
-	this->attack_loadout[2]->set_boundary_value(26, 26, 2, 2);
-	this->attack_loadout[2]->set_my_caster(this);
-	this->attack_loadout[3] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
-	this->attack_loadout[3]->set_boundary_value(26, 26, 2, 2);
-	this->attack_loadout[3]->set_my_caster(this);
-*/
+	this->attack_loadout[6] = new StunningAttack(800, 800, 1, 10, fire, stats);
+	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
+	this->attack_loadout[6]->set_my_caster(this);
+	this->attack_loadout[6]->set_position_adjustment(0, 20);
+	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
+	this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
+	this->attack_loadout[7]->set_my_caster(this);
+
+	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fireball_spr, stats, 100);
+	this->attack_loadout[8]->set_my_caster(this);
+
 
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
@@ -96,6 +114,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->casting_timer = 0;
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
+
+	
 
 }
 

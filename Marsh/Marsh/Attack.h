@@ -50,6 +50,7 @@ public:
 		int get_mana_cost(void);
 		void set_mana_cost(int);
 		void set_position_adjustment(int x, int y);
+		virtual iDrawable* get_above_target(void);
 
 	protected:
 		// super private methods go here

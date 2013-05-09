@@ -83,8 +83,8 @@ int main(void)
 END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
-	v = new Marsh::View(hero);
-	v->load_world(world_name);
+	Marsh::View* v = new Marsh::View(hero);
+	v->load_world(test_map);
 	return v;
 }
 

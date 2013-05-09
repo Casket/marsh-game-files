@@ -346,6 +346,17 @@ bool World::equals(World* w){
 
 
 bool sort_visibles(iDrawable* d1, iDrawable* d2){
+	if (d1->my_type == Wallop){
+		Attack* check = d1->fetch_me_as_attack();
+		if (check->get_above_target() == d2)
+			return false;
+	}
+	if (d2->my_type == Wallop){
+		Attack* check = d2->fetch_me_as_attack();
+		if (check->get_above_target() == d1)
+			return true;
+	}
+
 	if (d1->get_reference_y() == d2->get_reference_y()){
 		return (d1->get_reference_x() < d2->get_reference_x());
 	}
@@ -787,6 +798,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		throw std::exception("Invalid drawable");
 	}
 
+	new_d->set_my_type(Stationary);
 	insert_entity(new_d);
 
 }

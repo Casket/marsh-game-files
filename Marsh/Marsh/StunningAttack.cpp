@@ -8,8 +8,8 @@ StunningAttack::StunningAttack(int x, int y, int vel, int vel_d, Sprite* img, At
 	this->caught_target = NULL;
 	this->caught_timer = 0;
 	this->caught_duration = 100;
-
 }
+
 StunningAttack::~StunningAttack(void){
 
 }
@@ -25,9 +25,33 @@ Attack* StunningAttack::clone(int x, int y, Direction dir){
 	stats.range = this->range;
 	stats.tree_depth = this->tree_depth_level;
 
+
 	StunningAttack* dup = new StunningAttack(x, y, this->velocity, this->velocity_delay, image, stats);
 	dup->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 	dup->set_my_caster(this->my_caster);
+	dup->set_position_adjustment(this->x_adjustment, this->y_adjustment);
+
+	switch(dir){
+	case N:
+		x -= this->x_adjustment;
+		y -= this->y_adjustment;
+		break;
+	case S:
+		x -= this->x_adjustment;
+		break;
+	case W:
+		x -= this->x_adjustment;
+		y -= this->y_adjustment;
+		break;
+	case E:
+		y -= this->y_adjustment;
+		break;
+	}
+
+	dup->set_x_pos(x);
+	dup->set_y_pos(y);
+
+
 	return dup;
 }
 
@@ -97,10 +121,19 @@ bool StunningAttack::detect_collisions(void){
 	return false;
 }
 
+iDrawable* StunningAttack::get_above_target(void){
+	return this->caught_target;
+}
+
 void StunningAttack::entrap_my_target(void){
 	Combat* target = this->caught_target;
 	if (target == NULL)
 		return;
+	if (target->entangled){
+		this->caught_target = NULL;
+		return;
+	}
+
 	target->entangled = true;
 	int center_x = this->get_reference_x();
 	int center_y = this->get_reference_y();
