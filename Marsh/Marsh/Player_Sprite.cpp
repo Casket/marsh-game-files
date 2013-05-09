@@ -7,14 +7,29 @@ Player_Sprite::Player_Sprite(std::string file_name, Direction cur_dir, int ani_d
 :Sprite(file_name, cur_dir, ani_delay, rows, cols, total_frames)
 {
 	this->wearing_mask = false;
+	this->flicker = false;
 	if(this->frame_intial){
 		intial_blank_frame();
 		this->frame_intial = false;
+	}
+
+	this->image_frames = new BITMAP*[total_frames];
+	for (int i=0; i < rows; i++){
+		for (int j=0; j < cols; j++){
+			this->image_frames[j+cols*i] = create_sub_bitmap(this->sprite_sheet,
+				j*SPRITE_WIDTH, i*32, SPRITE_WIDTH, SPRITE_HEIGHT);
+			
+		}
 	}
 }
 
 
 Player_Sprite::~Player_Sprite(void) {
+	for (int i=0; i < this->total_frames; i++){
+		destroy_bitmap(this->image_frames[i]);
+	}
+	delete [] this->image_frames;
+	destroy_bitmap(this->blank_frame);
 
 }
 void Player_Sprite::intial_blank_frame(void){
@@ -22,23 +37,23 @@ void Player_Sprite::intial_blank_frame(void){
 	clear_to_color(this->blank_frame, makecol(255, 0,255));
 }
 BITMAP* Player_Sprite::get_current_frame(void) {
-	int y = 0;
-	if (!this->lighted)
-		y += 32;
-	
-	if(this->wearing_mask)
-		y += 32;
-
 	if (this->facing == None)
 		return this->sprite_sheet;
-
+	
 	if(this->animation_frame == FLICKER_FRAME_NUMBER){
-		return this->blank_frame;
+		this->animation_counter = this->animation_delay;
+		this->update();	
+		if (this->flicker){
+			this->flicker = !this->flicker;
+			return this->blank_frame;
+		}
 	}
 
-	BITMAP* pic = create_sub_bitmap(this->sprite_sheet,
-		this->animation_frame*SPRITE_WIDTH, y, SPRITE_WIDTH, SPRITE_HEIGHT);
-	return pic;
+	this->flicker = true;
+
+	int y = this->wearing_mask ? 1 : 0;
+
+	return this->image_frames[this->animation_frame + y*this->sheet_cols];
 }
 
 void Player_Sprite::update(void) {

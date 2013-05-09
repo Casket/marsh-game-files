@@ -29,7 +29,7 @@
 #define CAST_TEN KEY_0
 #define OPEN_MENU KEY_ESC	// TODO define that
 
-#define MOVEMENT_DELTA 3
+#define MOVEMENT_DELTA 2
 
 #define INTERACT_KEY KEY_SPACE
 
@@ -59,15 +59,15 @@ typedef struct Equipment{
 
 class Player: public Combat{
 	std::vector<Equipment*>* inventory;
-	int level, current_experience, mana, max_mana;
 	BITMAP* clear_console;
 	BITMAP* in_use_console;
-	int notoriety;
 
 	public:
 		int gold;
 		int experience;
 		int statPoints;
+		int notoriety;
+		int level, current_experience, mana, max_mana;
 		QuestManager* quest_manager;
 		bool interacting;
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
@@ -89,6 +89,9 @@ class Player: public Combat{
 		void unequip_item(Equipment*);
 		void remove_item_stats(Equipment*);
 		void increment_notoriety(int increase);
+		virtual void upon_death(void);
+		virtual bool get_visible(iDrawable* check);
+		virtual bool detect_enemies(iDrawable* check);
 
 	
 	private:

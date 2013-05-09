@@ -89,7 +89,7 @@ void Marsh::View::insert_testing_entities(void){
 		ways->insert(ways->end(), test);
 		std::pair<int, int> test2 = std::make_pair(120, 800);
 		ways->insert(ways->end(), test2);
-		std::pair<int, int> test3 = std::make_pair(100, 800);
+		std::pair<int, int> test3 = std::make_pair(45, 800);
 		ways->insert(ways->end(), test3);
 
 		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
@@ -131,10 +131,10 @@ void Marsh::View::insert_testing_entities(void){
 		companion->item_id = 197;
 		farmer_bob->append_inventory(companion, 1000000);
 
-		Town_Guard* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
-		g->set_stats(1000, 1000, 100, 100, 100);
+		g->set_stats(1000, 1000, 10000, 10000, 10000);
 		this->current_world->insert_entity(g);
 	}
 
@@ -178,7 +178,7 @@ void Marsh::View::insert_testing_entities(void){
 	ways->insert(ways->end(), test5);
 
 
-	Town_Guard* g = new Town_Guard(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+	Mob* g = new Mob(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 	g->set_world(this->current_world);
 	this->current_world->insert_entity(g);
 

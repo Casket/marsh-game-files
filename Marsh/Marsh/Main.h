@@ -23,6 +23,7 @@ class Attack;
 #include "Attack.h"
 #include "Combat.h"
 #include "Player.h"
+#include "Mob.h"
 #include "Town_Guard.h"
 #include "Player_Sprite.h"
 #include "World.h"

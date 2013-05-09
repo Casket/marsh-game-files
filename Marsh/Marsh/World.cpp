@@ -108,20 +108,15 @@ void World::load_world(){
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 
-
-				omp_lock_t readlock;
-				omp_init_lock(&readlock);
-#pragma omp parallel for
-				for(int i = 0; i < size ; i+=2){
-					int t_count = omp_get_num_threads();
-					int my_c = omp_get_thread_num();
-					
-					omp_set_lock(&readlock);
+//				omp_lock_t readlock;
+//				omp_init_lock(&readlock);
+//#pragma omp parallel for
+				for(int i = 0; i < size ; i+=2){					
+//					omp_set_lock(&readlock);
 					first = items.at(i);
 					second = items.at(i+1);
-					omp_unset_lock(&readlock);
+//					omp_unset_lock(&readlock);
 					convert_to_tile(first, second, row_count,i/2);
-					
 				}
 
 				
@@ -417,7 +412,6 @@ void World::make_world(){
 			map[i][j]->col = j;
 			map[i][j]->background_image = sprite;
 			map[i][j]->can_walk = true;
-			map[i][j]->contents = new std::list<iDrawable*>();
 		}
 	}
 	this->tile_map = map;
@@ -445,6 +439,14 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(72,32,2,18);
 
+	}else if(type.compare( "bar")==0){
+
+		new_d->set_boundary_value(89,33,1,9);
+
+	}else if(type.compare( "barn")==0){
+		
+		new_d->set_boundary_value(96,49,0,49);
+
 	}else if(type.compare( "barrel")==0){
 
 		new_d->set_boundary_value(29,23,0,7);
@@ -459,7 +461,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 	}else if(type.compare( "bed_hut")==0){
 
-		new_d->set_boundary_value(32,64,0,0);
+		new_d->set_boundary_value(70,60,0,20);
 
 	}else if(type.compare( "beer")==0){
 
@@ -469,13 +471,53 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(64,32,0,32);
 
+	}else if(type.compare( "boat")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
 	}else if(type.compare( "box")==0){
 
 		new_d->set_boundary_value(32,24,0,8);
 
+	}else if(type.compare( "bread1")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "bread2")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "bread3")==0){
+
+		new_d->set_boundary_value(29,23,0,7);
+
+	}else if(type.compare( "chair_front")==0){
+
+		new_d->set_boundary_value(21,30,0,10);
+
+	}else if(type.compare( "chair_left")==0){
+
+		new_d->set_boundary_value(21,30,0,10);
+
+	}else if(type.compare( "chair_right")==0){
+
+		new_d->set_boundary_value(21,30,0,10);
+
+	}else if(type.compare( "church")==0){
+
+		new_d->set_boundary_value(449,600,0,98);
+
+	}else if(type.compare( "couch")==0){
+
+		new_d->set_boundary_value(42,85,0,8);
+
 	}else if(type.compare( "chest")==0){
 
 		new_d->set_boundary_value(32,32,0,0);
+
+	}else if(type.compare( "dinig_table")==0){
+
+		new_d->set_boundary_value(73,54,0,6);
 
 	}else if(type.compare( "dirt_clump")==0){
 
@@ -483,14 +525,63 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 	}else if(type.compare( "door_front")==0){
 		
+		new_d->set_boundary_value(0,0,0,0);
 
 	}else if(type.compare( "dresser")==0){
 
 		new_d->set_boundary_value(32,32,0,32);
 
+	}else if(type.compare( "farm_house")==0){
+
+		new_d->set_boundary_value(165,129,30,45);
+
+	}else if(type.compare( "feed")==0){
+		
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "fence_horiz")==0){
+
+		new_d->set_boundary_value(160,28,0,4);
+
+	}else if(type.compare( "fence_vert")==0){
+
+		new_d->set_boundary_value(5,96,0,0);
+
 	}else if(type.compare( "fireplace")==0){
 
 		new_d->set_boundary_value(67,64,0,0);
+
+	}else if(type.compare( "flower1")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower2")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower3")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower4")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower5")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower6")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower7")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
+
+	}else if(type.compare( "flower8")==0){
+
+		new_d->set_boundary_value(0,0,0,0);		
 
 	}else if(type.compare( "flowers")==0){
 
@@ -504,6 +595,27 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(0,0,0,0);
 
+	}else if(type.compare( "hay")==0){
+
+		new_d->set_boundary_value(70,44,0,20);	
+
+	}else if(type.compare( "hut1")==0){
+
+		new_d->set_boundary_value(220,220,0,20);
+
+	}else if(type.compare( "hut2")==0){
+
+		new_d->set_boundary_value(165,170,0,20);
+
+	}else if(type.compare( "hut3")==0){
+		
+		new_d->set_boundary_value(120,161,0,30);
+				
+
+	}else if(type.compare( "hut4")==0){
+
+		new_d->set_boundary_value(163,115,0,30);		
+
 	}else if(type.compare( "kitchen_cabinet")==0){
 
 		new_d->set_boundary_value(32,40,0,24);
@@ -512,10 +624,34 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(0,0,0,0);
 
+	}else if(type.compare( "lazy_chair")==0){
+
+		new_d->set_boundary_value(32,40,0,10);
+
+	}else if(type.compare( "livestock_food")==0){
+
+		new_d->set_boundary_value(64,35,0,4);
+
+	}else if(type.compare( "livestock_water")==0){
+
+		new_d->set_boundary_value(32,61,0,4);
+
 	}else if(type.compare( "mirror")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
+	}else if(type.compare( "nice_house1")==0){
+
+		new_d->set_boundary_value(176,257,0,50);		
+
+	}else if(type.compare( "nice_house2")==0){
+
+		new_d->set_boundary_value(364,290,0,26);
+
+	}else if(type.compare( "outhouse")==0){
+
+		new_d->set_boundary_value(33,32,0,33);
+	
 	}else if(type.compare( "organ")==0){
 
 		new_d->set_boundary_value(63,34,15,30);
@@ -528,10 +664,58 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(63,34,15,30);
 
+	}else if(type.compare( "plant1")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant2")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant3")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant4")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant5")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant6")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant7")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant8")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "plant9")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
 	}else if(type.compare( "portrait")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
+	}else if(type.compare( "rug")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "rug_bear")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+	
+	}else if(type.compare( "side_dresser")==0){
+
+		new_d->set_boundary_value(30,80,0,7);
+	
 	}else if(type.compare( "stairs_down_right")==0){
 		
 		new_d->set_boundary_value(0,0,0,0);
@@ -548,6 +732,14 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(32,32,0,32);
 
+	}else if(type.compare( "statue2")==0){
+
+		new_d->set_boundary_value(32,32,0,32);
+
+	}else if(type.compare( "table")==0){
+
+		
+
 	}else if(type.compare( "table_hut")==0){
 
 		new_d->set_boundary_value(32,27,0,5);
@@ -555,6 +747,18 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 	}else if(type.compare( "throne")==0){
 
 		new_d->set_boundary_value(67,32,0,32);
+
+	}else if(type.compare("tree_dead")==0){
+
+		
+
+	}else if(type.compare("tree_oak")==0){
+
+		
+
+	}else if(type.compare("tree_oak2")==0){
+
+		
 
 	}else if(type.compare("tree_pine")==0){
 
@@ -566,6 +770,10 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 	}else if(type.compare("watchtower")==0){
 
+
+	}else if(type.compare("well")==0){
+
+		
 
 	}else if(type.compare("wine")==0){
 

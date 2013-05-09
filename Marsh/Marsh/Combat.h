@@ -49,6 +49,7 @@ public:
 	virtual void speak(void);
 	void face_speaker(void);
 	virtual Combat* fetch_me_as_combat(void);
+	virtual void upon_death(void);
 
 
 protected:

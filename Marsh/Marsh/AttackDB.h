@@ -7,6 +7,7 @@ using namespace std;
 #define LONG_RANGE VISIBLE_W / 2
 #define MID_RANGE VISIBLE_W / 4
 #define SHORT_RANGE VISIBLE_W / 8
+#define NO_RANGE 16
 
 #define SHADOW_BALL 0
 #define SHADOW_BALL_PLUS 1
@@ -27,6 +28,9 @@ using namespace std;
 #define SHIELD 14
 #define DEFLECT 15
 
+#define MONSTER_MELEE 16
+#define GUARD_MELEE 17
+
 class AttackDB {
 	std::map<int, Attack*>* attacks_by_id;
 
@@ -40,4 +44,5 @@ private:
 	void populate_penetration_spells(void);
 	void populate_utility_spells(void);
 	void populate_damage_spells(void);
+	void populate_melee(void);
 };
