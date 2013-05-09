@@ -8,8 +8,8 @@ StunningAttack::StunningAttack(int x, int y, int vel, int vel_d, Sprite* img, At
 	this->caught_target = NULL;
 	this->caught_timer = 0;
 	this->caught_duration = 100;
-
 }
+
 StunningAttack::~StunningAttack(void){
 
 }
@@ -95,6 +95,10 @@ bool StunningAttack::detect_collisions(void){
 		}
 	}
 	return false;
+}
+
+iDrawable* StunningAttack::get_above_target(void){
+	return this->caught_target;
 }
 
 void StunningAttack::entrap_my_target(void){

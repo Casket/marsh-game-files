@@ -17,5 +17,4 @@ public:
 	virtual Attack* clone(int, int, Direction);
 	virtual void start_death_sequence(void);
 
-
 };

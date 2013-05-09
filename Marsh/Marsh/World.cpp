@@ -348,12 +348,12 @@ bool World::equals(World* w){
 bool sort_visibles(iDrawable* d1, iDrawable* d2){
 	if (d1->my_type == Wallop){
 		Attack* check = d1->fetch_me_as_attack();
-		if (check->my_caster == d2)
+		if (check->get_above_target() == d2)
 			return false;
 	}
 	if (d2->my_type == Wallop){
 		Attack* check = d2->fetch_me_as_attack();
-		if (check->my_caster == d1)
+		if (check->get_above_target() == d1)
 			return true;
 	}
 
