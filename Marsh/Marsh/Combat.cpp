@@ -12,6 +12,9 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
 
+	for (int i=0; i < MAX_ATTACKS; i++)
+		this->attack_loadout[i] = NULL;
+
 
 	AttackDB* attacks = new AttackDB();
 	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_BALL);
@@ -96,6 +99,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->casting_timer = 0;
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
+
+	
 
 }
 
