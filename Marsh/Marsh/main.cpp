@@ -30,6 +30,8 @@ WorldName world_name;
 volatile int ticks, framerate;
 volatile bool rested;
 
+void load_inventory(string stream);
+void load_spells(string stream);
 void timer_framerate_counter(void);
 void timer_game_rester(void);
 void set_up_game(void);
@@ -83,7 +85,7 @@ int main(void)
 END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
-	Marsh::View* v = new Marsh::View(hero);
+	v = new Marsh::View(hero);
 	v->load_world(test_map);
 	return v;
 }
@@ -287,6 +289,37 @@ void start_game(void) {
 	delete our_viewer;
 }
 
+void load_inventory(string stream) {
+	std::vector<int> item_ids;
+	std::stringstream ss(stream);
+	int i;
+	while (ss >> i)
+	{
+		item_ids.push_back(i);
+		if (ss.peek() == ',') ss.ignore();
+	}
+	//std::vector<Equipment*>* inventory;
+}
+
+void load_spells(string stream) {
+	std::vector<int> spell_ids;
+	std::stringstream ss(stream);
+	int i;
+	while (ss >> i)
+	{
+		spell_ids.push_back(i);
+		if (ss.peek() == ',') ss.ignore();
+	}
+	i = 0;
+	AttackDB* db = new AttackDB();
+	std::vector<int>::iterator end = spell_ids.end();
+	for (std::vector<int>::iterator iter = spell_ids.begin(); iter != end; ++iter){
+		Player_Accessor::get_player()->attack_loadout[i] = db->fetch_attack(spell_ids[i])->clone(0,0,W);
+		++i;
+	}
+	delete db;
+}
+
 void load_game(void) {
 	int x_pos, y_pos, height, width;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold;
@@ -315,8 +348,9 @@ void load_game(void) {
 			else if (beg.compare("Health") == 0) stringstream(end) >> health;
 			else if (beg.compare("Max-health") == 0) stringstream(end) >> max_health;
 			else if (beg.compare("Gold") == 0) stringstream(end) >> gold;
-			//else if (beg.compare("Inventory") == 0) blahblah;
 			else if (beg.compare("World") == 0) stringstream(end) >> world;
+			else if (beg.compare("Inventory") == 0) load_inventory(end);
+			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
 		}
 	}
 	world_name = static_cast<WorldName>(world);
@@ -344,22 +378,33 @@ void save_game(void) {
 	file1 << "Health " << hero->get_current_health() << endl;
 	file1 << "Max-health " << hero->get_max_health() << endl;
 	file1 << "Gold " << hero->gold << endl;
+
+	// world
+	int world = v->current_world->my_name;
+	file1 << "World " << world << endl;
 	
-//	// player inventory
+	// player inventory
 	std::string items;
 	std::stringstream line;
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	std::vector<Equipment*>::iterator end = inventory.end();
 	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
 		line << (*iter)->item_id;
-		line << ",";
+		if (iter < (end-1)) line << ",";
 	}
 	items = line.str();
 	file1 << "Inventory " << items << endl;
 
-	// world
-	int world = v->current_world->my_name;
-	file1 << "World " << world << endl;
+	// player spell loadout
+	Attack* loadout = *hero->attack_loadout;
+	int i=0;
+	for (i; i<MAX_ATTACKS; i++) {
+		line << loadout[i].spell_id;
+		if (i < (MAX_ATTACKS-1)) line << ",";
+	}
+	items.clear();
+	items = line.str();
+	file1 << "Spell-loadout " << items << endl;
 
 	file1.close();
 	cout << "Game saved to Save1.marsh!";
