@@ -3,8 +3,6 @@
 
 class Attack;
 
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
@@ -28,6 +26,7 @@ class Attack;
 #include "Player_Sprite.h"
 #include "World.h"
 #include "View.h"
+#include "AttackDB.h"
 #include "Portal.h"
 #include "QuestManager.h"
 #include "IQuestObjective.h"
@@ -42,8 +41,6 @@ class Attack;
 #include "StunningAttack.h"
 #include "PersistentAttack.h"
 #include "AttackCharge.h"
-#include "AttackDB.h"
-
 
 
 #define VISIBLE_W 1400
@@ -54,8 +51,6 @@ class Attack;
 
 using namespace std;
 using namespace Marsh;
-
-//class AttackDB;
 
 bool keyrel(int k);
 Equipment* get_new_equipment(void);

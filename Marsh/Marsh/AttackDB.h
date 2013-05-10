@@ -2,7 +2,7 @@
 
 #include "Main.h"
 
-using namespace std;
+//using namespace std;
 
 #define LONG_RANGE VISIBLE_W / 2
 #define MID_RANGE VISIBLE_W / 4

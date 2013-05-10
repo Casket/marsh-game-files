@@ -1,6 +1,6 @@
 #include "AttackDB.h"
 
-using namespace std;
+//using namespace std;
 
 
 
