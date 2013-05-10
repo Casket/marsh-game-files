@@ -21,7 +21,7 @@ class Mob:public Combat{
 
 	std::vector<std::pair<int, int>>* waypoints;
 	
-	bool x_or_y, patrolling_forward;
+	bool x_or_y, patrolling_forward, in_melee_range, in_short_range, in_mid_range, in_long_range;
 	iDrawable* target;
 	int patrol_node;
 	iDrawable* blocking_entity;
@@ -44,7 +44,7 @@ class Mob:public Combat{
 		virtual bool move_towards(std::pair<int, int>);
 		virtual void increment_patrol(void);
 		virtual Direction get_direction_moving(void);
-		virtual bool target_in_range(void);
+		virtual bool set_range(void);
 		virtual void choose_attack(void);
 };
 

@@ -170,6 +170,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	this->tile_map[pos_x][pos_y]->row = pos_x;
 	this->tile_map[pos_x][pos_y]->col = pos_y;
 	this->tile_map[pos_x][pos_y]->can_walk = true;
+	this->tile_map[pos_x][pos_y]->flyable = false;
 
 	if(a == '0'){
 		sprite_x = find_x(b);
@@ -188,10 +189,11 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			this->tile_map[pos_x][pos_y]->can_walk = false;
 		}
 		if(sprite_x == 5 || sprite_x == 9){
-
 			this->tile_map[pos_x][pos_y]->can_walk = false;
 		}
-
+		if(sprite_x == 5){
+			this->tile_map[pos_x][pos_y]->flyable = true;
+		}
 
 
 	}else if(a == '1'){
@@ -205,6 +207,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 		this->tile_map[pos_x][pos_y]->can_walk = false;
+		this->tile_map[pos_x][pos_y]->flyable = true;
 
 	}else if(a == '2'){
 		sprite_x = find_x(b);
@@ -216,6 +219,9 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
+
+		this->tile_map[pos_x][pos_y]->flyable = true;
+		this->tile_map[pos_x][pos_y]->can_walk = false;
 
 	}else if(a == '3'){
 		sprite_x = find_x(b);

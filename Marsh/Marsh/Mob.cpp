@@ -285,6 +285,8 @@ void Mob::check_collisions(void){
 
 	// bottom right
 	nearby[3] = map[(this->get_reference_y() + this->get_bounding_height() + delta) / TILE_SIZE][(this->get_reference_x() + this->get_bounding_width() + delta) / TILE_SIZE];
+	
+
 
 	for (int i=0; i < 4; i++){
 		if (!nearby[i]->can_walk)
@@ -530,5 +532,5 @@ bool Mob::target_in_range(void){
 }
 void Mob::choose_attack(void){
 
-
+	
 }

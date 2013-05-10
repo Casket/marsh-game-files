@@ -61,14 +61,17 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
-	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 50, 1, 7, 7, 480/7-2, 65);
-	ward_img->set_state_frame_counts(0, 7, 0);
+	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward2.tga", W, 7, 1, 13, 13, 66, 65);
+	ward_img->set_state_frame_counts(0, 13, 0);
 	ward_img->is_translucent = true;
 	
+	
 	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
-	this->attack_loadout[5]->set_boundary_value(50, 50, 0, 0);
+	this->attack_loadout[5]->set_boundary_value(50, 60, 0, 10);
+	this->attack_loadout[5]->set_position_adjustment(0,0);
 	this->attack_loadout[5]->set_my_caster(this);
-/*
+	
+	/*	
 	this->attack_loadout[0]->set_my_caster(this);
 	
 	fireball_spr->set_state_frame_counts(0, 5, 3);
@@ -94,12 +97,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
 	this->attack_loadout[6]->set_my_caster(this);
 	this->attack_loadout[6]->set_position_adjustment(0, 20);
-	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
-	this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
-	this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
-	this->attack_loadout[7]->set_my_caster(this);
+	//Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	//this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
+	//this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
+	//this->attack_loadout[7]->set_my_caster(this);
 
-	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fireball_spr, stats, 100);
+	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fire, stats, 100);
 	this->attack_loadout[8]->set_my_caster(this);
 
 

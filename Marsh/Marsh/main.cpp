@@ -281,7 +281,7 @@ void start_game(void) {
 		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
 		clear_keybuf();
 	}
-	destroy_bitmap(overlay);
+	//destroy_bitmap(overlay);
 
 	//delete hero;
 	delete our_viewer;
