@@ -170,6 +170,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 	this->tile_map[pos_x][pos_y]->row = pos_x;
 	this->tile_map[pos_x][pos_y]->col = pos_y;
 	this->tile_map[pos_x][pos_y]->can_walk = true;
+	this->tile_map[pos_x][pos_y]->flyable = false;
 
 	if(a == '0'){
 		sprite_x = find_x(b);
@@ -188,10 +189,11 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 			this->tile_map[pos_x][pos_y]->can_walk = false;
 		}
 		if(sprite_x == 5 || sprite_x == 9){
-
 			this->tile_map[pos_x][pos_y]->can_walk = false;
 		}
-
+		if(sprite_x == 5){
+			this->tile_map[pos_x][pos_y]->flyable = true;
+		}
 
 
 	}else if(a == '1'){
@@ -205,6 +207,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 		this->tile_map[pos_x][pos_y]->can_walk = false;
+		this->tile_map[pos_x][pos_y]->flyable = true;
 
 	}else if(a == '2'){
 		sprite_x = find_x(b);
@@ -216,6 +219,9 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
+
+		this->tile_map[pos_x][pos_y]->flyable = true;
+		this->tile_map[pos_x][pos_y]->can_walk = false;
 
 	}else if(a == '3'){
 		sprite_x = find_x(b);
@@ -346,6 +352,17 @@ bool World::equals(World* w){
 
 
 bool sort_visibles(iDrawable* d1, iDrawable* d2){
+	if (d1->my_type == Wallop){
+		Attack* check = d1->fetch_me_as_attack();
+		if (check->get_above_target() == d2)
+			return false;
+	}
+	if (d2->my_type == Wallop){
+		Attack* check = d2->fetch_me_as_attack();
+		if (check->get_above_target() == d1)
+			return true;
+	}
+
 	if (d1->get_reference_y() == d2->get_reference_y()){
 		return (d1->get_reference_x() < d2->get_reference_x());
 	}
@@ -787,6 +804,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		throw std::exception("Invalid drawable");
 	}
 
+	new_d->set_my_type(Stationary);
 	insert_entity(new_d);
 
 }
@@ -1111,6 +1129,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 
 	return std::make_pair(quest, constant_index);
 }
+
 void World::make_dialouge_op(std::string items, int constant_index, OptionPresenter* op){
 	std::pair<std::string,int> values;
 

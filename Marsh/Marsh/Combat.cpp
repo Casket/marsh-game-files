@@ -1,5 +1,7 @@
 #include "Main.h"
 
+#include "ProtectionAttack.h"
+
 using namespace std;
 
 Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
@@ -12,14 +14,17 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
 
+	for (int i=0; i < MAX_ATTACKS; i++)
+		this->attack_loadout[i] = NULL;
+
 
 	AttackDB* attacks = new AttackDB();
-	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_BALL);
+	this->attack_loadout[0] = attacks->fetch_attack(GUARD_MELEE);
 	this->attack_loadout[0] = this->attack_loadout[0]->clone(0, 0, W);
 	this->attack_loadout[0]->set_my_caster(this);
 
-	Attack_Sprite* death = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_end.bmp", N, 5, 1, 3, 3, 80, 60);
-	death->set_state_frame_counts(0, 1, 2);
+	Attack_Sprite* death = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2.bmp", N, 10, 1, 3, 3, 76, 59);
+	death->set_state_frame_counts(0, 2, 2);
 	AttackStatistics stats;
 	stats.base_damage = 0;
 	stats.charge_time = 100;
@@ -35,8 +40,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 
 	this->attack_loadout[1] = death_beam;
 	
-	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_charge.bmp", N, 5, 1, 1, 1, 50, 19);
-	shooter_img->set_state_frame_counts(0, 1, 0);
+	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2_charge.bmp", N, 5, 1, 1, 1, 120, 55);
+	shooter_img->set_state_frame_counts(0, 2, 0);
 
 	stats.base_damage = 0;
 	stats.charge_time = 100;
@@ -44,8 +49,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	stats.penetration = 15;
 	stats.range = 250;
 	stats.tree_depth = 2;
-	MultiSpawnAttack* beamer = new MultiSpawnAttack(800, 800, 2, 10, shooter_img, stats, death_beam, 30);
-	beamer->set_position_adjustment(20, 0);
+	MultiSpawnAttack* beamer = new MultiSpawnAttack(800, 800, 2, 10, shooter_img, stats, death_beam, 20);
+	beamer->set_position_adjustment(50, 0);
 	beamer->set_boundary_value(50, 19, 0, 0);
 	beamer->set_my_caster(this);
 	this->attack_loadout[2] = beamer;
@@ -56,20 +61,31 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
-/*
+	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 7, 1, 13, 13, 66, 65);
+	ward_img->set_state_frame_counts(0, 13, 0);
+	ward_img->is_translucent = true;
+	
+	
+	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
+	this->attack_loadout[5]->set_boundary_value(50, 60, 0, 10);
+	this->attack_loadout[5]->set_position_adjustment(0,0);
+	this->attack_loadout[5]->set_my_caster(this);
+	
+	/*	
 	this->attack_loadout[0]->set_my_caster(this);
-	Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	
 	fireball_spr->set_state_frame_counts(0, 5, 3);
 	this->attack_loadout[1] = new Attack(800, 800, 2, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
 
 	this->attack_loadout[1]->my_type = Wallop;
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
-	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 5, 17, 895/17, 48);
+	*/
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
 
 	fire->is_translucent = true;
-	fire->set_state_frame_counts(0, 1, 16);
-	AttackStatistics stats;
+	fire->set_state_frame_counts(0, 1, 10);
+	
 	stats.base_damage = 0;
 	stats.charge_time = 100;
 	stats.exp_date = 1000;
@@ -77,13 +93,18 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	stats.range = 250;
 	stats.tree_depth = 2;
 	fire->is_translucent = true;
-	this->attack_loadout[2] = new StunningAttack(800, 800, 1, 10, fire, stats);
-	this->attack_loadout[2]->set_boundary_value(26, 26, 2, 2);
-	this->attack_loadout[2]->set_my_caster(this);
-	this->attack_loadout[3] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
-	this->attack_loadout[3]->set_boundary_value(26, 26, 2, 2);
-	this->attack_loadout[3]->set_my_caster(this);
-*/
+	this->attack_loadout[6] = new StunningAttack(800, 800, 1, 10, fire, stats);
+	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
+	this->attack_loadout[6]->set_my_caster(this);
+	this->attack_loadout[6]->set_position_adjustment(0, 20);
+	//Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	//this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
+	//this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
+	//this->attack_loadout[7]->set_my_caster(this);
+
+	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fire, stats, 100);
+	this->attack_loadout[8]->set_my_caster(this);
+
 
 	this->health = calculate_health(this->vitality);
 	this->casted_spell = NULL;
@@ -96,6 +117,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->casting_timer = 0;
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
+
+	
 
 }
 

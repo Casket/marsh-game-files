@@ -15,6 +15,7 @@ typedef struct Tile{
 	int col;
 	Ground_Sprite* background_image;
 	bool can_walk;
+	bool flyable;
 }Tile;
 
 enum WorldName{main_world,main_world11,main_world12,main_world13,main_world14,main_world15,main_world16,main_world17,main_world18,main_world19,test_map};

@@ -53,6 +53,7 @@ void AttackDB::populate_penetration_spells(void){
 	Attack* shadow_needle = new Attack(0, 0, base_spell_speed, base_spell_v_delay, needle, stats_for_spell);
 	shadow_needle->set_boundary_value(34, 17, 2, 4);
 	shadow_needle->set_mana_cost(base_mana);
+	shadow_needle->spell_id = SHADOW_NEEDLE;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_NEEDLE, shadow_needle));
 	
 	//Shadow Needle Plus
@@ -65,6 +66,7 @@ void AttackDB::populate_penetration_spells(void){
 	Attack* shadow_needle_plus = new Attack(0, 0, base_spell_speed, base_spell_v_delay, needle, stats_for_spell);
 	shadow_needle_plus->set_boundary_value(34, 17, 2, 4);
 	shadow_needle_plus->set_mana_cost(base_mana+5);
+	shadow_needle_plus->spell_id = SHADOW_NEEDLE_PLUS;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_NEEDLE_PLUS, shadow_needle_plus));
 
 	//Shadow spikes
@@ -79,6 +81,7 @@ void AttackDB::populate_penetration_spells(void){
 	Attack* shadow_spikes = new Attack(0, 0, base_spell_speed, base_spell_v_delay, spikes, stats_for_spell);
 	shadow_spikes->set_boundary_value(20, 23, 0, 0);
 	shadow_spikes->set_mana_cost(base_mana + 10);
+	shadow_spikes->spell_id = SHADOW_SPIKES;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_SPIKES, shadow_spikes));
 
 
@@ -109,6 +112,7 @@ void AttackDB::populate_damage_spells(void){
 	Attack* shadow_ball = new Attack(0, 0, base_spell_speed, base_spell_v_delay, ball, stats_for_spell);
 	shadow_ball->set_boundary_value(34, 18, 5, 8);
 	shadow_ball->set_mana_cost(base_mana);
+	shadow_ball->spell_id = SHADOW_BALL;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_BALL, shadow_ball));
 
 	//Shadow Ball Plus
@@ -122,6 +126,7 @@ void AttackDB::populate_damage_spells(void){
 	Attack* shadow_ball_plus = new Attack(0, 0, base_spell_speed, base_spell_v_delay, ball, stats_for_spell);
 	shadow_ball_plus->set_boundary_value(34, 18, 5, 8);
 	shadow_ball_plus->set_mana_cost(base_mana+5);
+	shadow_ball_plus->spell_id = SHADOW_BALL_PLUS;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_BALL_PLUS, shadow_ball_plus));
 		
 	//Shadow Wave
@@ -136,6 +141,7 @@ void AttackDB::populate_damage_spells(void){
 	Attack* energy_wave = new PersistentAttack(0, 0, base_spell_speed, base_spell_v_delay, wave, stats_for_spell);
 	energy_wave->set_mana_cost(base_mana+10);
 	energy_wave->set_boundary_value(900/15, 35, 0, 12);
+	energy_wave->spell_id = SHADOW_WAVE;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_WAVE, energy_wave));
 	
 }

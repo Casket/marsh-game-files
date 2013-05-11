@@ -2,9 +2,6 @@
 
 using namespace std;
 
-
-
-
 MultiSpawnAttack::MultiSpawnAttack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats, Attack* to_duplicate, int delay)
 :Attack(x, y, vel, vel_d, img, stats)
 {
@@ -20,7 +17,7 @@ MultiSpawnAttack::~MultiSpawnAttack(void){
 void MultiSpawnAttack::update(void){
 	this->image->update();
 	this->my_caster->entangled = true;
-	if (++this->death_timer >= this->expiration_date){
+	if (++this->death_timer >= this->expiration_date || keyrel(CANCEL_CAST_KEY)){
 		// time to die
 		this->my_caster->entangled = false;
 		this->get_world()->remove_entity(this);
@@ -44,13 +41,14 @@ void MultiSpawnAttack::update(void){
 		spawned->set_world(this->get_world());
 		this->get_world()->insert_entity(spawned);
 	}
-	
 }
+
 void MultiSpawnAttack::start_death_sequence(void){
 	// Something wants this thing to die... not going to happen
 	// bhahahahahahahah
 }
-void MultiSpawnAttack::deal_with_attack(Attack*){
+
+void MultiSpawnAttack::deal_with_attack(Attack* attack){
 	// an attack hit this thing... Ummm... ignore it?
 }
 

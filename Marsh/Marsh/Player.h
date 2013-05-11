@@ -27,6 +27,7 @@
 #define CAST_EIGHT KEY_8
 #define CAST_NINE KEY_9
 #define CAST_TEN KEY_0
+#define CANCEL_CAST_KEY KEY_C
 #define OPEN_MENU KEY_ESC	// TODO define that
 
 #define MOVEMENT_DELTA 2

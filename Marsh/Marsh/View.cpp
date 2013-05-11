@@ -131,7 +131,7 @@ void Marsh::View::insert_testing_entities(void){
 		companion->item_id = 197;
 		farmer_bob->append_inventory(companion, 1000000);
 
-		Mob* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g = new Marsh_Monster(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
 		g->set_stats(1000, 1000, 10000, 10000, 10000);
@@ -313,6 +313,8 @@ void Marsh::View::draw_active_world(void){
 	int tile_high = this->current_world->get_tiles_high();
 	Tile*** tiles = this->current_world->get_tile_map();
 
+	clear_bitmap(this->world_buffer);
+
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
 	draw_interface(this->playa);
@@ -416,6 +418,7 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 		BITMAP* frame = (*iter)->get_image()->get_current_frame();
 		int x = (*iter)->get_x_pos();
 		int y = (*iter)->get_y_pos();
+
 		int width = frame->w;
 		int height = frame->h;
 

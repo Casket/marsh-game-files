@@ -405,6 +405,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Marsh_Monster.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Mob.cpp"
 				>
 			</File>
@@ -433,6 +437,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ProtectionAttack.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Quest.cpp"
 				>
 			</File>
@@ -458,6 +466,10 @@
 			</File>
 			<File
 				RelativePath=".\StunningAttack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TeleportAttack.cpp"
 				>
 			</File>
 			<File
@@ -536,11 +548,16 @@
 				>
 				<File
 					RelativePath=".\LevelUp.resx"
+					SubType="Designer"
 					>
 				</File>
 			</File>
 			<File
 				RelativePath=".\Main.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Marsh_Monster.h"
 				>
 			</File>
 			<File
@@ -572,6 +589,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ProtectionAttack.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Quest.h"
 				>
 			</File>
@@ -597,6 +618,10 @@
 			</File>
 			<File
 				RelativePath=".\StunningAttack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TeleportAttack.h"
 				>
 			</File>
 			<File

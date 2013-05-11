@@ -19,6 +19,7 @@ public:
 	virtual void start_death_sequence(void);
 	virtual Attack* clone(int, int, Direction);
 	void entrap_my_target(void);
+	virtual iDrawable* get_above_target(void);
 
 
 };
