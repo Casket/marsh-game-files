@@ -1,6 +1,6 @@
 #include "AttackDB.h"
 
-using namespace std;
+//using namespace std;
 
 
 
@@ -13,6 +13,13 @@ AttackDB::AttackDB(void){
 }
 AttackDB::~AttackDB(void){
 	delete this->attacks_by_id;
+}
+
+AttackDB::AttackDB(int x){
+	this->attacks_by_id = new std::map<int, Attack*>();
+	this->populate_damage_spells();
+	this->populate_penetration_spells();
+	this->populate_utility_spells();
 }
 
 Attack* AttackDB::fetch_attack(int attack_id){
@@ -46,6 +53,7 @@ void AttackDB::populate_penetration_spells(void){
 	Attack* shadow_needle = new Attack(0, 0, base_spell_speed, base_spell_v_delay, needle, stats_for_spell);
 	shadow_needle->set_boundary_value(34, 17, 2, 4);
 	shadow_needle->set_mana_cost(base_mana);
+	shadow_needle->spell_id = SHADOW_NEEDLE;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_NEEDLE, shadow_needle));
 	
 	//Shadow Needle Plus
@@ -58,6 +66,7 @@ void AttackDB::populate_penetration_spells(void){
 	Attack* shadow_needle_plus = new Attack(0, 0, base_spell_speed, base_spell_v_delay, needle, stats_for_spell);
 	shadow_needle_plus->set_boundary_value(34, 17, 2, 4);
 	shadow_needle_plus->set_mana_cost(base_mana+5);
+	shadow_needle_plus->spell_id = SHADOW_NEEDLE_PLUS;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_NEEDLE_PLUS, shadow_needle_plus));
 
 	//Shadow spikes
@@ -72,11 +81,125 @@ void AttackDB::populate_penetration_spells(void){
 	Attack* shadow_spikes = new Attack(0, 0, base_spell_speed, base_spell_v_delay, spikes, stats_for_spell);
 	shadow_spikes->set_boundary_value(20, 23, 0, 0);
 	shadow_spikes->set_mana_cost(base_mana + 10);
+	shadow_spikes->spell_id = SHADOW_SPIKES;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_SPIKES, shadow_spikes));
 
+	//Death Beam
+	Attack_Sprite* death = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2.bmp", N, 10, 1, 3, 3, 76, 59);
+	death->set_state_frame_counts(0, 2, 2);
+	AttackStatistics stats;
+	stats.base_damage = 0;
+	stats.charge_time = 100;
+	stats.exp_date = 30;
+	stats.penetration = 15;
+	stats.range = MID_RANGE;
+	stats.tree_depth = 1;
+	Attack* death_beam = new Attack(800, 800, 2, 10, death, stats);
+	death_beam->set_boundary_value(75, 20, 5, 20);
+	death_beam->set_position_adjustment(40, 20);
+	stats_for_spell.base_damage = 0;
+	stats_for_spell.charge_time = 100;
+	stats_for_spell.exp_date = 1000;
+	stats_for_spell.penetration = 15;
+	stats_for_spell.range = 250;
+	stats_for_spell.tree_depth = 2;
+	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2_charge.bmp", N, 5, 1, 1, 1, 120, 55);
+	shooter_img->set_state_frame_counts(0, 2, 0);
+	MultiSpawnAttack* beamer = new MultiSpawnAttack(800, 800, 2, 10, shooter_img, stats_for_spell, death_beam, 20);
+	beamer->set_position_adjustment(50, 0);
+	beamer->set_boundary_value(50, 19, 0, 0);
+	beamer->spell_id = DEATH_BEAM;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(DEATH_BEAM, beamer));
 
 }
 void AttackDB::populate_utility_spells(void){
+	AttackStatistics stats_for_spell;
+	Attack_Sprite* sprite;
+
+	//Drain
+	stats_for_spell.base_damage = 2;
+	stats_for_spell.charge_time = 5 + 5;
+	stats_for_spell.exp_date = 15 * 6;
+	stats_for_spell.penetration = 5;
+	stats_for_spell.range = LONG_RANGE;
+	stats_for_spell.tree_depth = 1;
+	Attack_Sprite* drain = new Attack_Sprite("Resources//Attack Sprites//Drain.bmp", N, 5, 1, 14, 14, 100, 26);
+	drain->set_state_frame_counts(3, 5, 6);
+	Attack* shadow_drain = new Attack(0, 0, 2, 5, drain, stats_for_spell);
+	shadow_drain->set_boundary_value(34, 17, 2, 4);
+	shadow_drain->set_mana_cost(5);
+	shadow_drain->spell_id = DRAIN_HEALTH;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(DRAIN_HEALTH, shadow_drain));
+
+
+	//Shadow Dash
+	Attack* dash = new TeleportAttack(0, 0, 0, 0, sprite, stats_for_spell, 100);
+	dash->spell_id = SHADOW_DASH;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_DASH, dash));
+
+	//Teleport
+	Attack* teleport = new TeleportAttack(0, 0, 0, 0, sprite, stats_for_spell, 100);
+	teleport->spell_id = TELEPORT;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(TELEPORT, teleport));
+
+	//Shield
+	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 7, 1, 13, 13, 66, 65);
+	ward_img->set_state_frame_counts(0, 13, 0);
+	ward_img->is_translucent = true;
+	Attack* shield = new ProtectionAttack(800, 800, 2, 10, ward_img, stats_for_spell, ShieldAttack);
+	shield->set_boundary_value(50, 60, 0, 10);
+	shield->set_position_adjustment(0,0);
+	shield->spell_id = SHIELD;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(SHIELD, shield));
+
+	//Deflect
+	Attack_Sprite* ward2_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 7, 1, 13, 13, 66, 65);
+	ward2_img->set_state_frame_counts(0, 13, 0);
+	ward2_img->is_translucent = true;
+	Attack* deflect = new ProtectionAttack(800, 800, 2, 10, ward2_img, stats_for_spell, ShieldAttack);
+	deflect->set_boundary_value(50, 60, 0, 10);
+	deflect->set_position_adjustment(0,0);
+	deflect->spell_id = DEFLECT;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(DEFLECT, deflect));
+
+	//Bind
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Bind.tga", W, 10, 1, 11, 11, 580/11, 48);
+
+	fire->is_translucent = true;
+	fire->set_state_frame_counts(0, 1, 10);
+	
+	stats_for_spell.base_damage = 0;
+	stats_for_spell.charge_time = 100;
+	stats_for_spell.exp_date = 1000;
+	stats_for_spell.penetration = 15;
+	stats_for_spell.range = 250;
+	stats_for_spell.tree_depth = 2;
+	fire->is_translucent = true;
+	Attack* bind = new StunningAttack(800, 800, 1, 10, fire, stats_for_spell);
+	bind->set_boundary_value(35, 25, 10, 15);
+	bind->set_position_adjustment(0, 20);
+	bind->spell_id = BIND_IN_SHADOWS;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(BIND_IN_SHADOWS, bind));
+
+	//Mass Slow
+	fire = new Attack_Sprite("Resources//Attack Sprites//Bind.tga", W, 10, 1, 11, 11, 580/11, 48);
+
+	fire->is_translucent = true;
+	fire->set_state_frame_counts(0, 1, 10);
+	
+	stats_for_spell.base_damage = 0;
+	stats_for_spell.charge_time = 100;
+	stats_for_spell.exp_date = 1000;
+	stats_for_spell.penetration = 15;
+	stats_for_spell.range = 250;
+	stats_for_spell.tree_depth = 2;
+	fire->is_translucent = true;
+	Attack* slow = new StunningAttack(800, 800, 1, 10, fire, stats_for_spell);
+	slow->set_boundary_value(35, 25, 10, 15);
+	slow->set_position_adjustment(0, 20);
+	slow->spell_id = MASS_SLOW;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(MASS_SLOW, slow));
+
 }
 
 void AttackDB::populate_damage_spells(void){
@@ -102,6 +225,7 @@ void AttackDB::populate_damage_spells(void){
 	Attack* shadow_ball = new Attack(0, 0, base_spell_speed, base_spell_v_delay, ball, stats_for_spell);
 	shadow_ball->set_boundary_value(34, 18, 5, 8);
 	shadow_ball->set_mana_cost(base_mana);
+	shadow_ball->spell_id = SHADOW_BALL;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_BALL, shadow_ball));
 
 	//Shadow Ball Plus
@@ -115,6 +239,7 @@ void AttackDB::populate_damage_spells(void){
 	Attack* shadow_ball_plus = new Attack(0, 0, base_spell_speed, base_spell_v_delay, ball, stats_for_spell);
 	shadow_ball_plus->set_boundary_value(34, 18, 5, 8);
 	shadow_ball_plus->set_mana_cost(base_mana+5);
+	shadow_ball_plus->spell_id = SHADOW_BALL_PLUS;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_BALL_PLUS, shadow_ball_plus));
 		
 	//Shadow Wave
@@ -129,8 +254,27 @@ void AttackDB::populate_damage_spells(void){
 	Attack* energy_wave = new PersistentAttack(0, 0, base_spell_speed, base_spell_v_delay, wave, stats_for_spell);
 	energy_wave->set_mana_cost(base_mana+10);
 	energy_wave->set_boundary_value(900/15, 35, 0, 12);
+	energy_wave->spell_id = SHADOW_WAVE;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_WAVE, energy_wave));
 	
+	//Shadow Nova
+	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
+
+	fire->is_translucent = true;
+	fire->set_state_frame_counts(0, 1, 10);
+	
+	stats_for_spell.base_damage = 0;
+	stats_for_spell.charge_time = 100;
+	stats_for_spell.exp_date = 1000;
+	stats_for_spell.penetration = 15;
+	stats_for_spell.range = 250;
+	stats_for_spell.tree_depth = 2;
+	fire->is_translucent = true;
+	Attack* nova = new StunningAttack(800, 800, 1, 10, fire, stats_for_spell);
+	nova->set_boundary_value(35, 25, 10, 15);
+	nova->set_position_adjustment(0, 20);
+	nova->spell_id = SHADOW_NOVA;
+	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_NOVA, nova));
 }
 void AttackDB::populate_melee(){
 

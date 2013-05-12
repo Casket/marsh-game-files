@@ -568,6 +568,7 @@ void Mob::update_cd_timers(void){
 		}
 	}
 }
+
 void Mob::set_attack_plan(void){
 	Direction pris [4];
 
@@ -668,7 +669,7 @@ void Mob::set_attack_plan(void){
 				pris[2] = N;
 				pris[3] = E;
 			}
-		
+
 		}else if(check = SE){
 			if(std::abs(upward_dif) > std::abs(horz_dif)){
 				pris[0] = S;
@@ -684,13 +685,13 @@ void Mob::set_attack_plan(void){
 
 		}
 	}
-	
-	
+
+
 	std::list<iDrawable*>::iterator iter = this->eskimo_bros->begin();
 	std::list<iDrawable*>::iterator end = this->eskimo_bros->end();
 	for(;iter != end; iter++){
-		iDrawable* to_comp = (iter*);
-		
+		iDrawable* to_comp = (*iter);
+
 	}
 
 
@@ -699,8 +700,8 @@ void Mob::set_attack_plan(void){
 }
 Direction Mob::get_target_true_dir(){
 
-	int x_dif = (this->target->get_reference_x - this->get_reference_x());
-	int y_dif = (this->target->get_reference_y- this->get_reference_y());
+	int x_dif = (this->target->get_reference_x() - this->get_reference_x());
+	int y_dif = (this->target->get_reference_y() - this->get_reference_y());
 
 	int my_width = this->get_bounding_width();
 	int my_height = this->get_bounding_height();

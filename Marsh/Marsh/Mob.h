@@ -33,6 +33,7 @@ public:
 	std::pair<std::pair<int, int>, std::pair<int, int>> detour_pair;
 	State current_state, prev_state;
 
+
 	Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* waypoints);
 	~Mob(void);
 	virtual void update(void);
@@ -54,6 +55,7 @@ public:
 	virtual void update_cd_timers(void);
 	virtual void set_attack_plan(void);
 	virtual Direction get_target_true_dir();
+
 };
 
 #endif

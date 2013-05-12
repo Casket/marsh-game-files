@@ -3,7 +3,6 @@
 
 class Attack;
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
@@ -32,6 +31,7 @@ class Attack;
 #include "Player_Sprite.h"
 #include "World.h"
 #include "View.h"
+#include "AttackDB.h"
 #include "Portal.h"
 #include "QuestManager.h"
 #include "IQuestObjective.h"
@@ -48,8 +48,7 @@ class Attack;
 #include "AttackCharge.h"
 #include "AttackDB.h"
 #include "TeleportAttack.h"
-
-
+#include "ProtectionAttack.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
@@ -60,16 +59,27 @@ class Attack;
 using namespace std;
 using namespace Marsh;
 
-
 bool keyrel(int k);
 Equipment* get_new_equipment(void);
 Equipment* get_item_clone(Equipment* old_item);
 
+/*class Attack_Accessor{
+public:
+	static AttackDB* attacks;
+
+	static void create_attacks(void){
+		Attack_Accessor::attacks = new AttackDB();
+	}
+
+	static AttackDB* get_attacks(void){
+		return Attack_Accessor::attacks;
+	}
+};*/
 
 class Player_Accessor{
 public:
 	static Player* hero;
-	
+
 	static void create_player(int x, int y, Sprite* img, int w, int h, int x_in, int y_in){
 		Player_Accessor::hero = new Player(x, y, 0, 0, img);
 		Player_Accessor::hero->set_boundary_value(w, h, x_in, y_in);

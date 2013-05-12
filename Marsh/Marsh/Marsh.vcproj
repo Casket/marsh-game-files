@@ -369,11 +369,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dragon.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Drawable.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Ground_Sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GuardCaptain.cpp"
 				>
 			</File>
 			<File
@@ -449,6 +457,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Reject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\RetrieveObjective.cpp"
 				>
 			</File>
@@ -470,6 +482,10 @@
 			</File>
 			<File
 				RelativePath=".\Town_Guard.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Vampire.cpp"
 				>
 			</File>
 			<File
@@ -511,11 +527,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dragon.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Drawable.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Ground_Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GuardCaptain.h"
 				>
 			</File>
 			<File
@@ -591,6 +615,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Reject.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RetrieveObjective.h"
 				>
 			</File>
@@ -612,6 +640,10 @@
 			</File>
 			<File
 				RelativePath=".\Town_Guard.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Vampire.h"
 				>
 			</File>
 			<File

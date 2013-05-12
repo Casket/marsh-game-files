@@ -6,7 +6,7 @@ using namespace std;
 Reject::Reject(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* ways)
 :Mob(x,y,vel,vel_d,img,ways){
 
-	this->my_type = Monster;
+	this->my_type = Outcast;
 
 }
 Reject::~Reject(void){

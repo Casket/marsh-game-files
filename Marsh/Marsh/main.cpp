@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <winalleg.h>
-//#include "LevelUp.h"
+#include "LevelUp.h"
 
 
 using namespace std;
@@ -26,10 +26,12 @@ using namespace std;
 Player* Player_Accessor::hero;
 Marsh::View* v;
 WorldName world_name;
+BITMAP *loading_screen_bitmap;
 
 volatile int ticks, framerate;
 volatile bool rested;
 
+void draw_loading(void);
 void load_inventory(string stream);
 void load_spells(string stream);
 void timer_framerate_counter(void);
@@ -197,7 +199,6 @@ void show_intro(void) {
 		// drawing
 		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
-
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Marsh");
 		if (menu_sel == 0) { // new game
 			textprintf_ex(buffer, font1, 50,  130, makecol(0,255,255), -1, "New Game");
@@ -240,17 +241,12 @@ exit_loop: ;
 }
 
 void start_game(void) {
-
+	draw_loading();
 	game_state = IN_GAME;
-
 	Player*	hero = Player_Accessor::get_player();
-
 	Marsh::View *our_viewer= create_view(hero);
-
 	hero->set_my_type(Hero);
 
-	//BITMAP* overlay = load_tga("Resources//Misc//overlay.tga", NULL);
-	
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
@@ -272,6 +268,7 @@ void start_game(void) {
 
 		our_viewer->update();
 		//hero->update();
+		destroy_bitmap(loading_screen_bitmap);
 		our_viewer->draw_active_world();
 		//draw_trans_sprite(screen, overlay, 0, 0);
 
@@ -287,6 +284,14 @@ void start_game(void) {
 
 	//delete hero;
 	delete our_viewer;
+}
+
+void draw_loading(void) {
+	loading_screen_bitmap = load_bitmap("Resources//LoadScreen.bmp",NULL);
+	if (!loading_screen_bitmap)
+		exit(1);
+	blit(loading_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
+	blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
 }
 
 void load_inventory(string stream) {
@@ -591,16 +596,14 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
-	//inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 
-//	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
-//			menu->BringToFront();
-			//menu->Show();
-//			menu->StartPosition = FormStartPosition::CenterScreen;
-//			menu->ShowDialog();
-			//Application::Run(menu);
-//			delete menu;
+	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
+			
+			menu->StartPosition = FormStartPosition::CenterScreen;
+			menu->ShowDialog();
+			delete menu;
 /*
+	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	bool is_done = false;
 	volatile bool* done_ref = &is_done;
 #pragma omp parallel num_threads(2) shared(done_ref)
