@@ -381,7 +381,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GuardCaptain.cpp"
+				RelativePath=".\HealthDrainAttack.cpp"
 				>
 			</File>
 			<File
@@ -473,7 +473,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SprintSpell.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StationaryAttack.cpp"
 				>
 			</File>
 			<File
@@ -482,6 +490,10 @@
 			</File>
 			<File
 				RelativePath=".\TeleportAttack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TemporalModifier.cpp"
 				>
 			</File>
 			<File
@@ -635,7 +647,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SprintSpell.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StationaryAttack.h"
 				>
 			</File>
 			<File
@@ -644,6 +664,10 @@
 			</File>
 			<File
 				RelativePath=".\TeleportAttack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TemporalModifier.h"
 				>
 			</File>
 			<File

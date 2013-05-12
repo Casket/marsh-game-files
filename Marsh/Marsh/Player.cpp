@@ -3,6 +3,7 @@
 using namespace std;
 
 bool keyrel(int k);
+int move_closer(int, int);
 void print_to_console(std::string, BITMAP*);
 std::pair<int, std::string> substr_word_boundaries(std::string str, int pos, int max_len);
 
@@ -21,6 +22,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->mana = this->max_mana;
 	this->gold = 100;
 	this->statPoints = 0;
+	this->velocity = MOVEMENT_DELTA;
 }
 
 Player::~Player(void){
@@ -28,7 +30,7 @@ Player::~Player(void){
 }
 
 void Player::upon_death(void){
-		
+
 }
 
 void Player::increment_notoriety(int increase){
@@ -321,16 +323,16 @@ void Player::check_casting(void) {
 		Attack* attack = this->attack_loadout[desired_attack];
 		if(attack->my_caster == NULL){
 			return;}
-	this->mana -= attack->get_mana_cost();
-	if (this->mana <= 0){
-		this->display_to_user("I need more mana.");
-		this->mana = 0;
+		this->mana -= attack->get_mana_cost();
+		if (this->mana <= 0){
+			this->display_to_user("I need more mana.");
+			this->mana = 0;
 
-	}
-	this->launch_attack(desired_attack);
+		}
+		this->launch_attack(desired_attack);
 	}catch(...){
 		this->casting = false;
-	return;
+		return;
 	}
 }
 
@@ -442,7 +444,7 @@ void Player::accept_movement(void) {
 			walking = true;
 			new_dir = W;
 			if (this->can_walk_left)
-				new_x -= MOVEMENT_DELTA;
+				new_x -= this->velocity;
 		}
 	}
 
@@ -452,7 +454,7 @@ void Player::accept_movement(void) {
 			walking = true;
 			new_dir = E;
 			if (this->can_walk_right)
-				new_x += MOVEMENT_DELTA;
+				new_x += this->velocity;
 		}
 	}
 
@@ -462,7 +464,7 @@ void Player::accept_movement(void) {
 			walking = true;
 			new_dir = S;
 			if (this->can_walk_down)
-				new_y += MOVEMENT_DELTA;
+				new_y += this->velocity;
 		}
 	}
 
@@ -472,7 +474,7 @@ void Player::accept_movement(void) {
 			walking = true;
 			new_dir = N;
 			if (this->can_walk_up)
-				new_y -= MOVEMENT_DELTA;
+				new_y -= this->velocity;
 		}
 	}
 
@@ -480,13 +482,31 @@ void Player::accept_movement(void) {
 		this->image->set_facing(new_dir);
 	}
 
-	//if (this->can_walk){
+	while (!check_new_pos(new_x, new_y)){
+		new_x = move_closer(new_x, cur_x);
+		new_y = move_closer(new_y, cur_y);
+		if (new_x == -1 || new_y == -1){
+			new_x = cur_x;
+			new_y = cur_y;
+			break;
+		}
+	}
 	this->x_pos = new_x;
 	this->y_pos = new_y;
-	if (walking)
-		this->image->update();
-	//}
+		if (walking)
+			this->image->update();
+	
+}
 
+int move_closer(int pos, int old_pos){
+	if (pos == old_pos)
+		return -1;
+	if (pos > old_pos){
+		return pos--;
+	}
+	if (pos < old_pos){
+		return pos++;
+	}
 }
 
 void Player::set_consoles(BITMAP* clear, BITMAP* in_use){

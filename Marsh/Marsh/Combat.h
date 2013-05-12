@@ -7,7 +7,7 @@
 #define BASE_FOCUS 1
 #define BASE_WILL 1
 #define BASE_ARMOR 1
-#define SKEW_FACTOR 2;
+#define SKEW_FACTOR 1;
 
 #include "Main.h"
 using namespace std;
@@ -50,6 +50,7 @@ public:
 	void face_speaker(void);
 	virtual Combat* fetch_me_as_combat(void);
 	virtual void upon_death(void);
+	virtual bool check_new_pos(int x, int y);
 
 
 protected:

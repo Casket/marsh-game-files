@@ -20,12 +20,14 @@ void Portal::update(void){
 	this->can_walk_right = true;
 	this->can_walk_up = true;
 
+	Player* hero = Player_Accessor::get_player();
+
 	int my_x = this->get_reference_x();
 	int my_y = this->get_reference_y();
-	int my_w = this->get_bounding_width();
-	int my_h = this->get_bounding_height();
+	int my_w = this->get_bounding_width()+hero->velocity;
+	int my_h = this->get_bounding_height()+hero->velocity;
 
-	Player* hero = Player_Accessor::get_player();
+	
 
 	iDrawable::check_walkable(my_x, my_y, my_h, my_w, 
 		hero->get_reference_x(), hero->get_reference_y(), 

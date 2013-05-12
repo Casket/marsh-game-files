@@ -26,12 +26,12 @@ using namespace std;
 Player* Player_Accessor::hero;
 Marsh::View* v;
 WorldName world_name;
-BITMAP *loading_screen_bitmap;
 
 volatile int ticks, framerate;
 volatile bool rested;
+volatile int world_time_counter = 0;
+volatile int world_time_delay = 1;
 
-void draw_loading(void);
 void load_inventory(string stream);
 void load_spells(string stream);
 void timer_framerate_counter(void);
@@ -87,8 +87,8 @@ int main(void)
 END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
-	v = new Marsh::View(hero);
-	v->load_world(test_map);
+	Marsh::View* v = new Marsh::View(hero);
+	v->load_world(main_world16);
 	return v;
 }
 
@@ -241,7 +241,6 @@ exit_loop: ;
 }
 
 void start_game(void) {
-	draw_loading();
 	game_state = IN_GAME;
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
@@ -252,46 +251,31 @@ void start_game(void) {
 			show_intro();
 		} 
 		if (keyrel(KEY_I)) {
-			show_inv();
-			
+			show_inv();			
 		}
 		if (keyrel(KEY_L)) {
 			show_level_up();
 		}
-
 		if (!rested) {
 			rest(4);
 			continue;
 		}
 		rested = false;
 		ticks++;
-
+		if (++world_time_counter >= world_time_delay){
+			world_time_counter = 0;
+			our_viewer->update();
+		}
 		our_viewer->update();
-		//hero->update();
-		destroy_bitmap(loading_screen_bitmap);
-		our_viewer->draw_active_world();
-		//draw_trans_sprite(screen, overlay, 0, 0);
+		hero->update();
 
-		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
-		//	SCREEN_W/2, SCREEN_H/2, 32,30);
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
-		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
-		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
 		clear_keybuf();
 	}
-	//destroy_bitmap(overlay);
 
 	//delete hero;
 	delete our_viewer;
-}
-
-void draw_loading(void) {
-	loading_screen_bitmap = load_bitmap("Resources//LoadScreen.bmp",NULL);
-	if (!loading_screen_bitmap)
-		exit(1);
-	blit(loading_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
-	blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
 }
 
 void load_inventory(string stream) {

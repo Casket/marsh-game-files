@@ -40,7 +40,14 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	death_beam->spell_id = DEATH_BEAM;
 
 	this->attack_loadout[1] = death_beam;
-	
+
+	Attack_Sprite* drain = new Attack_Sprite("Resources//Attack Sprites//Drain.bmp", W, 5, 1, 5, 5, 120/5, 19);
+	drain->set_state_frame_counts(0, 5, 0);
+	this->attack_loadout[1] = new HealthDrainAttack(0, 0, 2, 10, drain, stats);
+	this->attack_loadout[1]->set_my_caster(this);
+	this->attack_loadout[1]->set_boundary_value(120/5, 19, 0, 0);
+
+
 	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//Death_Beam_2_charge.bmp", N, 5, 1, 1, 1, 120, 55);
 	shooter_img->set_state_frame_counts(0, 2, 0);
 
@@ -63,8 +70,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
-	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 7, 1, 13, 13, 66, 65);
-	ward_img->set_state_frame_counts(0, 13, 0);
+	this->attack_loadout[3] = new TemporalModifier(death, stats, 10);
+	this->attack_loadout[3]->set_my_caster(this);
+	this->attack_loadout[3]->set_boundary_value(0, 0, 0, 0);
+
+	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 50, 1, 7, 7, 480/7-2, 65);
+	ward_img->set_state_frame_counts(0, 7, 0);
 	ward_img->is_translucent = true;
 	
 	
@@ -101,6 +112,17 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
 	this->attack_loadout[6]->set_my_caster(this);
 	this->attack_loadout[6]->set_position_adjustment(0, 20);
+	
+	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 20, 1, 7, 7, 147/7, 45);
+	spikes->set_state_frame_counts(0, 7, 0);
+	stats.range = 20;
+	stats.exp_date = 7*20;
+	this->attack_loadout[7] = new StationaryAttack(0, 0, spikes, stats);
+	this->attack_loadout[7]->set_my_caster(this);
+	this->attack_loadout[7]->set_boundary_value(20, 22, 0, 23);
+	this->attack_loadout[7]->set_position_adjustment(0, 10);
+
+	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, drain, stats, 100);
 	this->attack_loadout[6]->spell_id = SHADOW_NOVA;
 	//Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
 	//this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
@@ -110,6 +132,9 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fire, stats, 100);
 	this->attack_loadout[8]->set_my_caster(this);
 	this->attack_loadout[8]->spell_id = TELEPORT;
+
+	this->attack_loadout[9] = new SprintSpell(10, 1000, 10);
+	this->attack_loadout[9]->set_my_caster(this);
 
 
 	this->health = calculate_health(this->vitality);
@@ -123,9 +148,6 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->casting_timer = 0;
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
-
-	
-
 }
 
 Combat::~Combat(void) {
@@ -262,9 +284,9 @@ void Combat::check_collisions(void){
 	Direction facing = this->get_image()->get_facing();
 
 	if (facing == W || facing == E)
-		top_bottom_skew = SKEW_FACTOR;
+		top_bottom_skew = this->velocity*SKEW_FACTOR;
 	if (facing == N || facing == S)
-		left_right_skew = SKEW_FACTOR;
+		left_right_skew = this->velocity*SKEW_FACTOR;
 
 	Tile* nearby[4];
 
@@ -288,6 +310,24 @@ void Combat::check_collisions(void){
 			nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE, 
 			left_right_skew, top_bottom_skew);
 	}
+}
+
+bool Combat::check_new_pos(int x, int y){
+	int original_x = this->get_x_pos();
+	int original_y = this->get_y_pos();
+	int original_vel = this->velocity;
+	
+	this->x_pos = x;
+	this->y_pos = y;
+	this->velocity = 0;
+
+	this->check_collisions();
+
+	this->x_pos = original_x;
+	this->y_pos = original_y;
+	this->velocity = original_vel;
+
+	return (this->can_walk_down && this->can_walk_left && this->can_walk_right && this->can_walk_up);
 }
 
 Combat* Combat::fetch_me_as_combat(void){

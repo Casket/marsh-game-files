@@ -41,7 +41,7 @@ void TeleportAttack::update(void){
 	this->get_world()->remove_entity(this);
 }
 
-bool check_walkable_area(int my_x, int my_y, int my_width, int my_height, int check_x, int check_y, int check_width, int check_height){
+bool rectangle_intersection(int my_x, int my_y, int my_width, int my_height, int check_x, int check_y, int check_width, int check_height){
 	if (my_y <= (check_y + check_height) && (my_y) >= check_y){
 		if (check_x <= (my_x + my_width) && check_x >= (my_x)){
 			return true;
@@ -87,7 +87,7 @@ bool drawable_in_drawable(int x, int y, iDrawable* target, iDrawable* check){
 	int my_width = target->get_bounding_width();
 	int my_height = target->get_bounding_height();
 
-	return check_walkable_area(my_x, my_y, my_width, my_height, check_x, check_y, check_width, check_height);
+	return rectangle_intersection(my_x, my_y, my_width, my_height, check_x, check_y, check_width, check_height);
 }
 
 bool check_walkable_tiles(int x, int y, iDrawable* target){
@@ -118,7 +118,7 @@ bool check_walkable_tiles(int x, int y, iDrawable* target){
 
 	for (int i=0; i < 4; i++){
 		if (!nearby[i]->can_walk)
-			if (check_walkable_area(my_x, my_y, my_height, my_width, 
+			if (rectangle_intersection(my_x, my_y, my_height, my_width, 
 				nearby[i]->col*TILE_SIZE, nearby[i]->row*TILE_SIZE, TILE_SIZE, TILE_SIZE))
 				return true;
 	}

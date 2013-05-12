@@ -33,7 +33,7 @@ public:
 
 	World(WorldName this_world);
 	~World();
-	void load_world();
+	void load_world(void);
 	void load_mission(std::string);
 	Tile*** get_tile_map(void);
 	int get_tiles_wide(void);

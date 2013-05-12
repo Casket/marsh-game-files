@@ -32,7 +32,8 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics s
 	this->mana_cost = 0;
 	this->distance_traveled = 0;
 	this->death_timer = 0;
-	
+	this->x_adjustment = 0;
+	this->y_adjustment = 0;
 }
 
 Attack::~Attack(void)
@@ -65,15 +66,21 @@ void Attack::update(void){
 		return;
 	}
 
-	this->distance_traveled += this->velocity;
+	
 	if (this->distance_traveled >= this->range){
 		//this->start_death_sequence();
 		this->get_world()->remove_entity(this);
 	}
 
 	if (!this->detect_collisions()){
-		if (++this->movement_counter >= this->velocity_delay){
-			switch(this->get_image()->get_facing()){
+		this->update_position();
+	}
+}
+
+void Attack::update_position(void){
+	if (++this->movement_counter >= this->velocity_delay){
+		this->distance_traveled += this->velocity;
+		switch(this->get_image()->get_facing()){
 				case N:
 					this->set_y_pos(this->get_y_pos() - this->velocity);
 					break;
@@ -102,7 +109,6 @@ void Attack::update(void){
 					this->set_x_pos(this->get_x_pos() - (int) (this->velocity * ANGLE_SHIFT));
 					this->set_y_pos(this->get_y_pos() - (int) (this->velocity * ANGLE_SHIFT));
 					break;
-			}
 		}
 	}
 }
@@ -140,12 +146,15 @@ bool Attack::detect_collisions(void){
 
 		if (detect_hit(my_x, my_y, my_height, my_width, 
 			check_x, check_y, check_width, check_height)){
-				(*iter)->deal_with_attack(this);
-				//start_death_sequence();
+				this->attack_target((*iter));
 				return true;
 		}
 	}
 	return false;
+}
+
+void Attack::attack_target(iDrawable* target){
+	target->deal_with_attack(this);
 }
 
 bool Attack::detect_hit(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height){
@@ -233,7 +242,7 @@ Attack* Attack::clone(int x, int y, Direction dir){
 	penetrate = this->penetration;
 	charge = this->charge_time;
 	Sprite* image = this->get_image()->clone(dir);
-	
+
 	Attack* result = new Attack(x, y, this->velocity, this->velocity_delay, image, damage, penetrate, this->range, this->tree_depth_level, this->expiration_date, charge);
 
 	switch(dir){
@@ -243,7 +252,7 @@ Attack* Attack::clone(int x, int y, Direction dir){
 		break;
 	case S:
 		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
-		
+
 		break;
 	case W:
 		result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
