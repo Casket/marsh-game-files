@@ -37,6 +37,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	death_beam->set_boundary_value(75, 20, 5, 20);
 	death_beam->set_my_caster(this);
 	death_beam->set_position_adjustment(40, 20);
+	death_beam->spell_id = DEATH_BEAM;
 
 	this->attack_loadout[1] = death_beam;
 
@@ -60,6 +61,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	beamer->set_position_adjustment(50, 0);
 	beamer->set_boundary_value(50, 19, 0, 0);
 	beamer->set_my_caster(this);
+	beamer->spell_id = DEATH_BEAM;
 	this->attack_loadout[2] = beamer;
 
 	this->attack_loadout[3] = attacks->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
@@ -76,12 +78,16 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	ward_img->set_state_frame_counts(0, 7, 0);
 	ward_img->is_translucent = true;
 	
-	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
-	this->attack_loadout[5]->set_boundary_value(50, 50, 0, 0);
-	this->attack_loadout[5]->set_my_caster(this);
-/*
-	this->attack_loadout[0]->set_my_caster(this);
 	
+	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
+	this->attack_loadout[5]->set_boundary_value(50, 60, 0, 10);
+	this->attack_loadout[5]->set_position_adjustment(0,0);
+	this->attack_loadout[5]->set_my_caster(this);
+	this->attack_loadout[5]->spell_id = SHIELD;
+	
+	
+	this->attack_loadout[0]->set_my_caster(this);
+	/*
 	fireball_spr->set_state_frame_counts(0, 5, 3);
 	this->attack_loadout[1] = new Attack(800, 800, 2, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
 
@@ -89,6 +95,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	*/
+	
 	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
 
 	fire->is_translucent = true;
@@ -116,7 +123,15 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[7]->set_position_adjustment(0, 10);
 
 	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, drain, stats, 100);
+	this->attack_loadout[6]->spell_id = SHADOW_NOVA;
+	//Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
+	//this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
+	//this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
+	//this->attack_loadout[7]->set_my_caster(this);
+
+	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fire, stats, 100);
 	this->attack_loadout[8]->set_my_caster(this);
+	this->attack_loadout[8]->spell_id = TELEPORT;
 
 	this->attack_loadout[9] = new SprintSpell(10, 1000, 10);
 	this->attack_loadout[9]->set_my_caster(this);

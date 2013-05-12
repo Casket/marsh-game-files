@@ -2,7 +2,7 @@
 
 #include "Main.h"
 
-using namespace std;
+//using namespace std;
 
 #define LONG_RANGE VISIBLE_W / 2
 #define MID_RANGE VISIBLE_W / 4
@@ -25,8 +25,8 @@ using namespace std;
 #define SHADOW_DASH 11
 #define TELEPORT 12
 #define SHADOW_STEPS 13
-#define SHIELD 14
-#define DEFLECT 15
+#define SHIELD 13//14
+#define DEFLECT 14//15
 
 #define MONSTER_MELEE 16
 #define GUARD_MELEE 17
@@ -36,6 +36,7 @@ class AttackDB {
 
 public:
 	AttackDB(void);
+	AttackDB(int);
 	~AttackDB(void);
 	Attack* fetch_attack(int attack_id);
 

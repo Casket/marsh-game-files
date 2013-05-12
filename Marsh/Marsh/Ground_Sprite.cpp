@@ -31,7 +31,7 @@ Ground_Sprite::Ground_Sprite(std::string file_name, int tile_x, int tile_y)
 
 Ground_Sprite::~Ground_Sprite(void) {
 	destroy_bitmap(this->image);
-	delete [] this->frames;
+	delete this->frames;
 }
 
 void Ground_Sprite::load_sprite_sheet(std::string name) {

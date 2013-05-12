@@ -19,11 +19,11 @@ typedef struct AttackStatistics{
 	int charge_time;
 } AttackStatistics;
 
-enum AttackType {Melee, Fire, Indirect, Energy, Defensive};
+//enum AttackType {Melee, Fire, Indirect, Energy, Defensive};
 
 class Attack: public iDrawable {
 public:
-	AttackType spell_type;
+	//AttackType spell_type;
 	int base_damage, penetration;
 	int range, distance_traveled;
 	int tree_depth_level;
@@ -33,6 +33,7 @@ public:
 	int x_adjustment;
 	int y_adjustment;
 	Combat* my_caster;
+	int spell_id;
 
 	public:
 		Attack(int x, int y, int vel, int vel_d, Sprite* img, int base_damage, int penetration, int range, int tree_depth, int exp_date, int charge_time);

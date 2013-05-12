@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <winalleg.h>
-//#include "LevelUp.h"
+#include "LevelUp.h"
 
 
 using namespace std;
@@ -32,6 +32,8 @@ volatile bool rested;
 volatile int world_time_counter = 0;
 volatile int world_time_delay = 1;
 
+void load_inventory(string stream);
+void load_spells(string stream);
 void timer_framerate_counter(void);
 void timer_game_rester(void);
 void set_up_game(void);
@@ -197,7 +199,6 @@ void show_intro(void) {
 		// drawing
 		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
-
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Marsh");
 		if (menu_sel == 0) { // new game
 			textprintf_ex(buffer, font1, 50,  130, makecol(0,255,255), -1, "New Game");
@@ -240,17 +241,11 @@ exit_loop: ;
 }
 
 void start_game(void) {
-
 	game_state = IN_GAME;
-
 	Player*	hero = Player_Accessor::get_player();
-
 	Marsh::View *our_viewer= create_view(hero);
-
 	hero->set_my_type(Hero);
 
-	//BITMAP* overlay = load_tga("Resources//Misc//overlay.tga", NULL);
-	
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
@@ -267,23 +262,51 @@ void start_game(void) {
 		}
 		rested = false;
 		ticks++;
-
 		if (++world_time_counter >= world_time_delay){
 			world_time_counter = 0;
 			our_viewer->update();
 		}
+		our_viewer->update();
 		hero->update();
-		our_viewer->draw_active_world();
-		//draw_trans_sprite(screen, overlay, 0, 0);
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
 		clear_keybuf();
 	}
-//	destroy_bitmap(overlay);
 
 	//delete hero;
 	delete our_viewer;
+}
+
+void load_inventory(string stream) {
+	std::vector<int> item_ids;
+	std::stringstream ss(stream);
+	int i;
+	while (ss >> i)
+	{
+		item_ids.push_back(i);
+		if (ss.peek() == ',') ss.ignore();
+	}
+	//std::vector<Equipment*>* inventory;
+}
+
+void load_spells(string stream) {
+	std::vector<int> spell_ids;
+	std::stringstream ss(stream);
+	int i;
+	while (ss >> i)
+	{
+		spell_ids.push_back(i);
+		if (ss.peek() == ',') ss.ignore();
+	}
+	i = 0;
+	AttackDB* db = new AttackDB();
+	std::vector<int>::iterator end = spell_ids.end();
+	for (std::vector<int>::iterator iter = spell_ids.begin(); iter != end; ++iter){
+		Player_Accessor::get_player()->attack_loadout[i] = db->fetch_attack(spell_ids[i])->clone(0,0,W);
+		++i;
+	}
+	delete db;
 }
 
 void load_game(void) {
@@ -314,8 +337,9 @@ void load_game(void) {
 			else if (beg.compare("Health") == 0) stringstream(end) >> health;
 			else if (beg.compare("Max-health") == 0) stringstream(end) >> max_health;
 			else if (beg.compare("Gold") == 0) stringstream(end) >> gold;
-			//else if (beg.compare("Inventory") == 0) blahblah;
 			else if (beg.compare("World") == 0) stringstream(end) >> world;
+			else if (beg.compare("Inventory") == 0) load_inventory(end);
+			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
 		}
 	}
 	world_name = static_cast<WorldName>(world);
@@ -343,22 +367,33 @@ void save_game(void) {
 	file1 << "Health " << hero->get_current_health() << endl;
 	file1 << "Max-health " << hero->get_max_health() << endl;
 	file1 << "Gold " << hero->gold << endl;
+
+	// world
+	int world = v->current_world->my_name;
+	file1 << "World " << world << endl;
 	
-//	// player inventory
+	// player inventory
 	std::string items;
 	std::stringstream line;
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	std::vector<Equipment*>::iterator end = inventory.end();
 	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
 		line << (*iter)->item_id;
-		line << ",";
+		if (iter < (end-1)) line << ",";
 	}
 	items = line.str();
 	file1 << "Inventory " << items << endl;
 
-	// world
-	int world = v->current_world->my_name;
-	file1 << "World " << world << endl;
+	// player spell loadout
+	Attack* loadout = *hero->attack_loadout;
+	int i=0;
+	for (i; i<MAX_ATTACKS; i++) {
+		line << loadout[i].spell_id;
+		if (i < (MAX_ATTACKS-1)) line << ",";
+	}
+	items.clear();
+	items = line.str();
+	file1 << "Spell-loadout " << items << endl;
 
 	file1.close();
 	cout << "Game saved to Save1.marsh!";
@@ -545,16 +580,15 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
-	//inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
-
-//	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
-//			menu->BringToFront();
-			//menu->Show();
-//			menu->StartPosition = FormStartPosition::CenterScreen;
-//			menu->ShowDialog();
-			//Application::Run(menu);
-//			delete menu;
+	ShowWindow(win_get_window(),SW_MINIMIZE);
+	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
+			menu->StartPosition = FormStartPosition::CenterScreen;
+			menu->BringToFront();
+			menu->ShowDialog();
+			ShowWindow(win_get_window(),SW_RESTORE);
+			delete menu;
 /*
+	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	bool is_done = false;
 	volatile bool* done_ref = &is_done;
 #pragma omp parallel num_threads(2) shared(done_ref)
