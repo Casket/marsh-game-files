@@ -405,6 +405,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LevelUp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -563,6 +567,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LevelUp.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Main.h"
 				>
 			</File>
@@ -660,6 +668,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\LevelUp.resx"
+				>
+			</File>
+			<File
+				RelativePath=".\LevelUpMenu.resx"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ClassDiagram1.cd"
