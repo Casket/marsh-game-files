@@ -41,6 +41,8 @@ namespace Marsh {
 	
 		LevelUp(Player* hero)
 		{
+			ShowWindow(static_cast<HWND>(Handle.ToPointer()) ,SW_SHOW);
+			this->Visible = false;
 			this->TopMost = true;
 			InitializeComponent();
 
