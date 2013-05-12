@@ -12,17 +12,31 @@ Mob::Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<in
 	this->casting = false;
 	this->target = NULL;
 	this->current_state = patrol;
+	this->melee_cd = 0;
+	this->mid_range_cd = 0;
+	this->attack_dir = None;
+	for(int i = 0; i < 10; i++){
+		this->cooldowns[i] = std::make_pair(0, -1);
+	}
 
 
 
 }
 Mob::~Mob(void){
-	
+
 }
 
 void Mob::update(void){
-	if (this->entangled)
+
+	update_cd_timers();
+
+	if(this->wait > 0){
+		this->wait -= 1;
 		return;
+	}
+	if (this->entangled){
+		return;
+	}
 	bool dest_reached = false;
 
 	if(this->casting){
@@ -32,26 +46,36 @@ void Mob::update(void){
 
 	this->check_collisions();
 
+
 	Direction dir_moving = this->get_direction_moving();
 	bool check = this->get_current_facing_flag(dir_moving);
 
+	int atck;
 
 	switch (this->current_state){
 		case attack:
 			if(this->target->alive){
-				this->target_area = std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
+				this->target_area = set_target_area();
 			}
 
 			this->current_state = attack_move;
-			this->launch_attack(0);
+
+			atck = choose_attack();
+
+			if(atck != -1){
+				this->launch_attack(atck);
+				this->cooldowns[atck] = std::make_pair(this->cooldowns[atck].second, this->cooldowns[atck].second); 
+			}
 			break;
 
 		case attack_move:
-			this->target_area = std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
-			
+
+			set_attack_plan();
+			this->target_area = set_target_area();
+			set_ranges();
 			move_towards(this->target_area);
 
-			if(this->target_in_range()){
+			if(this->in_melee_range || this->in_short_range || this->in_mid_range || this->in_long_range){
 				this->current_state = attack;
 			}else if(!check){
 				this->prev_state = this->current_state;
@@ -87,6 +111,7 @@ void Mob::update(void){
 					return;
 				}
 			}
+
 			dest_reached = move_towards(this->detour_pair.first);
 			if(dest_reached){
 				this->current_state = detour_two; 		
@@ -105,9 +130,10 @@ void Mob::update(void){
 			break;
 
 		case patrol:
+			this->attack_dir = None;
 
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
-			
+
 			this->prev_state = this->current_state;
 
 			if(!check){
@@ -285,7 +311,7 @@ void Mob::check_collisions(void){
 
 	// bottom right
 	nearby[3] = map[(this->get_reference_y() + this->get_bounding_height() + delta) / TILE_SIZE][(this->get_reference_x() + this->get_bounding_width() + delta) / TILE_SIZE];
-	
+
 
 
 	for (int i=0; i < 4; i++){
@@ -378,7 +404,7 @@ void Mob::other_check_collisions(void){
 		return;
 	}else{
 		this->target = NULL;
-		
+
 		if(this->current_state == attack_move || this->current_state == attack){
 			this->current_state = patrol;
 		}
@@ -406,16 +432,16 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 
 	int x_dif = (coordinate.first - this->get_reference_x());
 	int y_dif = (coordinate.second - this->get_reference_y());
-
+	int dif_x_y = std::abs(x_dif) - std::abs(y_dif);
 	int my_width = this->get_bounding_width();
 	int my_height = this->get_bounding_height();
 	//you are there
 	if(((0-ERR < x_dif) && (x_dif < ERR)) && ((0-ERR < y_dif) && (y_dif< ERR))){
 		return true; // reached destination
-	}
-	//go left and down
-	else if((x_dif > 0) && (y_dif > 0)){
-		if(this->x_or_y){
+
+		//go left and down
+	}else if((x_dif > 0) && (y_dif > 0)){
+		if(dif_x_y > 0){
 			moved = move(E);
 		}else{
 			moved = move(S);
@@ -423,7 +449,7 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 
 		//go right and up
 	}else if((x_dif > 0) && (y_dif < 0)){
-		if(this->x_or_y){
+		if(dif_x_y > 0){
 			moved = move(E);
 		}else{
 			moved = move(N);
@@ -432,7 +458,7 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 
 		//go left and down
 	}else if((x_dif < 0) && (y_dif > 0)){
-		if(this->x_or_y){
+		if(dif_x_y > 0){
 			moved = move(W);
 		}else{
 			moved = move(S);
@@ -440,24 +466,11 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 
 		//go left and up
 	}else if((x_dif < 0) && (y_dif < 0)){
-		if(this->x_or_y){
+		if(dif_x_y > 0){
 			moved = move(W);
 		}else{
 			moved = move(N);
 		}
-
-		//go left
-	}else if((x_dif < 0) && ((-5 < y_dif) && (y_dif < 5))){
-		moved = move(W);
-		//go right
-	}else if((x_dif > 0) && ((-5 < y_dif) && (y_dif< 5))){
-		moved = move(E);
-		//go up
-	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  < 0)){
-		moved = move(N);
-		//go down
-	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  > 0)){
-		moved = move(S);
 	}
 
 	return false;
@@ -489,24 +502,36 @@ Direction Mob::get_direction_moving(){
 
 }
 
+void Mob::set_ranges(void){
+	this->in_melee_range = this->check_variable_range(NO_RANGE);
+	this->in_short_range = false;
+	this->in_mid_range = false;
+	this->in_long_range = false;
+}
 
+int Mob::choose_attack(void){
+	if(this->cooldowns[0].first == 0){
+		return 0;
+	}
 
+	return -1;
+}
+bool Mob::check_variable_range(int dist){
 
-bool Mob::target_in_range(void){
 	Direction cur_dir = this->get_direction_moving(); 
 	int tar_x = this->target->x_pos;
 	int tar_y = this->target->y_pos;
 
 	if(cur_dir == N){
 		int y_dif = this->y_pos - this->target->y_pos - 32;
-		if(y_dif < ATTACK_RANGE && this->x_pos == tar_x){
+		if(y_dif < dist && this->x_pos == tar_x){
 			return true;
 		}else{
 			return false;
 		}
 	}else if(cur_dir == S){
 		int y_dif = this->target->y_pos - this->y_pos - 32;
-		if(y_dif < ATTACK_RANGE && this->x_pos == tar_x){
+		if(y_dif < dist && this->x_pos == tar_x){
 			return true;
 		}else{
 			return false;
@@ -514,7 +539,7 @@ bool Mob::target_in_range(void){
 	}else if(cur_dir == W){
 		int x_dif = (this->x_pos - this->target->x_pos) - 32;
 		int y_dif = this->y_pos - this->target->y_pos;
-		if(x_dif < ATTACK_RANGE && ((y_dif > -10) && (y_dif < 10))){
+		if(x_dif < dist && ((y_dif > -10) && (y_dif < 10))){
 			return true;
 		}else{
 			return false;
@@ -522,19 +547,179 @@ bool Mob::target_in_range(void){
 	}else{
 		int x_dif = this->target->x_pos - this->x_pos - 32;
 		int y_dif = this->y_pos - this->target->y_pos;
-		if(x_dif < ATTACK_RANGE && ((y_dif > -10) && (y_dif < 10))){
+		if(x_dif < dist && ((y_dif > -10) && (y_dif < 10))){
 			return true;
 		}else{
 			return false;
 		}
 	}
-
+}
+std::pair<int,int> Mob::set_target_area(void){
+	return std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
 }
 
-bool Mob::set_range(void){
-	return false;
-}
-void Mob::choose_attack(void){
+void Mob::update_cd_timers(void){
+	for(int i = 0; i < 10; i++){
+		if(this->cooldowns[i].second != -1){
+			if(this->cooldowns[i].first > 0){
+				this->cooldowns[i] = std::make_pair(this->cooldowns[i].first - 1, this->cooldowns[i].second);
 
-	
+			}
+		}
+	}
+}
+
+void Mob::set_attack_plan(void){
+	Direction pris [4];
+
+	if(this->attack_dir != None){
+		return;
+	}
+
+	//define priorities
+
+	int x_axis = this->target->get_reference_y();//horizontal
+	int y_axis = this->target->get_reference_x();//vertical
+
+	Direction check = None;
+
+	int upward_dif = this->get_reference_y() - x_axis;
+	int horz_dif = this->get_reference_x() - y_axis;
+
+	if(upward_dif < 0){
+		if(horz_dif < 0){
+			check = NW;
+		}else if(horz_dif > 0){
+			check = NE;
+		}else{
+			check = N;
+		}
+	}else if(upward_dif > 0){
+		if(horz_dif < 0){
+			check = SW;
+		}else if(horz_dif > 0){
+			check = SE;
+		}else{
+			check = S;
+		}
+
+	}else{
+		if(horz_dif < 0){
+			check = W;
+		}else if(horz_dif > 0){
+			check = E;
+		}else{
+			//put something here??? Should be made not possible
+		}
+	}
+
+	if(check == N || check == S || check == W || check == E){
+		pris[0] = check;
+		if(check == N){
+			pris[1] = W;
+			pris[2] = E;
+			pris[3] = S;
+		}else if(check == S){
+			pris[1] = E;
+			pris[2] = W;
+			pris[3] = N;
+		}else if(check == W){
+			pris[1] = S;
+			pris[2] = N;
+			pris[3] = E;
+		}else{
+			pris[1] = N;
+			pris[2] = S;
+			pris[3] = W;
+		}
+	}else{
+		if(check == NW){
+			if(std::abs(upward_dif) > std::abs(horz_dif)){
+				pris[0] = N;
+				pris[1] = W;
+				pris[2] = E;
+				pris[3] = S;
+			}else{
+				pris[0] = W;
+				pris[1] = N;
+				pris[2] = S;
+				pris[3] = E;
+			}
+		}else if(check == NE){
+			if(std::abs(upward_dif) > std::abs(horz_dif)){
+				pris[0] = N;
+				pris[1] = E;
+				pris[2] = W;
+				pris[3] = S;
+			}else{
+				pris[0] = E;
+				pris[1] = N;
+				pris[2] = S;
+				pris[3] = W;
+			}
+		}else if(check == SW){
+			if(std::abs(upward_dif) > std::abs(horz_dif)){
+				pris[0] = S;
+				pris[1] = W;
+				pris[2] = E;
+				pris[3] = N;
+			}else{
+				pris[0] = W;
+				pris[1] = S;
+				pris[2] = N;
+				pris[3] = E;
+			}
+
+		}else if(check = SE){
+			if(std::abs(upward_dif) > std::abs(horz_dif)){
+				pris[0] = S;
+				pris[1] = E;
+				pris[2] = W;
+				pris[3] = N;
+			}else{
+				pris[0] = E;
+				pris[1] = S;
+				pris[2] = N;
+				pris[3] = W;
+			}
+
+		}
+	}
+
+
+	std::list<iDrawable*>::iterator iter = this->eskimo_bros->begin();
+	std::list<iDrawable*>::iterator end = this->eskimo_bros->end();
+	for(;iter != end; iter++){
+		iDrawable* to_comp = (*iter);
+
+	}
+
+
+	//choose from available options
+
+}
+Direction Mob::get_target_true_dir(){
+
+	int x_dif = (this->target->get_reference_x() - this->get_reference_x());
+	int y_dif = (this->target->get_reference_y() - this->get_reference_y());
+
+	int my_width = this->get_bounding_width();
+	int my_height = this->get_bounding_height();
+
+	//go left
+	if((x_dif < 0) && ((-5 < y_dif) && (y_dif < 5))){
+		return W;
+		//go right
+	}else if((x_dif > 0) && ((-5 < y_dif) && (y_dif< 5))){
+		return E;
+		//go up
+	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  < 0)){
+		return N;
+		//go down
+	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  > 0)){
+		return S;
+	}
+
+	return this->image->get_facing();
+
 }
