@@ -589,11 +589,12 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
-
+	ShowWindow(win_get_window(),SW_MINIMIZE);
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
-			
 			menu->StartPosition = FormStartPosition::CenterScreen;
+			menu->BringToFront();
 			menu->ShowDialog();
+			ShowWindow(win_get_window(),SW_RESTORE);
 			delete menu;
 /*
 	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
