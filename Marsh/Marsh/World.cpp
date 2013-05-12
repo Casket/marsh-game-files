@@ -4,11 +4,11 @@
 #include <iostream>
 
 using namespace std;
-
+BITMAP* draw_loading(void);
 volatile int execution_count = 0;
 
 World::World(WorldName this_world){
-
+	BITMAP *loading_screen_bitmap = draw_loading();
 	this->tiles_high = 0;
 	this->tiles_wide = 0;
 	this->my_name = this_world;
@@ -16,6 +16,7 @@ World::World(WorldName this_world){
 	this->visible_entities = new std::list<iDrawable*>();
 	this->removal_queue = new std::list<iDrawable*>();
 	load_world();
+	destroy_bitmap(loading_screen_bitmap);
 }
 
 World::~World(void){
@@ -38,7 +39,16 @@ World::~World(void){
 	delete this->visible_entities;
 }
 
-void World::load_world(){
+BITMAP* draw_loading(void) {
+	BITMAP *loading_screen_bitmap = load_bitmap("Resources//LoadScreen.bmp",NULL);
+	if (!loading_screen_bitmap)
+		exit(1);
+	//blit(loading_screen_bitmap, NULL, 0, 0, 0, 0, UI_WIDTH, UI_HEIGHT);
+	blit(loading_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
+	return loading_screen_bitmap;
+}
+
+void World::load_world(){ 
 
 	std::string items;
 
