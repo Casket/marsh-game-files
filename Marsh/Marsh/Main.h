@@ -44,6 +44,7 @@ class Attack;
 #include "AttackCharge.h"
 #include "AttackDB.h"
 #include "TeleportAttack.h"
+#include "ProtectionAttack.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770

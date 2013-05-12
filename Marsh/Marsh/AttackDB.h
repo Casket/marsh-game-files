@@ -25,8 +25,8 @@
 #define SHADOW_DASH 11
 #define TELEPORT 12
 #define SHADOW_STEPS 13
-#define SHIELD 14
-#define DEFLECT 15
+#define SHIELD 13//14
+#define DEFLECT 14//15
 
 #define MONSTER_MELEE 16
 #define GUARD_MELEE 17
