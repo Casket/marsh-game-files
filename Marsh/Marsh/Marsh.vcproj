@@ -397,10 +397,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\LevelUp.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -541,16 +537,6 @@
 			<File
 				RelativePath=".\KillObjective.h"
 				>
-			</File>
-			<File
-				RelativePath=".\LevelUp.h"
-				FileType="3"
-				>
-				<File
-					RelativePath=".\LevelUp.resx"
-					SubType="Designer"
-					>
-				</File>
 			</File>
 			<File
 				RelativePath=".\Main.h"
