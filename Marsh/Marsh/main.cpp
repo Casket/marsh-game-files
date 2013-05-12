@@ -29,6 +29,8 @@ WorldName world_name;
 
 volatile int ticks, framerate;
 volatile bool rested;
+volatile int world_time_counter = 0;
+volatile int world_time_delay = 1;
 
 void timer_framerate_counter(void);
 void timer_game_rester(void);
@@ -84,7 +86,7 @@ END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
 	Marsh::View* v = new Marsh::View(hero);
-	v->load_world(test_map);
+	v->load_world(main_world16);
 	return v;
 }
 
@@ -254,13 +256,11 @@ void start_game(void) {
 			show_intro();
 		} 
 		if (keyrel(KEY_I)) {
-			show_inv();
-			
+			show_inv();			
 		}
 		if (keyrel(KEY_L)) {
 			show_level_up();
 		}
-
 		if (!rested) {
 			rest(4);
 			continue;
@@ -268,20 +268,19 @@ void start_game(void) {
 		rested = false;
 		ticks++;
 
-		our_viewer->update();
-		//hero->update();
+		if (++world_time_counter >= world_time_delay){
+			world_time_counter = 0;
+			our_viewer->update();
+		}
+		hero->update();
 		our_viewer->draw_active_world();
 		//draw_trans_sprite(screen, overlay, 0, 0);
 
-		//masked_blit(hero->get_image()->get_current_frame(), screen, 0, 0,
-		//	SCREEN_W/2, SCREEN_H/2, 32,30);
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
-		//textprintf_centre_ex(screen,font,100,40,makecol(255,255,255),-1,"Player Coord %d x %d", hero->get_x_pos(), hero->get_y_pos());		
-		//textprintf_centre_ex(screen,font,100,50,makecol(255,255,255),-1,"Player Can Walk %d", hero->can_walk);		
 		clear_keybuf();
 	}
-	destroy_bitmap(overlay);
+//	destroy_bitmap(overlay);
 
 	//delete hero;
 	delete our_viewer;

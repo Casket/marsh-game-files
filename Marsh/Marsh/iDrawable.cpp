@@ -106,9 +106,9 @@ void iDrawable::check_collisions(void){
 	Direction facing = this->get_image()->get_facing();
 
 	if (facing == W || facing == E)
-		top_bottom_skew = SKEW_FACTOR;
+		top_bottom_skew = this->velocity*SKEW_FACTOR;
 	if (facing == N || facing == S)
-		left_right_skew = SKEW_FACTOR;
+		left_right_skew = this->velocity*SKEW_FACTOR;
 
 	this->can_walk_down = true;
 	this->can_walk_left = true;

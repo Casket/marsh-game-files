@@ -3,7 +3,6 @@
 
 class Attack;
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
@@ -44,6 +43,10 @@ class Attack;
 #include "AttackCharge.h"
 #include "AttackDB.h"
 #include "TeleportAttack.h"
+#include "SprintSpell.h"
+#include "HealthDrainAttack.h"
+#include "StationaryAttack.h"
+#include "TemporalModifier.h"
 
 
 
@@ -52,12 +55,17 @@ class Attack;
 #define UI_WIDTH 1400
 #define UI_HEIGHT 230
 #define STAT_INCREASE 10
+#define DEFAULT_WORLD_TIME_DELAY 1
+
+extern volatile int world_time_counter;
+extern volatile int world_time_delay;
 
 using namespace std;
 using namespace Marsh;
 
 
 bool keyrel(int k);
+bool rectangle_intersection(int x1, int y1, int w1,int h1, int x2, int y2, int w2, int h2);
 Equipment* get_new_equipment(void);
 Equipment* get_item_clone(Equipment* old_item);
 

@@ -63,9 +63,20 @@ void Marsh::View::load_world(WorldName world){
 	if (this->current_world != NULL){
 		put_world_in_loaded(this->current_world);
 	}
-	this->current_world = new World(world);
-	this->current_world->set_player(this->playa);
-	this->current_world->insert_entity(this->playa);
+
+
+	std::map<WorldName, World*>::iterator pos = this->loaded_worlds->find(world);
+	std::map<WorldName, World*>::iterator last = this->loaded_worlds->end();
+	std::map<WorldName, World*>::iterator first = this->loaded_worlds->begin();
+
+	if (pos != this->loaded_worlds->end()){
+		// the world needs loaded
+		this->current_world = (*pos).second;
+	} else {
+		this->current_world = new World(world);
+		this->current_world->set_player(this->playa);
+		this->current_world->insert_entity(this->playa);
+	}
 	this->playa->set_world(this->current_world);
 
 	this->insert_testing_entities();
@@ -95,7 +106,7 @@ void Marsh::View::insert_testing_entities(void){
 		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
 		shop->bestow_all_items = false;
 
-		ItemBestower* farmer_bob = new ItemBestower(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
 		farmer_bob->set_world(this->current_world);
 		farmer_bob->append_dialogue("Have a gander at my wares.  [1] Mana Potion (20g) [2] Health Potion (15g) [3] Fluffy Kitten Companion (1,000,000g)");
 		farmer_bob->can_speak = true;
@@ -293,6 +304,8 @@ void Marsh::View::update(void){
 
 	std::list<iDrawable*>::iterator iter;
 	for (iter = actives->begin(); iter != actives->end(); iter++){
+		if ((*iter)->my_type == Hero)
+			continue;
 		(*iter)->update();
 		if ((*iter)->my_type == StarGate){
 			Portal* gateway = (*iter)->fetch_me_as_portal();
@@ -313,7 +326,7 @@ void Marsh::View::draw_active_world(void){
 	int tile_high = this->current_world->get_tiles_high();
 	Tile*** tiles = this->current_world->get_tile_map();
 
-	clear_bitmap(this->world_buffer);
+	//clear_bitmap(this->world_buffer);
 
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
@@ -431,7 +444,6 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
-
 	}
 }
 
