@@ -18,10 +18,8 @@ Mob::Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<in
 	for(int i = 0; i < 10; i++){
 		this->cooldowns[i] = std::make_pair(0, -1);
 	}
-
-
-
 }
+
 Mob::~Mob(void){
 
 }
