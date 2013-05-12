@@ -694,10 +694,12 @@
 			>
 			<File
 				RelativePath=".\LevelUp.resx"
+				SubType="Designer"
 				>
 			</File>
 			<File
 				RelativePath=".\LevelUpMenu.resx"
+				SubType="Designer"
 				>
 			</File>
 		</Filter>
