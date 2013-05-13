@@ -698,14 +698,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-<<<<<<< HEAD
-=======
-				RelativePath=".\LevelUp.resx"
-				SubType="Designer"
-				>
-			</File>
-			<File
->>>>>>> e9b4f12650d52283012b1a96d6417cba1ef3ce07
 				RelativePath=".\LevelUpMenu.resx"
 				SubType="Designer"
 				>
