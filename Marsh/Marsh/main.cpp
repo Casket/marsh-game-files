@@ -1,9 +1,4 @@
 #include "Main.h"
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <winalleg.h>
 #include "LevelUp.h"
 
 
@@ -245,6 +240,7 @@ void start_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
+	ItemDB* db = new ItemDB();
 
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {

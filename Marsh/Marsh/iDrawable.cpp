@@ -91,6 +91,10 @@ Combat* iDrawable::fetch_me_as_combat(void){
 	return NULL;
 }
 
+Mob* iDrawable::fetch_me_as_mob(void){
+	return NULL; // we are all out of pitchforks, sorry
+}
+
 void iDrawable::speak(void){};
 void iDrawable::append_dialogue(std::string message){};
 void iDrawable::clear_dialogue(void){};

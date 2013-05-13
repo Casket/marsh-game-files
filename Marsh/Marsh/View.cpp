@@ -142,11 +142,23 @@ void Marsh::View::insert_testing_entities(void){
 		companion->item_id = 197;
 		farmer_bob->append_inventory(companion, 1000000);
 
-		Mob* g = new Marsh_Monster(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
-		g->set_stats(1000, 1000, 10000, 10000, 10000);
+		g->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g);
+
+		Mob* g1 = new Town_Guard(184,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		g1->set_boundary_value(32,18,0,14);
+		g1->set_world(this->current_world);
+		g1->set_stats(1000, 1000, 1000, 1000, 1000);
+		this->current_world->insert_entity(g1);
+		
+		Mob* g2 = new Town_Guard(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		g2->set_boundary_value(32,18,0,14);
+		g2->set_world(this->current_world);
+		g2->set_stats(1000, 1000, 1000, 1000, 1000);
+		this->current_world->insert_entity(g2);
 	}
 
 

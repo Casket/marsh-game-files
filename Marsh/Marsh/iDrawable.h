@@ -7,6 +7,7 @@
 class World;
 class Portal;
 class Combat;
+class Mob;
 
 using namespace std;
 
@@ -56,6 +57,7 @@ public:
 	virtual void check_walkable(int my_x, int my_y, int my_height, int my_width, int check_x, int check_y, int check_width, int check_height, int left_right_skew, int top_bottom_skew);
 	virtual Portal* fetch_me_as_portal(void);
 	virtual Combat* fetch_me_as_combat(void);
+	virtual Mob* fetch_me_as_mob(void);
 	virtual bool get_visible(iDrawable*);
 	virtual bool detect_enemies(iDrawable*);
 

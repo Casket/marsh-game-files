@@ -22,6 +22,7 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->mana = this->max_mana;
 	this->gold = 100;
 	this->statPoints = 0;
+	this->spellPoints = 0;
 	this->velocity = MOVEMENT_DELTA;
 }
 
@@ -220,9 +221,9 @@ void Player::grant_experience(int experience_worth){
 	this->experience += experience_worth;
 	if(this->experience >= EXPERIENCE_TO_LEVEL){
 		this->experience -= EXPERIENCE_TO_LEVEL;
-		//TODO make level-up happen
+		this->spellPoints += 1;
 		this->statPoints += 5;
-		display_to_user("You have leveled up! Press L to level up.");
+		display_to_user("You have leveled up! Press L to get a new spell and increase your stats.");
 	}
 
 }
@@ -504,7 +505,7 @@ int move_closer(int pos, int old_pos){
 	if (pos > old_pos){
 		return pos--;
 	}
-	if (pos < old_pos){
+	else {
 		return pos++;
 	}
 }

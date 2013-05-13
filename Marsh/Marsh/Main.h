@@ -2,10 +2,14 @@
 #define MAIN_H 1
 
 class Attack;
-
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
+#include <winalleg.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -53,6 +57,7 @@ class Attack;
 #include "StationaryAttack.h"
 #include "TemporalModifier.h"
 #include "ProtectionAttack.h"
+#include "ItemDB.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770

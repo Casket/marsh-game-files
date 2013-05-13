@@ -1,0 +1,22 @@
+Name Sword
+Description The big sword
+Item_ID 12
+Vitality 5
+Focus 0
+Intelligence 12
+Willpower 9
+Armor 15
+Equipable true
+Stackable false
+Item
+Name Boots 
+Description Super boots
+Item_ID 13
+Vitality 13
+Focus 3
+Intelligence 3
+Willpower 6
+Armor 12
+Equipable true
+Stackable false
+Item
