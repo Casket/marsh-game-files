@@ -33,6 +33,7 @@ class Attack;
 #include "Reject.h"
 #include "Vampire.h"
 #include "Player_Sprite.h"
+#include "Dispatcher.h"
 #include "World.h"
 #include "View.h"
 #include "AttackDB.h"
@@ -58,6 +59,7 @@ class Attack;
 #include "TemporalModifier.h"
 #include "ProtectionAttack.h"
 #include "ItemDB.h"
+
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770

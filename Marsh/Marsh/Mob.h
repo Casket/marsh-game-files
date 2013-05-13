@@ -32,6 +32,7 @@ public:
 	std::pair<int, int> target_area;
 	std::pair<std::pair<int, int>, std::pair<int, int>> detour_pair;
 	State current_state, prev_state;
+	std::list<Direction>* priorities;
 
 
 	Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* waypoints);
@@ -56,6 +57,7 @@ public:
 	virtual void set_attack_plan(void);
 	virtual Direction get_target_true_dir();
 	virtual Mob* fetch_me_as_mob(void);
+	virtual void check_target_dispatch(void);
 
 };
 

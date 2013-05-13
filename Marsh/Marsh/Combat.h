@@ -12,11 +12,14 @@
 #include "Main.h"
 using namespace std;
 
+class Dispatcher;
+
 
 class Combat: public iDrawable{
 public:
 	bool player_credit;
 	int experience_worth;
+	std::list<Dispatcher*>* active_dispatchers;
 
 	//	protected:
 	Attack* attack_loadout[MAX_ATTACKS];
@@ -51,6 +54,7 @@ public:
 	virtual Combat* fetch_me_as_combat(void);
 	virtual void upon_death(void);
 	virtual bool check_new_pos(int x, int y);
+	void update_dispatchers(void);
 
 
 protected:

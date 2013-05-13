@@ -369,6 +369,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dispatcher.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Dragon.cpp"
 				>
 			</File>
@@ -547,6 +551,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dispatcher.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Dragon.h"
 				>
 			</File>
@@ -596,6 +604,7 @@
 				>
 				<File
 					RelativePath=".\LevelUp.resx"
+					SubType="Designer"
 					>
 				</File>
 			</File>

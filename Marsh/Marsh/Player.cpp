@@ -164,6 +164,7 @@ bool Player::wants_to_talk(void){
 
 
 void Player::update(void) {
+	this->update_dispatchers();
 	check_collisions();
 	if (this->entangled)
 		return;
