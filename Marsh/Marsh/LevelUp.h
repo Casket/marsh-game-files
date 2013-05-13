@@ -37,7 +37,8 @@ namespace Marsh {
 		AttackDB* attacks;
 		std::vector<AttackNode*>* nodes;
 		Marsh::AttackNode* currentNode;
-		bool gotSpell;
+	private: System::Windows::Forms::Label^  SpellPointsLabel;
+	public: 
 	
 		LevelUp(Player* hero)
 		{
@@ -51,8 +52,8 @@ namespace Marsh {
 			}
 			nodes = new std::vector<AttackNode*>();
 			this->attacks = new AttackDB();
-			this->gotSpell = false;
 			this->hero = hero;
+			this->SpellPointsLabel->Text = "You can get " + hero->spellPoints + " new spells.";
 			this->StatPointsLabel->Text = "Current Stat Points: " + hero->statPoints;
 			this->IntelligenceLabel->Text = "Intelligence: " + hero->intelligence;
 			this->WillpowerLabel->Text = "Willpower: " + hero->willpower;
@@ -330,7 +331,6 @@ namespace Marsh {
 			this->Spell12 = (gcnew System::Windows::Forms::Button());
 			this->Spell13 = (gcnew System::Windows::Forms::Button());
 			this->Spell14 = (gcnew System::Windows::Forms::Button());
-
 			this->SpellInfo = (gcnew System::Windows::Forms::Label());
 			this->AcceptSpellButton = (gcnew System::Windows::Forms::Button());
 			this->ReturnButton = (gcnew System::Windows::Forms::Button());
@@ -343,6 +343,7 @@ namespace Marsh {
 			this->WillpowerButton = (gcnew System::Windows::Forms::Button());
 			this->focusButton = (gcnew System::Windows::Forms::Button());
 			this->VitalityButton = (gcnew System::Windows::Forms::Button());
+			this->SpellPointsLabel = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// Spell0
@@ -359,7 +360,7 @@ namespace Marsh {
 			this->Spell0->TabIndex = 0;
 			this->Spell0->Tag = L"0";
 			this->Spell0->UseVisualStyleBackColor = false;
-			this->Spell0->Click += gcnew System::EventHandler(this, &LevelUp::Spell_Click);		
+			this->Spell0->Click += gcnew System::EventHandler(this, &LevelUp::Spell_Click);
 			// 
 			// Spell1
 			// 
@@ -579,7 +580,6 @@ namespace Marsh {
 			this->Spell14->Tag = L"14";
 			this->Spell14->UseVisualStyleBackColor = false;
 			this->Spell14->Click += gcnew System::EventHandler(this, &LevelUp::Spell_Click);
-			
 			// 
 			// SpellInfo
 			// 
@@ -702,12 +702,22 @@ namespace Marsh {
 			this->VitalityButton->UseVisualStyleBackColor = true;
 			this->VitalityButton->Click += gcnew System::EventHandler(this, &LevelUp::VitalityButton_Click);
 			// 
+			// SpellPointsLabel
+			// 
+			this->SpellPointsLabel->AutoSize = true;
+			this->SpellPointsLabel->Location = System::Drawing::Point(692, 333);
+			this->SpellPointsLabel->Name = L"SpellPointsLabel";
+			this->SpellPointsLabel->Size = System::Drawing::Size(129, 13);
+			this->SpellPointsLabel->TabIndex = 26;
+			this->SpellPointsLabel->Text = L"You can get 0 new spells.";
+			// 
 			// LevelUp
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlText;
 			this->ClientSize = System::Drawing::Size(1086, 590);
+			this->Controls->Add(this->SpellPointsLabel);
 			this->Controls->Add(this->VitalityButton);
 			this->Controls->Add(this->focusButton);
 			this->Controls->Add(this->WillpowerButton);
@@ -748,11 +758,7 @@ namespace Marsh {
 
 		}
 	private: System::Void ReturnButton_Click(System::Object^  sender, System::EventArgs^  e) {
-				 if(hero->statPoints == 0 && gotSpell){
 					 this->Close();
-				 }else{
-					 this->SpellInfo->Text = "You must use your stat points and pick a new spell to continue";
-				 }
 			 }
 	private: System::Void VitalityButton_Click(System::Object^  sender, System::EventArgs^  e) {
 				 if(hero->statPoints > 0){
@@ -870,21 +876,22 @@ namespace Marsh {
 				 this->SpellInfo->Text = str;
 			 }
 	private: System::Void AcceptSpellButton_Click(System::Object^  sender, System::EventArgs^  e) {
-				 if(currentNode != NULL && !gotSpell){
+				 if(currentNode != NULL && hero->spellPoints > 0){
 					 int index = findLoadoutIndex();
 					 if(index == -1){
-						 gotSpell = true;
 						 return;
 					 }
-					 else if(currentNode->attack->spell_id == SHADOW_BALL_PLUS){
+					 if(currentNode->attack->spell_id == SHADOW_BALL_PLUS){
 						index = findAttackIndex(SHADOW_BALL); 
 					 }
 					 else if(currentNode->attack->spell_id == SHADOW_NEEDLE_PLUS){
 						 index = findAttackIndex(SHADOW_NEEDLE);
 					 }
 					 hero->attack_loadout[index] = currentNode->attack;
-					 gotSpell = true;
+					 hero->spellPoints--;
 					 this->SpellInfo->Text += "\n You've just added this spell to your loadout!";
+					 this->SpellPointsLabel->Text = "You can get " + hero->spellPoints + " new spells.";
+					 disableGottenSpells();
 				 }
 			 }
 	};};

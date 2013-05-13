@@ -67,6 +67,7 @@ class Player: public Combat{
 		int gold;
 		int experience;
 		int statPoints;
+		int spellPoints;
 		int notoriety;
 		int level, current_experience, mana, max_mana;
 		QuestManager* quest_manager;
