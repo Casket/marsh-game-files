@@ -3,6 +3,7 @@
 #include "Main.h"
 
 class HealthDrainAttack: public Attack{
+Combat* target;
 public:
 	HealthDrainAttack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats);
 	~HealthDrainAttack(void);

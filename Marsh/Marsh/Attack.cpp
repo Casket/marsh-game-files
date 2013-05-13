@@ -248,15 +248,15 @@ Attack* Attack::clone(int x, int y, Direction dir){
 	switch(dir){
 	case N:
 		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
-		y -= this->y_adjustment;
+		y -= this->y_adjustment + this->get_bounding_height();
 		break;
 	case S:
 		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
-
+		
 		break;
 	case W:
 		result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
-		x -= this->x_adjustment;
+		x -= this->x_adjustment + this->get_bounding_width();
 		y -= this->y_adjustment;
 		break;
 	case E:

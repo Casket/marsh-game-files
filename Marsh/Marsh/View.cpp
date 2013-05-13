@@ -301,9 +301,9 @@ void Marsh::View::insert_testing_entities(void){
 
 void Marsh::View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
-
+	std::list<iDrawable*>::iterator end = actives->end();
 	std::list<iDrawable*>::iterator iter;
-	for (iter = actives->begin(); iter != actives->end(); iter++){
+	for (iter = actives->begin(); iter != end; iter++){
 		if ((*iter)->my_type == Hero)
 			continue;
 		(*iter)->update();
@@ -316,6 +316,7 @@ void Marsh::View::update(void){
 			}
 		}
 	}
+	this->current_world->remove_destroyed();
 
 }
 
@@ -333,7 +334,7 @@ void Marsh::View::draw_active_world(void){
 	draw_interface(this->playa);
 	draw_to_screen();
 
-	this->current_world->remove_destroyed();
+	
 }
 
 void Marsh::View::draw_to_screen(void){

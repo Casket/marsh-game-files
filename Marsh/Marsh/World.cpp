@@ -151,8 +151,8 @@ std::pair<std::string, int> World::pull_out(std::string items, int index){
 	}
 
 	return std::make_pair(x, size);
-
 }
+
 Tile*** World::get_tile_map(void){
 	return this->tile_map;
 }
@@ -362,6 +362,7 @@ bool World::equals(World* w){
 
 
 bool sort_visibles(iDrawable* d1, iDrawable* d2){
+	
 	if (d1->my_type == Wallop){
 		Attack* check = d1->fetch_me_as_attack();
 		if (check->get_above_target() == d2)
@@ -372,7 +373,7 @@ bool sort_visibles(iDrawable* d1, iDrawable* d2){
 		if (check->get_above_target() == d1)
 			return true;
 	}
-
+	
 	if (d1->get_reference_y() == d2->get_reference_y()){
 		return (d1->get_reference_x() < d2->get_reference_x());
 	}

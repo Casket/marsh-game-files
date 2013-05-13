@@ -30,7 +30,7 @@ WorldName world_name;
 volatile int ticks, framerate;
 volatile bool rested;
 volatile int world_time_counter = 0;
-volatile int world_time_delay = 1;
+volatile int world_time_delay = DEFAULT_WORLD_TIME_DELAY;
 
 void load_inventory(string stream);
 void load_spells(string stream);
@@ -88,7 +88,7 @@ END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
 	Marsh::View* v = new Marsh::View(hero);
-	v->load_world(main_world16);
+	v->load_world(test_map);
 	return v;
 }
 
@@ -266,7 +266,7 @@ void start_game(void) {
 			world_time_counter = 0;
 			our_viewer->update();
 		}
-		our_viewer->update();
+
 		hero->update();
 		our_viewer->draw_active_world();
 

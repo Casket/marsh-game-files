@@ -52,6 +52,10 @@ void MultiSpawnAttack::deal_with_attack(Attack* attack){
 	// an attack hit this thing... Ummm... ignore it?
 }
 
+iDrawable* MultiSpawnAttack::get_above_target(void){
+	return NULL;
+}
+
 Attack* MultiSpawnAttack::clone(int x, int y, Direction dir){
 	Sprite* image = this->get_image()->clone(dir);
 	AttackStatistics stats;
@@ -66,19 +70,19 @@ Attack* MultiSpawnAttack::clone(int x, int y, Direction dir){
 	switch(dir){
 	case N:
 		dup->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
-		y -= this->y_adjustment;
+		y -= this->y_adjustment + this->get_bounding_height();
 		break;
 	case S:
 		dup->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
 		break;
 	case W:
 		dup->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
-		x -= this->x_adjustment;
-		y -= this->y_adjustment;
+		y -= this->y_adjustment + this->get_bounding_height()/2;
+		x -= this->get_bounding_width() /2;
 		break;
 	case E:
 		dup->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
-		y -= this->y_adjustment;
+		y -= this->y_adjustment + this->get_bounding_height()/2;
 		break;
 	}
 

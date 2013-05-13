@@ -3,19 +3,21 @@
 HealthDrainAttack::HealthDrainAttack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats)
 :Attack(x, y, vel, vel_d, img, stats)
 {
-
+	this->target = NULL;
 }
 HealthDrainAttack::~HealthDrainAttack(void){
 
 }
 
 void HealthDrainAttack::attack_target(iDrawable* drawable){
-	Combat* target = drawable->fetch_me_as_combat();
-	if (target == NULL)
+	this->target = drawable->fetch_me_as_combat();
+	if (this->target == NULL){
+		this->start_death_sequence();
 		return;
-	int prev_health = target->get_current_health();
+	}
+	int prev_health = this->target->get_current_health();
 	target->deal_with_attack(this);
-	int cur_health = target->get_current_health();
+	int cur_health = this->target->get_current_health();
 	
 	if (cur_health < 0){
 		this->my_caster->health += prev_health;	
@@ -27,7 +29,9 @@ void HealthDrainAttack::attack_target(iDrawable* drawable){
 }
 
 void HealthDrainAttack::start_death_sequence(void){
-	// it'll kill itself
+	if (this->target == NULL)
+		this->get_world()->remove_entity(this);
+	// disregard otherwise... pansy mob wants you to die
 }
 
 Attack* HealthDrainAttack::clone(int x, int y, Direction dir){
