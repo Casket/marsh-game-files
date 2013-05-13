@@ -16,10 +16,10 @@
 
 using namespace std;
 
-enum State {patrol,attack,attack_move,detour_intial,detour_one,detour_two};
+enum State {patrol,attack,attack_move,detour_intial,detour_one,detour_two, chilling_out};
 
 class Mob:public Combat{
-
+int chill_timer, chill_time;
 public:
 	Direction attack_dir;
 	std::list<iDrawable*>* eskimo_bros;
@@ -55,6 +55,7 @@ public:
 	virtual void update_cd_timers(void);
 	virtual void set_attack_plan(void);
 	virtual Direction get_target_true_dir();
+	virtual Mob* fetch_me_as_mob(void);
 
 };
 

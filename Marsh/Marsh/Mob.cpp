@@ -12,12 +12,15 @@ Mob::Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<in
 	this->casting = false;
 	this->target = NULL;
 	this->current_state = patrol;
+	this->prev_state = patrol;
 	this->melee_cd = 0;
 	this->mid_range_cd = 0;
 	this->attack_dir = None;
 	for(int i = 0; i < 10; i++){
 		this->cooldowns[i] = std::make_pair(0, -1);
 	}
+	this->chill_timer = 0;
+	
 }
 
 Mob::~Mob(void){
@@ -51,7 +54,18 @@ void Mob::update(void){
 	int atck;
 
 	switch (this->current_state){
+		case chilling_out:
+			if (++this->chill_timer >= this->chill_time){
+				this->current_state = this->prev_state;
+				this->chill_timer = 0;
+			}
+			break;
+
 		case attack:
+			if (target == NULL){
+				this->current_state = this->prev_state;
+				break;
+			}
 			if(this->target->alive){
 				this->target_area = set_target_area();
 			}
@@ -68,7 +82,7 @@ void Mob::update(void){
 
 		case attack_move:
 
-			set_attack_plan();
+			//set_attack_plan();
 			this->target_area = set_target_area();
 			set_ranges();
 			move_towards(this->target_area);
@@ -103,10 +117,19 @@ void Mob::update(void){
 			break;
 
 		case detour_one:
-			if(this->blocking_entity != NULL){	
+			if(this->blocking_entity != NULL){
 				if(this->blocking_entity->x_pos < 0){
 					this->current_state = this->prev_state;
 					return;
+				}
+				if (this->blocking_entity->my_type == this->my_type){
+					Mob* blocker = this->blocking_entity->fetch_me_as_mob();
+					if (blocker == NULL){
+						// bad news... game done broke just go for it
+					}
+					blocker->current_state = chilling_out;
+					int distance_needed = this->get_bounding_width() + this->get_bounding_height();
+					blocker->chill_time = (distance_needed / blocker->velocity) * 5 * blocker->velocity_delay;
 				}
 			}
 
@@ -117,8 +140,12 @@ void Mob::update(void){
 			break;
 
 		case detour_two:
-
+			
 			dest_reached = move_towards(this->detour_pair.second);
+			
+			if(!check){
+				this->current_state = detour_intial;
+			}
 
 			if(dest_reached){
 				this->blocking_entity = NULL;
@@ -213,18 +240,24 @@ bool Mob::move(Direction new_dir){
 	if (new_dir != cur_dir) {
 		this->image->set_facing(new_dir);
 	}
+	
+	if(++this->movement_counter != this->velocity_delay){
+		return false;
+	}
+
+	this->movement_counter = 0;
 
 	if(new_dir == N && this->can_walk_up){
-		this->y_pos -= TG_DELTA;
+		this->y_pos -= this->velocity;
 		this->image->update();
 	}else if(new_dir == S && this->can_walk_down){
-		this->y_pos += TG_DELTA;
+		this->y_pos += this->velocity;
 		this->image->update();
 	}else if(new_dir == E && this->can_walk_right){
-		this->x_pos += TG_DELTA;
+		this->x_pos += this->velocity;
 		this->image->update();
 	}else if(new_dir == W && this->can_walk_left){
-		this->x_pos -= TG_DELTA;
+		this->x_pos -= this->velocity;
 		this->image->update();
 	}else{
 		return false;
@@ -438,7 +471,7 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 		return true; // reached destination
 
 		//go left and down
-	}else if((x_dif > 0) && (y_dif > 0)){
+	}else if((x_dif >= 0) && (y_dif >= 0)){
 		if(dif_x_y > 0){
 			moved = move(E);
 		}else{
@@ -446,7 +479,7 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 		}
 
 		//go right and up
-	}else if((x_dif > 0) && (y_dif < 0)){
+	}else if((x_dif >= 0) && (y_dif <= 0)){
 		if(dif_x_y > 0){
 			moved = move(E);
 		}else{
@@ -455,7 +488,7 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 
 
 		//go left and down
-	}else if((x_dif < 0) && (y_dif > 0)){
+	}else if((x_dif <= 0) && (y_dif >= 0)){
 		if(dif_x_y > 0){
 			moved = move(W);
 		}else{
@@ -463,7 +496,7 @@ bool Mob::move_towards(std::pair<int, int> coordinate){
 		}
 
 		//go left and up
-	}else if((x_dif < 0) && (y_dif < 0)){
+	}else if((x_dif <= 0) && (y_dif <= 0)){
 		if(dif_x_y > 0){
 			moved = move(W);
 		}else{
@@ -720,4 +753,8 @@ Direction Mob::get_target_true_dir(){
 
 	return this->image->get_facing();
 
+}
+
+Mob* Mob::fetch_me_as_mob(void){
+	return this;
 }
