@@ -505,7 +505,7 @@ int move_closer(int pos, int old_pos){
 	if (pos > old_pos){
 		return pos--;
 	}
-	if (pos < old_pos){
+	else {
 		return pos++;
 	}
 }
