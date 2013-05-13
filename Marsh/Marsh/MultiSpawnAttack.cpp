@@ -37,9 +37,9 @@ void MultiSpawnAttack::update(void){
 		case S:
 			break;
 		}
-		Attack* spawned = this->attack_spawning->clone(x, y, this->get_image()->get_facing());
-		spawned->set_world(this->get_world());
-		this->get_world()->insert_entity(spawned);
+		//Attack* spawned = this->attack_spawning->clone(x, y, this->get_image()->get_facing());
+		//spawned->set_world(this->get_world());
+		//this->get_world()->insert_entity(spawned);
 	}
 }
 
