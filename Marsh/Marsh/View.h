@@ -27,6 +27,7 @@
 #define CONSOLE_HEIGHT 155
 #define BACK_LAYER_X 585
 #define BACK_LAYER_Y 40
+#define SPELL_ICON_SIZE 65
 
 
 #define HEALTH_COLOR makecol(165, 33, 33)
@@ -41,7 +42,11 @@ class Portal;
 using namespace std;
 namespace Marsh {
 
-class View{
+	class View{
+	
+		std::vector<std::string>* displayed_images;
+		std::vector<std::pair<int, int>>* spell_icon_coords;
+
 	public:
 		BITMAP* world_buffer;
 		BITMAP* ui_buffer;
@@ -69,10 +74,13 @@ class View{
 		void draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites);
 		void draw_to_screen(void);
 		void switch_current_world(WorldName desired_world);
+		void draw_updated_loadout(Attack*[]);
 
-private:
-	void insert_testing_entities(void);
-};
+	private:
+		void insert_testing_entities(void);
+		void populate_spell_locs(void);
+		void populate_image_names(void);
+	};
 }
 
 #endif

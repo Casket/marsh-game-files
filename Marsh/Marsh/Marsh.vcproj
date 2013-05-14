@@ -369,10 +369,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Dispatcher.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Dragon.cpp"
 				>
 			</File>

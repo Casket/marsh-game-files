@@ -41,7 +41,7 @@ void AttackDB::populate_penetration_spells(void){
 	//Shadow Needle
 	stats_for_spell.base_damage = base_spell_damage;
 	stats_for_spell.charge_time = base_charge_time + 5;
-	stats_for_spell.exp_date = animation_delay * 6;
+	stats_for_spell.exp_date = animation_delay * 0;
 	stats_for_spell.penetration = base_spell_penetration;
 	stats_for_spell.range = LONG_RANGE;
 	stats_for_spell.tree_depth = 1;
@@ -56,7 +56,7 @@ void AttackDB::populate_penetration_spells(void){
 	//Shadow Needle Plus
 	stats_for_spell.base_damage = base_spell_damage + 10;
 	stats_for_spell.charge_time = base_charge_time + 5;
-	stats_for_spell.exp_date = animation_delay * 6;
+	stats_for_spell.exp_date = animation_delay * 0;
 	stats_for_spell.penetration = base_spell_penetration + 5;
 	stats_for_spell.range = LONG_RANGE;
 	stats_for_spell.tree_depth = 2;
@@ -69,18 +69,18 @@ void AttackDB::populate_penetration_spells(void){
 	//Shadow spikes
 	stats_for_spell.base_damage = base_spell_damage + 10;
 	stats_for_spell.charge_time = base_charge_time + 100;
-	stats_for_spell.exp_date = 7*20;
+	stats_for_spell.exp_date = 7*5;
 	stats_for_spell.penetration = base_spell_penetration + 5;
 	stats_for_spell.range = 0;
 	stats_for_spell.tree_depth = 2;
 
-	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 20, 1, 7, 7, 147/7, 45);
+	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 4, 1, 7, 7, 147/7, 45);
 	spikes->set_state_frame_counts(0, 7, 0);
 	
 	StationaryAttack* spike_attack = new StationaryAttack(0, 0, spikes, stats_for_spell);
 	spike_attack->set_boundary_value(20, 20, 0, 23);
 
-	Attack* shadow_spikes = new SpikeLauncher(0, 0, spikes, spike_attack,stats_for_spell, 10, 4);
+	Attack* shadow_spikes = new SpikeLauncher(0, 0, spikes, spike_attack,stats_for_spell, 5, 4);
 	shadow_spikes->set_boundary_value(20, 23, 0, 0);
 	shadow_spikes->set_mana_cost(base_mana + 10);
 	shadow_spikes->spell_id = SHADOW_SPIKES;
@@ -110,7 +110,7 @@ void AttackDB::populate_penetration_spells(void){
 	beamer->set_position_adjustment(50, 0);
 	beamer->set_boundary_value(50, 34, 5, 10);
 	beamer->spell_id = DEATH_BEAM;
-	this->attacks_by_id->insert(std::pair<int, Attack*>(DEATH_BEAM, death_beam));
+	this->attacks_by_id->insert(std::pair<int, Attack*>(DEATH_BEAM, beamer));
 
 }
 void AttackDB::populate_utility_spells(void){

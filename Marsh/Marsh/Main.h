@@ -32,7 +32,7 @@ class Attack;
 #include "Reject.h"
 #include "Vampire.h"
 #include "Player_Sprite.h"
-#include "Dispatcher.h"
+//#include "Dispatcher.h"
 #include "GuardCaptain.h"
 #include "World.h"
 #include "View.h"
@@ -73,6 +73,9 @@ extern volatile int world_time_counter;
 extern volatile int world_time_delay;
 extern AttackDB* attackDB;
 extern ItemDB* itemDB;
+extern FONT *font1;
+extern FONT *font2;
+extern FONT *font3;
 
 using namespace std;
 using namespace Marsh;

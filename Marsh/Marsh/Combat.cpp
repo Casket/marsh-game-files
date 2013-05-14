@@ -32,8 +32,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 
 	this->insert_db_attacks();
-	this->insert_utility_spells(4);
-	//this->insert_damage_attacks(4);
+	//this->insert_utility_spells(4);
+	this->insert_damage_attacks(4);
 }
 
 Combat::~Combat(void) {
@@ -253,6 +253,7 @@ EntityType Combat::get_my_type(void){
 }
 
 void Combat::update_dispatchers(void){
+	/*
 	std::list<std::list<Dispatcher*>::iterator> bad_iters;
 	std::list<Dispatcher*>::iterator end = this->active_dispatchers->end();
 	for (std::list<Dispatcher*>::iterator iter = this->active_dispatchers->begin(); iter != end; ++iter){
@@ -265,6 +266,7 @@ void Combat::update_dispatchers(void){
 	for (std::list<std::list<Dispatcher*>::iterator>::iterator iter = bad_iters.begin(); iter != bad_iters.end(); ++iter){
 		this->active_dispatchers->erase((*iter));
 	}
+	*/
 }
 
 void Combat::set_my_type(EntityType e) {

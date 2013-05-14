@@ -6,7 +6,7 @@ using namespace std;
 Vampire::Vampire(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* ways)
 :Mob(x,y,vel,vel_d,img,ways){
 
-	this->my_type = Monster;
+	this->my_type = Vamp;
 
 }
 Vampire::~Vampire(void){
@@ -20,7 +20,7 @@ void Vampire::set_ranges(void){
 }
 int Vampire::choose_attack(){
 	if(this->cooldowns[2].first == 0){
-		return 1;
+		return 2;
 	}
 
 	if(this->in_melee_range && this->cooldowns[0].first == 0){
