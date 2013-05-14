@@ -42,7 +42,7 @@ World::~World(void){
 BITMAP* draw_loading(void) {
 	BITMAP *loading_screen_bitmap = load_bitmap("Resources//LoadScreen.bmp",NULL);
 	//BITMAP *tip = load_bitmap("Resources//boom.bmp",NULL);
-	if (!loading_screen_bitmap) //|| !tip){
+	if (!loading_screen_bitmap){ //|| !tip){
 		allegro_message("Failed to load the loading screen."); 
 		exit(1);	
 	}
