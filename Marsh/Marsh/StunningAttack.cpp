@@ -50,24 +50,29 @@ Attack* StunningAttack::clone(int x, int y, Direction dir){
 
 	dup->set_x_pos(x);
 	dup->set_y_pos(y);
-
+	dup->spell_id = this->spell_id;
 
 	return dup;
 }
 
 void StunningAttack::update(void){
-	this->get_image()->update();
+	
 	if (!this->alive){
 		this->get_world()->remove_entity(this);
 		return;
 	}
 
-	if (this->caught_target == NULL)
+	if (this->caught_target == NULL){
 		Attack::update();
+	} else {
+		this->get_image()->update();
+		// the default attack updater does this, so don't let it happen twice
+	}
 	if (this->caught_target != NULL){
 		if (++this->death_timer >= this->expiration_date){
 			Attack::start_death_sequence();
 			this->caught_target->entangled = false;
+			return;
 		}
 		this->caught_target->entangled = true;
 		this->caught_target->deal_with_attack(this);

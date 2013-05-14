@@ -33,5 +33,6 @@ Attack* SprintSpell::clone(int x, int y, Direction dir){
 	Sprite* image = this->get_image()->clone(W);
 	SprintSpell* dup = new SprintSpell(this->velocity_to_receive, this->expiration_date, this->charge_time);
 	dup->set_my_caster(this->my_caster);
+	dup->spell_id = this->spell_id;
 	return dup;
 }

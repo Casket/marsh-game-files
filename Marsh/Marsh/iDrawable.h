@@ -35,7 +35,7 @@ public:
 	int get_bounding_width(void);
 	int get_bounding_height(void);
 	void set_sprite(Sprite* spr);
-	void set_world(World* world);
+	virtual void set_world(World* world);
 	Sprite* get_image(void);
 	int get_x_pos(void);
 	int get_y_pos(void);

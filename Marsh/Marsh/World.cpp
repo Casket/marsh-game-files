@@ -42,10 +42,13 @@ World::~World(void){
 
 BITMAP* draw_loading(void) {
 	BITMAP *loading_screen_bitmap = load_bitmap("Resources//LoadScreen.bmp",NULL);
-	if (!loading_screen_bitmap)
-		exit(1);
-	//blit(loading_screen_bitmap, NULL, 0, 0, 0, 0, UI_WIDTH, UI_HEIGHT);
+	//BITMAP *tip = load_bitmap("Resources//boom.bmp",NULL);
+	if (!loading_screen_bitmap){ //|| !tip){
+		allegro_message("Failed to load the loading screen."); 
+		exit(1);	
+	}
 	blit(loading_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
+	//blit(tip, screen, 0,0,304,230,773,413);
 	return loading_screen_bitmap;
 }
 
@@ -367,18 +370,6 @@ bool World::equals(World* w){
 
 
 bool sort_visibles(iDrawable* d1, iDrawable* d2){
-
-	if (d1->my_type == Wallop){
-		Attack* check = d1->fetch_me_as_attack();
-		if (check->get_above_target() == d2)
-			return false;
-	}
-	if (d2->my_type == Wallop){
-		Attack* check = d2->fetch_me_as_attack();
-		if (check->get_above_target() == d1)
-			return true;
-	}
-
 	if (d1->get_reference_y() == d2->get_reference_y()){
 		return (d1->get_reference_x() < d2->get_reference_x());
 	}
@@ -455,6 +446,69 @@ void World::make_world(){
 
 }
 
+<<<<<<< HEAD
+=======
+		new_d->set_boundary_value(32,32,0,32);
+
+	}else if(type.compare( "statue2")==0){
+
+		new_d->set_boundary_value(32,32,0,32);
+
+	}else if(type.compare( "table")==0){
+
+		
+
+	}else if(type.compare( "table_hut")==0){
+
+		new_d->set_boundary_value(32,27,0,5);
+
+	}else if(type.compare( "throne")==0){
+
+		new_d->set_boundary_value(67,32,0,32);
+
+	}else if(type.compare("tree_dead")==0){
+
+		
+
+	}else if(type.compare("tree_oak")==0){
+
+		
+
+	}else if(type.compare("tree_oak2")==0){
+
+		
+
+	}else if(type.compare("tree_pine")==0){
+
+		new_d->set_boundary_value(35,30,60,123);
+
+	}else if(type.compare("tree_stump")==0){
+
+		new_d->set_boundary_value(27,18,2,7);
+
+	}else if(type.compare("watchtower")==0){
+
+
+	}else if(type.compare("well")==0){
+
+
+	}else if(type.compare("wine")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare("wine_cabinet")==0){
+
+		new_d->set_boundary_value(64,32,0,32);
+
+	}else{
+		throw std::exception(type.c_str());
+	}
+
+	new_d->set_my_type(Stationary);
+	insert_entity(new_d);
+
+}
+>>>>>>> 41ebbf404345e57422614989f0da2576f2ddcaaf
 
 std::string World::get_file(WorldName name){
 	if(name == test_map){

@@ -20,11 +20,23 @@ ItemBestower::~ItemBestower(void){
 	delete this->inventory;
 } 
 
+
 void ItemBestower::update(void){
 	if (!this->should_give_items)
 		return;
 
 	if (this->bestow_all_items){
+		while (!this->inventory->empty()){
+			std::pair<Equipment*, int> item = this->inventory->back();
+			int success = Player_Accessor::get_player()->add_to_inventory(get_item_clone(item.first));
+			this->inventory->pop_back();
+			if (success == -1){
+				Player_Accessor::get_player()->display_to_user("Your inventory is full.  Please make some room before taking more items.");				
+				this->inventory->push_back(item);
+				break;
+			}
+		}
+		this->should_give_items = false;
 
 	} else {
 		int key_pressed = -1;

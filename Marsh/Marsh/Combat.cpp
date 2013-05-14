@@ -14,11 +14,96 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
 	this->active_dispatchers = new std::list<Dispatcher*>();
+	this->active_wards = new std::list<Attack*>();
 
 	for (int i=0; i < MAX_ATTACKS; i++)
 		this->attack_loadout[i] = NULL;
 
+	this->health = calculate_health(this->vitality);
+	this->casted_spell = NULL;
+	this->targeted = false;
+	this->player_credit = false;
+	this->experience_worth = 10;
+	this->dialogue = new std::vector<std::string>();
+	this->current_dialogue = 0;
+	this->should_free_player = false;
+	this->has_player_hostage = false;
+	this->casting_timer = 0;
+	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 
+	this->insert_db_attacks();
+	this->insert_utility_spells(4);
+	//this->insert_damage_attacks(4);
+}
+
+Combat::~Combat(void) {
+	if(casted_spell != NULL)
+		delete casted_spell;
+}
+
+void Combat::insert_damage_attacks(int n){
+	AttackDB* attacks = new AttackDB();
+	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_BALL)->clone(0, 0, N);
+	this->attack_loadout[n++]->set_my_caster(this);
+
+	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_BALL_PLUS)->clone(0, 0, N);
+	this->attack_loadout[n++]->set_my_caster(this);
+
+	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_WAVE)->clone(0, 0, W);
+	this->attack_loadout[n++]->set_my_caster(this);
+
+	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_NOVA)->clone(0, 0, N);
+	this->attack_loadout[n++]->set_my_caster(this);
+
+	delete attacks;
+}
+
+void Combat::insert_db_attacks(void){
+	AttackDB* attacks = new AttackDB();
+	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_NEEDLE)->clone(0, 0, N);
+	this->attack_loadout[0]->set_my_caster(this);
+
+	this->attack_loadout[1] = attacks->fetch_attack(SHADOW_NEEDLE_PLUS)->clone(0, 0, N);
+	this->attack_loadout[1]->set_my_caster(this);
+
+	this->attack_loadout[2] = attacks->fetch_attack(SHADOW_SPIKES)->clone(0, 0, N);
+	this->attack_loadout[2]->set_my_caster(this);
+
+	this->attack_loadout[3] = attacks->fetch_attack(DEATH_BEAM)->clone(0, 0, W);
+	this->attack_loadout[3]->set_my_caster(this);
+	delete attacks;
+}
+
+void Combat::insert_utility_spells(int start){
+	AttackDB* attacks = new AttackDB();
+
+	this->attack_loadout[start] = attacks->fetch_attack(DRAIN_HEALTH)->clone(0, 0, N);
+	this->attack_loadout[start++]->set_my_caster(this);
+
+	this->attack_loadout[start] = attacks->fetch_attack(SHIELD)->clone(0, 0, N);
+	this->attack_loadout[start]->set_my_caster(this);
+	start++;
+
+	this->attack_loadout[start] = attacks->fetch_attack(DEFLECT)->clone(0, 0, N);
+	this->attack_loadout[start]->set_my_caster(this);
+	start++;
+
+	this->attack_loadout[start] = attacks->fetch_attack(SHADOW_DASH)->clone(0, 0, N);
+	this->attack_loadout[start]->set_my_caster(this);
+	start++;
+
+	this->attack_loadout[start] = attacks->fetch_attack(TELEPORT)->clone(0, 0, N);
+	this->attack_loadout[start]->set_my_caster(this);
+	start++;
+
+	this->attack_loadout[start] = attacks->fetch_attack(BIND_IN_SHADOWS)->clone(0, 0, N);
+	this->attack_loadout[start]->set_my_caster(this);
+
+
+	delete attacks;
+}
+
+void Combat::testing_attacks(void){
 	AttackDB* attacks = new AttackDB();
 	this->attack_loadout[0] = attacks->fetch_attack(GUARD_MELEE);
 	this->attack_loadout[0] = this->attack_loadout[0]->clone(0, 0, W);
@@ -42,14 +127,14 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 
 	this->attack_loadout[1] = death_beam;
 
-	
+
 	Attack_Sprite* drain = new Attack_Sprite("Resources//Attack Sprites//Drain.bmp", W, 5, 1, 3, 3, 32, 19);
 	drain->set_state_frame_counts(0, 5, 0);
 	/*
 	this->attack_loadout[1] = new HealthDrainAttack(0, 0, 2, 10, drain, stats);
 	this->attack_loadout[1]->set_my_caster(this);
 	this->attack_loadout[1]->set_boundary_value(120/5, 19, 0, 0);
-*/
+	*/
 
 	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//NEW_death_beam_charge.bmp", N, 5, 1, 3, 3, 55, 51);
 	shooter_img->set_state_frame_counts(0, 3, 0);
@@ -67,12 +152,13 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	beamer->spell_id = DEATH_BEAM;
 	this->attack_loadout[2] = beamer;
 
-	this->attack_loadout[3] = attacks->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
+	this->attack_loadout[3] = attackDB->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
 	this->attack_loadout[3]->set_my_caster(this);
 
-	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
+	this->attack_loadout[4] = attackDB->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
+	stats.charge_time = 0;
 	this->attack_loadout[3] = new TemporalModifier(death, stats, 10);
 	this->attack_loadout[3]->set_my_caster(this);
 	this->attack_loadout[3]->set_boundary_value(0, 0, 0, 0);
@@ -80,15 +166,15 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 50, 1, 7, 7, 480/7-2, 65);
 	ward_img->set_state_frame_counts(0, 7, 0);
 	ward_img->is_translucent = true;
-	
-	
+
+
 	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
-	this->attack_loadout[5]->set_boundary_value(50, 60, 0, 10);
+	this->attack_loadout[5]->set_boundary_value(10, 10, 0, 10);
 	this->attack_loadout[5]->set_position_adjustment(0,0);
 	this->attack_loadout[5]->set_my_caster(this);
 	this->attack_loadout[5]->spell_id = SHIELD;
-	
-	
+
+
 	this->attack_loadout[0]->set_my_caster(this);
 	/*
 	fireball_spr->set_state_frame_counts(0, 5, 3);
@@ -98,12 +184,12 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
 	this->attack_loadout[1]->set_my_caster(this);
 	*/
-	
+
 	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
 
 	fire->is_translucent = true;
 	fire->set_state_frame_counts(0, 1, 10);
-	
+
 	stats.base_damage = 0;
 	stats.charge_time = 100;
 	stats.exp_date = 1000;
@@ -115,12 +201,16 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
 	this->attack_loadout[6]->set_my_caster(this);
 	this->attack_loadout[6]->set_position_adjustment(0, 20);
-	
+
 	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 20, 1, 7, 7, 147/7, 45);
 	spikes->set_state_frame_counts(0, 7, 0);
 	stats.range = 20;
 	stats.exp_date = 7*20;
-	this->attack_loadout[7] = new StationaryAttack(0, 0, spikes, stats);
+	StationaryAttack* spike_attack = new StationaryAttack(0, 0, spikes, stats);
+	spike_attack->set_boundary_value(20, 20, 0, 23);
+	spike_attack->set_my_caster(this);
+
+	this->attack_loadout[7] = new SpikeLauncher(0, 0, spikes, spike_attack, stats, 10, 4);
 	this->attack_loadout[7]->set_my_caster(this);
 	this->attack_loadout[7]->set_boundary_value(20, 22, 0, 23);
 	this->attack_loadout[7]->set_position_adjustment(0, 10);
@@ -138,24 +228,14 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 
 	this->attack_loadout[9] = new SprintSpell(10, 1000, 10);
 	this->attack_loadout[9]->set_my_caster(this);
-
-
-	this->health = calculate_health(this->vitality);
-	this->casted_spell = NULL;
-	this->targeted = false;
-	this->player_credit = false;
-	this->experience_worth = 10;
-	this->dialogue = new std::vector<std::string>();
-	this->current_dialogue = 0;
-	this->should_free_player = false;
-	this->has_player_hostage = false;
-	this->casting_timer = 0;
-	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 }
 
-Combat::~Combat(void) {
-	if(casted_spell != NULL)
-		delete casted_spell;
+
+
+
+
+void Combat::apply_ward(Attack* ward){
+	this->active_wards->push_back(ward);
 }
 
 void Combat::set_stats(int vitality, int intelligence, int focus, int willpower, int armor) {
@@ -269,12 +349,17 @@ void Combat::launch_attack(int attack_num) {
 		this->casted_spell = this->attack_loadout[attack_num];
 		if (this->casted_spell->get_charge_time() == 0)
 			return;
-		Attack_Sprite* animation = new Attack_Sprite("Resources//Attack Sprites//Charging.bmp", E, 5, 1, 4, 4, 296/4, 76);
-		animation->set_state_frame_counts(0, 4, 0);
-		AttackCharge* charge_amination = new AttackCharge(this->get_x_pos() - 17, this->get_y_pos() - 40, animation, this->casted_spell->get_charge_time());
-		charge_amination->set_boundary_value(0, 0,0, animation->height);
-		charge_amination->set_world(this->get_world());
-		this->get_world()->insert_entity(charge_amination);
+		if (this->my_type == Hero || this->my_type == Outcast || this->my_type == Rival){
+			int charge_time;
+			if ((charge_time = this->casted_spell->get_charge_time()) != 0){
+				Attack_Sprite* animation = new Attack_Sprite("Resources//Attack Sprites//Charging.bmp", E, 5, 1, 4, 4, 296/4, 76);
+				animation->set_state_frame_counts(0, 4, 0);
+				AttackCharge* charge_amination = new AttackCharge(this->get_x_pos() - 17, this->get_y_pos() - 40, animation, this->casted_spell->get_charge_time());
+				charge_amination->set_boundary_value(0, 0,0, animation->height);
+				charge_amination->set_world(this->get_world());
+				this->get_world()->insert_entity(charge_amination);
+			}
+		}
 	}
 }
 
@@ -334,7 +419,7 @@ bool Combat::check_new_pos(int x, int y){
 	int original_x = this->get_x_pos();
 	int original_y = this->get_y_pos();
 	int original_vel = this->velocity;
-	
+
 	this->x_pos = x;
 	this->y_pos = y;
 	this->velocity = 0;
@@ -353,12 +438,18 @@ Combat* Combat::fetch_me_as_combat(void){
 }
 
 void Combat::deal_with_attack(Attack* attack){
+	if (!this->active_wards->empty()){
+		std::list<Attack*>::iterator pos = this->active_wards->begin();
+		(*pos)->deal_with_attack(attack); // tell the ward to handle the attack
+		this->active_wards->erase(pos);
+		return;
+	}
 
 	int armor = this->armor;
 	int adjusted_armor = armor - attack->penetration;
 	if (adjusted_armor <= 0)
 		adjusted_armor = 1;
-	this->health -= (attack->base_damage*attack->get_my_caster()->intelligence)/adjusted_armor;
+	this->health -= (attack->base_damage*attack->get_my_caster()->intelligence)/adjusted_armor; // base damage must be scalar - for reasons, don't ask
 	if(!this->player_credit){
 		if(attack->get_my_caster() == Player_Accessor::get_player()){
 			this->player_credit = true;

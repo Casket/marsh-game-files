@@ -75,5 +75,6 @@ Attack* HealthDrainAttack::clone(int x, int y, Direction dir){
 	result->set_my_caster(this->my_caster);
 	result->my_type = Wallop;
 	result->set_position_adjustment(this->x_adjustment, this->y_adjustment);
+	result->spell_id = this->spell_id;
 	return result;
 }

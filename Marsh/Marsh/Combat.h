@@ -33,7 +33,7 @@ public:
 	int current_dialogue;
 	bool should_free_player;
 	bool has_player_hostage;
-
+	std::list<Attack*>* active_wards;
 
 
 public:
@@ -55,7 +55,11 @@ public:
 	virtual void upon_death(void);
 	virtual bool check_new_pos(int x, int y);
 	void update_dispatchers(void);
-
+	virtual void apply_ward(Attack* ward);
+	void testing_attacks(void);
+	void insert_db_attacks(void);
+	void insert_utility_spells(int);
+	void insert_damage_attacks(int);
 
 protected:
 	int calculate_health(int);

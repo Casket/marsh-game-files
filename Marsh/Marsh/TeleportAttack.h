@@ -11,5 +11,6 @@ public:
 	virtual void update(void);
 	virtual Attack* clone(int, int, Direction);
 	bool check_new_coord(int x, int y);
+	bool contained_in_world(int x, int y);
 
 };
