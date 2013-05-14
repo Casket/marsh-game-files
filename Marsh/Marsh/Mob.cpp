@@ -31,13 +31,10 @@ void Mob::update(void){
 
 	update_cd_timers();
 
-	if(this->wait > 0){
-		this->wait -= 1;
-		return;
-	}
 	if (this->entangled){
 		return;
 	}
+
 	bool dest_reached = false;
 
 	if(this->casting){

@@ -81,13 +81,13 @@ void Marsh::View::populate_spell_locs(void){
 void Marsh::View::populate_image_names(void){
 	this->displayed_images->push_back("Energy_Bolt");
 	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Wave");
 	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Needle");
+	this->displayed_images->push_back("Energy_Needle");
+	this->displayed_images->push_back("Shadow_Spike");
+	this->displayed_images->push_back("Death_Beam_edited");
+	this->displayed_images->push_back("Drain");
 	this->displayed_images->push_back("Energy_Bolt");
 	this->displayed_images->push_back("Energy_Bolt");
 	this->displayed_images->push_back("Energy_Bolt");
