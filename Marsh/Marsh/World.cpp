@@ -446,69 +446,7 @@ void World::make_world(){
 
 }
 
-<<<<<<< HEAD
-=======
-		new_d->set_boundary_value(32,32,0,32);
 
-	}else if(type.compare( "statue2")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare( "table")==0){
-
-		
-
-	}else if(type.compare( "table_hut")==0){
-
-		new_d->set_boundary_value(32,27,0,5);
-
-	}else if(type.compare( "throne")==0){
-
-		new_d->set_boundary_value(67,32,0,32);
-
-	}else if(type.compare("tree_dead")==0){
-
-		
-
-	}else if(type.compare("tree_oak")==0){
-
-		
-
-	}else if(type.compare("tree_oak2")==0){
-
-		
-
-	}else if(type.compare("tree_pine")==0){
-
-		new_d->set_boundary_value(35,30,60,123);
-
-	}else if(type.compare("tree_stump")==0){
-
-		new_d->set_boundary_value(27,18,2,7);
-
-	}else if(type.compare("watchtower")==0){
-
-
-	}else if(type.compare("well")==0){
-
-
-	}else if(type.compare("wine")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare("wine_cabinet")==0){
-
-		new_d->set_boundary_value(64,32,0,32);
-
-	}else{
-		throw std::exception(type.c_str());
-	}
-
-	new_d->set_my_type(Stationary);
-	insert_entity(new_d);
-
-}
->>>>>>> 41ebbf404345e57422614989f0da2576f2ddcaaf
 
 std::string World::get_file(WorldName name){
 	if(name == test_map){
@@ -546,7 +484,6 @@ void World::set_boundaries(std::string type, int width, int height, int x, int y
 	boundaries.bounds[3] = y;
 
 	this->drawables->insert(std::pair<std::string, drawable_bounds>(type, boundaries));
-
 }
 void World::intial_drawable_map(void){
 	this->drawables = new std::map<std::string, drawable_bounds>();
@@ -869,13 +806,13 @@ void World::make_AI(std::string items){
 	values = pull_out(items, constant_index);
 	std::string type;
 	std::string file;
-		
+
 	constant_index += (values.second + 1);
 
 	type = values.first;
-	
+
 	values = pull_out(items, constant_index);
-	
+
 	constant_index += (values.second + 1);
 	file = values.first;
 
@@ -919,7 +856,7 @@ void World::make_AI(std::string items){
 	}
 
 	if(type.compare("OptionPresenter") == 0){
-		
+
 		make_op(items, constant_index, filename, x_pos, y_pos);
 		return;
 
@@ -1098,8 +1035,8 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 		obj = new KillObjective(ent, list_to_int(values.first, values.second));
-	
-	
+
+
 	}else if(items[constant_index] == 'R'){
 
 		constant_index += 1;
@@ -1140,13 +1077,13 @@ void World::make_dialouge_op(std::string items, int constant_index, OptionPresen
 
 	while(true){
 
-		
+
 		if(items.at(constant_index-1) == '!'){
 			break;
 		}
-		
+
 		char check = items.at(constant_index);
-		
+
 		if( check == '^'){
 			constant_index++;
 			values = pull_out(items, constant_index);
@@ -1162,7 +1099,7 @@ void World::make_dialouge_op(std::string items, int constant_index, OptionPresen
 
 		constant_index += (values.second + 1);
 
-		
+
 	}
 
 }

@@ -94,7 +94,7 @@ void Marsh::View::put_world_in_loaded(World* world){
 
 void Marsh::View::insert_testing_entities(void){
 		
-	ItemBestower* dave = new ItemBestower(600, 600, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+	ItemBestower* dave = new ItemBestower(600, 600, 0, 0, new Player_Sprite("Resources//AI_characters//nice_folk.bmp", S, 5, 1, 16, 16));
 	//dave->
 
 
@@ -110,7 +110,7 @@ void Marsh::View::insert_testing_entities(void){
 		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
 		shop->bestow_all_items = false;
 
-		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//AI_characters//nice_folk.bmp", S, 5, 1, 16, 16));
 		farmer_bob->set_world(this->current_world);
 		farmer_bob->append_dialogue("Good work tiny adventurer.");
 		farmer_bob->can_speak = true;
