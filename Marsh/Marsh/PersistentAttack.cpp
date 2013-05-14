@@ -33,5 +33,6 @@ Attack* PersistentAttack::clone(int x, int y, Direction dir){
 	PersistentAttack* dup = new PersistentAttack(x, y, this->velocity, this->velocity_delay, image, stats);
 	dup->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 	dup->set_my_caster(this->my_caster);
+	dup->spell_id = this->spell_id;
 	return dup;
 }

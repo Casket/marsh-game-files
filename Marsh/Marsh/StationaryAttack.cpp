@@ -4,7 +4,7 @@
 StationaryAttack::StationaryAttack(int x, int y, Sprite* img, AttackStatistics stats)
 :Attack(x, y, 0, 0, img, stats)
 {
-	
+	this->alive = false;
 }
 
 StationaryAttack::~StationaryAttack(void){
@@ -48,15 +48,12 @@ Attack* StationaryAttack::clone(int x, int y, Direction dir){
 
 	dup->set_x_pos(x);
 	dup->set_y_pos(y);
-	
+	dup->spell_id = this->spell_id;
 	return dup;
 }
 
 void StationaryAttack::update_position(void){
-	if (this->alive){
-		if (++this->death_timer >= this->expiration_date)
-			this->get_world()->remove_entity(this);
-	}
+	// do nothing... you don't move
 }
 
 void StationaryAttack::start_death_sequence(void){

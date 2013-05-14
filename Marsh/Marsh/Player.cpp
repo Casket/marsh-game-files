@@ -30,8 +30,18 @@ Player::~Player(void){
 
 }
 
-void Player::upon_death(void){
+void Player::set_world(World* world){
+	iDrawable::set_world(world);
+	std::list<Attack*>::iterator end = this->active_wards->end();
+	for (std::list<Attack*>::iterator iter = this->active_wards->begin(); iter != end; ++iter){
+		(*iter)->get_world()->active_entities->remove((*iter));
+		(*iter)->set_world(world);
+		world->insert_entity((*iter));
+	}
+}
 
+void Player::upon_death(void){
+	//TODO add the death screen
 }
 
 void Player::increment_notoriety(int increase){
@@ -168,6 +178,7 @@ bool Player::wants_to_talk(void){
 
 
 void Player::update(void) {
+	this->update_dispatchers();
 	check_collisions();
 	if (this->entangled)
 		return;
@@ -253,6 +264,8 @@ void Player::listen_to_keyboard(void) {
 		// deal with all other potential input
 		if(key[KEY_H]){
 			this->health -= 50000;
+		}else if(key[KEY_J]){
+			this->experience += 50;
 		}
 		accept_movement();
 		accept_interaction();
@@ -490,15 +503,6 @@ void Player::accept_movement(void) {
 		this->image->set_facing(new_dir);
 	}
 
-	while (!check_new_pos(new_x, new_y)){
-		new_x = move_closer(new_x, cur_x);
-		new_y = move_closer(new_y, cur_y);
-		if (new_x == -1 || new_y == -1){
-			new_x = cur_x;
-			new_y = cur_y;
-			break;
-		}
-	}
 	this->x_pos = new_x;
 	this->y_pos = new_y;
 		if (walking)

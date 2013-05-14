@@ -8,6 +8,10 @@ using namespace std;
 
 typedef struct QuestReward{
 	int gold;
+	int rep;
+	int exp;
+	int item;
+
 }QuestReward;
 
 typedef struct QuestDescription{

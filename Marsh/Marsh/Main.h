@@ -29,10 +29,11 @@ class Attack;
 #include "Town_Guard.h"
 #include "Marsh_Monster.h"
 #include "Dragon.h"
-#include "GuardCaptain.h"
 #include "Reject.h"
 #include "Vampire.h"
 #include "Player_Sprite.h"
+#include "Dispatcher.h"
+#include "GuardCaptain.h"
 #include "World.h"
 #include "View.h"
 #include "AttackDB.h"
@@ -57,6 +58,8 @@ class Attack;
 #include "TemporalModifier.h"
 #include "ProtectionAttack.h"
 #include "ItemDB.h"
+#include "SpikeLauncher.h"
+
 class AttackDB;
 class ItemDB;
 #define VISIBLE_W 1400

@@ -11,7 +11,7 @@ class Mob;
 
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken, Wallop, StarGate, Stationary};
+enum EntityType {Guard, Monster,Lizard, Outcast, Hero, Rival, Speaker, Chicken, Wallop, StarGate, Stationary, VampBoss, Vamp, GuardCap, StatueLead};
 
 class iDrawable{
 public:
@@ -35,7 +35,7 @@ public:
 	int get_bounding_width(void);
 	int get_bounding_height(void);
 	void set_sprite(Sprite* spr);
-	void set_world(World* world);
+	virtual void set_world(World* world);
 	Sprite* get_image(void);
 	int get_x_pos(void);
 	int get_y_pos(void);

@@ -29,17 +29,22 @@ void MultiSpawnAttack::update(void){
 		int y = this->get_y_pos();
 		switch (this->get_image()->get_facing()){
 		case W:
+			x +=  this->attack_spawning->get_bounding_width();
 			break;
 		case E:
+			x +=  this->attack_spawning->get_bounding_width();
 			break;
 		case N:
+			y += this->attack_spawning->get_bounding_height();
 			break;
 		case S:
+			y += this->attack_spawning->get_bounding_height();
 			break;
 		}
-		//Attack* spawned = this->attack_spawning->clone(x, y, this->get_image()->get_facing());
-		//spawned->set_world(this->get_world());
-		//this->get_world()->insert_entity(spawned);
+		Attack* spawned = this->attack_spawning->clone(x, y, this->get_image()->get_facing());
+		spawned->set_world(this->get_world());
+		spawned->set_my_caster(this->my_caster);
+		this->get_world()->insert_entity(spawned);
 	}
 }
 
@@ -90,5 +95,6 @@ Attack* MultiSpawnAttack::clone(int x, int y, Direction dir){
 	dup->set_y_pos(y);
 
 	dup->set_my_caster(this->my_caster);
+	dup->spell_id = this->spell_id;
 	return dup;
 }
