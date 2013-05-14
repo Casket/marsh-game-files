@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <map>
 
 using namespace std;
 BITMAP* draw_loading(void);
@@ -59,6 +60,7 @@ void World::load_world(){
 
 	fin.open(filename.c_str(), ios::in);
 
+	this->intial_drawable_map();
 
 	if(fin.is_open()){
 
@@ -118,18 +120,18 @@ void World::load_world(){
 
 				//loops through the line grabbing every char pair and creating the neccessary tile and then adding it to the class object map array 
 
-//				omp_lock_t readlock;
-//				omp_init_lock(&readlock);
-//#pragma omp parallel for
+				//				omp_lock_t readlock;
+				//				omp_init_lock(&readlock);
+				//#pragma omp parallel for
 				for(int i = 0; i < size ; i+=2){					
-//					omp_set_lock(&readlock);
+					//					omp_set_lock(&readlock);
 					first = items.at(i);
 					second = items.at(i+1);
-//					omp_unset_lock(&readlock);
+					//					omp_unset_lock(&readlock);
 					convert_to_tile(first, second, row_count,i/2);
 				}
 
-				
+
 				row_count += 1;
 			}
 		}
@@ -138,6 +140,9 @@ void World::load_world(){
 	}else{
 		return;
 	}
+
+	delete this->drawables;
+	this->drawables = NULL;
 }
 std::pair<std::string, int> World::pull_out(std::string items, int index){
 
@@ -362,7 +367,7 @@ bool World::equals(World* w){
 
 
 bool sort_visibles(iDrawable* d1, iDrawable* d2){
-	
+
 	if (d1->my_type == Wallop){
 		Attack* check = d1->fetch_me_as_attack();
 		if (check->get_above_target() == d2)
@@ -373,7 +378,7 @@ bool sort_visibles(iDrawable* d1, iDrawable* d2){
 		if (check->get_above_target() == d1)
 			return true;
 	}
-	
+
 	if (d1->get_reference_y() == d2->get_reference_y()){
 		return (d1->get_reference_x() < d2->get_reference_x());
 	}
@@ -381,6 +386,9 @@ bool sort_visibles(iDrawable* d1, iDrawable* d2){
 }
 
 void World::insert_entity(iDrawable* da_d){
+	if (da_d == NULL){
+		return;
+	}
 	this->active_entities->push_back(da_d);
 }
 
@@ -446,674 +454,7 @@ void World::make_world(){
 
 
 }
-void World::designate_drawable(std::string type, std::string x, std::string y, int size_x, int size_y, int type_size){
 
-	int x_pos = list_to_int(x,size_x);
-	int y_pos = list_to_int(y,size_y);
-	Drawable* new_d;
-
-	std::string filename;
-	filename.append("Resources//drawable_images//");
-	filename.append(type);
-	filename.append(".bmp");
-
-	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite((char*)filename.c_str()));
-
-	if(type.compare( "aisles")==0){
-
-		new_d->set_boundary_value(160,32,0,32);
-
-	}else if(type.compare("altar")==0){
-
-		new_d->set_boundary_value(72,32,2,18);
-
-	}else if(type.compare( "bar")==0){
-
-		new_d->set_boundary_value(89,33,1,9);
-
-	}else if(type.compare( "barn")==0){
-		
-		new_d->set_boundary_value(96,49,0,49);
-
-	}else if(type.compare( "barrel")==0){
-
-		new_d->set_boundary_value(29,23,0,7);
-
-	}else if(type.compare( "barrel2")==0){
-
-		new_d->set_boundary_value(29,23,0,7);
-
-	}else if(type.compare( "bed_double")==0){
-
-		new_d->set_boundary_value(64,64,0,0);
-
-	}else if(type.compare( "bed_house")==0){
-
-		new_d->set_boundary_value(32,64,0,0);
-
-	}else if(type.compare( "bed_hut")==0){
-
-		new_d->set_boundary_value(70,60,0,20);
-
-	}else if(type.compare( "beer")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "bookshelf")==0){
-
-		new_d->set_boundary_value(64,32,0,32);
-
-	}else if(type.compare( "boat")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "box")==0){
-
-		new_d->set_boundary_value(32,24,0,8);
-
-	}else if(type.compare( "bread1")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "bread2")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "bread3")==0){
-
-		new_d->set_boundary_value(29,23,0,7);
-
-	}else if(type.compare( "castle_1_1")==0){
-
-		new_d->set_boundary_value(7,818,0,10);
-
-	}else if(type.compare( "castle_1_2")==0){
-
-		new_d->set_boundary_value(711,114,0,0);
-
-	}else if(type.compare( "castle_1_3")==0){
-
-		new_d->set_boundary_value(7,630,0,10);
-
-	}else if(type.compare( "castle_1_4")==0){
-
-		new_d->set_boundary_value(224,12,0,7);
-
-	}else if(type.compare( "castle_1_5")==0){
-
-		new_d->set_boundary_value(320,64,0,10);
-
-	}else if(type.compare( "castle_1_6")==0){
-
-		new_d->set_boundary_value(334,64,0,10);
-
-	}else if(type.compare( "castle_1_7")==0){
-
-		new_d->set_boundary_value(77,50,0,7);
-
-	}else if(type.compare( "castle_1_8")==0){
-
-		new_d->set_boundary_value(7,129,0,10);
-
-	}else if(type.compare( "castle_1_9")==0){
-
-		new_d->set_boundary_value(7,129,0,10);
-
-	}else if(type.compare( "castle_1_10")==0){
-
-		new_d->set_boundary_value(64,28,0,10);
-
-	}else if(type.compare( "cave")==0){
-
-		new_d->set_boundary_value(130,145,4,30);
-
-	}else if(type.compare( "cave_drg_1")==0){
-
-		new_d->set_boundary_value(64,393,0,0);
-
-	}else if(type.compare( "cave_drg_2")==0){
-
-		new_d->set_boundary_value(928,64,0,10);
-
-	}else if(type.compare( "cave_drg_3")==0){
-
-		new_d->set_boundary_value(299,319,0,10);
-
-	}else if(type.compare( "cave_drg_4")==0){
-
-		new_d->set_boundary_value(12,256,0,10);
-
-	}else if(type.compare( "cave_drg_5")==0){
-
-		new_d->set_boundary_value(288,267,0,0);
-
-	}else if(type.compare( "cave_drg_6")==0){
-
-		new_d->set_boundary_value(928,12,0,0);
-
-	}else if(type.compare( "cave_drg_7")==0){
-
-		new_d->set_boundary_value(68,332,0,0);
-
-	}else if(type.compare( "cell")==0){
-
-		new_d->set_boundary_value(151,133,0,20);
-
-	}else if(type.compare( "cell_wall")==0){
-
-		new_d->set_boundary_value(151,96,0,0);
-
-	}else if(type.compare( "chair_front")==0){
-
-		new_d->set_boundary_value(21,30,0,10);
-
-	}else if(type.compare( "chair_left")==0){
-
-		new_d->set_boundary_value(21,30,0,10);
-
-	}else if(type.compare( "chair_right")==0){
-
-		new_d->set_boundary_value(21,30,0,10);
-
-	}else if(type.compare( "church")==0){
-
-		new_d->set_boundary_value(449,600,0,98);
-
-	}else if(type.compare( "church_1_1")==0){
-
-		new_d->set_boundary_value(167,32,0,0);
-
-	}else if(type.compare( "church_1_2")==0){
-
-		new_d->set_boundary_value(7,384,0,0);
-
-	}else if(type.compare( "church_1_3")==0){
-
-		new_d->set_boundary_value(8,350,0,10);
-
-	}else if(type.compare( "church_1_4")==0){
-
-		new_d->set_boundary_value(526,105,0,10);
-
-	}else if(type.compare( "church_1_5")==0){
-
-		new_d->set_boundary_value(71,63,0,0);
-
-	}else if(type.compare( "church_1_6")==0){
-
-		new_d->set_boundary_value(110,27,0,10);
-
-	}else if(type.compare( "church_1_7")==0){
-
-		new_d->set_boundary_value(45,27,0,10);
-
-	}else if(type.compare( "church_1_8")==0){
-
-		new_d->set_boundary_value(61,27,0,10);
-
-	}else if(type.compare( "church_1_9")==0){
-
-		new_d->set_boundary_value(7,328,0,0);
-
-	}else if(type.compare( "church_1_10")==0){
-
-		new_d->set_boundary_value(321,27,0,5);
-
-	}else if(type.compare( "church_2_1")==0){
-
-		new_d->set_boundary_value(526,105,0,10);
-
-	}else if(type.compare( "church_2_2")==0){
-
-		new_d->set_boundary_value(7,381,0,10);
-
-	}else if(type.compare( "church_2_3")==0){
-
-		new_d->set_boundary_value(8,317,0,10);
-
-	}else if(type.compare( "church_2_4")==0){
-
-		new_d->set_boundary_value(246,27,0,10);
-
-	}else if(type.compare( "church_2_5")==0){
-
-		new_d->set_boundary_value(512,7,0,0);
-
-	}else if(type.compare( "church_2_6")==0){
-
-		new_d->set_boundary_value(8,277,0,10);
-
-	}else if(type.compare( "church_2_7")==0){
-
-		new_d->set_boundary_value(174,27,0,10);
-
-	}else if(type.compare( "church_2_8")==0){
-
-		new_d->set_boundary_value(64,61,0,0);
-
-	}else if(type.compare( "church_2_9")==0){
-
-		new_d->set_boundary_value(7,383,0,10);
-
-	}else if(type.compare( "church_chair1")==0){
-
-		new_d->set_boundary_value(29,21,0,9);
-
-	}else if(type.compare( "church_chair2")==0){
-
-		new_d->set_boundary_value(30,25,0,5);
-
-	}else if(type.compare( "church_chair3")==0){
-
-		new_d->set_boundary_value(30,25,0,5);
-
-	}else if(type.compare( "column")==0){
-
-		new_d->set_boundary_value(30,32,0,64);
-
-	}else if(type.compare( "couch")==0){
-
-		new_d->set_boundary_value(42,85,0,8);
-
-	}else if(type.compare( "cross")==0){
-
-		new_d->set_boundary_value(10,30,0,16);
-
-	}else if(type.compare( "cross_roads")==0){
-
-		new_d->set_boundary_value(10,5,10,27);
-
-	}else if(type.compare( "chest")==0){
-
-		new_d->set_boundary_value(32,32,0,0);
-
-	}else if(type.compare( "dinig_table")==0){
-
-		new_d->set_boundary_value(73,54,0,6);
-
-	}else if(type.compare( "dirt_clump")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "door_front")==0){
-		
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "dresser")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare( "dung_keep1")==0){
-
-		new_d->set_boundary_value(1582,86,0,10);
-
-	}else if(type.compare( "dung_keep2")==0){
-
-		new_d->set_boundary_value(64,96,0,0);
-
-	}else if(type.compare( "dung_keep3")==0){
-
-		new_d->set_boundary_value(166,80,0,16);
-
-	}else if(type.compare( "dung_keep4")==0){
-
-		new_d->set_boundary_value(755,143,0,10);
-
-	}else if(type.compare( "dung_keep5")==0){
-
-		new_d->set_boundary_value(453,138,0,15);
-
-	}else if(type.compare( "dung_room_change")==0){
-
-		new_d->set_boundary_value(14,14,0,50);
-
-	}else if(type.compare( "farm_house")==0){
-
-		new_d->set_boundary_value(165,129,30,45);
-
-	}else if(type.compare( "feed")==0){
-		
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "fence_horiz")==0){
-
-		new_d->set_boundary_value(160,28,0,4);
-
-	}else if(type.compare( "fence_vert")==0){
-
-		new_d->set_boundary_value(5,96,0,0);
-
-	}else if(type.compare( "firepit")==0){
-
-		new_d->set_boundary_value(32,27,0,5);
-
-	}else if(type.compare( "fireplace")==0){
-
-		new_d->set_boundary_value(67,64,0,0);
-
-	}else if(type.compare( "flower1")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower2")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower3")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower4")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower5")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower6")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower7")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flower8")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "flowers")==0){
-
-		new_d->set_boundary_value(0,0,0,0);		
-
-	}else if(type.compare( "grass_tuft")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "grass_tuft_marsh")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "hay")==0){
-
-		new_d->set_boundary_value(70,44,0,20);	
-
-	}else if(type.compare( "hut1")==0){
-
-		new_d->set_boundary_value(220,220,0,20);
-
-	}else if(type.compare( "hut2")==0){
-
-		new_d->set_boundary_value(165,170,0,20);
-
-	}else if(type.compare( "hut3")==0){
-		
-		new_d->set_boundary_value(120,161,0,30);
-				
-	}else if(type.compare( "hut4")==0){
-
-		new_d->set_boundary_value(163,115,0,30);		
-
-	}else if(type.compare( "keep")==0){
-
-		new_d->set_boundary_value(416,370,0,60);
-
-	}else if(type.compare( "keep_stair")==0){
-
-		new_d->set_boundary_value(64,119,0,0);
-
-	}else if(type.compare( "keep1")==0){
-
-		new_d->set_boundary_value(957,700,0,47);
-
-	}else if(type.compare( "kitchen_cabinet")==0){
-
-		new_d->set_boundary_value(32,40,0,24);
-
-	}else if(type.compare( "kitchen_stuff")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "lantern")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "lazy_chair")==0){
-
-		new_d->set_boundary_value(32,40,0,10);
-
-	}else if(type.compare( "livestock_food")==0){
-
-		new_d->set_boundary_value(64,35,0,4);
-
-	}else if(type.compare( "livestock_water")==0){
-
-		new_d->set_boundary_value(32,61,0,4);
-
-	}else if(type.compare( "mirror")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "nice_house1")==0){
-
-		new_d->set_boundary_value(176,257,0,50);		
-
-	}else if(type.compare( "nice_house2")==0){
-
-		new_d->set_boundary_value(364,290,0,26);
-
-	}else if(type.compare( "outcast_bed_roll")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "outcast_box1")==0){
-
-		new_d->set_boundary_value(29,18,0,23);
-
-	}else if(type.compare( "outcast_box2")==0){
-
-		new_d->set_boundary_value(29,18,0,23);
-
-	}else if(type.compare( "outcast_bucket")==0){
-
-		new_d->set_boundary_value(29,12,0,18);
-
-	}else if(type.compare( "outhouse")==0){
-
-		new_d->set_boundary_value(33,32,0,33);
-	
-	}else if(type.compare( "organ")==0){
-
-		new_d->set_boundary_value(63,34,15,30);
-
-	}else if(type.compare( "oven")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare( "piano")==0){
-
-		new_d->set_boundary_value(63,34,15,30);
-
-	}else if(type.compare( "plant1")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant2")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant3")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant4")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant5")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant6")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant7")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant8")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "plant9")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "pew")==0){
-
-		new_d->set_boundary_value(90,30,0,0);
-
-	}else if(type.compare( "portrait")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "rug")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "rock1")==0){
-
-		new_d->set_boundary_value(84,68,0,0);
-
-	}else if(type.compare( "rock2")==0){
-
-		new_d->set_boundary_value(56,39,0,0);
-
-	}else if(type.compare( "rock3")==0){
-
-		new_d->set_boundary_value(38,39,0,0);
-
-	}else if(type.compare( "rock4")==0){
-
-		new_d->set_boundary_value(50,41,0,0);
-
-	}else if(type.compare( "rug_bear")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-	
-	}else if(type.compare( "skeleton1")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "skeleton2")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "skeleton3")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "stained_window")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "side_dresser")==0){
-
-		new_d->set_boundary_value(30,80,0,7);
-	
-	}else if(type.compare( "stairs_down_right")==0){
-		
-		new_d->set_boundary_value(0,0,0,0);
-		
-	}else if(type.compare( "stairs_left")==0){
-		
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "stairs_right")==0){
-		
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare( "statue")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare( "statue2")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare( "table")==0){
-		
-		new_d->set_boundary_value(28,90,0,6);
-
-	}else if(type.compare( "table_hut")==0){
-
-		new_d->set_boundary_value(32,27,0,5);
-
-	}else if(type.compare( "table_library")==0){
-
-		new_d->set_boundary_value(75,63,0,8);
-
-	}else if(type.compare( "tent")==0){
-
-		new_d->set_boundary_value(136,155,0,12);
-
-	}else if(type.compare( "tent_back")==0){
-
-		new_d->set_boundary_value(136,155,0,12);
-
-	}else if(type.compare( "throne")==0){
-
-		new_d->set_boundary_value(67,32,0,32);
-
-	}else if(type.compare("tree_dead")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare("tree_oak")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare("tree_oak2")==0){
-
-		new_d->set_boundary_value(32,32,0,32);
-
-	}else if(type.compare("tree_pine")==0){
-
-		new_d->set_boundary_value(35,30,60,123);
-
-	}else if(type.compare("tree_stump")==0){
-
-		new_d->set_boundary_value(27,18,2,7);
-
-	}else if(type.compare("watchtower")==0){
-
-
-	}else if(type.compare( "wall_front")==0){
-
-		new_d->set_boundary_value(32,16,0,16);
-
-	}else if(type.compare("well")==0){
-
-		new_d->set_boundary_value(32,32,0,32);		
-
-	}else if(type.compare("wine")==0){
-
-		new_d->set_boundary_value(0,0,0,0);
-
-	}else if(type.compare("wine_cabinet")==0){
-
-		new_d->set_boundary_value(64,32,0,32);
-
-	}else{
-		throw std::exception("Invalid drawable");
-	}
-
-	new_d->set_my_type(Stationary);
-	insert_entity(new_d);
-
-}
 
 std::string World::get_file(WorldName name){
 	if(name == test_map){
@@ -1131,7 +472,7 @@ std::string World::get_file(WorldName name){
 	}else if(name == main_world15){
 		return "Resources//maps//main_world15.txt";
 	}else if(name == main_world16){
-		return "Resources//maps//main_world16.txt";
+		return "Resources//maps//world16.txt";
 	}else if(name == main_world17){
 		return "Resources//maps//main_world17.txt";
 	}else if(name == main_world18){
@@ -1141,6 +482,185 @@ std::string World::get_file(WorldName name){
 	}else{
 		throw std::exception("No world");
 	}
+}
+void World::set_boundaries(std::string type, int width, int height, int x, int y){
+	drawable_bounds boundaries;
+
+	boundaries.bounds[0] = width;
+	boundaries.bounds[1] = height;
+	boundaries.bounds[2] = x;
+	boundaries.bounds[3] = y;
+
+	this->drawables->insert(std::pair<std::string, drawable_bounds>(type, boundaries));
+
+}
+void World::intial_drawable_map(void){
+	this->drawables = new std::map<std::string, drawable_bounds>();
+
+	set_boundaries("aisles",160,32,0,32);	
+	set_boundaries("altar",72,32,2,18);	
+	set_boundaries("bar",89,33,1,9);
+	set_boundaries("barn",96,49,0,49);
+	set_boundaries("barrel",29,23,0,7);
+	set_boundaries("barrel2",29,23,0,7);
+	set_boundaries("bed_double",64,64,0,0);
+	set_boundaries("bed_house",32,64,0,0);
+	set_boundaries("bed_hut",70,60,0,20);
+	set_boundaries("beer",0,0,0,0);
+	set_boundaries("bookshelf",64,32,0,32);
+	set_boundaries("boat",0,0,0,0);		
+	set_boundaries("box",32,24,0,8);
+	set_boundaries("bread1",0,0,0,0);
+	set_boundaries("bread2",0,0,0,0);
+	set_boundaries("bread3",29,23,0,7);
+	set_boundaries("castle_1_1",7,818,0,10);
+	set_boundaries("castle_1_2",711,114,0,0);
+	set_boundaries("castle_1_3",7,630,0,10);
+	set_boundaries("castle_1_4",224,12,0,7);
+	set_boundaries("castle_1_5",320,64,0,10);
+	set_boundaries("castle_1_6",334,64,0,10);
+	set_boundaries( "castle_1_7",77,50,0,7);
+	set_boundaries( "castle_1_8",7,129,0,10);
+	set_boundaries( "castle_1_9",7,129,0,10);
+	set_boundaries( "castle_1_10",64,28,0,10);
+	set_boundaries( "cave",130,145,4,30);
+	set_boundaries( "cave_drg_1",64,393,0,0);
+	set_boundaries( "cave_drg_2",928,64,0,10);
+	set_boundaries( "cave_drg_3",299,319,0,10);
+	set_boundaries( "cave_drg_4",12,256,0,10);
+	set_boundaries( "cave_drg_5",288,267,0,0);
+	set_boundaries( "cave_drg_6",928,12,0,0);
+	set_boundaries( "cave_drg_7",68,332,0,0);
+	set_boundaries( "cell",151,133,0,20);
+	set_boundaries( "cell_wall",151,96,0,0);
+	set_boundaries( "chair_front",21,30,0,10);
+	set_boundaries( "chair_left",21,30,0,10);
+	set_boundaries( "chair_right",21,30,0,10);
+	set_boundaries( "church",449,600,0,98);
+	set_boundaries( "church_1_1",167,32,0,0);
+	set_boundaries( "church_1_2",7,384,0,0);
+	set_boundaries( "church_1_3",8,350,0,10);
+	set_boundaries( "church_1_4",526,105,0,10);
+	set_boundaries( "church_1_5",71,63,0,0);
+	set_boundaries( "church_1_6",110,27,0,10);
+	set_boundaries( "church_1_7",45,27,0,10);
+	set_boundaries( "church_1_8",61,27,0,10);
+	set_boundaries( "church_1_9",7,328,0,0);
+	set_boundaries( "church_1_10",321,27,0,5);
+	set_boundaries( "church_2_1",526,105,0,10);
+	set_boundaries( "church_2_2",7,381,0,10);
+	set_boundaries( "church_2_3",8,317,0,10);
+	set_boundaries( "church_2_4",246,27,0,10);
+	set_boundaries( "church_2_5",512,7,0,0);
+	set_boundaries( "church_2_6",8,277,0,10);
+	set_boundaries( "church_2_7",174,27,0,10);
+	set_boundaries( "church_2_8",64,61,0,0);
+	set_boundaries( "church_2_9",7,383,0,10);
+	set_boundaries( "church_chair1",29,21,0,9);
+	set_boundaries( "church_chair2",30,25,0,5);
+	set_boundaries( "church_chair3",30,25,0,5);
+	set_boundaries( "column",30,32,0,64);
+	set_boundaries( "couch",42,85,0,8);
+	set_boundaries( "cross",10,30,0,16);
+	set_boundaries( "cross_roads",10,5,10,27);
+	set_boundaries( "chest",32,32,0,0);
+	set_boundaries( "dinig_table",73,54,0,6);
+	set_boundaries( "dirt_clump",0,0,0,0);
+	set_boundaries( "door_front",0,0,0,0);
+	set_boundaries( "dresser",32,32,0,32);
+	set_boundaries( "dung_keep1",1582,86,0,10);
+	set_boundaries( "dung_keep2",64,96,0,0);
+	set_boundaries( "dung_keep3",166,80,0,16);
+	set_boundaries( "dung_keep4",755,143,0,10);
+	set_boundaries( "dung_keep5",453,138,0,15);
+	set_boundaries( "dung_room_change",14,14,0,50);
+	set_boundaries( "farm_house",165,129,30,45);
+	set_boundaries( "feed",0,0,0,0);
+	set_boundaries( "fence_horiz",160,28,0,4);
+	set_boundaries( "fence_vert",5,96,0,0);
+	set_boundaries( "firepit",32,27,0,5);
+	set_boundaries( "fireplace",67,64,0,0);
+	set_boundaries( "flower1",0,0,0,0);
+	set_boundaries( "flower2",0,0,0,0);
+	set_boundaries( "flower3",0,0,0,0); 
+	set_boundaries( "flower4",0,0,0,0); 
+	set_boundaries( "flower5",0,0,0,0); 
+	set_boundaries( "flower6",0,0,0,0);
+	set_boundaries( "flower7",0,0,0,0);
+	set_boundaries( "flower8",0,0,0,0);
+	set_boundaries( "flower9",0,0,0,0);
+	set_boundaries( "flowers",0,0,0,0);
+	set_boundaries( "grass_tuft",0,0,0,0);
+	set_boundaries( "grass_tuft_marsh",0,0,0,0);
+	set_boundaries( "hay",70,44,0,20);	
+	set_boundaries( "hut1",220,220,0,20);
+	set_boundaries( "hut2",165,170,0,20);
+	set_boundaries( "hut3",120,161,0,30);
+	set_boundaries( "hut4",163,115,0,30);		
+	set_boundaries( "keep",416,370,0,60);
+	set_boundaries( "keep_stair",64,119,0,0);
+	set_boundaries( "keep1",957,700,0,47);
+	set_boundaries( "kitchen_cabinet",32,40,0,24);
+	set_boundaries( "kitchen_stuff",0,0,0,0);
+	set_boundaries( "lantern",0,0,0,0);
+	set_boundaries( "lazy_chair",32,40,0,10);
+	set_boundaries( "livestock_food",64,35,0,4);
+	set_boundaries( "livestock_water",32,61,0,4);
+	set_boundaries( "mirror",0,0,0,0);
+	set_boundaries( "nice_house1",176,257,0,50);		
+	set_boundaries( "nice_house2",364,290,0,26);
+	set_boundaries( "outcast_bed_roll",0,0,0,0);
+	set_boundaries( "outcast_box1",29,18,0,23);
+	set_boundaries( "outcast_box2",29,18,0,23);
+	set_boundaries( "outcast_bucket",29,12,0,18);
+	set_boundaries( "outhouse",33,32,0,33);
+	set_boundaries( "organ",63,34,15,30);
+	set_boundaries( "oven",32,32,0,32);
+	set_boundaries( "piano",63,34,15,30);
+	set_boundaries( "plant1",0,0,0,0); 
+	set_boundaries("plant2",0,0,0,0);
+	set_boundaries("plant3",0,0,0,0);
+	set_boundaries("plant4",0,0,0,0);
+	set_boundaries("plant5",0,0,0,0);
+	set_boundaries("plant6",0,0,0,0);
+	set_boundaries("plant7",0,0,0,0);
+	set_boundaries("plant8",0,0,0,0);
+	set_boundaries("plant9",0,0,0,0);
+	set_boundaries( "pew",90,30,0,0);
+	set_boundaries( "portrait",0,0,0,0);
+	set_boundaries( "rug",0,0,0,0);
+	set_boundaries( "rock1",84,68,0,0);
+	set_boundaries( "rock2",56,39,0,0);
+	set_boundaries( "rock3",38,39,0,0);
+	set_boundaries( "rock4",50,41,0,0);
+	set_boundaries( "rug_bear",0,0,0,0);
+	set_boundaries("skeleton1",0,0,0,0);
+	set_boundaries("skeleton2",0,0,0,0); 
+	set_boundaries("skeleton3",0,0,0,0);
+	set_boundaries("stained_window",0,0,0,0);
+	set_boundaries( "side_dresser",30,80,0,7);
+	set_boundaries( "stairs_down_right",0,0,0,0);
+	set_boundaries( "stairs_left",0,0,0,0);
+	set_boundaries( "stairs_right",0,0,0,0);
+	set_boundaries( "statue",32,32,0,32);
+	set_boundaries( "statue2",32,32,0,32);
+	set_boundaries( "table", 28,90,0,6);
+	set_boundaries( "table_hut",32,27,0,5);
+	set_boundaries( "table_library",75,63,0,8);
+	set_boundaries( "tent",136,155,0,12);
+	set_boundaries( "tent_back",136,155,0,12);
+	set_boundaries( "throne",67,32,0,32);
+	set_boundaries("tree_dead",32,32,0,32);
+	set_boundaries("tree_oak",32,32,0,32);
+	set_boundaries("tree_oak2",32,32,0,32);
+	set_boundaries("tree_pine",35,30,60,123);
+	set_boundaries("tree_stump",27,18,2,7);
+	set_boundaries("watchtower",64,60,0,100);
+	set_boundaries( "wall_front",32,16,0,16);
+	set_boundaries("well",32,32,0,32);		
+	set_boundaries("wine",0,0,0,0);
+	set_boundaries("wine_cabinet",64,32,0,32);
+
 }
 void World::make_drawable(std::string items){
 
@@ -1174,7 +694,10 @@ void World::make_drawable(std::string items){
 
 		constant_index += (y.second + 1);
 		//passes the things gathered to another function that will make the object
-		designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
+		iDrawable* d = designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
+		d->set_my_type(Stationary);
+		this->insert_entity(d);
+
 	}
 }
 WorldName World::get_WorldName(std::string name, int name_size){
@@ -1230,6 +753,7 @@ void World::make_portal(std::string items){
 	int name_size = inner_index;
 	outer_index += 1;
 	inner_index = 0;
+
 	//grabs xpos
 	while(items.at(outer_index) != '+'){
 		x.append(1, items.at(outer_index));
@@ -1290,53 +814,124 @@ void World::make_AI(std::string items){
 
 	values = pull_out(items, constant_index);
 	std::string type;
-
+	std::string file;
+		
 	constant_index += (values.second + 1);
 
 	type = values.first;
+	
+	values = pull_out(items, constant_index);
+	
+	constant_index += (values.second + 1);
+	file = values.first;
+
 	std::string	filename = "Resources//AI_characters//";
-	filename.append(type);
+	filename.append(file);
 	filename.append(".bmp");
-	Sprite* img = new Player_Sprite(filename, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
+	Sprite* img = new Player_Sprite(filename, S, 5, 1, 12, 12);
 	iDrawable* to_add;
 
-	if(type.compare("OptionPresenter") == 0){
+	values = pull_out(items, constant_index);
+	int x_pos = this->list_to_int(values.first, values.second);
+	constant_index += (values.second+1);
 
-		make_op(items, constant_index);
+	values = pull_out(items, constant_index);
+	int y_pos = this->list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+	std::vector<std::pair<int,int>>* ways = new std::vector<std::pair<int,int>>();
+
+	if(type.compare("OptionPresenter") != 0 && type.compare("QuestGiver") != 0){
+		values = pull_out(items, constant_index);
+		std::string cur_x;
+		std::string cur_y;
+		bool first = true;
+
+		constant_index += (values.second + 1);
+
+		for(unsigned i = 0; i < values.first.size(); i++){
+			if(values.first.at(i)== ',' && first){
+				first = false;
+			}else if(values.first.at(i) == ',' && !first){
+				first = true;
+				ways->push_back(std::make_pair(list_to_int(cur_x,cur_x.size()),list_to_int(cur_y,cur_y.size())));
+				cur_x = "";
+				cur_y = "";
+			}else if(first){
+				cur_x.append(1,values.first.at(i));	
+			}else{
+				cur_y.append(1,values.first.at(i));
+			}
+		}
+	}
+
+	if(type.compare("OptionPresenter") == 0){
+		
+		make_op(items, constant_index, filename, x_pos, y_pos);
+		return;
+
+	}else if(type.compare("QuestGiver") == 0){
+
+		//		make_quest_giver(items, constant_index, filename, x_pos, y_pos);
 
 	}else if(type.compare("Guard") == 0){
-		
 
-
-		to_add = new Town_Guard()
+		to_add = new Town_Guard(x_pos, y_pos, 2, 3, img, ways);
+		to_add->set_boundary_value(30, 18, 1, 14);
 
 	}else if(type.compare("Guard_Captain")){
-	
+
+		to_add = new GuardCaptain(x_pos, y_pos, 2, 3, img, ways);
+		to_add->set_boundary_value(30, 18, 1, 14);
+
 	}else if(type.compare("Skeleton")){
-	
+
+		//		to_add = new Skeleton(x_pos, y_pos, 2, 3, img, ways);
+		//		to_add->set_boundary_value(30, 18, 1, 14);
+
+
+
 	}else if(type.compare("Dragon")){
-	
+
+
+
 	}else if(type.compare("Vampire")){
-	
+
+		to_add = new Vampire(x_pos, y_pos, 2, 3, img, ways);
+		to_add->set_boundary_value(30, 18, 1, 14);
+
+
+
 	}else if(type.compare("Vampire_Boss")){
-	
+
+
+
 	}else if(type.compare("Statue_Boss")){
-	
+
+
 	}else if(type.compare("Marsh_Monster")){
-	
+		to_add = new Marsh_Monster(x_pos, y_pos, 2, 3, img, ways);
+		to_add->set_boundary_value(30, 18, 1, 5);
+
+
+
 	}else if(type.compare("Rival")){
-	
+		//		to_add = new Rival(x_pos, y_pos, 2, 3, img, ways);
+		//	to_add->set_boundary_value(30, 18, 1, 14);
+
+
+
 	}else if(type.compare("Person")){
-		
-		
+
+
 
 	}else{
 		throw std::exception("Invalid AI");
 	}
+	this->insert_entity(to_add);
 
 }
 
-void World::make_op(std::string items, int constant_index){	
+void World::make_op(std::string items, int constant_index, std::string file, int x_pos, int y_pos){	
 
 	std::pair<Quest*, int> quest_data;
 	std::pair<std::string, int> values = pull_out(items, constant_index);
@@ -1345,23 +940,7 @@ void World::make_op(std::string items, int constant_index){
 	//file
 	std::string filename;
 
-	filename = values.first;
-
-	constant_index += (values.second + 1);
-
-	//x
-	values = pull_out(items, constant_index);
-
-	int x_pos  = list_to_int(values.first, values.second);
-
-	constant_index += (values.second + 1);
-
-	//y
-	values = pull_out(items, constant_index);
-
-	int y_pos  = list_to_int(values.first, values.second);
-
-	constant_index += (values.second + 1);
+	filename = file;
 
 	//make the guy
 	OptionPresenter* character = new OptionPresenter(x_pos, y_pos, 0, 0, new Player_Sprite((char*)filename.c_str(), S, 5, 1, 16, 16));
@@ -1395,6 +974,12 @@ EntityType World::get_entityType(std::string to_convert){
 
 	if(str.compare("Tg")==0){
 		return Guard;
+	}else if(str.compare("Drag")==0 ){
+		return Lizard;
+	}else if(str.compare("VampB") == 0){
+		return VampBoss;
+	}else if(str.compare("Vamp") == 0){
+		return Vamp;
 	}else if(str.compare("Mon")==0){
 		return Monster;
 	}else if(str.compare("Out")==0){
@@ -1403,6 +988,8 @@ EntityType World::get_entityType(std::string to_convert){
 		return Rival;
 	}else if(str.compare("Ch")==0){
 		return Chicken;
+	}else if(str.compare("GuardCap")==0){
+		return GuardCap;
 	}else{
 		throw std::exception("Invalid entity code");
 	}
@@ -1427,15 +1014,27 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 	quest_desc.text = values.first;
 
 	constant_index += (values.second + 1);	
+
 	QuestReward loot;
-	//loot (gold)
+	//gold
 	values = pull_out(items, constant_index);
 	loot.gold = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1);
-	
-	IQuestObjective* obj;
 
+	//rep
+	values = pull_out(items, constant_index);
+	loot.rep = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+
+	//exp
+	values = pull_out(items, constant_index);
+	loot.exp = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+
+	IQuestObjective* obj;
+	char thing = items[constant_index];
 	if(items[constant_index] == 'K'){
+
 		constant_index += 1;
 		//target type
 		values = pull_out(items, constant_index);
@@ -1445,8 +1044,10 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 		obj = new KillObjective(ent, list_to_int(values.first, values.second));
-
+	
+	
 	}else if(items[constant_index] == 'R'){
+
 		constant_index += 1;
 		//target id
 		values = pull_out(items, constant_index);
@@ -1456,6 +1057,20 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 		obj = new RetrieveObjective(item_id, list_to_int(values.first, values.second));
+	}else if(items[constant_index] == 'T'){
+		constant_index += 1;
+		//target id
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		EntityType ent = get_entityType(values.first);
+
+		//number required
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+
+		obj = new InteractObjective(ent, 1);
+
+
 	}else{
 		throw std::exception("Wrong objective code");
 	}
@@ -1471,7 +1086,13 @@ void World::make_dialouge_op(std::string items, int constant_index, OptionPresen
 
 	while(true){
 
+		
+		if(items.at(constant_index-1) == '!'){
+			break;
+		}
+		
 		char check = items.at(constant_index);
+		
 		if( check == '^'){
 			constant_index++;
 			values = pull_out(items, constant_index);
@@ -1487,9 +1108,37 @@ void World::make_dialouge_op(std::string items, int constant_index, OptionPresen
 
 		constant_index += (values.second + 1);
 
-		if(items.at(constant_index-1) == '!'){
-			break;
-		}
+		
 	}
+
+}
+
+iDrawable* World::designate_drawable(std::string type, std::string x, std::string y, int size_x, int size_y, int type_size){
+
+	int x_pos = World::list_to_int(x,size_x);
+	int y_pos = World::list_to_int(y,size_y);
+	iDrawable* new_d;
+
+	std::string filename;
+
+	filename.append("Resources//drawable_images//");
+	filename.append(type);
+	filename.append(".bmp");
+
+	new_d = new Drawable(x_pos, y_pos,0,0, new Solid_Sprite((char*)filename.c_str()));
+
+	std::map<std::string, drawable_bounds>::iterator location;
+
+	location = this->drawables->find(type);
+
+	if (location == this->drawables->end()){
+		return NULL;
+	}
+
+
+	new_d->set_boundary_value((*location).second.bounds[0],(*location).second.bounds[1],(*location).second.bounds[2],(*location).second.bounds[3]);
+
+	return new_d;
+
 
 }

@@ -385,6 +385,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GuardCaptain.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\HealthDrainAttack.cpp"
 				>
 			</File>

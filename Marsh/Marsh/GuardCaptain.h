@@ -6,7 +6,6 @@
 #include "Drawable.h"
 #include "Combat.h"
 
-
 using namespace std;
 
 class GuardCaptain:public Mob{
