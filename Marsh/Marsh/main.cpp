@@ -85,10 +85,9 @@ END_OF_MAIN()
 
 Marsh::View* create_view(Player* hero){
 	Marsh::View* v = new Marsh::View(hero);
-	v->load_world(test_map);
+	v->load_world(world_name);
 	return v;
 }
-
 
 void timer_frame_counter(void) {
 	framerate = ticks;
@@ -129,8 +128,8 @@ void set_up_game(void) {
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
 	Equipment* equip = new Equipment();
-	Equipment* equip1 = new Equipment();
-	Equipment* equip2 = new Equipment(); 
+	//Equipment* equip1 = new Equipment();
+	//Equipment* equip2 = new Equipment(); 
 	/*equip1->name = "Cloth Armor";
 	equip1->type = Tunic;
 	equip1->vitality = 5;
@@ -284,16 +283,42 @@ void start_game(void) {
 	delete our_viewer;
 }
 
-void load_inventory(string stream) {
+void load_inventory(string stream, string stream1, string stream2) {
+	Player* hero = Player_Accessor::get_player();
 	std::vector<int> item_ids;
+	std::vector<bool> item_equip;
+	std::vector<int> item_held;
 	std::stringstream ss(stream);
+	std::stringstream ss1(stream1);
+	std::stringstream ss2(stream2);
 	int i;
 	while (ss >> i)
 	{
 		item_ids.push_back(i);
 		if (ss.peek() == ',') ss.ignore();
 	}
-	//std::vector<Equipment*>* inventory;
+	bool i1;
+	while (ss1 >> i1)
+	{
+		item_equip.push_back(i1);
+		if (ss1.peek() == ',') ss1.ignore();
+	}
+	while (ss2 >> i)
+	{
+		item_held.push_back(i);
+		if (ss2.peek() == ',') ss2.ignore();
+	}
+	i = 0;
+	std::vector<int>::iterator end = item_ids.end();
+	Equipment* equip = new Equipment();
+	for (std::vector<int>::iterator iter = item_ids.begin(); iter != end; ++iter){
+		equip = itemDB->fetch_item(item_ids[i]);
+		equip->equipped = item_equip[i];
+		equip->number_held = item_held[i];
+		hero->add_to_inventory(equip);
+		equip = new Equipment();
+		++i;
+	}
 }
 
 void load_spells(string stream) {
@@ -318,6 +343,7 @@ void load_game(void) {
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold, spell_pts;
 	int world;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
+	std::string items, item_equip, item_held; 
 
 	ifstream file1("Save1.marsh");
 	string line;
@@ -343,10 +369,13 @@ void load_game(void) {
 			else if (beg.compare("Max-health") == 0) stringstream(end) >> max_health;
 			else if (beg.compare("Gold") == 0) stringstream(end) >> gold;
 			else if (beg.compare("World") == 0) stringstream(end) >> world;
-			else if (beg.compare("Inventory") == 0) load_inventory(end);
+			else if (beg.compare("Inventory") == 0) stringstream(end) >> items;
+			else if (beg.compare("Inventory1") == 0) stringstream(end) >> item_equip;
+			else if (beg.compare("Inventory2") == 0) stringstream(end) >> item_held;
 			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
 		}
 	}
+	load_inventory(items,item_equip,item_held);
 	world_name = static_cast<WorldName>(world);
 	Player_Accessor::create_player(x_pos, y_pos, img, width, height, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
@@ -378,7 +407,7 @@ void save_game(void) {
 	file1 << "Experience " << hero->current_experience << endl;
 	file1 << "Notoriety " << hero->notoriety << endl;
 	file1 << "Stats " << hero->statPoints << endl; 
-	file << "Spell-pts " << hero->spellPoints << endl;
+	file1 << "Spell-pts " << hero->spellPoints << endl;
 	file1 << "Mana " << hero->get_current_mana() << endl;
 	file1 << "Max-mana " << hero->get_max_mana() << endl;
 	file1 << "Health " << hero->get_current_health() << endl;
@@ -391,15 +420,29 @@ void save_game(void) {
 
 	// player inventory
 	std::string items;
-	std::stringstream line;
+	std::string item_equip;
+	std::string item_held;
+	std::stringstream line; // id's
+	std::stringstream line1; // equipped
+	std::stringstream line2; // number_held
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	std::vector<Equipment*>::iterator end = inventory.end();
 	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
 		line << (*iter)->item_id;
-		if (iter < (end-1)) line << ",";
+		line1 << (*iter)->equipped;
+		line2 << (*iter)->number_held;
+		if (iter < (end-1)) { 
+			line << ",";
+			line1 << ",";
+			line2 << ",";
+		}
 	}
 	items = line.str();
+	item_equip = line1.str();
+	item_held = line2.str();
 	file1 << "Inventory " << items << endl;
+	file1 << "Inventory1 " << item_equip << endl;
+	file1 << "Inventory2 " << item_held << endl;
 
 	// player spell loadout
 	Attack* loadout = *hero->attack_loadout;
