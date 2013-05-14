@@ -7,7 +7,7 @@ class Portal;
 using namespace std;
 using namespace Marsh;
 
-
+bool should_save(World* check_world);
 int pick_cast_color(Attack* attack);
 
 Marsh::View::View(Player* hero){
@@ -28,6 +28,13 @@ Marsh::View::View(Player* hero){
 	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->behind_bars = load_bitmap("Resources//MarshUI5_background.bmp", NULL);
 	hero->set_consoles(this->clear_console, this->in_use_console);
+
+	this->displayed_images = new std::vector<std::string>();
+	this->spell_icon_coords = new std::vector<std::pair<int, int>>();
+	this->populate_spell_locs();
+	this->populate_image_names();
+
+	this->draw_updated_loadout(Player_Accessor::get_player()->attack_loadout);
 }
 
 Marsh::View::~View(void){
@@ -39,6 +46,10 @@ Marsh::View::~View(void){
 	for ( ; start != finish; start++){
 		delete (*start).second;
 	}
+
+	if (this->current_world != NULL)
+		delete this->current_world;
+	this->current_world = NULL;
 
 	delete this->loaded_worlds;
 
@@ -52,10 +63,51 @@ Marsh::View::~View(void){
 	destroy_bitmap(this->clear_console);
 	destroy_bitmap(this->in_use_console);
 	destroy_bitmap(this->behind_bars);
+}
 
-	//TODO FIX THIS CAUSE ITS BAD
-	//delete this->current_world;
-	//this->current_world = NULL;
+
+void Marsh::View::populate_spell_locs(void){
+	this->spell_icon_coords->push_back(std::pair<int, int>(378, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(475, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(575, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(675, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(773, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(872, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(970, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(1070, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(1168, 106));
+	this->spell_icon_coords->push_back(std::pair<int, int>(1268, 106));
+}
+void Marsh::View::populate_image_names(void){
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("Energy_Bolt");
+}
+
+void Marsh::View::draw_updated_loadout(Attack* loadout[]){
+	for (int i=0; i < MAX_ATTACKS; i++){
+		if (loadout[i] == NULL)
+			continue;
+		int id = loadout[i]->spell_id;
+		std::string file("Resources//Attack_Images//");
+		file.append(this->displayed_images->at(id).append(".bmp"));
+		std::pair<int, int> coord = this->spell_icon_coords->at(id);
+		BITMAP* image = load_bitmap(file.c_str(), NULL);
+		masked_blit(image, this->ui_buffer, 0, 0, coord.first, coord.second, image->w, image->h);
+		destroy_bitmap(image);
+	}
 }
 
 
@@ -64,39 +116,66 @@ void Marsh::View::load_world(WorldName world){
 		put_world_in_loaded(this->current_world);
 	}
 
-
 	std::map<WorldName, World*>::iterator pos = this->loaded_worlds->find(world);
 	std::map<WorldName, World*>::iterator last = this->loaded_worlds->end();
 	std::map<WorldName, World*>::iterator first = this->loaded_worlds->begin();
 
 	if (pos != this->loaded_worlds->end()){
-		// the world needs loaded
+		// we have it ready to go
 		this->current_world = (*pos).second;
+		// now remove it from the map
+		this->loaded_worlds->erase(pos);
 	} else {
+		// the world needs loaded
 		this->current_world = new World(world);
 		this->current_world->set_player(this->playa);
 		this->current_world->insert_entity(this->playa);
 	}
 	this->playa->set_world(this->current_world);
-
 	this->insert_testing_entities();
-	//Combat* rambo_sheep = new Combat(200,250, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
-	//rambo_sheep->set_my_type(EntityType::Monster);
-	//rambo_sheep->set_stats(103, 0, 0, 0, 0);
-	//rambo_sheep->set_world(this->current_world);
-	//this->current_world->insert_entity(rambo_sheep);
-	//rambo_sheep->set_boundary_value(30, 30, 2, 2);
+}
+
+static bool should_save(World* check_world){
+	switch(check_world->my_name){
+	case main_world11:
+		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+	case main_world13:
+		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+	case main_world16:
+		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+	case main_world19:
+		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+	default:
+		return false;
+
+	}
 }
 
 void Marsh::View::put_world_in_loaded(World* world){
+	std::list<std::map<WorldName, World*>::iterator> bad_worlds;
+	//start by ditching worlds that don't need cached
+	std::map<WorldName, World*>::iterator end = this->loaded_worlds->end();
+	for (std::map<WorldName, World*>::iterator iter = this->loaded_worlds->begin(); iter != end; ++iter){
+		// check if a world should be saved
+		if (should_save((*iter).second))
+			continue;
+		else {
+			//throw that hoe out
+			bad_worlds.push_back(iter);
+			delete (*iter).second;
+			(*iter).second = NULL;
+		}
+	}
+
+	std::list<std::map<WorldName, World*>::iterator>::iterator ls_end = bad_worlds.end();
+	for (std::list<std::map<WorldName, World*>::iterator>::iterator iter = bad_worlds.begin(); iter != ls_end; ++iter){
+		this->loaded_worlds->erase((*iter));
+	}
+
 	this->loaded_worlds->insert(std::pair<WorldName, World*>(world->my_name, world));
 }
 
 void Marsh::View::insert_testing_entities(void){
-		
-	ItemBestower* dave = new ItemBestower(600, 600, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
-	//dave->
-
 
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
@@ -125,9 +204,9 @@ void Marsh::View::insert_testing_entities(void){
 		manapot->type = Consumable;
 		manapot->stackable = true;
 		manapot->name = "Weak Mana Potion";
-		
+
 		farmer_bob->append_inventory(manapot, 20);
-		
+
 		Equipment* healthpot = get_new_equipment();
 		healthpot->vitality = 300;
 		healthpot->number_held = 1;
@@ -158,7 +237,7 @@ void Marsh::View::insert_testing_entities(void){
 		g1->set_world(this->current_world);
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g1);
-		
+
 		Mob* g2 = new Town_Guard(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
@@ -349,7 +428,7 @@ void Marsh::View::draw_active_world(void){
 	draw_interface(this->playa);
 	draw_to_screen();
 
-	
+
 }
 
 void Marsh::View::draw_to_screen(void){
