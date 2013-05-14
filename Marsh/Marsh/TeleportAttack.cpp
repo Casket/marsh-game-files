@@ -126,7 +126,20 @@ bool check_walkable_tiles(int x, int y, iDrawable* target){
 
 }
 
+bool TeleportAttack::contained_in_world(int x, int y){
+	if (x < 0 || y < 0)
+		return false;
+
+	if (x > (this->get_world()->get_tiles_wide()*TILE_SIZE) || y > (this->get_world()->get_tiles_high()*TILE_SIZE))
+		return false;
+
+	return true;
+}
+
 bool TeleportAttack::check_new_coord(int x, int y){
+	if (!contained_in_world(x, y))
+		return false;
+
 	iDrawable* target = this->my_caster;
 
 	std::list<iDrawable*>* entities = this->get_world()->get_active_entities();

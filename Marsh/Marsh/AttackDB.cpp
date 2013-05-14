@@ -197,19 +197,13 @@ void AttackDB::populate_utility_spells(void){
 	this->attacks_by_id->insert(std::pair<int, Attack*>(BIND_IN_SHADOWS, bind));
 
 	//Mass Slow
-	fire = new Attack_Sprite("Resources//Attack Sprites//Bind.tga", W, 10, 1, 11, 11, 580/11, 48);
-
-	fire->is_translucent = true;
-	fire->set_state_frame_counts(0, 1, 10);
-	
 	stats_for_spell.base_damage = 0;
 	stats_for_spell.charge_time = 100;
 	stats_for_spell.exp_date = 1000;
 	stats_for_spell.penetration = 15;
 	stats_for_spell.range = 250;
 	stats_for_spell.tree_depth = 2;
-	fire->is_translucent = true;
-	Attack* slow = new StunningAttack(800, 800, 1, 10, fire, stats_for_spell);
+	Attack* slow = new StunningAttack(800, 800, 1, 10, blank_sprite, stats_for_spell);
 	slow->set_boundary_value(35, 25, 10, 15);
 	slow->set_position_adjustment(0, 20);
 	slow->spell_id = MASS_SLOW;
