@@ -281,7 +281,7 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 		sprite_y = 0;
 
 
-		strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//cobblestones.bmp");
+		strcpy_s(file, sizeof(char) * 100, "Resources//back_ground//dungeon.bmp");
 
 		Ground_Sprite* tile_sprite = new Ground_Sprite(file, sprite_x,sprite_y);
 
@@ -479,6 +479,10 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(29,23,0,7);
 
+	}else if(type.compare( "barrel2")==0){
+
+		new_d->set_boundary_value(29,23,0,7);
+
 	}else if(type.compare( "bed_double")==0){
 
 		new_d->set_boundary_value(64,64,0,0);
@@ -519,6 +523,86 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(29,23,0,7);
 
+	}else if(type.compare( "castle_1_1")==0){
+
+		new_d->set_boundary_value(7,818,0,10);
+
+	}else if(type.compare( "castle_1_2")==0){
+
+		new_d->set_boundary_value(711,114,0,0);
+
+	}else if(type.compare( "castle_1_3")==0){
+
+		new_d->set_boundary_value(7,630,0,10);
+
+	}else if(type.compare( "castle_1_4")==0){
+
+		new_d->set_boundary_value(224,12,0,7);
+
+	}else if(type.compare( "castle_1_5")==0){
+
+		new_d->set_boundary_value(320,64,0,10);
+
+	}else if(type.compare( "castle_1_6")==0){
+
+		new_d->set_boundary_value(334,64,0,10);
+
+	}else if(type.compare( "castle_1_7")==0){
+
+		new_d->set_boundary_value(77,50,0,7);
+
+	}else if(type.compare( "castle_1_8")==0){
+
+		new_d->set_boundary_value(7,129,0,10);
+
+	}else if(type.compare( "castle_1_9")==0){
+
+		new_d->set_boundary_value(7,129,0,10);
+
+	}else if(type.compare( "castle_1_10")==0){
+
+		new_d->set_boundary_value(64,28,0,10);
+
+	}else if(type.compare( "cave")==0){
+
+		new_d->set_boundary_value(130,145,4,30);
+
+	}else if(type.compare( "cave_drg_1")==0){
+
+		new_d->set_boundary_value(64,393,0,0);
+
+	}else if(type.compare( "cave_drg_2")==0){
+
+		new_d->set_boundary_value(928,64,0,10);
+
+	}else if(type.compare( "cave_drg_3")==0){
+
+		new_d->set_boundary_value(299,319,0,10);
+
+	}else if(type.compare( "cave_drg_4")==0){
+
+		new_d->set_boundary_value(12,256,0,10);
+
+	}else if(type.compare( "cave_drg_5")==0){
+
+		new_d->set_boundary_value(288,267,0,0);
+
+	}else if(type.compare( "cave_drg_6")==0){
+
+		new_d->set_boundary_value(928,12,0,0);
+
+	}else if(type.compare( "cave_drg_7")==0){
+
+		new_d->set_boundary_value(68,332,0,0);
+
+	}else if(type.compare( "cell")==0){
+
+		new_d->set_boundary_value(151,133,0,20);
+
+	}else if(type.compare( "cell_wall")==0){
+
+		new_d->set_boundary_value(151,96,0,0);
+
 	}else if(type.compare( "chair_front")==0){
 
 		new_d->set_boundary_value(21,30,0,10);
@@ -535,9 +619,109 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(449,600,0,98);
 
+	}else if(type.compare( "church_1_1")==0){
+
+		new_d->set_boundary_value(167,32,0,0);
+
+	}else if(type.compare( "church_1_2")==0){
+
+		new_d->set_boundary_value(7,384,0,0);
+
+	}else if(type.compare( "church_1_3")==0){
+
+		new_d->set_boundary_value(8,350,0,10);
+
+	}else if(type.compare( "church_1_4")==0){
+
+		new_d->set_boundary_value(526,105,0,10);
+
+	}else if(type.compare( "church_1_5")==0){
+
+		new_d->set_boundary_value(71,63,0,0);
+
+	}else if(type.compare( "church_1_6")==0){
+
+		new_d->set_boundary_value(110,27,0,10);
+
+	}else if(type.compare( "church_1_7")==0){
+
+		new_d->set_boundary_value(45,27,0,10);
+
+	}else if(type.compare( "church_1_8")==0){
+
+		new_d->set_boundary_value(61,27,0,10);
+
+	}else if(type.compare( "church_1_9")==0){
+
+		new_d->set_boundary_value(7,328,0,0);
+
+	}else if(type.compare( "church_1_10")==0){
+
+		new_d->set_boundary_value(321,27,0,5);
+
+	}else if(type.compare( "church_2_1")==0){
+
+		new_d->set_boundary_value(526,105,0,10);
+
+	}else if(type.compare( "church_2_2")==0){
+
+		new_d->set_boundary_value(7,381,0,10);
+
+	}else if(type.compare( "church_2_3")==0){
+
+		new_d->set_boundary_value(8,317,0,10);
+
+	}else if(type.compare( "church_2_4")==0){
+
+		new_d->set_boundary_value(246,27,0,10);
+
+	}else if(type.compare( "church_2_5")==0){
+
+		new_d->set_boundary_value(512,7,0,0);
+
+	}else if(type.compare( "church_2_6")==0){
+
+		new_d->set_boundary_value(8,277,0,10);
+
+	}else if(type.compare( "church_2_7")==0){
+
+		new_d->set_boundary_value(174,27,0,10);
+
+	}else if(type.compare( "church_2_8")==0){
+
+		new_d->set_boundary_value(64,61,0,0);
+
+	}else if(type.compare( "church_2_9")==0){
+
+		new_d->set_boundary_value(7,383,0,10);
+
+	}else if(type.compare( "church_chair1")==0){
+
+		new_d->set_boundary_value(29,21,0,9);
+
+	}else if(type.compare( "church_chair2")==0){
+
+		new_d->set_boundary_value(30,25,0,5);
+
+	}else if(type.compare( "church_chair3")==0){
+
+		new_d->set_boundary_value(30,25,0,5);
+
+	}else if(type.compare( "column")==0){
+
+		new_d->set_boundary_value(30,32,0,64);
+
 	}else if(type.compare( "couch")==0){
 
 		new_d->set_boundary_value(42,85,0,8);
+
+	}else if(type.compare( "cross")==0){
+
+		new_d->set_boundary_value(10,30,0,16);
+
+	}else if(type.compare( "cross_roads")==0){
+
+		new_d->set_boundary_value(10,5,10,27);
 
 	}else if(type.compare( "chest")==0){
 
@@ -559,6 +743,30 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(32,32,0,32);
 
+	}else if(type.compare( "dung_keep1")==0){
+
+		new_d->set_boundary_value(1582,86,0,10);
+
+	}else if(type.compare( "dung_keep2")==0){
+
+		new_d->set_boundary_value(64,96,0,0);
+
+	}else if(type.compare( "dung_keep3")==0){
+
+		new_d->set_boundary_value(166,80,0,16);
+
+	}else if(type.compare( "dung_keep4")==0){
+
+		new_d->set_boundary_value(755,143,0,10);
+
+	}else if(type.compare( "dung_keep5")==0){
+
+		new_d->set_boundary_value(453,138,0,15);
+
+	}else if(type.compare( "dung_room_change")==0){
+
+		new_d->set_boundary_value(14,14,0,50);
+
 	}else if(type.compare( "farm_house")==0){
 
 		new_d->set_boundary_value(165,129,30,45);
@@ -574,6 +782,10 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 	}else if(type.compare( "fence_vert")==0){
 
 		new_d->set_boundary_value(5,96,0,0);
+
+	}else if(type.compare( "firepit")==0){
+
+		new_d->set_boundary_value(32,27,0,5);
 
 	}else if(type.compare( "fireplace")==0){
 
@@ -639,16 +851,31 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		
 		new_d->set_boundary_value(120,161,0,30);
 				
-
 	}else if(type.compare( "hut4")==0){
 
 		new_d->set_boundary_value(163,115,0,30);		
+
+	}else if(type.compare( "keep")==0){
+
+		new_d->set_boundary_value(416,370,0,60);
+
+	}else if(type.compare( "keep_stair")==0){
+
+		new_d->set_boundary_value(64,119,0,0);
+
+	}else if(type.compare( "keep1")==0){
+
+		new_d->set_boundary_value(957,700,0,47);
 
 	}else if(type.compare( "kitchen_cabinet")==0){
 
 		new_d->set_boundary_value(32,40,0,24);
 
 	}else if(type.compare( "kitchen_stuff")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "lantern")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 
@@ -675,6 +902,22 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 	}else if(type.compare( "nice_house2")==0){
 
 		new_d->set_boundary_value(364,290,0,26);
+
+	}else if(type.compare( "outcast_bed_roll")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "outcast_box1")==0){
+
+		new_d->set_boundary_value(29,18,0,23);
+
+	}else if(type.compare( "outcast_box2")==0){
+
+		new_d->set_boundary_value(29,18,0,23);
+
+	}else if(type.compare( "outcast_bucket")==0){
+
+		new_d->set_boundary_value(29,12,0,18);
 
 	}else if(type.compare( "outhouse")==0){
 
@@ -728,6 +971,10 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(0,0,0,0);
 	
+	}else if(type.compare( "pew")==0){
+
+		new_d->set_boundary_value(90,30,0,0);
+
 	}else if(type.compare( "portrait")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
@@ -736,10 +983,42 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 		new_d->set_boundary_value(0,0,0,0);
 	
+	}else if(type.compare( "rock1")==0){
+
+		new_d->set_boundary_value(84,68,0,0);
+
+	}else if(type.compare( "rock2")==0){
+
+		new_d->set_boundary_value(56,39,0,0);
+
+	}else if(type.compare( "rock3")==0){
+
+		new_d->set_boundary_value(38,39,0,0);
+
+	}else if(type.compare( "rock4")==0){
+
+		new_d->set_boundary_value(50,41,0,0);
+
 	}else if(type.compare( "rug_bear")==0){
 
 		new_d->set_boundary_value(0,0,0,0);
 	
+	}else if(type.compare( "skeleton1")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "skeleton2")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "skeleton3")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
+	}else if(type.compare( "stained_window")==0){
+
+		new_d->set_boundary_value(0,0,0,0);
+
 	}else if(type.compare( "side_dresser")==0){
 
 		new_d->set_boundary_value(30,80,0,7);
@@ -765,12 +1044,24 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		new_d->set_boundary_value(32,32,0,32);
 
 	}else if(type.compare( "table")==0){
-
 		
+		new_d->set_boundary_value(28,90,0,6);
 
 	}else if(type.compare( "table_hut")==0){
 
 		new_d->set_boundary_value(32,27,0,5);
+
+	}else if(type.compare( "table_library")==0){
+
+		new_d->set_boundary_value(75,63,0,8);
+
+	}else if(type.compare( "tent")==0){
+
+		new_d->set_boundary_value(136,155,0,12);
+
+	}else if(type.compare( "tent_back")==0){
+
+		new_d->set_boundary_value(136,155,0,12);
 
 	}else if(type.compare( "throne")==0){
 
@@ -778,15 +1069,15 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 	}else if(type.compare("tree_dead")==0){
 
-		
+		new_d->set_boundary_value(32,32,0,32);
 
 	}else if(type.compare("tree_oak")==0){
 
-		
+		new_d->set_boundary_value(32,32,0,32);
 
 	}else if(type.compare("tree_oak2")==0){
 
-		
+		new_d->set_boundary_value(32,32,0,32);
 
 	}else if(type.compare("tree_pine")==0){
 
@@ -799,9 +1090,13 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 	}else if(type.compare("watchtower")==0){
 
 
+	}else if(type.compare( "wall_front")==0){
+
+		new_d->set_boundary_value(32,16,0,16);
+
 	}else if(type.compare("well")==0){
 
-		
+		new_d->set_boundary_value(32,32,0,32);		
 
 	}else if(type.compare("wine")==0){
 
@@ -999,12 +1294,41 @@ void World::make_AI(std::string items){
 	constant_index += (values.second + 1);
 
 	type = values.first;
+	std::string	filename = "Resources//AI_characters//";
+	filename.append(type);
+	filename.append(".bmp");
+	Sprite* img = new Player_Sprite(filename, Direction cur_dir, int ani_delay, int rows, int cols, int total_frames);
+	iDrawable* to_add;
 
 	if(type.compare("OptionPresenter") == 0){
 
 		make_op(items, constant_index);
 
 	}else if(type.compare("Guard") == 0){
+		
+
+
+		to_add = new Town_Guard()
+
+	}else if(type.compare("Guard_Captain")){
+	
+	}else if(type.compare("Skeleton")){
+	
+	}else if(type.compare("Dragon")){
+	
+	}else if(type.compare("Vampire")){
+	
+	}else if(type.compare("Vampire_Boss")){
+	
+	}else if(type.compare("Statue_Boss")){
+	
+	}else if(type.compare("Marsh_Monster")){
+	
+	}else if(type.compare("Rival")){
+	
+	}else if(type.compare("Person")){
+		
+		
 
 	}else{
 		throw std::exception("Invalid AI");
@@ -1108,6 +1432,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 	values = pull_out(items, constant_index);
 	loot.gold = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1);
+	
 	IQuestObjective* obj;
 
 	if(items[constant_index] == 'K'){
