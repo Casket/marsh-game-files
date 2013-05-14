@@ -50,7 +50,6 @@ class Attack;
 #include "StunningAttack.h"
 #include "PersistentAttack.h"
 #include "AttackCharge.h"
-#include "AttackDB.h"
 #include "TeleportAttack.h"
 #include "SprintSpell.h"
 #include "HealthDrainAttack.h"
@@ -58,7 +57,8 @@ class Attack;
 #include "TemporalModifier.h"
 #include "ProtectionAttack.h"
 #include "ItemDB.h"
-
+class AttackDB;
+class ItemDB;
 #define VISIBLE_W 1400
 #define VISIBLE_H 770
 #define UI_WIDTH 1400
@@ -68,6 +68,8 @@ class Attack;
 
 extern volatile int world_time_counter;
 extern volatile int world_time_delay;
+extern AttackDB* attackDB;
+extern ItemDB* itemDB;
 
 using namespace std;
 using namespace Marsh;
@@ -76,19 +78,6 @@ bool keyrel(int k);
 bool rectangle_intersection(int x1, int y1, int w1,int h1, int x2, int y2, int w2, int h2);
 Equipment* get_new_equipment(void);
 Equipment* get_item_clone(Equipment* old_item);
-
-/*class Attack_Accessor{
-public:
-	static AttackDB* attacks;
-
-	static void create_attacks(void){
-		Attack_Accessor::attacks = new AttackDB();
-	}
-
-	static AttackDB* get_attacks(void){
-		return Attack_Accessor::attacks;
-	}
-};*/
 
 class Player_Accessor{
 public:
@@ -104,6 +93,8 @@ public:
 		return Player_Accessor::hero;
 	}
 };
+
+ 
 
 
 #endif

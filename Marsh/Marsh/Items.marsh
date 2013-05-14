@@ -1,22 +1,159 @@
-Name Sword
-Description The big sword
-Item_ID 12
+//Notes on how to use this file:
+//Always end each item with Item to let the parser know to add it.
+//Only put the values that need to be set. All int values will be set to 0 unless specified.
+Name Super Magic Sword
+Description Int+10
+Item_ID 0
+Intelligence 10
+Equipable true
+Stackable false
+Type Weapon
+Item
+Name Boots of Doom
+Description Arm +10
+Item_ID 1
+Armor 10
+Equipable true
+Stackable false
+Type Boots
+Item
+Item_ID 2
+Name Cloth Armor
+Type Armor
 Vitality 5
-Focus 0
-Intelligence 12
-Willpower 9
-Armor 15
+Description Vit +5
 Equipable true
 Stackable false
 Item
-Name Boots 
-Description Super boots
-Item_ID 13
-Vitality 13
-Focus 3
-Intelligence 3
-Willpower 6
-Armor 12
+Item_ID 3
+Name Weak Health Potion
+Description Health +10
+Type Consumable
+Vitality 10
+Stackable true
+Item
+Item_ID 4
+Name Health Potion
+Type Consumable
+Description Health +50
+Vitality 50
+Stackable true
+Item
+Item_ID 5
+Name Strong Health Potion
+Type Consumable
+Description Health +100
+Vitality 100
+Stackable true
+Item
+Item_ID 6
+Name Weak Mana Potion
+Type Consumable
+Intelligence 10
+Stackable true
+Description Mana +10
+Item
+Item_ID 7
+Name Mana Potion
+Type Consumable
+Intelligence 50
+Stackable true
+Description Mana +50
+Item
+Item_ID 8
+Name Strong Mana Potion
+Type Consumable
+Intelligence 100
+Stackable true
+Description Mana +100
+Item
+Item_ID 9
+Name Ring of Mordor
+Description Will -10 Int +10
+Intelligence 10
+Willpower -10
+Equipable true
+Type Jewelry
+Item
+Item_ID 10
+Name Ax of Shadows
+Description Int +15
+Intelligence 15
+Type Weapon
+Item
+Name Spike Boots
+Description Arm +15
+Item_ID 11
+Armor 15
 Equipable true
 Stackable false
+Type Boots
+Item
+Item_ID 12
+Name Leather Armor
+Type Armor
+Vitality 20
+Description Vit +20
+Equipable true
+Stackable false
+Item
+Item_ID 13
+Name Silver Necklace
+Description Focus +10
+Type Jewelry
+Focus 10
+Equipable true
+Item
+Item_ID 14
+Name Chaos Helm
+Type Helmet
+Description Will +30
+Willpower 30
+Equipable true
+Item
+Item_ID 15
+Name Paper Hat
+Type Helmet
+Description Focus +1
+Focus 1
+Equipable true
+Item
+Item_ID 16
+Name Dark Robes
+Type Armor
+Willpower 30
+Equipable true
+Description Will +30
+Item
+Item_ID 17
+Name Ring of Power
+Type Jewelry
+Intelligence 15
+Equipable true
+Description Int +15
+Item
+Item_ID 18
+Name Fur Boots
+Type Boots
+Vitality 20
+Equipable true
+Description Vit +20
+Item
+Item_ID 19
+Name Dragon Helm
+Description Focus +10
+Focus 10
+Equipable true
+Type Helmet
+Item
+Item_ID 20
+Name Scepter of Fire
+Description Int +25
+Intelligence 25
+Type Weapon
+Item
+Item_ID 21
+Name Master Key
+Description Key that opens all things
+Type QuestItem
 Item

@@ -34,9 +34,37 @@ namespace Marsh {
 	{
 	public:
 		Player* hero;
-		AttackDB* attacks;
 		std::vector<AttackNode*>* nodes;
 		Marsh::AttackNode* currentNode;
+	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::PictureBox^  pictureBox2;
+	private: System::Windows::Forms::PictureBox^  pictureBox3;
+	private: System::Windows::Forms::PictureBox^  pictureBox4;
+	private: System::Windows::Forms::PictureBox^  pictureBox5;
+	private: System::Windows::Forms::PictureBox^  pictureBox6;
+	private: System::Windows::Forms::PictureBox^  pictureBox7;
+	private: System::Windows::Forms::PictureBox^  pictureBox8;
+	private: System::Windows::Forms::PictureBox^  pictureBox9;
+	private: System::Windows::Forms::PictureBox^  pictureBox10;
+	private: System::Windows::Forms::PictureBox^  pictureBox11;
+	private: System::Windows::Forms::PictureBox^  pictureBox12;
+	private: System::Windows::Forms::RichTextBox^  SpellInfo;
+	public: 
+
+	public: 
+
+	public: 
+
+
+
+
+
+
+
+
+
+
+
 	private: System::Windows::Forms::Label^  SpellPointsLabel;
 	public: 
 	
@@ -51,7 +79,6 @@ namespace Marsh {
 				return;
 			}
 			nodes = new std::vector<AttackNode*>();
-			this->attacks = new AttackDB();
 			this->hero = hero;
 			this->SpellPointsLabel->Text = "You can get " + hero->spellPoints + " new spells.";
 			this->StatPointsLabel->Text = "Current Stat Points: " + hero->statPoints;
@@ -94,7 +121,7 @@ namespace Marsh {
 			node->name = "Shadow Ball";
 			node->description = "This is a long range starting attack that is a ball made of shadows.";
 			node->index = SHADOW_BALL;
-			node->attack = this->attacks->fetch_attack(SHADOW_BALL);
+			node->attack = attackDB->fetch_attack(SHADOW_BALL);
 			node->attack->my_caster = hero;
 			node->previousAttack = -1;
 			nodes->push_back(node);
@@ -103,7 +130,7 @@ namespace Marsh {
 			node->name = "Shadow Ball +";
 			node->description = "This is an upgrade on the shadow ball attack.";
 			node->index = SHADOW_BALL_PLUS;
-			node->attack = this->attacks->fetch_attack(SHADOW_BALL_PLUS);
+			node->attack = attackDB->fetch_attack(SHADOW_BALL_PLUS);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_BALL;
 			nodes->push_back(node);
@@ -112,7 +139,7 @@ namespace Marsh {
 			node->name = "Shadow Wave";
 			node->description = "This is a short range attack of waves of shadows.";
 			node->index = SHADOW_WAVE;
-			node->attack = this->attacks->fetch_attack(SHADOW_WAVE);
+			node->attack = attackDB->fetch_attack(SHADOW_WAVE);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_BALL;
 			nodes->push_back(node);
@@ -121,7 +148,7 @@ namespace Marsh {
 			node->name = "Shadow Nova ";
 			node->description = "This massive attack that traps the enemy and attacks them.";
 			node->index = SHADOW_NOVA;
-			node->attack = this->attacks->fetch_attack(SHADOW_NOVA);
+			node->attack = attackDB->fetch_attack(SHADOW_NOVA);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_WAVE;
 			nodes->push_back(node);
@@ -130,7 +157,7 @@ namespace Marsh {
 			node->name = "Shadow Needle";
 			node->description = "This is a long range starting attack needle made of shadows.";
 			node->index = SHADOW_NEEDLE;
-			node->attack = this->attacks->fetch_attack(SHADOW_NEEDLE);
+			node->attack = attackDB->fetch_attack(SHADOW_NEEDLE);
 			node->attack->my_caster = hero;
 			node->previousAttack = -1;
 			nodes->push_back(node);
@@ -139,7 +166,7 @@ namespace Marsh {
 			node->name = "Shadow Needle +";
 			node->description = "This is an upgrade to the shadow needle attack.";
 			node->index = SHADOW_NEEDLE_PLUS;
-			node->attack = this->attacks->fetch_attack(SHADOW_NEEDLE_PLUS);
+			node->attack = attackDB->fetch_attack(SHADOW_NEEDLE_PLUS);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_NEEDLE;
 			nodes->push_back(node);
@@ -148,7 +175,7 @@ namespace Marsh {
 			node->name = "Shadow Spikes";
 			node->description = "This is a short range attack where spikes made of shadows come out of the ground.";
 			node->index = SHADOW_SPIKES;
-			node->attack = this->attacks->fetch_attack(SHADOW_SPIKES);
+			node->attack = attackDB->fetch_attack(SHADOW_SPIKES);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_NEEDLE;
 			nodes->push_back(node);
@@ -157,7 +184,7 @@ namespace Marsh {
 			node->name = "Death Beam";
 			node->description = "This is a long barrage of death.";
 			node->index = DEATH_BEAM;
-			node->attack = this->attacks->fetch_attack(DEATH_BEAM);
+			node->attack = attackDB->fetch_attack(DEATH_BEAM);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_SPIKES;
 			nodes->push_back(node);
@@ -166,7 +193,7 @@ namespace Marsh {
 			node->name = "Drain Health";
 			node->description = "This is a standard attack that attacks the enemy and heals you.";
 			node->index = DRAIN_HEALTH;
-			node->attack = this->attacks->fetch_attack(DRAIN_HEALTH);
+			node->attack = attackDB->fetch_attack(DRAIN_HEALTH);
 			node->attack->my_caster = hero;
 			node->previousAttack = -1;
 			nodes->push_back(node);
@@ -175,7 +202,7 @@ namespace Marsh {
 			node->name = "Bind in Shadows";
 			node->description = "This is binding attack made of shadows that stops the enemy.";
 			node->index = BIND_IN_SHADOWS;
-			node->attack = this->attacks->fetch_attack(BIND_IN_SHADOWS);
+			node->attack = attackDB->fetch_attack(BIND_IN_SHADOWS);
 			node->attack->my_caster = hero;
 			node->previousAttack = DRAIN_HEALTH;
 			nodes->push_back(node);
@@ -184,7 +211,7 @@ namespace Marsh {
 			node->name = "Mass Slow";
 			node->description = "This is a slowing attack that makes enemies really slow.";
 			node->index = MASS_SLOW;
-			node->attack = this->attacks->fetch_attack(MASS_SLOW);
+			node->attack = attackDB->fetch_attack(MASS_SLOW);
 			node->attack->my_caster = hero;
 			node->previousAttack = BIND_IN_SHADOWS;
 			nodes->push_back(node);
@@ -193,7 +220,7 @@ namespace Marsh {
 			node->name = "Shadow Dash";
 			node->description = "This is a quick dash.";
 			node->index = SHADOW_DASH;
-			node->attack = this->attacks->fetch_attack(SHADOW_DASH);
+			node->attack = attackDB->fetch_attack(SHADOW_DASH);
 			node->attack->my_caster = hero;
 			node->previousAttack = DRAIN_HEALTH;
 			nodes->push_back(node);
@@ -202,7 +229,7 @@ namespace Marsh {
 			node->name = "Teleport";
 			node->description = "This is longer teleport for the player.";
 			node->index = TELEPORT;
-			node->attack = this->attacks->fetch_attack(TELEPORT);
+			node->attack = attackDB->fetch_attack(TELEPORT);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHADOW_DASH;
 			nodes->push_back(node);
@@ -211,7 +238,7 @@ namespace Marsh {
 			//node->name = "Shadow Steps";
 			//node->description = "A quick succession of teleports.";
 			//node->index = 13;
-			//node->attack = this->attacks->fetch_attack(13);
+			//node->attack = attackDB->fetch_attack(13);
 			//node->attack->my_caster = hero;
 			//node->previousAttack = TELEPORT;
 			//nodes->push_back(node);
@@ -220,7 +247,7 @@ namespace Marsh {
 			node->name = "Shield";
 			node->description = "This is a protective shield that stops one attack.";
 			node->index = SHIELD;
-			node->attack = this->attacks->fetch_attack(SHIELD);
+			node->attack = attackDB->fetch_attack(SHIELD);
 			node->attack->my_caster = hero;
 			node->previousAttack = DRAIN_HEALTH;
 			nodes->push_back(node);
@@ -229,7 +256,7 @@ namespace Marsh {
 			node->name = "Deflect";
 			node->description = "This is a stronger shield.";
 			node->index = DEFLECT;
-			node->attack = this->attacks->fetch_attack(DEFLECT);
+			node->attack = attackDB->fetch_attack(DEFLECT);
 			node->attack->my_caster = hero;
 			node->previousAttack = SHIELD;
 			nodes->push_back(node);
@@ -281,7 +308,7 @@ namespace Marsh {
 	private: System::Windows::Forms::Button^  Spell13;
 	private: System::Windows::Forms::Button^  Spell14;
 	
-	private: System::Windows::Forms::Label^  SpellInfo;
+
 	private: System::Windows::Forms::Button^  AcceptSpellButton;
 	private: System::Windows::Forms::Button^  ReturnButton;
 	private: System::Windows::Forms::Label^  StatPointsLabel;
@@ -331,7 +358,6 @@ namespace Marsh {
 			this->Spell12 = (gcnew System::Windows::Forms::Button());
 			this->Spell13 = (gcnew System::Windows::Forms::Button());
 			this->Spell14 = (gcnew System::Windows::Forms::Button());
-			this->SpellInfo = (gcnew System::Windows::Forms::Label());
 			this->AcceptSpellButton = (gcnew System::Windows::Forms::Button());
 			this->ReturnButton = (gcnew System::Windows::Forms::Button());
 			this->StatPointsLabel = (gcnew System::Windows::Forms::Label());
@@ -344,6 +370,31 @@ namespace Marsh {
 			this->focusButton = (gcnew System::Windows::Forms::Button());
 			this->VitalityButton = (gcnew System::Windows::Forms::Button());
 			this->SpellPointsLabel = (gcnew System::Windows::Forms::Label());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox4 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox5 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox6 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox7 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox8 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox9 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox10 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox11 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox12 = (gcnew System::Windows::Forms::PictureBox());
+			this->SpellInfo = (gcnew System::Windows::Forms::RichTextBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox4))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox5))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox6))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox7))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox8))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox9))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox10))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox11))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox12))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// Spell0
@@ -370,7 +421,7 @@ namespace Marsh {
 			this->Spell1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell1->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell1.Image")));
-			this->Spell1->Location = System::Drawing::Point(208, 106);
+			this->Spell1->Location = System::Drawing::Point(280, 140);
 			this->Spell1->Name = L"Spell1";
 			this->Spell1->Size = System::Drawing::Size(59, 58);
 			this->Spell1->TabIndex = 2;
@@ -386,7 +437,7 @@ namespace Marsh {
 			this->Spell2->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell2->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell2.Image")));
-			this->Spell2->Location = System::Drawing::Point(208, 42);
+			this->Spell2->Location = System::Drawing::Point(280, 42);
 			this->Spell2->Name = L"Spell2";
 			this->Spell2->Size = System::Drawing::Size(59, 58);
 			this->Spell2->TabIndex = 1;
@@ -402,7 +453,7 @@ namespace Marsh {
 			this->Spell3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell3->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell3->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell3.Image")));
-			this->Spell3->Location = System::Drawing::Point(307, 42);
+			this->Spell3->Location = System::Drawing::Point(461, 42);
 			this->Spell3->Name = L"Spell3";
 			this->Spell3->Size = System::Drawing::Size(59, 58);
 			this->Spell3->TabIndex = 3;
@@ -418,7 +469,7 @@ namespace Marsh {
 			this->Spell4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell4->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell4->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell4.Image")));
-			this->Spell4->Location = System::Drawing::Point(99, 204);
+			this->Spell4->Location = System::Drawing::Point(99, 276);
 			this->Spell4->Name = L"Spell4";
 			this->Spell4->Size = System::Drawing::Size(59, 58);
 			this->Spell4->TabIndex = 4;
@@ -434,7 +485,7 @@ namespace Marsh {
 			this->Spell5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell5->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell5->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell5.Image")));
-			this->Spell5->Location = System::Drawing::Point(208, 268);
+			this->Spell5->Location = System::Drawing::Point(280, 371);
 			this->Spell5->Name = L"Spell5";
 			this->Spell5->Size = System::Drawing::Size(59, 58);
 			this->Spell5->TabIndex = 6;
@@ -450,7 +501,7 @@ namespace Marsh {
 			this->Spell6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell6->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell6->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell6.Image")));
-			this->Spell6->Location = System::Drawing::Point(208, 204);
+			this->Spell6->Location = System::Drawing::Point(280, 276);
 			this->Spell6->Name = L"Spell6";
 			this->Spell6->Size = System::Drawing::Size(59, 58);
 			this->Spell6->TabIndex = 5;
@@ -466,7 +517,7 @@ namespace Marsh {
 			this->Spell7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell7->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell7->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell7.Image")));
-			this->Spell7->Location = System::Drawing::Point(307, 204);
+			this->Spell7->Location = System::Drawing::Point(461, 276);
 			this->Spell7->Name = L"Spell7";
 			this->Spell7->Size = System::Drawing::Size(59, 58);
 			this->Spell7->TabIndex = 7;
@@ -482,7 +533,7 @@ namespace Marsh {
 			this->Spell8->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell8->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell8->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell8.Image")));
-			this->Spell8->Location = System::Drawing::Point(99, 446);
+			this->Spell8->Location = System::Drawing::Point(99, 624);
 			this->Spell8->Name = L"Spell8";
 			this->Spell8->Size = System::Drawing::Size(59, 58);
 			this->Spell8->TabIndex = 8;
@@ -498,7 +549,7 @@ namespace Marsh {
 			this->Spell9->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell9->ForeColor = System::Drawing::Color::Transparent;
 			this->Spell9->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell9.Image")));
-			this->Spell9->Location = System::Drawing::Point(208, 382);
+			this->Spell9->Location = System::Drawing::Point(280, 482);
 			this->Spell9->Name = L"Spell9";
 			this->Spell9->Size = System::Drawing::Size(59, 58);
 			this->Spell9->TabIndex = 9;
@@ -513,7 +564,7 @@ namespace Marsh {
 			this->Spell10->FlatAppearance->BorderSize = 2;
 			this->Spell10->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell10->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell10->Location = System::Drawing::Point(307, 382);
+			this->Spell10->Location = System::Drawing::Point(461, 482);
 			this->Spell10->Name = L"Spell10";
 			this->Spell10->Size = System::Drawing::Size(59, 58);
 			this->Spell10->TabIndex = 11;
@@ -528,7 +579,7 @@ namespace Marsh {
 			this->Spell11->FlatAppearance->BorderSize = 2;
 			this->Spell11->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell11->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell11->Location = System::Drawing::Point(208, 446);
+			this->Spell11->Location = System::Drawing::Point(280, 624);
 			this->Spell11->Name = L"Spell11";
 			this->Spell11->Size = System::Drawing::Size(59, 58);
 			this->Spell11->TabIndex = 14;
@@ -543,7 +594,7 @@ namespace Marsh {
 			this->Spell12->FlatAppearance->BorderSize = 2;
 			this->Spell12->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell12->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell12->Location = System::Drawing::Point(307, 446);
+			this->Spell12->Location = System::Drawing::Point(461, 624);
 			this->Spell12->Name = L"Spell12";
 			this->Spell12->Size = System::Drawing::Size(59, 58);
 			this->Spell12->TabIndex = 12;
@@ -558,7 +609,7 @@ namespace Marsh {
 			this->Spell13->FlatAppearance->BorderSize = 2;
 			this->Spell13->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell13->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell13->Location = System::Drawing::Point(208, 510);
+			this->Spell13->Location = System::Drawing::Point(280, 756);
 			this->Spell13->Name = L"Spell13";
 			this->Spell13->Size = System::Drawing::Size(59, 58);
 			this->Spell13->TabIndex = 13;
@@ -573,7 +624,7 @@ namespace Marsh {
 			this->Spell14->FlatAppearance->BorderSize = 2;
 			this->Spell14->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell14->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell14->Location = System::Drawing::Point(307, 510);
+			this->Spell14->Location = System::Drawing::Point(461, 756);
 			this->Spell14->Name = L"Spell14";
 			this->Spell14->Size = System::Drawing::Size(59, 58);
 			this->Spell14->TabIndex = 14;
@@ -581,21 +632,14 @@ namespace Marsh {
 			this->Spell14->UseVisualStyleBackColor = false;
 			this->Spell14->Click += gcnew System::EventHandler(this, &LevelUp::Spell_Click);
 			// 
-			// SpellInfo
-			// 
-			this->SpellInfo->AutoSize = true;
-			this->SpellInfo->Location = System::Drawing::Point(688, 361);
-			this->SpellInfo->Name = L"SpellInfo";
-			this->SpellInfo->Size = System::Drawing::Size(219, 13);
-			this->SpellInfo->TabIndex = 19;
-			this->SpellInfo->Text = L"Insert information about the current spell here";
-			// 
 			// AcceptSpellButton
 			// 
 			this->AcceptSpellButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->AcceptSpellButton->Location = System::Drawing::Point(796, 509);
+			this->AcceptSpellButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->AcceptSpellButton->Location = System::Drawing::Point(761, 653);
 			this->AcceptSpellButton->Name = L"AcceptSpellButton";
-			this->AcceptSpellButton->Size = System::Drawing::Size(111, 33);
+			this->AcceptSpellButton->Size = System::Drawing::Size(173, 89);
 			this->AcceptSpellButton->TabIndex = 16;
 			this->AcceptSpellButton->Text = L"Accept New Spell";
 			this->AcceptSpellButton->UseVisualStyleBackColor = true;
@@ -604,9 +648,11 @@ namespace Marsh {
 			// ReturnButton
 			// 
 			this->ReturnButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->ReturnButton->Location = System::Drawing::Point(929, 509);
+			this->ReturnButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->ReturnButton->Location = System::Drawing::Point(958, 653);
 			this->ReturnButton->Name = L"ReturnButton";
-			this->ReturnButton->Size = System::Drawing::Size(88, 33);
+			this->ReturnButton->Size = System::Drawing::Size(143, 89);
 			this->ReturnButton->TabIndex = 17;
 			this->ReturnButton->Text = L"Return";
 			this->ReturnButton->UseVisualStyleBackColor = true;
@@ -614,53 +660,77 @@ namespace Marsh {
 			// 
 			// StatPointsLabel
 			// 
+			this->StatPointsLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->StatPointsLabel->AutoSize = true;
-			this->StatPointsLabel->Location = System::Drawing::Point(713, 42);
+			this->StatPointsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->StatPointsLabel->Location = System::Drawing::Point(710, 42);
 			this->StatPointsLabel->Name = L"StatPointsLabel";
-			this->StatPointsLabel->Size = System::Drawing::Size(101, 13);
+			this->StatPointsLabel->Size = System::Drawing::Size(224, 29);
 			this->StatPointsLabel->TabIndex = 20;
 			this->StatPointsLabel->Text = L"Current Stat Points: ";
 			// 
 			// IntelligenceLabel
 			// 
+			this->IntelligenceLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->IntelligenceLabel->AutoSize = true;
-			this->IntelligenceLabel->Location = System::Drawing::Point(729, 141);
+			this->IntelligenceLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->IntelligenceLabel->Location = System::Drawing::Point(807, 141);
 			this->IntelligenceLabel->Name = L"IntelligenceLabel";
-			this->IntelligenceLabel->Size = System::Drawing::Size(64, 13);
+			this->IntelligenceLabel->Size = System::Drawing::Size(143, 29);
 			this->IntelligenceLabel->TabIndex = 20;
 			this->IntelligenceLabel->Text = L"Intelligence:";
 			// 
 			// WillpowerLabel
 			// 
+			this->WillpowerLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->WillpowerLabel->AutoSize = true;
-			this->WillpowerLabel->Location = System::Drawing::Point(729, 182);
+			this->WillpowerLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->WillpowerLabel->Location = System::Drawing::Point(807, 182);
 			this->WillpowerLabel->Name = L"WillpowerLabel";
-			this->WillpowerLabel->Size = System::Drawing::Size(56, 13);
+			this->WillpowerLabel->Size = System::Drawing::Size(127, 29);
 			this->WillpowerLabel->TabIndex = 19;
 			this->WillpowerLabel->Text = L"Willpower:";
 			// 
 			// FocusLabel
 			// 
+			this->FocusLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->FocusLabel->AutoSize = true;
-			this->FocusLabel->Location = System::Drawing::Point(729, 227);
+			this->FocusLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->FocusLabel->Location = System::Drawing::Point(807, 227);
 			this->FocusLabel->Name = L"FocusLabel";
-			this->FocusLabel->Size = System::Drawing::Size(42, 13);
+			this->FocusLabel->Size = System::Drawing::Size(91, 29);
 			this->FocusLabel->TabIndex = 20;
 			this->FocusLabel->Text = L"Focus: ";
 			// 
 			// VitalityLabel
 			// 
+			this->VitalityLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->VitalityLabel->AutoSize = true;
-			this->VitalityLabel->Location = System::Drawing::Point(729, 98);
+			this->VitalityLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->VitalityLabel->Location = System::Drawing::Point(807, 88);
 			this->VitalityLabel->Name = L"VitalityLabel";
-			this->VitalityLabel->Size = System::Drawing::Size(40, 13);
+			this->VitalityLabel->Size = System::Drawing::Size(88, 29);
 			this->VitalityLabel->TabIndex = 21;
 			this->VitalityLabel->Text = L"Vitality:";
 			// 
 			// IntelligenceButton
 			// 
+			this->IntelligenceButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->IntelligenceButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->IntelligenceButton->Location = System::Drawing::Point(635, 131);
+			this->IntelligenceButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->IntelligenceButton->Location = System::Drawing::Point(713, 131);
 			this->IntelligenceButton->Name = L"IntelligenceButton";
 			this->IntelligenceButton->Size = System::Drawing::Size(88, 33);
 			this->IntelligenceButton->TabIndex = 22;
@@ -670,9 +740,13 @@ namespace Marsh {
 			// 
 			// WillpowerButton
 			// 
+			this->WillpowerButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->WillpowerButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->WillpowerButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
 			this->WillpowerButton->ForeColor = System::Drawing::SystemColors::HighlightText;
-			this->WillpowerButton->Location = System::Drawing::Point(635, 172);
+			this->WillpowerButton->Location = System::Drawing::Point(713, 172);
 			this->WillpowerButton->Name = L"WillpowerButton";
 			this->WillpowerButton->Size = System::Drawing::Size(88, 33);
 			this->WillpowerButton->TabIndex = 23;
@@ -682,8 +756,12 @@ namespace Marsh {
 			// 
 			// focusButton
 			// 
+			this->focusButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->focusButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->focusButton->Location = System::Drawing::Point(635, 217);
+			this->focusButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->focusButton->Location = System::Drawing::Point(713, 217);
 			this->focusButton->Name = L"focusButton";
 			this->focusButton->Size = System::Drawing::Size(88, 33);
 			this->focusButton->TabIndex = 24;
@@ -693,8 +771,12 @@ namespace Marsh {
 			// 
 			// VitalityButton
 			// 
+			this->VitalityButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->VitalityButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->VitalityButton->Location = System::Drawing::Point(635, 88);
+			this->VitalityButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->VitalityButton->Location = System::Drawing::Point(713, 88);
 			this->VitalityButton->Name = L"VitalityButton";
 			this->VitalityButton->Size = System::Drawing::Size(88, 33);
 			this->VitalityButton->TabIndex = 25;
@@ -704,19 +786,166 @@ namespace Marsh {
 			// 
 			// SpellPointsLabel
 			// 
+			this->SpellPointsLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->SpellPointsLabel->AutoSize = true;
-			this->SpellPointsLabel->Location = System::Drawing::Point(692, 333);
+			this->SpellPointsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->SpellPointsLabel->Location = System::Drawing::Point(710, 334);
 			this->SpellPointsLabel->Name = L"SpellPointsLabel";
-			this->SpellPointsLabel->Size = System::Drawing::Size(129, 13);
+			this->SpellPointsLabel->Size = System::Drawing::Size(286, 29);
 			this->SpellPointsLabel->TabIndex = 26;
 			this->SpellPointsLabel->Text = L"You can get 0 new spells.";
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(174, 284);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(100, 50);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox1->TabIndex = 27;
+			this->pictureBox1->TabStop = false;
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox2.Image")));
+			this->pictureBox2->Location = System::Drawing::Point(345, 284);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(100, 50);
+			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox2->TabIndex = 28;
+			this->pictureBox2->TabStop = false;
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox3.Image")));
+			this->pictureBox3->Location = System::Drawing::Point(345, 490);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(100, 50);
+			this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox3->TabIndex = 29;
+			this->pictureBox3->TabStop = false;
+			// 
+			// pictureBox4
+			// 
+			this->pictureBox4->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox4.Image")));
+			this->pictureBox4->Location = System::Drawing::Point(345, 632);
+			this->pictureBox4->Name = L"pictureBox4";
+			this->pictureBox4->Size = System::Drawing::Size(100, 50);
+			this->pictureBox4->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox4->TabIndex = 30;
+			this->pictureBox4->TabStop = false;
+			// 
+			// pictureBox5
+			// 
+			this->pictureBox5->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox5.Image")));
+			this->pictureBox5->Location = System::Drawing::Point(345, 764);
+			this->pictureBox5->Name = L"pictureBox5";
+			this->pictureBox5->Size = System::Drawing::Size(100, 50);
+			this->pictureBox5->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox5->TabIndex = 31;
+			this->pictureBox5->TabStop = false;
+			// 
+			// pictureBox6
+			// 
+			this->pictureBox6->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox6.Image")));
+			this->pictureBox6->Location = System::Drawing::Point(164, 50);
+			this->pictureBox6->Name = L"pictureBox6";
+			this->pictureBox6->Size = System::Drawing::Size(100, 50);
+			this->pictureBox6->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox6->TabIndex = 32;
+			this->pictureBox6->TabStop = false;
+			// 
+			// pictureBox7
+			// 
+			this->pictureBox7->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox7.Image")));
+			this->pictureBox7->Location = System::Drawing::Point(345, 50);
+			this->pictureBox7->Name = L"pictureBox7";
+			this->pictureBox7->Size = System::Drawing::Size(100, 50);
+			this->pictureBox7->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox7->TabIndex = 33;
+			this->pictureBox7->TabStop = false;
+			// 
+			// pictureBox8
+			// 
+			this->pictureBox8->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox8.Image")));
+			this->pictureBox8->Location = System::Drawing::Point(137, 88);
+			this->pictureBox8->Name = L"pictureBox8";
+			this->pictureBox8->Size = System::Drawing::Size(157, 94);
+			this->pictureBox8->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox8->TabIndex = 34;
+			this->pictureBox8->TabStop = false;
+			// 
+			// pictureBox9
+			// 
+			this->pictureBox9->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox9.Image")));
+			this->pictureBox9->Location = System::Drawing::Point(149, 327);
+			this->pictureBox9->Name = L"pictureBox9";
+			this->pictureBox9->Size = System::Drawing::Size(125, 84);
+			this->pictureBox9->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox9->TabIndex = 35;
+			this->pictureBox9->TabStop = false;
+			// 
+			// pictureBox10
+			// 
+			this->pictureBox10->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox10.Image")));
+			this->pictureBox10->Location = System::Drawing::Point(149, 515);
+			this->pictureBox10->Name = L"pictureBox10";
+			this->pictureBox10->Size = System::Drawing::Size(145, 121);
+			this->pictureBox10->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox10->TabIndex = 36;
+			this->pictureBox10->TabStop = false;
+			// 
+			// pictureBox11
+			// 
+			this->pictureBox11->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox11.Image")));
+			this->pictureBox11->Location = System::Drawing::Point(164, 624);
+			this->pictureBox11->Name = L"pictureBox11";
+			this->pictureBox11->Size = System::Drawing::Size(100, 50);
+			this->pictureBox11->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox11->TabIndex = 37;
+			this->pictureBox11->TabStop = false;
+			// 
+			// pictureBox12
+			// 
+			this->pictureBox12->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox12.Image")));
+			this->pictureBox12->Location = System::Drawing::Point(137, 642);
+			this->pictureBox12->Name = L"pictureBox12";
+			this->pictureBox12->Size = System::Drawing::Size(137, 179);
+			this->pictureBox12->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->pictureBox12->TabIndex = 38;
+			this->pictureBox12->TabStop = false;
+			// 
+			// SpellInfo
+			// 
+			this->SpellInfo->BackColor = System::Drawing::SystemColors::ControlText;
+			this->SpellInfo->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->SpellInfo->Cursor = System::Windows::Forms::Cursors::Arrow;
+			this->SpellInfo->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->SpellInfo->ForeColor = System::Drawing::Color::White;
+			this->SpellInfo->Location = System::Drawing::Point(713, 371);
+			this->SpellInfo->Name = L"SpellInfo";
+			this->SpellInfo->Size = System::Drawing::Size(480, 265);
+			this->SpellInfo->TabIndex = 39;
+			this->SpellInfo->Text = L"";
 			// 
 			// LevelUp
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlText;
-			this->ClientSize = System::Drawing::Size(1086, 590);
+			this->ClientSize = System::Drawing::Size(1244, 860);
+			this->Controls->Add(this->SpellInfo);
+			this->Controls->Add(this->pictureBox11);
+			this->Controls->Add(this->pictureBox7);
+			this->Controls->Add(this->pictureBox6);
+			this->Controls->Add(this->pictureBox5);
+			this->Controls->Add(this->pictureBox4);
+			this->Controls->Add(this->pictureBox3);
+			this->Controls->Add(this->pictureBox2);
+			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->SpellPointsLabel);
 			this->Controls->Add(this->VitalityButton);
 			this->Controls->Add(this->focusButton);
@@ -729,7 +958,6 @@ namespace Marsh {
 			this->Controls->Add(this->StatPointsLabel);
 			this->Controls->Add(this->ReturnButton);
 			this->Controls->Add(this->AcceptSpellButton);
-			this->Controls->Add(this->SpellInfo);
 			this->Controls->Add(this->Spell0);
 			this->Controls->Add(this->Spell1);
 			this->Controls->Add(this->Spell2);
@@ -745,6 +973,10 @@ namespace Marsh {
 			this->Controls->Add(this->Spell12);
 			this->Controls->Add(this->Spell13);
 			this->Controls->Add(this->Spell14);
+			this->Controls->Add(this->pictureBox12);
+			this->Controls->Add(this->pictureBox9);
+			this->Controls->Add(this->pictureBox8);
+			this->Controls->Add(this->pictureBox10);
 			this->ForeColor = System::Drawing::SystemColors::HighlightText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Location = System::Drawing::Point(307, 510);
@@ -753,6 +985,18 @@ namespace Marsh {
 			this->Name = L"LevelUp";
 			this->Tag = L"";
 			this->Text = L"Level Up";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox4))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox5))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox6))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox7))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox8))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox9))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox10))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox11))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox12))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

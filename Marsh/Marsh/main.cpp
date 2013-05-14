@@ -26,6 +26,8 @@ volatile int ticks, framerate;
 volatile bool rested;
 volatile int world_time_counter = 0;
 volatile int world_time_delay = DEFAULT_WORLD_TIME_DELAY;
+AttackDB* attackDB;
+ItemDB* itemDB;
 
 void load_inventory(string stream);
 void load_spells(string stream);
@@ -119,6 +121,9 @@ void set_up_game(void) {
 	install_int(timer_frame_counter, 1000);
 	install_int(timer_game_rester, FRAME_RATE_DELAY);
 
+	attackDB = new AttackDB();
+	itemDB = new ItemDB();
+
 	// default data for inventory - TEST DATA
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
@@ -126,7 +131,7 @@ void set_up_game(void) {
 	Equipment* equip = new Equipment();
 	Equipment* equip1 = new Equipment();
 	Equipment* equip2 = new Equipment(); 
-	equip1->name = "Cloth Armor";
+	/*equip1->name = "Cloth Armor";
 	equip1->type = Tunic;
 	equip1->vitality = 5;
 	equip1->description = "+5 Vit";
@@ -143,8 +148,14 @@ void set_up_game(void) {
 	equip2->equipped = false;
 	equip2->equipable = true;
 	equip2->number_held = 1;
-	hero->add_to_inventory(equip2);
-	equip->name = "None";
+	hero->add_to_inventory(equip2);*/
+	for(int i = 0; i <= 21; i++){
+		equip = itemDB->fetch_item(i);
+		equip->number_held = 1;
+		hero->add_to_inventory(equip);
+		equip = new Equipment();
+	}
+	/*equip->name = "None";
 	equip->description = "Filler test";
 	equip->item_id = -1;
 	equip->number_held = -1;
@@ -152,7 +163,7 @@ void set_up_game(void) {
 	while (i<MAX_HELD_ITEMS) {
 		hero->add_to_inventory(equip);
 		i += 1;
-	}
+	}*/
 }
 
 void show_intro(void) {
@@ -240,8 +251,6 @@ void start_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
-	ItemDB* db = new ItemDB();
-
 	while(game_state == IN_GAME) {
 		if (key[KEY_ESC]) {
 			show_intro();
@@ -297,13 +306,11 @@ void load_spells(string stream) {
 		if (ss.peek() == ',') ss.ignore();
 	}
 	i = 0;
-	AttackDB* db = new AttackDB();
 	std::vector<int>::iterator end = spell_ids.end();
 	for (std::vector<int>::iterator iter = spell_ids.begin(); iter != end; ++iter){
-		Player_Accessor::get_player()->attack_loadout[i] = db->fetch_attack(spell_ids[i])->clone(0,0,W);
+		Player_Accessor::get_player()->attack_loadout[i] = attackDB->fetch_attack(spell_ids[i])->clone(0,0,W);
 		++i;
 	}
-	delete db;
 }
 
 void load_game(void) {
@@ -368,7 +375,7 @@ void save_game(void) {
 	// world
 	int world = v->current_world->my_name;
 	file1 << "World " << world << endl;
-	
+
 	// player inventory
 	std::string items;
 	std::stringstream line;
@@ -402,34 +409,33 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
 	Player* hero = Player_Accessor::get_player();
 	int menu_sel = 0;
+	int max_sel = 0;
 	std::vector<Equipment*> inventory = *hero->get_inventory();
-	int max_sel = MAX_HELD_ITEMS;
 	clear_keybuf();
 
 	while (game_state == INVENTORY_GAME || game_state == IN_GAME) {
+		max_sel = inventory.size()-1;
 		if(keyrel(KEY_I))
 			goto exit_loop;
 		if (keypressed()) {
 			int k = readkey();
 			switch(k >> 8) {
-				case KEY_ESC: break;
+				case KEY_ESC: goto exit_loop; break;
 				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
 				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
 				case KEY_ENTER:
-					switch (menu_sel) {
-				case 0: show_screen(inventory[0]); break; 
-				case 1: show_screen(inventory[1]); break; 
-				case 2: show_screen(inventory[2]); break; 
-				case 3: show_screen(inventory[3]); break; 
-				case 4: show_screen(inventory[4]); break; 
-				case 5: show_screen(inventory[5]); break;
-				case 6: show_screen(inventory[6]); break;
-				case 7: show_screen(inventory[7]); break;
-				case 8: show_screen(inventory[8]); break;
-				case 9: show_screen(inventory[9]); break;
-				case 10: show_screen(inventory[10]); break;
-				case 11: game_state=IN_GAME; goto exit_loop;
-					} break;
+					if(menu_sel < inventory.size())
+						show_screen(inventory[menu_sel]);break;
+				case KEY_DEL: 
+					if(menu_sel < inventory.size()){
+						Equipment* delete_Item = inventory[menu_sel];
+						if(delete_Item->type != QuestItem){
+							hero->remove_from_inventory(delete_Item);
+							delete delete_Item;
+							inventory = *hero->get_inventory();
+						}
+						break;
+					}
 			}
 			clear_keybuf();
 		}
@@ -438,20 +444,27 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Character");
-		textprintf_ex(buffer, font3, 50, 160, makecol(56,235,181), -1, "Inventory");
-		textprintf_ex(buffer, font3, 350, 160, makecol(56,235,181), -1, "Equipment");
-		textprintf_ex(buffer, font3, 650, 160, makecol(56,235,181), -1, "Stats");
-		textprintf_ex(buffer, font, 350, 260, makecol(236,221,9), -1, "Armor");
-		textprintf_ex(buffer, font, 350, 280, makecol(236,221,9), -1, "Weapon");
-		textprintf_ex(buffer, font, 350, 300, makecol(236,221,9), -1, "Helmet");
-		textprintf_ex(buffer, font, 350, 320, makecol(236,221,9), -1, "Boots");
-		textprintf_ex(buffer, font, 350, 340, makecol(236,221,9), -1, "Jewelry");
-		textprintf_ex(buffer, font, 650, 260, makecol(236,221,9), -1, "Vitality");
-		textprintf_ex(buffer, font, 650, 280, makecol(236,221,9), -1, "Willpower");
-		textprintf_ex(buffer, font, 650, 300, makecol(236,221,9), -1, "Intelligence");
-		textprintf_ex(buffer, font, 650, 320, makecol(236,221,9), -1, "Focus");
-		textprintf_ex(buffer, font, 710, 300, makecol(236,145,9), -1, "0");
-		textprintf_ex(buffer, font, 710, 320, makecol(236,145,9), -1, "0");
+		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game and esc to exit the menu to the pause screen.");
+		textprintf_ex(buffer, font3, 50, 145, makecol(255,255,255), -1, "Use the arrow keys to scroll trough the items. Only 25 items can be kept in your inventory");
+		textprintf_ex(buffer, font3, 50, 175, makecol(255,255,255), -1, "at a time. Use the Delete key to remove items permanently. [Quest Items cannot be deleted]");
+		textprintf_ex(buffer, font3, 50, 220, makecol(56,235,181), -1, "Inventory");
+		textprintf_ex(buffer, font3, 540, 220, makecol(56,235,181), -1, "Equipment");
+		textprintf_ex(buffer, font3, 950, 220, makecol(56,235,181), -1, "Stats");
+		textprintf_ex(buffer, font, 540, 260, makecol(236,221,9), -1, "Armor");
+		textprintf_ex(buffer, font, 540, 280, makecol(236,221,9), -1, "Weapon");
+		textprintf_ex(buffer, font, 540, 300, makecol(236,221,9), -1, "Helmet");
+		textprintf_ex(buffer, font, 540, 320, makecol(236,221,9), -1, "Boots");
+		textprintf_ex(buffer, font, 540, 340, makecol(236,221,9), -1, "Jewelry");
+		textprintf_ex(buffer, font, 950, 260, makecol(236,221,9), -1, "Vitality");
+		textprintf_ex(buffer, font, 950, 280, makecol(236,221,9), -1, "Willpower");
+		textprintf_ex(buffer, font, 950, 300, makecol(236,221,9), -1, "Intelligence");
+		textprintf_ex(buffer, font, 950, 320, makecol(236,221,9), -1, "Focus");
+		textprintf_ex(buffer, font, 950, 340, makecol(236,221,9), -1, "Armor");
+		textprintf_ex(buffer, font, 1055, 260, makecol(236,145,9), -1, "%d", hero->vitality);
+		textprintf_ex(buffer, font, 1055, 280, makecol(236,145,9), -1, "%d", hero->willpower);
+		textprintf_ex(buffer, font, 1055, 300, makecol(236,145,9), -1, "%d", hero->intelligence);
+		textprintf_ex(buffer, font, 1055, 320, makecol(236,145,9), -1, "%d", hero->focus);
+		textprintf_ex(buffer, font, 1055, 340, makecol(236,145,9), -1, "%d", hero->armor);
 
 		int count = 0;
 		int start_x = 50;
@@ -459,43 +472,53 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		while (count < inventory.size()) {
 			if (inventory[count]->equipable == true) {
 				if (inventory[count]->equipped == true) {
-					if (inventory[count]->item_id == 0) {
-						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
-						textprintf_ex(buffer, font, 710, 260, makecol(236,145,9), -1, "%d", hero->vitality);
-					} else {
-						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "%s (%s)", inventory[count]->name, inventory[count]->description);
-						textprintf_ex(buffer, font, 710, 280, makecol(236,145,9), -1, "%d", hero->willpower);
+					if (inventory[count]->type == Armor) {
+						textprintf_ex(buffer, font, 600, 260, makecol(236,145,9), -1, "%s", inventory[count]->name.c_str());
 					}
-				} else {
-					if (inventory[count]->item_id == 0) {
-						textprintf_ex(buffer, font, 410, 260, makecol(236,145,9), -1, "");
-						textprintf_ex(buffer, font, 710, 260, makecol(236,145,9), -1, "0");
-					} else {
-						textprintf_ex(buffer, font, 410, 280, makecol(236,145,9), -1, "");
-						textprintf_ex(buffer, font, 710, 280, makecol(236,145,9), -1, "0");
+					if (inventory[count]->type == Weapon){
+						textprintf_ex(buffer, font, 600, 280, makecol(236,145,9), -1, "%s", inventory[count]->name.c_str());
+					}
+					if (inventory[count]->type == Helmet){
+						textprintf_ex(buffer, font, 600, 300, makecol(236,145,9), -1, "%s", inventory[count]->name.c_str());
+					}
+					if (inventory[count]->type == Boots){
+						textprintf_ex(buffer, font, 600, 320, makecol(236,145,9), -1, "%s", inventory[count]->name.c_str());
+					}
+					if (inventory[count]->type == Jewelry){
+						textprintf_ex(buffer, font, 600, 340, makecol(236,145,9), -1, "%s", inventory[count]->name.c_str());
 					}
 				}
 			}
 			if (menu_sel != count) { 
-				textprintf_ex(buffer, font, start_x,  start_y, makecol(0,255,255), -1, "(%d) %s", inventory[count]->number_held, inventory[count]->name);
-			} else {	
+				textprintf_ex(buffer, font, start_x,  start_y, makecol(0,255,255), -1, "%d: (%d) %s",count+1, inventory[count]->number_held, inventory[count]->name.c_str());
+			} else {
+				textprintf_ex(buffer, font3, 540,450, makecol(56,235,181), -1, "Selected Item");
+				textprintf_ex(buffer, font, 540, 500, makecol(255,255,255), -1, "%s", inventory[count]->name.c_str());
+				textprintf_ex(buffer, font, 540, 520, makecol(255,255,255), -1, "%s", inventory[count]->description.c_str());
+				textprintf_ex(buffer, font, 540, 540, makecol(255,255,255), -1, "Armor: %d", inventory[count]->armor);
+				textprintf_ex(buffer, font, 540, 560, makecol(255,255,255), -1, "Vitality: %d", inventory[count]->vitality);
+				textprintf_ex(buffer, font, 540, 580, makecol(255,255,255), -1, "Intelligence: %d", inventory[count]->intelligence);
+				textprintf_ex(buffer, font, 540, 600, makecol(255,255,255), -1, "Willpower: %d", inventory[count]->willpower);
+				textprintf_ex(buffer, font, 540, 620, makecol(255,255,255), -1, "Focus: %d", inventory[count]->focus);
+				textprintf_ex(buffer, font, 540, 640, makecol(255,255,255), -1, "Current Number: %d", inventory[count]->number_held);
+
 				if (inventory[count]->equipable == true) {
 					if (inventory[count]->equipped == false) {
-						textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s [Enter to equip]", inventory[count]->description);
+						textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s [Enter to equip]", inventory[count]->name.c_str());
 					} else {
-						textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s [Enter to unequip]", inventory[count]->description);
+						textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s [Enter to unequip]", inventory[count]->name.c_str());
 					}
 				} else {
-					textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%s", inventory[count]->description);
+					textprintf_ex(buffer, font, start_x,  start_y, makecol(255,255,255), -1, "%d: %s",count+1, inventory[count]->name.c_str());
 				}
 			}
 			count+=1;
 			start_y+=20;
 		}
-		if (menu_sel == 11) {
-			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "Return");
+		if (menu_sel == 26) {
+			textprintf_ex(buffer, font1, 400,  start_y*MAX_HELD_ITEMS, makecol(255,0,51), -1, "Return");
 		} else {
-			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "RETURN");
+			textprintf_ex(buffer, font1, 400,  start_y*MAX_HELD_ITEMS, makecol(255,255,0), -1, "RETURN");
 		} 
 
 		// draw to screen
@@ -511,6 +534,7 @@ void show_screen(Equipment* equip) {
 	if (equip->item_id == -1) {
 		return;
 	}
+
 	if (equip->equipable == true) {
 		if (equip->equipped == false) {
 			Player_Accessor::get_player()->equip_item(equip);
@@ -526,9 +550,7 @@ void show_screen(Equipment* equip) {
 }
 
 Equipment* get_new_equipment(void){
-	Equipment* item = (Equipment*)malloc(sizeof(Equipment));
-	item->name = "";
-	item->description = "";
+	Equipment* item = new Equipment();//(Equipment*)malloc(sizeof(Equipment));
 	item->item_id = -1;
 	item->vitality = 0;
 	item->focus = 0;
@@ -544,7 +566,7 @@ Equipment* get_new_equipment(void){
 }
 
 Equipment* get_item_clone(Equipment* old_item){
-	Equipment* item = (Equipment*)malloc(sizeof(Equipment));
+	Equipment* item = new Equipment();
 	item->name = old_item->name;
 	item->description = old_item->description;
 	item->item_id = old_item->item_id;
@@ -581,90 +603,4 @@ void show_level_up(void) { // show level up menu
 	menu->StartPosition = FormStartPosition::CenterScreen;
 	menu->ShowDialog();
 	delete menu;
-/*
-	inv_screen_bitmap = create_bitmap(SCREENW,SCREENH);
-	bool is_done = false;
-	volatile bool* done_ref = &is_done;
-#pragma omp parallel num_threads(2) shared(done_ref)
-	{
-		int my_id = omp_get_thread_num();
-		if (my_id == 0){
-			while(!done_ref){
-				// wait for a while
-			}
-		} else {
-			LevelUp^ menu = gcnew LevelUp();
-			menu->BringToFront();
-			menu->ShowDialog();
-			Application::Run(menu);
-		}
-
-		//	
-
-	}
-	Player* hero = Player_Accessor::get_player();
-	int menu_sel = 0;
-	int max_sel = 4;
-	while (game_state == LEVEL_UP_GAME || game_state == IN_GAME) {
-		if (keypressed()) {
-			int k = readkey();
-			switch(k >> 8) {
-				case KEY_ESC: break;
-				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
-				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
-				case KEY_ENTER:
-					switch (menu_sel) {
-				case 0: addStat(0); break; 
-				case 1: addStat(1); break; 
-				case 2: addStat(2); break; 
-				case 3: addStat(3); break;  
-				case 4: game_state=IN_GAME; goto exit_level_loop;
-					} break;
-			}
-			clear_keybuf();
-		}
-
-		// drawing
-		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
-
-		textprintf_ex(buffer, font, 150, 120, makecol(236,221,9), -1, "Available Stat Points:");
-		textprintf_ex(buffer, font, 360, 120, makecol(236,145,9), -1, "%d", hero->statPoints);
-
-		textprintf_ex(buffer, font, 150, 260, makecol(255,0,51), -1, "Vitality");
-		textprintf_ex(buffer, font, 150, 280, makecol(255,0,51), -1, "Willpower");
-		textprintf_ex(buffer, font, 150, 300, makecol(255,0,51), -1, "Intelligence");
-		textprintf_ex(buffer, font, 150, 320, makecol(255,0,51), -1, "Focus");
-		textprintf_ex(buffer, font, 310, 260, makecol(255,0,51), -1, "%d", hero->vitality);
-		textprintf_ex(buffer, font, 310, 280, makecol(255,0,51), -1, "%d", hero->willpower);
-		textprintf_ex(buffer, font, 310, 300, makecol(255,0,51), -1, "%d", hero->intelligence);
-		textprintf_ex(buffer, font, 310, 320, makecol(255,0,51), -1, "%d", hero->focus);
-
-		int start_x = 50;
-		int start_y = 260;
-
-		if(menu_sel == 0){
-			textprintf_ex(buffer, font, 150, 260, makecol(255,255,0), -1, "Vitality");
-		}
-		else if(menu_sel == 1){
-			textprintf_ex(buffer, font, 150, 280, makecol(255,255,0), -1, "Willpower");
-		}
-		else if(menu_sel == 2){
-			textprintf_ex(buffer, font, 150, 300, makecol(255,255,0), -1, "Intelligence");
-		}
-		else if(menu_sel == 3){
-			textprintf_ex(buffer, font, 150, 320, makecol(255,255,0), -1, "Focus");
-		}
-		if (menu_sel == 4) {
-			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,255,0), -1, "Return");
-		} else {
-			textprintf_ex(buffer, font1, start_x,  start_y+19*MAX_HELD_ITEMS, makecol(255,0,51), -1, "RETURN");
-		} 
-
-		// draw to screen
-		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
-	}
-exit_level_loop: ;
-
-	destroy_bitmap(inv_screen_bitmap);
-	return;*/
 }

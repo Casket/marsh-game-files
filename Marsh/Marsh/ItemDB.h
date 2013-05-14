@@ -12,4 +12,5 @@ public:
 
 private:
 	void load_From_File(void);
+	void clear_Item(Equipment*);
 };

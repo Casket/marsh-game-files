@@ -16,7 +16,7 @@ using namespace std;
 
 // States for the sprites, will add as needed and whatnots
 enum SpriteState{ Normal, Casting, Explosion, Grazing, Winning};
-enum Direction {N, S, E, W, NE, NW, SW, SE, None};
+enum Direction {N = 1, S, E, W, NE, NW, SW, SE, None};
 
 class Sprite{
 
