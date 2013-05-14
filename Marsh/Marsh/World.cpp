@@ -41,10 +41,13 @@ World::~World(void){
 
 BITMAP* draw_loading(void) {
 	BITMAP *loading_screen_bitmap = load_bitmap("Resources//LoadScreen.bmp",NULL);
-	if (!loading_screen_bitmap)
+	BITMAP *tip = load_bitmap("Resources//boom.bmp",NULL);
+	if (!loading_screen_bitmap || !tip){
+		allegro_message("Failed to load the loading screen.");	
 		exit(1);
-	//blit(loading_screen_bitmap, NULL, 0, 0, 0, 0, UI_WIDTH, UI_HEIGHT);
+	}
 	blit(loading_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
+	blit(tip, screen, 0,0,304,230,773,413);
 	return loading_screen_bitmap;
 }
 
@@ -789,7 +792,6 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 
 	}else if(type.compare("well")==0){
 
-		
 
 	}else if(type.compare("wine")==0){
 
@@ -800,7 +802,7 @@ void World::designate_drawable(std::string type, std::string x, std::string y, i
 		new_d->set_boundary_value(64,32,0,32);
 
 	}else{
-		throw std::exception("Invalid drawable");
+		throw std::exception(type.c_str());
 	}
 
 	new_d->set_my_type(Stationary);

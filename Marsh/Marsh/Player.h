@@ -2,7 +2,7 @@
 #define PLAYER_H 1
 
 #define EXPERIENCE_MULTIPLIER 1.5
-#define MAX_HELD_ITEMS 11
+#define MAX_HELD_ITEMS 25
 #define EXPERIENCE_TO_LEVEL 100 // TODO fine tune the game
 #define MAX_ITEM_STACK_SIZE 20
 #define NOTORIETY_CAP 500
@@ -44,11 +44,11 @@ class QuestManager;
 using namespace std;
 
 
-enum EquipmentType{ Boots, Belt, Necklace, Ring, Mask, Tunic, Cape, Pants, Book, Key, Dagger, Consumable, Unitialized};
+enum EquipmentType{ Boots, Helmet, Jewelry, Weapon, Armor, QuestItem, Consumable, Unitialized};
 
 typedef struct Equipment{
-	char* name;
-	char* description;
+	std::string name;
+	std::string description;
 	int item_id;
 	int vitality, focus, intelligence, willpower, armor;
 	bool equipped;

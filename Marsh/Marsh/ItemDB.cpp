@@ -18,14 +18,47 @@ Equipment* ItemDB::fetch_item(int item_id){
 	return (*location).second;
 }
 
-void ItemDB::load_From_File(void){
+void ItemDB::clear_Item(Equipment* item){
+	item->item_id = -1;
+	item->vitality = 0;
+	item->focus = 0;
+	item->intelligence = 0;
+	item->willpower = 0;
+	item->armor = 0;
+	item->equipped = false;
+	item->equipable = false;
+	item->stackable = false;
+	item->number_held = 0;
+	item->type = Unitialized;
+}
 
-	char* name = "";
-	char* description = "";
-	int item_id, vitality, focus, intelligence, willpower, armor;
-	bool equipable, stackable;
-	EquipmentType type;
-	Equipment* item = (Equipment*)malloc(sizeof(Equipment));
+
+void ItemDB::load_From_File(void){
+	std::string name = "";
+	std::string description = "";
+	std::string type_string = "";
+	int item_id = 0, vitality = 0, focus = 0, intelligence = 0, willpower = 0, armor = 0;
+	bool equipable = false, stackable = false;
+	EquipmentType type = Unitialized;
+	Equipment* item = new Equipment();
+	clear_Item(item);
+	std::map<std::string, EquipmentType>* typeMap = new std::map<std::string, EquipmentType>();
+	type_string = "Boots";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, Boots));
+	type_string = "Armor";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, Armor));
+	type_string = "QuestItem";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, QuestItem));
+	type_string = "Jewelry";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, Jewelry));
+	type_string = "Weapon";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, Weapon));
+	type_string = "Helmet";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, Helmet));
+	type_string = "Consumable";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string,Consumable));
+	type_string = "Unitialized";
+	typeMap->insert(std::pair<std::string,EquipmentType>(type_string, Unitialized));
 
 	ifstream file1("Items.marsh");
 	string line;
@@ -49,18 +82,23 @@ void ItemDB::load_From_File(void){
 				item->equipable = equipable;
 				item->stackable = stackable;
 				item->number_held = 0;
-				item->type = Unitialized;//TODO fix this
+				item->type = type;
 				this->items_by_id->insert(std::pair<int, Equipment*>(item_id, item));
+				item = new Equipment();
+				clear_Item(item);
+				name = "";
+				description = "";
+				type_string = "";
+				item_id = 0; vitality = 0; focus = 0; intelligence = 0; willpower = 0; armor = 0;
+				bool equipable = false; stackable = false;
+				EquipmentType type = Unitialized;
+				
 			}
 			else if (beg.compare("Name") == 0) {
-				std::string str = line.substr(5);
-				name = new char[str.length() + 1];
-				strcpy(name, str.c_str());
+				name = line.substr(5);
 			}
 			else if (beg.compare("Description") == 0) {
-				std::string str = line.substr(12);
-				description = new char[str.length() + 1];
-				strcpy(description, str.c_str());
+				description = line.substr(12);
 			}
 			else if (beg.compare("Item_ID") == 0) stringstream(end) >> item_id;
 			else if (beg.compare("Vitality") == 0) stringstream(end) >> vitality;
@@ -68,9 +106,21 @@ void ItemDB::load_From_File(void){
 			else if (beg.compare("Intelligence") == 0) stringstream(end) >> intelligence;
 			else if (beg.compare("Willpower") == 0) stringstream(end) >> willpower;
 			else if (beg.compare("Armor") == 0) stringstream(end) >> armor;
-			else if (beg.compare("Equipable") == 0) stringstream(end) >> equipable;
-			else if (beg.compare("Stackable") == 0) stringstream(end) >> stackable;
-			//else if (beg.compare("Type") == 0) stringstream(end) >> type;
+			else if (beg.compare("Equipable") == 0){	
+				std::string compare;
+				stringstream(end) >> compare;
+				equipable = compare.compare("true") == 0 ? true : false;
+			}
+			else if (beg.compare("Stackable") == 0){
+				std::string compare;
+				stringstream(end) >> compare;
+				stackable = compare.compare("true") == 0 ? true : false;
+			}
+			else if (beg.compare("Type") == 0){
+				std::map<std::string, EquipmentType>::iterator location;
+				location = typeMap->find(line.substr(5));
+				type = (*location).second;
+			}
 		}
 	}
 }

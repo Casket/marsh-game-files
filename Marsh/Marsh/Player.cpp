@@ -72,6 +72,7 @@ void Player::equip_item(Equipment* equip){
 		Equipment* check = (*iter);
 		if (check->equipped && check->type == equipped_type){
 			remove_item_stats(check);
+			check->equipped = false;
 			break;
 		}
 	}
@@ -144,11 +145,12 @@ std::vector<Equipment*>* Player::get_inventory(void) {
 }
 
 int Player::add_to_inventory(Equipment* e) {
-	if (this->inventory->size() >= MAX_HELD_ITEMS)
-		return -1;
-
+	int item_count = 0;
 	std::vector<Equipment*>::iterator end = this->inventory->end();
 	for (std::vector<Equipment*>::iterator iter = this->inventory->begin(); iter != end; ++iter){
+		if((*iter)->type != QuestItem){
+			item_count++;	
+		}
 		if ((*iter)->item_id == e->item_id){
 			if (e->stackable) {
 				e->number_held++;
@@ -158,6 +160,8 @@ int Player::add_to_inventory(Equipment* e) {
 				return -2; // you can't have duplicates
 		}
 	}
+	if (item_count >= MAX_HELD_ITEMS && e->type != QuestItem)
+		return -1;
 
 	// player didn't have the item, so give him the e
 	this->inventory->push_back(e);

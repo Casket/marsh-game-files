@@ -151,10 +151,10 @@ void Combat::testing_attacks(void){
 	beamer->spell_id = DEATH_BEAM;
 	this->attack_loadout[2] = beamer;
 
-	this->attack_loadout[3] = attacks->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
+	this->attack_loadout[3] = attackDB->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
 	this->attack_loadout[3]->set_my_caster(this);
 
-	this->attack_loadout[4] = attacks->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
+	this->attack_loadout[4] = attackDB->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
 	this->attack_loadout[4]->set_my_caster(this);
 
 	stats.charge_time = 0;
