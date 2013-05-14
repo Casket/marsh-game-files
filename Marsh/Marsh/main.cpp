@@ -216,12 +216,32 @@ exit_loop: ;
 	return;
 }
 
+BITMAP* draw_Death(void) {
+	BITMAP *death_screen_bitmap = load_bitmap("Resources//DeathScreen.bmp",NULL);
+	if (!death_screen_bitmap){
+		allegro_message("Failed to load the death screen."); 
+		exit(1);	
+	}
+	blit(death_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
+	return death_screen_bitmap;
+}
+
+void restartWithDeathScreen(void){
+	BITMAP* deathScreen = draw_Death();
+	rest(50000);
+	destroy_bitmap(deathScreen);
+	load_game();
+}
+
 void start_game(void) {
 	game_state = IN_GAME;
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
 	while(game_state == IN_GAME) {
+		if(hero->dead){
+			restartWithDeathScreen();
+		}
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
@@ -244,6 +264,11 @@ void start_game(void) {
 
 		hero->update();
 		our_viewer->draw_active_world();
+
+		if(hero->new_mission){
+			save_game();
+			hero->new_mission = false;
+		}
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));

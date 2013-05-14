@@ -72,6 +72,8 @@ class Player: public Combat{
 		int level, current_experience, mana, max_mana;
 		QuestManager* quest_manager;
 		bool interacting;
+		bool new_mission;
+		bool dead;
 		Player(int x, int y, int vel, int vel_d, Sprite* img);
 		~Player(void);
 		virtual void update(void);

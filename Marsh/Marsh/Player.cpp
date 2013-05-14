@@ -12,6 +12,8 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 {
 	this->my_type = Hero;
 	this->casting = false;
+	this->new_mission = false;
+	this->dead  = false;
 	this->quest_manager = new QuestManager();
 	this->experience = 0;
 	// TODO implement a constructor
@@ -41,7 +43,7 @@ void Player::set_world(World* world){
 }
 
 void Player::upon_death(void){
-	//TODO add the death screen
+	this->dead = true;
 }
 
 void Player::increment_notoriety(int increase){
@@ -262,6 +264,7 @@ void Player::listen_to_keyboard(void) {
 		accept_aiming();
 	else {
 		// deal with all other potential input
+		//TODO Get rid of these cheat codes
 		if(key[KEY_H]){
 			this->health -= 50000;
 		}else if(key[KEY_J]){
