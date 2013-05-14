@@ -3,12 +3,20 @@
 #define TILE_SIZE 32
 
 #include "Main.h"
+#include <map>
+
 
 class Quest;
 class OptionPresenter;
 
 using namespace std;
 class Ground_Sprite;
+
+typedef struct drawable_bounds{
+
+	int bounds[4]; 
+
+}drawable_bounds;
 
 typedef struct Tile{
 	int row;
@@ -30,6 +38,7 @@ public:
 	std::list<iDrawable*> *removal_queue;
 	Player* playa;
 	WorldName my_name;
+	std::map<std::string, drawable_bounds>* drawables; 
 
 	World(WorldName this_world);
 	~World();
@@ -45,9 +54,8 @@ public:
 	void remove_entity(iDrawable*);
 	void set_player(Player*);
 	void remove_destroyed(void);
+	void intial_drawable_map(void);
 	static WorldName get_WorldName(std::string,int);
-
-private:
 	static std::pair<std::string, int> pull_out(std::string, int);
 	static std::string to_string(std::string, int);
 	static int find_x(char);
@@ -55,15 +63,15 @@ private:
 	static std::string get_file(WorldName);
 	static EntityType get_entityType(std::string);
 	void convert_to_tile(char, char, int, int);
-	void designate_drawable(std::string, std::string, std::string, int, int,int);
 	void make_world();
 	void make_drawable(std::string);
 	void make_portal(std::string);
 	void make_AI(std::string);
-	void make_op(std::string, int);
+	void make_op(std::string, int,std::string, int, int);
 	void make_dialouge_op(std::string, int, OptionPresenter*);
 	std::pair<Quest*, int> make_quest(std::string,int);
-	
+	iDrawable* designate_drawable(std::string type, std::string x, std::string y, int size_x, int size_y, int type_size);
+	void set_boundaries(std::string,int,int,int,int);
 
 	
 	// room for expansion packs! (and easter eggs, and stuffz)

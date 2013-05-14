@@ -11,7 +11,7 @@ class Mob;
 
 using namespace std;
 
-enum EntityType {Guard, Monster, Outcast, Hero, Rival, Speaker, Chicken, Wallop, StarGate, Stationary};
+enum EntityType {Guard, Monster,Lizard, Outcast, Hero, Rival, Speaker, Chicken, Wallop, StarGate, Stationary, VampBoss, Vamp, GuardCap, StatueLead};
 
 class iDrawable{
 public:

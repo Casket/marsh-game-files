@@ -178,6 +178,7 @@ bool Player::wants_to_talk(void){
 
 
 void Player::update(void) {
+	this->update_dispatchers();
 	check_collisions();
 	if (this->entangled)
 		return;
@@ -497,15 +498,6 @@ void Player::accept_movement(void) {
 		this->image->set_facing(new_dir);
 	}
 
-	/*while (!check_new_pos(new_x, new_y)){
-		new_x = move_closer(new_x, cur_x);
-		new_y = move_closer(new_y, cur_y);
-		if (new_x == -1 || new_y == -1){
-			new_x = cur_x;
-			new_y = cur_y;
-			break;
-		}
-	}*/
 	this->x_pos = new_x;
 	this->y_pos = new_y;
 		if (walking)

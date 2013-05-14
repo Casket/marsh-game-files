@@ -101,15 +101,20 @@ void Marsh::View::draw_updated_loadout(Attack* loadout[]){
 		if (loadout[i] == NULL)
 			continue;
 		int id = loadout[i]->spell_id;
+		if (id < 0 || id >= 15){
+			int bad_code = 1;
+			continue;
+		}
 		std::string file("Resources//Attack_Images//");
 		file.append(this->displayed_images->at(id).append(".bmp"));
-		std::pair<int, int> coord = this->spell_icon_coords->at(id);
+		std::pair<int, int> coord = this->spell_icon_coords->at(i);
 		BITMAP* image = load_bitmap(file.c_str(), NULL);
 		masked_blit(image, this->ui_buffer, 0, 0, coord.first, coord.second, image->w, image->h);
 		destroy_bitmap(image);
+
+		textprintf_right_ex(this->ui_buffer, font3, coord.first+SPELL_ICON_SIZE, coord.second, makecol(255, 255, 255), -1, "%d", i+1);
 	}
 }
-
 
 void Marsh::View::load_world(WorldName world){
 	if (this->current_world != NULL){
@@ -176,7 +181,6 @@ void Marsh::View::put_world_in_loaded(World* world){
 }
 
 void Marsh::View::insert_testing_entities(void){
-
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
 		std::pair<int, int> test = std::make_pair(120, 1000);
@@ -189,7 +193,7 @@ void Marsh::View::insert_testing_entities(void){
 		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
 		shop->bestow_all_items = false;
 
-		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//AI_characters//nice_folk.bmp", S, 5, 1, 16, 16));
 		farmer_bob->set_world(this->current_world);
 		farmer_bob->append_dialogue("Good work tiny adventurer.");
 		farmer_bob->can_speak = true;
@@ -226,13 +230,13 @@ void Marsh::View::insert_testing_entities(void){
 		companion->item_id = 197;
 		farmer_bob->append_inventory(companion, 1000000);
 
-		Mob* g = new Town_Guard(120,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g = new Town_Guard(116,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
 		g->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g);
 
-		Mob* g1 = new Town_Guard(184,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g1 = new Town_Guard(188,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g1->set_boundary_value(32,18,0,14);
 		g1->set_world(this->current_world);
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);

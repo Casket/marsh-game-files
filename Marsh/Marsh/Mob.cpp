@@ -20,7 +20,7 @@ Mob::Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<in
 		this->cooldowns[i] = std::make_pair(0, -1);
 	}
 	this->chill_timer = 0;
-	
+	this->priorities = NULL;
 }
 
 Mob::~Mob(void){
@@ -81,8 +81,10 @@ void Mob::update(void){
 			break;
 
 		case attack_move:
-
-			//set_attack_plan();
+			if(this->target == NULL){
+				this->current_state = patrol;
+			}
+			
 			this->target_area = set_target_area();
 			set_ranges();
 			move_towards(this->target_area);
@@ -99,15 +101,16 @@ void Mob::update(void){
 		case detour_intial:
 			if(this->blocking_entity == NULL){
 				this->current_state = this->prev_state;
-				return;
+				break;
 			}
-			if(this->blocking_entity->my_type == Wallop){
-				this->current_state = this->prev_state;
-				return;
-			}
-			if(this->blocking_entity == this->target){
-				this->current_state = attack;
-				return;
+
+			if(this->blocking_entity->get_my_type() == this->get_my_type()){
+				if(this->blocking_entity->fetch_me_as_mob()->current_state != chilling_out){
+					this->current_state = chilling_out;
+					int distance_needed = this->blocking_entity->get_bounding_width() + this->blocking_entity->get_bounding_height();
+					this->chill_time = (distance_needed / this->velocity);
+					break;
+				}
 			}
 
 			this->detour_pair = this->detour_obstruction();
@@ -120,31 +123,34 @@ void Mob::update(void){
 			if(this->blocking_entity != NULL){
 				if(this->blocking_entity->x_pos < 0){
 					this->current_state = this->prev_state;
-					return;
-				}
-				if (this->blocking_entity->my_type == this->my_type){
-					Mob* blocker = this->blocking_entity->fetch_me_as_mob();
-					if (blocker == NULL){
-						// bad news... game done broke just go for it
-					}
-					blocker->current_state = chilling_out;
-					int distance_needed = this->get_bounding_width() + this->get_bounding_height();
-					blocker->chill_time = (distance_needed / blocker->velocity) * 5 * blocker->velocity_delay;
+					break;
 				}
 			}
 
 			dest_reached = move_towards(this->detour_pair.first);
+			
+			dir_moving = this->get_direction_moving();
+			check = this->get_current_facing_flag(dir_moving);
+			
+			if(!check){
+				this->current_state = detour_intial;
+				break;
+			}
+			
 			if(dest_reached){
 				this->current_state = detour_two; 		
 			}
 			break;
 
 		case detour_two:
-			
 			dest_reached = move_towards(this->detour_pair.second);
 			
+			dir_moving = this->get_direction_moving();
+			check = this->get_current_facing_flag(dir_moving);
+
 			if(!check){
 				this->current_state = detour_intial;
+				break;
 			}
 
 			if(dest_reached){
@@ -155,7 +161,6 @@ void Mob::update(void){
 			break;
 
 		case patrol:
-			this->attack_dir = None;
 
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
 
@@ -240,7 +245,7 @@ bool Mob::move(Direction new_dir){
 	if (new_dir != cur_dir) {
 		this->image->set_facing(new_dir);
 	}
-	
+
 	if(++this->movement_counter != this->velocity_delay){
 		return false;
 	}
@@ -418,6 +423,7 @@ void Mob::other_check_collisions(void){
 			if(potential_tar->get_my_type() == Hero){
 				this->target = potential_tar;
 				this->current_state = attack_move;
+				this->check_target_dispatch();
 				break;
 			}else{
 
@@ -441,6 +447,24 @@ void Mob::other_check_collisions(void){
 		}
 		return;
 	}
+}
+
+void Mob::check_target_dispatch(void){
+	/*
+	Combat* targ = this->target->fetch_me_as_combat();
+	if (targ == NULL)
+		return;
+	std::list<Dispatcher*>* dispatches = targ->active_dispatchers;
+	std::list<Dispatcher*>::iterator end = dispatches->end();
+	for (std::list<Dispatcher*>::iterator iter = dispatches->begin(); iter != end; ++iter){
+		if ((*iter)->designated_type == this->my_type)
+			return;
+	}
+
+	// the fact that we did not return means the target lacks an appropriate dispatcher for me... the bastard
+	Dispatcher* dispatch = new Dispatcher(targ, this->my_type);
+	dispatches->push_back(dispatch);
+	*/
 }
 
 bool Mob::get_current_facing_flag(Direction dir){
@@ -586,7 +610,16 @@ bool Mob::check_variable_range(int dist){
 	}
 }
 std::pair<int,int> Mob::set_target_area(void){
-	return std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
+	if(this->attack_dir == N){
+		return std::make_pair(this->target->get_reference_x(), this->target->get_reference_y() - 10);
+	}else if(this->attack_dir == S){
+		return std::make_pair(this->target->get_reference_x(), this->target->get_reference_y() + 10);
+	}else if(this->attack_dir == E){
+		return std::make_pair(this->target->get_reference_x() + 10, this->target->get_reference_y());
+	}else if(this->attack_dir == W){
+		return std::make_pair(this->target->get_reference_x() - 10, this->target->get_reference_y());
+	}
+	return std::make_pair(this->get_reference_x(), this->get_reference_y());
 }
 
 void Mob::update_cd_timers(void){
@@ -601,12 +634,15 @@ void Mob::update_cd_timers(void){
 }
 
 void Mob::set_attack_plan(void){
-	Direction pris [4];
+	std::vector<Direction> pris;
 
-	if(this->attack_dir != None){
-		return;
+	for (int i = 0; i < 4; i++)
+		pris.push_back(N);
+
+	/*	if(this->attack_dir != None){
+	return;
 	}
-
+	*/
 	//define priorities
 
 	int x_axis = this->target->get_reference_y();//horizontal
@@ -717,17 +753,16 @@ void Mob::set_attack_plan(void){
 		}
 	}
 
-
-	std::list<iDrawable*>::iterator iter = this->eskimo_bros->begin();
-	std::list<iDrawable*>::iterator end = this->eskimo_bros->end();
-	for(;iter != end; iter++){
-		iDrawable* to_comp = (*iter);
-
+	std::list<Direction>* list_pris = new std::list<Direction>();
+	for(int i = 0; i < pris.size(); i++){
+		list_pris->push_back(pris.at(i));
 	}
 
+	if(this->priorities != NULL){	
+		delete this->priorities;
+	}
 
-	//choose from available options
-
+	this->priorities = list_pris;
 }
 Direction Mob::get_target_true_dir(){
 

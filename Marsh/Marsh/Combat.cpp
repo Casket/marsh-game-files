@@ -13,6 +13,7 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->willpower = BASE_WILL;
 	this->armor = BASE_ARMOR;
 	this->entangled = false;
+	this->active_dispatchers = new std::list<Dispatcher*>();
 	this->active_wards = new std::list<Attack*>();
 
 	for (int i=0; i < MAX_ATTACKS; i++)
@@ -31,8 +32,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 
 	this->insert_db_attacks();
-	this->insert_utility_spells(4);
-	//this->insert_damage_attacks(4);
+	//this->insert_utility_spells(4);
+	this->insert_damage_attacks(4);
 }
 
 Combat::~Combat(void) {
@@ -249,6 +250,23 @@ void Combat::set_stats(int vitality, int intelligence, int focus, int willpower,
 
 EntityType Combat::get_my_type(void){
 	return this->my_type;
+}
+
+void Combat::update_dispatchers(void){
+	/*
+	std::list<std::list<Dispatcher*>::iterator> bad_iters;
+	std::list<Dispatcher*>::iterator end = this->active_dispatchers->end();
+	for (std::list<Dispatcher*>::iterator iter = this->active_dispatchers->begin(); iter != end; ++iter){
+		(*iter)->update();
+		if (!(*iter)->active){
+			bad_iters.push_back(iter);
+		}
+	}
+
+	for (std::list<std::list<Dispatcher*>::iterator>::iterator iter = bad_iters.begin(); iter != bad_iters.end(); ++iter){
+		this->active_dispatchers->erase((*iter));
+	}
+	*/
 }
 
 void Combat::set_my_type(EntityType e) {

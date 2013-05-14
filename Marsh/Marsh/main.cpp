@@ -322,6 +322,7 @@ void load_inventory(string stream, string stream1, string stream2) {
 }
 
 void load_spells(string stream) {
+	Player* hero = Player_Accessor::get_player();
 	std::vector<int> spell_ids;
 	std::stringstream ss(stream);
 	int i;
@@ -333,7 +334,7 @@ void load_spells(string stream) {
 	i = 0;
 	std::vector<int>::iterator end = spell_ids.end();
 	for (std::vector<int>::iterator iter = spell_ids.begin(); iter != end; ++iter){
-		Player_Accessor::get_player()->attack_loadout[i] = attackDB->fetch_attack(spell_ids[i])->clone(0,0,W);
+		hero->attack_loadout[i] = attackDB->fetch_attack(spell_ids[i])->clone(0,0,W);
 		++i;
 	}
 }
