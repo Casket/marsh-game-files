@@ -1,8 +1,5 @@
 #include "AttackDB.h"
 
-//using namespace std;
-
-
 
 AttackDB::AttackDB(void){
 	this->attacks_by_id = new std::map<int, Attack*>();
@@ -140,7 +137,7 @@ void AttackDB::populate_utility_spells(void){
 	drain->set_state_frame_counts(0, 5, 0);
 	Attack* shadow_drain = new HealthDrainAttack(0, 0, 2, 10, drain, stats_for_spell);
 	shadow_drain->set_boundary_value(17, 25, 0, 0);
-	shadow_drain->set_mana_cost(base_mana);
+	shadow_drain->set_mana_cost(base_mana+5);
 	shadow_drain->spell_id = DRAIN_HEALTH;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(DRAIN_HEALTH, shadow_drain));
 
@@ -164,6 +161,7 @@ void AttackDB::populate_utility_spells(void){
 	Attack* shield = new ProtectionAttack(0, 0, 2, 10, ward_img, stats_for_spell, ShieldAttack);
 	shield->set_boundary_value(20, 10, 15, 30);
 	shield->set_position_adjustment(0,0);
+	shield->set_mana_cost(base_mana+5);
 	shield->spell_id = SHIELD;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHIELD, shield));
 
@@ -174,6 +172,7 @@ void AttackDB::populate_utility_spells(void){
 	Attack* deflect = new ProtectionAttack(800, 800, 2, 10, ward2_img, stats_for_spell, ReflectAttack);
 	deflect->set_boundary_value(20, 10, 15, 30);
 	deflect->set_position_adjustment(0,0);
+	deflect->set_mana_cost(base_mana+5);
 	deflect->spell_id = DEFLECT;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(DEFLECT, deflect));
 
@@ -192,13 +191,14 @@ void AttackDB::populate_utility_spells(void){
 	fire->is_translucent = true;
 	Attack* bind = new StunningAttack(800, 800, 1, 10, fire, stats_for_spell);
 	bind->set_boundary_value(45, 10, 0, 5);
+	bind->set_mana_cost(base_mana);
 	bind->set_position_adjustment(0, 20);
 	bind->spell_id = BIND_IN_SHADOWS;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(BIND_IN_SHADOWS, bind));
 
 	//Mass Slow
 	stats_for_spell.base_damage = 0;
-	stats_for_spell.charge_time = 100;
+	stats_for_spell.charge_time = 0;
 	stats_for_spell.exp_date = 1000;
 	stats_for_spell.penetration = 15;
 	stats_for_spell.range = 250;
@@ -207,6 +207,7 @@ void AttackDB::populate_utility_spells(void){
 	slow->set_boundary_value(35, 25, 10, 15);
 	slow->set_position_adjustment(0, 20);
 	slow->spell_id = MASS_SLOW;
+	slow->set_mana_cost(base_mana+20);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(MASS_SLOW, slow));
 
 }
