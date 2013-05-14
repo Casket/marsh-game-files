@@ -229,7 +229,10 @@ void Attack::deal_with_attack(Attack* attack){
 }
 
 int Attack::get_charge_time(void){
-	return this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
+	int charge = this->charge_time - FOCUS_EFFECT * this->my_caster->focus;
+	if (charge < 0)
+		return 0;
+	return charge;
 }
 
 iDrawable* Attack::get_above_target(void){
@@ -244,7 +247,7 @@ Attack* Attack::clone(int x, int y, Direction dir){
 	Sprite* image = this->get_image()->clone(dir);
 
 	Attack* result = new Attack(x, y, this->velocity, this->velocity_delay, image, damage, penetrate, this->range, this->tree_depth_level, this->expiration_date, charge);
-
+	int image_width = this->get_image()->get_current_frame()->w;
 	switch(dir){
 	case N:
 		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
@@ -252,9 +255,10 @@ Attack* Attack::clone(int x, int y, Direction dir){
 		break;
 	case S:
 		result->set_boundary_value(this->get_bounding_height(), this->get_bounding_width(), this->reference_horizontal, this->reference_vertical);
-		
+		y += this->y_adjustment;
 		break;
 	case W:
+		
 		result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 		x -= this->x_adjustment + this->get_bounding_width();
 		y -= this->y_adjustment;
@@ -267,9 +271,8 @@ Attack* Attack::clone(int x, int y, Direction dir){
 
 	result->set_x_pos(x);
 	result->set_y_pos(y);
-
-
 	result->set_my_caster(this->my_caster);
 	result->my_type = Wallop;
+	result->spell_id = this->spell_id;
 	return result;
 }

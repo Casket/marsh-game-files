@@ -8,6 +8,8 @@ enum WardType { ReflectAttack, ShieldAttack};
 
 class ProtectionAttack : public Attack{
 WardType ward;
+bool has_alerted_player;
+
 public:
 	ProtectionAttack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats, WardType type);
 	~ProtectionAttack(void);

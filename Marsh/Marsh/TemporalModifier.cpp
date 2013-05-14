@@ -36,6 +36,7 @@ Attack* TemporalModifier::clone(int x, int  y, Direction dir){
 	TemporalModifier* dup = new TemporalModifier(image, stats, this->delay);
 	dup->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 	dup->set_my_caster(this->my_caster);
-	dup->set_position_adjustment(this->x_adjustment, this->y_adjustment);	
+	dup->set_position_adjustment(this->x_adjustment, this->y_adjustment);
+	dup->spell_id = this->spell_id;
 	return dup;
 }

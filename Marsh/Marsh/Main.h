@@ -58,6 +58,7 @@ class Attack;
 #include "TemporalModifier.h"
 #include "ProtectionAttack.h"
 #include "ItemDB.h"
+#include "SpikeLauncher.h"
 
 #define VISIBLE_W 1400
 #define VISIBLE_H 770

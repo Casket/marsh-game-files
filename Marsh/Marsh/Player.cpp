@@ -30,6 +30,16 @@ Player::~Player(void){
 
 }
 
+void Player::set_world(World* world){
+	iDrawable::set_world(world);
+	std::list<Attack*>::iterator end = this->active_wards->end();
+	for (std::list<Attack*>::iterator iter = this->active_wards->begin(); iter != end; ++iter){
+		(*iter)->get_world()->active_entities->remove((*iter));
+		(*iter)->set_world(world);
+		world->insert_entity((*iter));
+	}
+}
+
 void Player::upon_death(void){
 
 }
@@ -483,7 +493,7 @@ void Player::accept_movement(void) {
 		this->image->set_facing(new_dir);
 	}
 
-	while (!check_new_pos(new_x, new_y)){
+	/*while (!check_new_pos(new_x, new_y)){
 		new_x = move_closer(new_x, cur_x);
 		new_y = move_closer(new_y, cur_y);
 		if (new_x == -1 || new_y == -1){
@@ -491,7 +501,7 @@ void Player::accept_movement(void) {
 			new_y = cur_y;
 			break;
 		}
-	}
+	}*/
 	this->x_pos = new_x;
 	this->y_pos = new_y;
 		if (walking)

@@ -93,6 +93,10 @@ void Marsh::View::put_world_in_loaded(World* world){
 }
 
 void Marsh::View::insert_testing_entities(void){
+		
+	ItemBestower* dave = new ItemBestower(600, 600, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+	//dave->
+
 
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
@@ -108,8 +112,9 @@ void Marsh::View::insert_testing_entities(void){
 
 		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
 		farmer_bob->set_world(this->current_world);
-		farmer_bob->append_dialogue("Have a gander at my wares.  [1] Mana Potion (20g) [2] Health Potion (15g) [3] Fluffy Kitten Companion (1,000,000g)");
+		farmer_bob->append_dialogue("Good work tiny adventurer.");
 		farmer_bob->can_speak = true;
+		farmer_bob->bestow_all_items = true;
 		this->current_world->insert_entity(farmer_bob);
 		farmer_bob->set_boundary_value(30, 30, 0, 0);
 		Equipment* manapot = get_new_equipment();
@@ -333,13 +338,11 @@ void Marsh::View::update(void){
 }
 
 void Marsh::View::draw_active_world(void){
-	//clear_bitmap(this->world_buffer);
+	clear_bitmap(this->world_buffer);
 
 	int tile_wide = this->current_world->get_tiles_wide();
 	int tile_high = this->current_world->get_tiles_high();
 	Tile*** tiles = this->current_world->get_tile_map();
-
-	//clear_bitmap(this->world_buffer);
 
 	draw_sprites(this->world_buffer, tiles, tile_wide, tile_high);
 	draw_drawables(this->world_buffer, this->current_world->get_visible_entities());
@@ -441,6 +444,8 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 	std::list<iDrawable*>::iterator iter;
 	std::list<iDrawable*>::iterator end = sprites->end();
 	for (iter = sprites->begin(); iter != end; ++iter){
+		if ((*iter)->get_image() == NULL)
+			continue;
 		BITMAP* frame = (*iter)->get_image()->get_current_frame();
 		int x = (*iter)->get_x_pos();
 		int y = (*iter)->get_y_pos();

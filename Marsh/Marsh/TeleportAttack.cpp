@@ -186,7 +186,7 @@ Attack* TeleportAttack::clone(int x, int y, Direction dir){
 
 	dup->set_x_pos(x);
 	dup->set_y_pos(y);
-
+	dup->spell_id = this->spell_id;
 
 	return dup;
 

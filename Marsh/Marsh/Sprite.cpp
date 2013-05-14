@@ -18,8 +18,10 @@ Sprite::Sprite(std::string file_name, Direction cur_dir, int ani_delay, int rows
 	this->is_translucent = false;
 
 	this->sprite_sheet = load_bitmap(file_name.c_str(), NULL);
-	if (this->sprite_sheet == NULL)
+	if (this->sprite_sheet == NULL){
+		allegro_message(file_name.c_str());
 		exit(0);
+	}
 }
 
 Sprite::~Sprite(void) {

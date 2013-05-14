@@ -94,6 +94,7 @@ class Player: public Combat{
 		virtual void upon_death(void);
 		virtual bool get_visible(iDrawable* check);
 		virtual bool detect_enemies(iDrawable* check);
+		virtual void set_world(World* world);
 
 	
 	private:
