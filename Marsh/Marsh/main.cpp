@@ -149,7 +149,7 @@ void set_up_game(void) {
 	equip2->equipable = true;
 	equip2->number_held = 1;
 	hero->add_to_inventory(equip2);*/
-	for(int i = 0; i <= 21; i++){
+	for(int i = 0; i <= 22; i++){
 		equip = itemDB->fetch_item(i);
 		equip->number_held = 1;
 		hero->add_to_inventory(equip);

@@ -635,11 +635,10 @@ namespace Marsh {
 			// AcceptSpellButton
 			// 
 			this->AcceptSpellButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->AcceptSpellButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->AcceptSpellButton->Location = System::Drawing::Point(761, 653);
+			this->AcceptSpellButton->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->AcceptSpellButton->Location = System::Drawing::Point(753, 653);
 			this->AcceptSpellButton->Name = L"AcceptSpellButton";
-			this->AcceptSpellButton->Size = System::Drawing::Size(173, 89);
+			this->AcceptSpellButton->Size = System::Drawing::Size(181, 103);
 			this->AcceptSpellButton->TabIndex = 16;
 			this->AcceptSpellButton->Text = L"Accept New Spell";
 			this->AcceptSpellButton->UseVisualStyleBackColor = true;
@@ -648,11 +647,10 @@ namespace Marsh {
 			// ReturnButton
 			// 
 			this->ReturnButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->ReturnButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->ReturnButton->Location = System::Drawing::Point(958, 653);
+			this->ReturnButton->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->ReturnButton->Location = System::Drawing::Point(953, 653);
 			this->ReturnButton->Name = L"ReturnButton";
-			this->ReturnButton->Size = System::Drawing::Size(143, 89);
+			this->ReturnButton->Size = System::Drawing::Size(164, 103);
 			this->ReturnButton->TabIndex = 17;
 			this->ReturnButton->Text = L"Return";
 			this->ReturnButton->UseVisualStyleBackColor = true;
@@ -663,11 +661,11 @@ namespace Marsh {
 			this->StatPointsLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->StatPointsLabel->AutoSize = true;
-			this->StatPointsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->StatPointsLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->StatPointsLabel->Location = System::Drawing::Point(710, 42);
 			this->StatPointsLabel->Name = L"StatPointsLabel";
-			this->StatPointsLabel->Size = System::Drawing::Size(224, 29);
+			this->StatPointsLabel->Size = System::Drawing::Size(276, 42);
 			this->StatPointsLabel->TabIndex = 20;
 			this->StatPointsLabel->Text = L"Current Stat Points: ";
 			// 
@@ -676,11 +674,10 @@ namespace Marsh {
 			this->IntelligenceLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->IntelligenceLabel->AutoSize = true;
-			this->IntelligenceLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->IntelligenceLabel->Location = System::Drawing::Point(807, 141);
+			this->IntelligenceLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->IntelligenceLabel->Location = System::Drawing::Point(807, 126);
 			this->IntelligenceLabel->Name = L"IntelligenceLabel";
-			this->IntelligenceLabel->Size = System::Drawing::Size(143, 29);
+			this->IntelligenceLabel->Size = System::Drawing::Size(159, 42);
 			this->IntelligenceLabel->TabIndex = 20;
 			this->IntelligenceLabel->Text = L"Intelligence:";
 			// 
@@ -689,11 +686,10 @@ namespace Marsh {
 			this->WillpowerLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->WillpowerLabel->AutoSize = true;
-			this->WillpowerLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->WillpowerLabel->Location = System::Drawing::Point(807, 182);
+			this->WillpowerLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->WillpowerLabel->Location = System::Drawing::Point(807, 167);
 			this->WillpowerLabel->Name = L"WillpowerLabel";
-			this->WillpowerLabel->Size = System::Drawing::Size(127, 29);
+			this->WillpowerLabel->Size = System::Drawing::Size(145, 42);
 			this->WillpowerLabel->TabIndex = 19;
 			this->WillpowerLabel->Text = L"Willpower:";
 			// 
@@ -702,11 +698,10 @@ namespace Marsh {
 			this->FocusLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->FocusLabel->AutoSize = true;
-			this->FocusLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->FocusLabel->Location = System::Drawing::Point(807, 227);
+			this->FocusLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->FocusLabel->Location = System::Drawing::Point(807, 212);
 			this->FocusLabel->Name = L"FocusLabel";
-			this->FocusLabel->Size = System::Drawing::Size(91, 29);
+			this->FocusLabel->Size = System::Drawing::Size(100, 42);
 			this->FocusLabel->TabIndex = 20;
 			this->FocusLabel->Text = L"Focus: ";
 			// 
@@ -715,11 +710,10 @@ namespace Marsh {
 			this->VitalityLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->VitalityLabel->AutoSize = true;
-			this->VitalityLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->VitalityLabel->Location = System::Drawing::Point(807, 88);
+			this->VitalityLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->VitalityLabel->Location = System::Drawing::Point(807, 83);
 			this->VitalityLabel->Name = L"VitalityLabel";
-			this->VitalityLabel->Size = System::Drawing::Size(88, 29);
+			this->VitalityLabel->Size = System::Drawing::Size(113, 42);
 			this->VitalityLabel->TabIndex = 21;
 			this->VitalityLabel->Text = L"Vitality:";
 			// 
@@ -789,11 +783,10 @@ namespace Marsh {
 			this->SpellPointsLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->SpellPointsLabel->AutoSize = true;
-			this->SpellPointsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->SpellPointsLabel->Location = System::Drawing::Point(710, 334);
+			this->SpellPointsLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->SpellPointsLabel->Location = System::Drawing::Point(710, 292);
 			this->SpellPointsLabel->Name = L"SpellPointsLabel";
-			this->SpellPointsLabel->Size = System::Drawing::Size(286, 29);
+			this->SpellPointsLabel->Size = System::Drawing::Size(327, 42);
 			this->SpellPointsLabel->TabIndex = 26;
 			this->SpellPointsLabel->Text = L"You can get 0 new spells.";
 			// 
@@ -922,12 +915,12 @@ namespace Marsh {
 			this->SpellInfo->BackColor = System::Drawing::SystemColors::ControlText;
 			this->SpellInfo->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->SpellInfo->Cursor = System::Windows::Forms::Cursors::Arrow;
-			this->SpellInfo->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
+			this->SpellInfo->Font = (gcnew System::Drawing::Font(L"Segoe Print", 15));
 			this->SpellInfo->ForeColor = System::Drawing::Color::White;
-			this->SpellInfo->Location = System::Drawing::Point(713, 371);
+			this->SpellInfo->Location = System::Drawing::Point(713, 337);
 			this->SpellInfo->Name = L"SpellInfo";
-			this->SpellInfo->Size = System::Drawing::Size(480, 265);
+			this->SpellInfo->ReadOnly = true;
+			this->SpellInfo->Size = System::Drawing::Size(480, 299);
 			this->SpellInfo->TabIndex = 39;
 			this->SpellInfo->Text = L"";
 			// 
