@@ -315,7 +315,7 @@ void load_spells(string stream) {
 
 void load_game(void) {
 	int x_pos, y_pos, height, width;
-	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold;
+	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold, spell_pts;
 	int world;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 
@@ -336,6 +336,7 @@ void load_game(void) {
 			else if (beg.compare("Experience") == 0) stringstream(end) >> experience;
 			else if (beg.compare("Notoriety") == 0) stringstream(end) >> notoriety;
 			else if (beg.compare("Stats") == 0) stringstream(end) >> stats;
+			else if (beg.compare("Spell-pts") == 0) stringstream(end) >> spell_pts;
 			else if (beg.compare("Mana") == 0) stringstream(end) >> mana;
 			else if (beg.compare("Max-mana") == 0) stringstream(end) >> max_mana;
 			else if (beg.compare("Health") == 0) stringstream(end) >> health;
@@ -348,6 +349,17 @@ void load_game(void) {
 	}
 	world_name = static_cast<WorldName>(world);
 	Player_Accessor::create_player(x_pos, y_pos, img, width, height, 0, 18);
+	Player*	hero = Player_Accessor::get_player();
+	hero->level = level;
+	hero->experience = experience;
+	hero->notoriety = notoriety;
+	hero->statPoints = stats;
+	hero->spellPoints = spell_pts;
+	hero->mana = mana;
+	hero->max_mana = max_mana;
+	hero->health = health;
+	hero->max_health = max_health;
+	hero->gold = gold;
 	start_game();
 }
 
@@ -366,6 +378,7 @@ void save_game(void) {
 	file1 << "Experience " << hero->current_experience << endl;
 	file1 << "Notoriety " << hero->notoriety << endl;
 	file1 << "Stats " << hero->statPoints << endl; 
+	file << "Spell-pts " << hero->spellPoints << endl;
 	file1 << "Mana " << hero->get_current_mana() << endl;
 	file1 << "Max-mana " << hero->get_max_mana() << endl;
 	file1 << "Health " << hero->get_current_health() << endl;
