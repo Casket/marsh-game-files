@@ -44,10 +44,9 @@ BITMAP* draw_loading(void) {
 	BITMAP *tip = load_bitmap("Resources//boom.bmp",NULL);
 	if (!loading_screen_bitmap || !tip){
 		allegro_message("Failed to load the loading screen.");	
-		exit(1);
-	}
+
 	blit(loading_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
-	blit(tip, screen, 0,0,304,230,773,413);
+	//blit(tip, screen, 0,0,304,230,773,413);
 	return loading_screen_bitmap;
 }
 
