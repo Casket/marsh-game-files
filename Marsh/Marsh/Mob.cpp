@@ -450,6 +450,7 @@ void Mob::other_check_collisions(void){
 }
 
 void Mob::check_target_dispatch(void){
+	/*
 	Combat* targ = this->target->fetch_me_as_combat();
 	if (targ == NULL)
 		return;
@@ -463,6 +464,7 @@ void Mob::check_target_dispatch(void){
 	// the fact that we did not return means the target lacks an appropriate dispatcher for me... the bastard
 	Dispatcher* dispatch = new Dispatcher(targ, this->my_type);
 	dispatches->push_back(dispatch);
+	*/
 }
 
 bool Mob::get_current_facing_flag(Direction dir){

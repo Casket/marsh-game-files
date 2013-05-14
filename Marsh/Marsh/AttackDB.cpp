@@ -110,7 +110,7 @@ void AttackDB::populate_penetration_spells(void){
 	beamer->set_position_adjustment(50, 0);
 	beamer->set_boundary_value(50, 34, 5, 10);
 	beamer->spell_id = DEATH_BEAM;
-	this->attacks_by_id->insert(std::pair<int, Attack*>(DEATH_BEAM, death_beam));
+	this->attacks_by_id->insert(std::pair<int, Attack*>(DEATH_BEAM, beamer));
 
 }
 void AttackDB::populate_utility_spells(void){
