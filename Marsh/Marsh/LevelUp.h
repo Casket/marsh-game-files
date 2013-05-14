@@ -447,12 +447,13 @@ namespace Marsh {
 			// 
 			// Spell3
 			// 
-			this->Spell3->BackColor = System::Drawing::Color::Black;
+			this->Spell3->BackColor = System::Drawing::Color::Transparent;
+			this->Spell3->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell3.BackgroundImage")));
+			this->Spell3->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell3->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell3->FlatAppearance->BorderSize = 2;
 			this->Spell3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell3->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell3->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell3.Image")));
 			this->Spell3->Location = System::Drawing::Point(461, 42);
 			this->Spell3->Name = L"Spell3";
 			this->Spell3->Size = System::Drawing::Size(59, 58);
@@ -463,12 +464,13 @@ namespace Marsh {
 			// 
 			// Spell4
 			// 
-			this->Spell4->BackColor = System::Drawing::Color::Black;
+			this->Spell4->BackColor = System::Drawing::Color::Transparent;
+			this->Spell4->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell4.BackgroundImage")));
+			this->Spell4->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell4->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell4->FlatAppearance->BorderSize = 2;
 			this->Spell4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell4->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell4->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell4.Image")));
 			this->Spell4->Location = System::Drawing::Point(99, 276);
 			this->Spell4->Name = L"Spell4";
 			this->Spell4->Size = System::Drawing::Size(59, 58);
@@ -480,11 +482,12 @@ namespace Marsh {
 			// Spell5
 			// 
 			this->Spell5->BackColor = System::Drawing::Color::Black;
+			this->Spell5->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell5.BackgroundImage")));
+			this->Spell5->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell5->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell5->FlatAppearance->BorderSize = 2;
 			this->Spell5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell5->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell5->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell5.Image")));
 			this->Spell5->Location = System::Drawing::Point(280, 371);
 			this->Spell5->Name = L"Spell5";
 			this->Spell5->Size = System::Drawing::Size(59, 58);
@@ -512,11 +515,12 @@ namespace Marsh {
 			// Spell7
 			// 
 			this->Spell7->BackColor = System::Drawing::Color::Black;
+			this->Spell7->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell7.BackgroundImage")));
+			this->Spell7->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->Spell7->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell7->FlatAppearance->BorderSize = 2;
 			this->Spell7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell7->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell7->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell7.Image")));
 			this->Spell7->Location = System::Drawing::Point(461, 276);
 			this->Spell7->Name = L"Spell7";
 			this->Spell7->Size = System::Drawing::Size(59, 58);
@@ -527,12 +531,13 @@ namespace Marsh {
 			// 
 			// Spell8
 			// 
-			this->Spell8->BackColor = System::Drawing::Color::Black;
+			this->Spell8->BackColor = System::Drawing::Color::Transparent;
+			this->Spell8->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell8.BackgroundImage")));
+			this->Spell8->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->Spell8->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell8->FlatAppearance->BorderSize = 2;
 			this->Spell8->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell8->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell8->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell8.Image")));
 			this->Spell8->Location = System::Drawing::Point(99, 624);
 			this->Spell8->Name = L"Spell8";
 			this->Spell8->Size = System::Drawing::Size(59, 58);
@@ -544,11 +549,12 @@ namespace Marsh {
 			// Spell9
 			// 
 			this->Spell9->BackColor = System::Drawing::Color::Transparent;
+			this->Spell9->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell9.BackgroundImage")));
+			this->Spell9->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell9->FlatAppearance->BorderColor = System::Drawing::Color::Black;
 			this->Spell9->FlatAppearance->BorderSize = 2;
 			this->Spell9->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell9->ForeColor = System::Drawing::Color::Transparent;
-			this->Spell9->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell9.Image")));
 			this->Spell9->Location = System::Drawing::Point(280, 482);
 			this->Spell9->Name = L"Spell9";
 			this->Spell9->Size = System::Drawing::Size(59, 58);
@@ -559,7 +565,9 @@ namespace Marsh {
 			// 
 			// Spell10
 			// 
-			this->Spell10->BackColor = System::Drawing::Color::Red;
+			this->Spell10->BackColor = System::Drawing::Color::Transparent;
+			this->Spell10->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell10.BackgroundImage")));
+			this->Spell10->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->Spell10->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell10->FlatAppearance->BorderSize = 2;
 			this->Spell10->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -574,7 +582,9 @@ namespace Marsh {
 			// 
 			// Spell11
 			// 
-			this->Spell11->BackColor = System::Drawing::Color::Red;
+			this->Spell11->BackColor = System::Drawing::Color::Transparent;
+			this->Spell11->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell11.BackgroundImage")));
+			this->Spell11->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->Spell11->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell11->FlatAppearance->BorderSize = 2;
 			this->Spell11->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -589,7 +599,9 @@ namespace Marsh {
 			// 
 			// Spell12
 			// 
-			this->Spell12->BackColor = System::Drawing::Color::Red;
+			this->Spell12->BackColor = System::Drawing::Color::Transparent;
+			this->Spell12->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell12.BackgroundImage")));
+			this->Spell12->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell12->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell12->FlatAppearance->BorderSize = 2;
 			this->Spell12->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -604,7 +616,9 @@ namespace Marsh {
 			// 
 			// Spell13
 			// 
-			this->Spell13->BackColor = System::Drawing::Color::Red;
+			this->Spell13->BackColor = System::Drawing::Color::Transparent;
+			this->Spell13->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell13.BackgroundImage")));
+			this->Spell13->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell13->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell13->FlatAppearance->BorderSize = 2;
 			this->Spell13->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -619,7 +633,9 @@ namespace Marsh {
 			// 
 			// Spell14
 			// 
-			this->Spell14->BackColor = System::Drawing::Color::Red;
+			this->Spell14->BackColor = System::Drawing::Color::Transparent;
+			this->Spell14->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell14.BackgroundImage")));
+			this->Spell14->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell14->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell14->FlatAppearance->BorderSize = 2;
 			this->Spell14->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -929,6 +945,7 @@ namespace Marsh {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlText;
+			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(1244, 860);
 			this->Controls->Add(this->SpellInfo);
 			this->Controls->Add(this->pictureBox11);

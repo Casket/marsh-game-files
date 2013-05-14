@@ -251,6 +251,9 @@ void Player::listen_to_keyboard(void) {
 		accept_aiming();
 	else {
 		// deal with all other potential input
+		if(key[KEY_H]){
+			this->health -= 50000;
+		}
 		accept_movement();
 		accept_interaction();
 		if (this->mana > 0)

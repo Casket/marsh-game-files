@@ -131,39 +131,12 @@ void set_up_game(void) {
 	Equipment* equip = new Equipment();
 	Equipment* equip1 = new Equipment();
 	Equipment* equip2 = new Equipment(); 
-	/*equip1->name = "Cloth Armor";
-	equip1->type = Tunic;
-	equip1->vitality = 5;
-	equip1->description = "+5 Vit";
-	equip1->item_id = 0;
-	equip1->equipped = false;
-	equip1->equipable = true;
-	equip1->number_held = 1;
-	hero->add_to_inventory(equip1);
-	equip2->name = "Long Sword";
-	equip2->type = Dagger;
-	equip2->description = "+5 Wp";
-	equip2->willpower = 5;
-	equip2->item_id = 1;
-	equip2->equipped = false;
-	equip2->equipable = true;
-	equip2->number_held = 1;
-	hero->add_to_inventory(equip2);*/
 	for(int i = 0; i <= 22; i++){
 		equip = itemDB->fetch_item(i);
 		equip->number_held = 1;
 		hero->add_to_inventory(equip);
 		equip = new Equipment();
 	}
-	/*equip->name = "None";
-	equip->description = "Filler test";
-	equip->item_id = -1;
-	equip->number_held = -1;
-	int i = 2;
-	while (i<MAX_HELD_ITEMS) {
-		hero->add_to_inventory(equip);
-		i += 1;
-	}*/
 }
 
 void show_intro(void) {
@@ -444,7 +417,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Character");
-		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game and esc to exit the menu to the pause screen.");
+		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game or esc to exit the menu to the pause screen.");
 		textprintf_ex(buffer, font3, 50, 145, makecol(255,255,255), -1, "Use the arrow keys to scroll trough the items. Only 25 items can be kept in your inventory");
 		textprintf_ex(buffer, font3, 50, 175, makecol(255,255,255), -1, "at a time. Use the Delete key to remove items permanently. [Quest Items cannot be deleted]");
 		textprintf_ex(buffer, font3, 50, 220, makecol(56,235,181), -1, "Inventory");
