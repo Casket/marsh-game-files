@@ -14,6 +14,7 @@ class Marsh_Monster:public Mob{
 		Marsh_Monster(int, int, int, int, Sprite*, std::vector<std::pair<int,int>>*);
 		~Marsh_Monster(void);
 		virtual void check_collisions(void);
+		virtual void populate_spells(void);
 		
 };
 

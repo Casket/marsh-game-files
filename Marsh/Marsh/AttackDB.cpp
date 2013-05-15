@@ -248,7 +248,7 @@ void AttackDB::populate_damage_spells(void){
 	Attack_Sprite* ball = new Attack_Sprite("Resources//Attack Sprites//Energy_Bolt.bmp", N, animation_delay, 1, 4, 4, 188/4, 31);
 	ball->set_state_frame_counts(0, 4, 0);
 	Attack* shadow_ball = new Attack(0, 0, base_spell_speed, base_spell_v_delay, ball, stats_for_spell);
-	shadow_ball->set_boundary_value(18, 34, 5, 8);
+	shadow_ball->set_boundary_value(34, 18, 5, 8);
 	shadow_ball->set_mana_cost(base_mana);
 	shadow_ball->spell_id = SHADOW_BALL;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_BALL, shadow_ball));
@@ -262,7 +262,7 @@ void AttackDB::populate_damage_spells(void){
 	stats_for_spell.tree_depth = 2;
 	ball->set_state_frame_counts(0, 4, 0);
 	Attack* shadow_ball_plus = new Attack(0, 0, base_spell_speed, base_spell_v_delay, ball, stats_for_spell);
-	shadow_ball_plus->set_boundary_value(18, 34, 5, 8);
+	shadow_ball_plus->set_boundary_value(34, 18, 5, 8);
 	shadow_ball_plus->set_mana_cost(base_mana+5);
 	shadow_ball_plus->spell_id = SHADOW_BALL_PLUS;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_BALL_PLUS, shadow_ball_plus));

@@ -204,10 +204,10 @@ bool visible(int x, int y, int width, int height){
 	return true;
 
 	int left_most = hero->get_x_pos() - VISIBLE_W - PAD;
-	int right_most = left_most + SCREEN_W + PAD;
+	int right_most = left_most + 2*SCREEN_W + PAD;
 
 	int top_most = hero->get_y_pos() - VISIBLE_H - PAD;
-	int bottom_most = top_most + SCREEN_H + PAD;
+	int bottom_most = top_most + 2*SCREEN_H + PAD;
 	
 	// top left corner
 	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
