@@ -127,7 +127,7 @@ void set_up_game(void) {
 	itemDB = new ItemDB();
 
 	// default data for inventory - TEST DATA
-	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
+	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 4, 2, 16, 2*16);
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
 	Equipment* equip = new Equipment();

@@ -7,7 +7,7 @@ TemporalModifier::TemporalModifier(Sprite* img, AttackStatistics stats, int upda
 }
 
 TemporalModifier::~TemporalModifier(void){
-
+	world_time_delay = DEFAULT_WORLD_TIME_DELAY;
 }
 
 void TemporalModifier::update(void){

@@ -16,7 +16,10 @@ SprintSpell::SprintSpell(int vel, int duration, int charge)
 }
 
 SprintSpell::~SprintSpell(void){
-
+	if (this->my_caster != NULL){
+		this->my_caster->velocity = this->previous_velocity;
+		this->my_caster->get_image()->animation_delay = this->prev_framerate;
+	}
 }
 
 void SprintSpell::update(void){
@@ -29,6 +32,7 @@ void SprintSpell::update(void){
 	if (++this->death_timer >= this->expiration_date){
 		this->my_caster->velocity = this->previous_velocity;
 		this->my_caster->get_image()->animation_delay = this->prev_framerate;
+		this->my_caster = NULL;
 		this->get_world()->remove_entity(this);
 	}
 }

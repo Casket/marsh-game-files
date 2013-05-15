@@ -145,13 +145,13 @@ void Marsh::View::load_world(WorldName world){
 static bool should_save(World* check_world){
 	switch(check_world->my_name){
 	case main_world11:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	case main_world13:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	case main_world16:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	case main_world19:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	default:
 		return false;
 
@@ -239,6 +239,9 @@ void Marsh::View::update(void){
 			if (gateway->activated){
 				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
 				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
+				Player_Accessor::get_player()->velocity = 3;
+				Player_Accessor::get_player()->get_image()->animation_delay = 4;
+				world_time_delay = DEFAULT_WORLD_TIME_DELAY;
 				gateway->activated = false;
 				this->load_world(gateway->portal_to);
 				return;
