@@ -106,7 +106,8 @@ void Marsh::View::draw_updated_loadout(Attack* loadout[]){
 			continue;
 		}
 		std::string file("Resources//Attack_Images//");
-		file.append(this->displayed_images->at(id).append(".bmp"));
+		file.append(this->displayed_images->at(id));
+		file.append(".bmp");
 		std::pair<int, int> coord = this->spell_icon_coords->at(i);
 		BITMAP* image = load_bitmap(file.c_str(), NULL);
 		masked_blit(image, this->ui_buffer, 0, 0, coord.first, coord.second, image->w, image->h);
