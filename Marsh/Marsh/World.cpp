@@ -18,6 +18,7 @@ World::World(WorldName this_world){
 	this->removal_queue = new std::set<iDrawable*>();
 	load_world();
 	destroy_bitmap(loading_screen_bitmap);
+	this->updating_entities = new std::list<iDrawable*>();
 }
 
 World::~World(void){
@@ -399,11 +400,9 @@ std::list<iDrawable*>* World::get_visible_entities(void){
 	std::list<iDrawable*>::iterator iter;
 	std::list<iDrawable*>::iterator end = this->active_entities->end();
 	for (iter = this->active_entities->begin(); iter != end; ++iter){
-		if ((*iter)->get_x_pos() >= left_most && (*iter)->get_x_pos() <= right_most){
-			if ((*iter)->get_y_pos() >= top_most && (*iter)->get_y_pos() <= bottom_most){
-				this->visible_entities->push_front((*iter));
-			}
-		}
+		if (visible((*iter)->x_pos, (*iter)->y_pos, (*iter)->get_image()->get_current_frame()->w,(*iter)->get_image()->get_current_frame()->h))
+			this->visible_entities->push_front((*iter));
+		
 	}
 
 	this->visible_entities->sort(sort_visibles);

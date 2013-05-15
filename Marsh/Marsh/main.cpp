@@ -238,9 +238,7 @@ void show_intro(void) {
 							}
 			}
 			clear_keybuf();
-		}
-
-		
+		}		
 	}
 exit_loop: ;
 

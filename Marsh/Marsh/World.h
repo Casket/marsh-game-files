@@ -38,6 +38,7 @@ public:
 	std::list<iDrawable*> *active_entities;
 	std::list<iDrawable*> *visible_entities;
 	std::set<iDrawable*> *removal_queue;
+	std::list<iDrawable*>* updating_entities;
 	Player* playa;
 	WorldName my_name;
 	std::map<std::string, drawable_bounds>* drawables; 

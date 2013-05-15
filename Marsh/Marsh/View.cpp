@@ -33,6 +33,7 @@ Marsh::View::View(Player* hero){
 	this->spell_icon_coords = new std::vector<std::pair<int, int>>();
 	this->populate_spell_locs();
 	this->populate_image_names();
+	
 
 	this->draw_updated_loadout(Player_Accessor::get_player()->attack_loadout);
 }
@@ -189,12 +190,48 @@ void Marsh::View::insert_testing_entities(void){
 		this->current_world->insert_entity(g2);
 	}
 
+bool visible(int x, int y, int width, int height){
+	Player* hero = Player_Accessor::get_player();
+
+	int left_most = hero->get_x_pos() - VISIBLE_W - PAD;
+	int right_most = left_most + SCREEN_W + PAD;
+
+	int top_most = hero->get_y_pos() - VISIBLE_H - PAD;
+	int bottom_most = top_most + SCREEN_H + PAD;
+	
+	// top left corner
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x += width;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x -= width;
+	y += height;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x += width;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	return false;
+}
+
 
 void Marsh::View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
 	std::list<iDrawable*>::iterator end = actives->end();
 	std::list<iDrawable*>::iterator iter;
-	for (iter = actives->begin(); iter != end; iter++){
+	this->current_world->updating_entities->clear();
+	for (iter = actives->begin(); iter != end; ++iter){
+		iDrawable* check = (*iter);
+		if (check->get_bounding_height() == 0 && check->get_bounding_width() == 0)
+			continue;
+		if (!visible(check->x_pos, check->y_pos, check->get_image()->get_current_frame()->w, check->get_image()->get_current_frame()->h))
+			continue;
+		this->current_world->updating_entities->push_back(check);
+	}
+
+	end = this->current_world->updating_entities->end();
+	for (iter = this->current_world->updating_entities->begin(); iter != end; iter++){
 		if ((*iter)->my_type == Hero)
 			continue;
 		(*iter)->update();
