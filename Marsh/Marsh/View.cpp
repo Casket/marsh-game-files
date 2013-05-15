@@ -414,7 +414,9 @@ void Marsh::View::update(void){
 			if (gateway->activated){
 				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
 				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
+				gateway->activated = false;
 				this->load_world(gateway->portal_to);
+				//return;
 			}
 		}
 	}

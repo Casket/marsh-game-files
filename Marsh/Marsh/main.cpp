@@ -65,7 +65,7 @@ int main(void)
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
 	font3 = load_font("font3.pcx",NULL,NULL);
-	world_name = hut_play;
+	world_name = main_world19;
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
