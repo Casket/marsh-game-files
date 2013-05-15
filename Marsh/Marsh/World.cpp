@@ -588,7 +588,6 @@ void World::intial_drawable_map(void){
 	set_boundaries( "dung_keep27",6,457,0,10);
 	set_boundaries( "dung_keep28",614,46,0,0);
 	set_boundaries( "dung_keep29",6,1780,0,12);
-
 	set_boundaries( "dung_other1",1440,101,0,10);
 	set_boundaries( "dung_other2",1440,16,0,0);
 	set_boundaries( "dung_other3",11,208,0,0);

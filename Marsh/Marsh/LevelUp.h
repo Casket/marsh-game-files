@@ -49,6 +49,7 @@ namespace Marsh {
 	private: System::Windows::Forms::PictureBox^  pictureBox11;
 	private: System::Windows::Forms::PictureBox^  pictureBox12;
 	private: System::Windows::Forms::RichTextBox^  SpellInfo;
+	private: System::Windows::Forms::Label^  LevelLabel;
 	public: 
 
 	public: 
@@ -76,6 +77,7 @@ namespace Marsh {
 			this->WillpowerLabel->Text = "Willpower: " + hero->willpower;
 			this->FocusLabel->Text = "Focus: " + hero->focus;
 			this->VitalityLabel->Text = "Vitality: " + hero->vitality;
+			this->LevelLabel->Text = "Current Level: " + hero->level;
 			this->BringToFront();
 			createNodes();
 			disableGottenSpells();
@@ -347,6 +349,7 @@ namespace Marsh {
 			this->pictureBox11 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox12 = (gcnew System::Windows::Forms::PictureBox());
 			this->SpellInfo = (gcnew System::Windows::Forms::RichTextBox());
+			this->LevelLabel = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->BeginInit();
@@ -904,6 +907,17 @@ namespace Marsh {
 			this->SpellInfo->TabIndex = 39;
 			this->SpellInfo->Text = L"";
 			// 
+			// LevelLabel
+			// 
+			this->LevelLabel->AutoSize = true;
+			this->LevelLabel->BackColor = System::Drawing::Color::Transparent;
+			this->LevelLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->LevelLabel->Location = System::Drawing::Point(710, 9);
+			this->LevelLabel->Name = L"LevelLabel";
+			this->LevelLabel->Size = System::Drawing::Size(189, 42);
+			this->LevelLabel->TabIndex = 40;
+			this->LevelLabel->Text = L"Current Level:";
+			// 
 			// LevelUp
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -951,6 +965,7 @@ namespace Marsh {
 			this->Controls->Add(this->pictureBox9);
 			this->Controls->Add(this->pictureBox8);
 			this->Controls->Add(this->pictureBox10);
+			this->Controls->Add(this->LevelLabel);
 			this->ForeColor = System::Drawing::SystemColors::HighlightText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Location = System::Drawing::Point(307, 510);

@@ -159,6 +159,10 @@ void Mob::update(void){
 			break;
 
 		case patrol:
+
+			if (this->waypoints == NULL)
+				break;
+
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
 			
 			this->prev_state = this->current_state;
@@ -389,6 +393,14 @@ void Mob::other_check_collisions(void){
 
 		if (check == this){
 			continue;
+		}
+
+		if (check->my_type == Wallop){
+			Attack* att_check = check->fetch_me_as_attack();
+			if (att_check != NULL){
+				if (att_check->my_caster->my_type == this->my_type)
+					continue;
+			}
 		}
 
 		check_x = check->get_reference_x();

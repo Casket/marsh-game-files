@@ -4,9 +4,9 @@
 #define TG_DELTA 1
 #define ERR 5
 #define DETECTION_RANGE 300
-#define MELEE_CD 20
-#define MID_RANGE_CD 100
-#define UTIL_CD 300
+#define MELEE_CD 50
+#define MID_RANGE_CD 150
+#define UTIL_CD 500
 
 #include "Main.h"
 #include "Sprite.h"

@@ -106,7 +106,8 @@ void Marsh::View::draw_updated_loadout(Attack* loadout[]){
 			continue;
 		}
 		std::string file("Resources//Attack_Images//");
-		file.append(this->displayed_images->at(id).append(".bmp"));
+		file.append(this->displayed_images->at(id));
+		file.append(".bmp");
 		std::pair<int, int> coord = this->spell_icon_coords->at(i);
 		BITMAP* image = load_bitmap(file.c_str(), NULL);
 		masked_blit(image, this->ui_buffer, 0, 0, coord.first, coord.second, image->w, image->h);
@@ -230,6 +231,7 @@ void Marsh::View::insert_testing_entities(void){
 		companion->item_id = 197;
 		farmer_bob->append_inventory(companion, 1000000);
 
+		/*
 		Mob* g = new Town_Guard(116,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
@@ -241,8 +243,8 @@ void Marsh::View::insert_testing_entities(void){
 		g1->set_world(this->current_world);
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g1);
-
-		Mob* g2 = new Vampire(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+	*/
+		Mob* g2 = new VampireBoss(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
@@ -417,7 +419,6 @@ void Marsh::View::update(void){
 		}
 	}
 	this->current_world->remove_destroyed();
-
 }
 
 void Marsh::View::draw_active_world(void){
@@ -465,8 +466,7 @@ void draw_status(Player* hero, BITMAP* buffer){
 	int max_exp = EXPERIENCE_TO_LEVEL;
 	int cur_exp = hero->experience;
 	double px_per_e = (double) EXP_BAR_WIDTH / (double)max_exp;
-	rectfill(buffer, EXP_BAR_X_POS, EXP_BAR_Y_POS, EXP_BAR_X_POS + px_per_e*cur_exp, EXP_BAR_Y_POS + EXP_BAR_HEIGHT, EXP_COLOR);
-
+	rectfill(buffer, EXP_BAR_X_POS+2, EXP_BAR_Y_POS-8, EXP_BAR_X_POS + px_per_e*cur_exp+2, EXP_BAR_Y_POS + EXP_BAR_HEIGHT-8, EXP_COLOR);
 }
 
 int pick_cast_color(Attack* attack){
@@ -479,11 +479,13 @@ void draw_dialogs(BITMAP* buffer){
 
 void Marsh::View::draw_interface(Player* hero){
 	blit(this->behind_bars, this->ui_buffer, 0, 0, BACK_LAYER_X, BACK_LAYER_Y, this->behind_bars->w, this->behind_bars->h);
+	// draw your image
 	draw_status(hero, this->ui_buffer);
 	masked_blit(this->resource_bars[0], this->ui_buffer, 0, 0, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	masked_blit(this->resource_bars[0], this->ui_buffer, 0, 0, MANA_BAR_X_POS, MANA_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	masked_blit(this->resource_bars[1], this->ui_buffer, 0, 0, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
 	blit(this->in_use_console, this->ui_buffer, 0, 0, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
+	
 }
 
 void Marsh::View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){

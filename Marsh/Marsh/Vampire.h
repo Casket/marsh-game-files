@@ -1,5 +1,5 @@
 #ifndef VAMPIRE_H
-#define VAMPIRE 1
+#define VAMPIRE_H 1
 
 #include "Main.h"
 #include "Sprite.h"
@@ -7,9 +7,7 @@
 #include "Combat.h"
 
 
-using namespace std;
-
-class Vampire:public Mob{
+class Vampire: public Mob{
 	public:
 		Vampire(int, int, int, int, Sprite*, std::vector<std::pair<int,int>>*);
 		~Vampire(void);
