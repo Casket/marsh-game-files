@@ -67,7 +67,7 @@ void Combat::insert_db_attacks(void){
 	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_NEEDLE)->clone(0, 0, N);
 	this->attack_loadout[0]->set_my_caster(this);
 
-	this->attack_loadout[1] = attacks->fetch_attack(SHADOW_NEEDLE_PLUS)->clone(0, 0, N);
+	this->attack_loadout[1] = attacks->fetch_attack(SHADOW_BALL)->clone(0, 0, N);
 	this->attack_loadout[1]->set_my_caster(this);
 
 	this->attack_loadout[2] = attacks->fetch_attack(SHADOW_SPIKES)->clone(0, 0, N);

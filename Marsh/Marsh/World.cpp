@@ -377,7 +377,7 @@ bool sort_visibles(iDrawable* d1, iDrawable* d2){
 
 void World::insert_entity(iDrawable* da_d){
 	if (da_d == NULL){
-		return;
+		throw std::exception("Broke");
 	}
 	this->active_entities->push_back(da_d);
 }
@@ -866,7 +866,7 @@ void World::make_drawable(std::string items){
 		//passes the things gathered to another function that will make the object
 		iDrawable* d = designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
 		if(d == NULL){
-			return;
+			throw std::exception("Broke");
 		}
 		d->set_my_type(Stationary);
 		this->insert_entity(d);
@@ -1004,7 +1004,7 @@ void World::make_portal(std::string items, bool is_world){
 			xb = 4;
 			yb = 127*32;
 		}else{
-			//
+			throw std::exception("Broke");
 		}
 
 		iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, 0, 0, true);
@@ -1425,9 +1425,8 @@ iDrawable* World::designate_drawable(std::string type, std::string x, std::strin
 	location = this->drawables->find(type);
 
 	if (location == this->drawables->end()){
-		return NULL;
+		throw std::exception("Broke");
 	}
-
 
 	new_d->set_boundary_value((*location).second.bounds[0],(*location).second.bounds[1],(*location).second.bounds[2],(*location).second.bounds[3]);
 

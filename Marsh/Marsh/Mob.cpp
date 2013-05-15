@@ -340,6 +340,7 @@ void Mob::check_collisions(void){
 	int delta = 2;
 
 	// what tile is his top left corner in?
+
 	nearby[0] = map[(this->get_reference_y() - delta) / TILE_SIZE][(this->get_reference_x()- delta) / TILE_SIZE];
 
 	// top right?

@@ -33,6 +33,7 @@ Marsh::View::View(Player* hero){
 	this->spell_icon_coords = new std::vector<std::pair<int, int>>();
 	this->populate_spell_locs();
 	this->populate_image_names();
+	
 
 	this->draw_updated_loadout(Player_Accessor::get_player()->attack_loadout);
 }
@@ -195,8 +196,34 @@ void Marsh::View::insert_testing_entities(void){
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
-		this->current_world->insert_entity(g2);
+		//this->current_world->insert_entity(g2);
 	}
+
+bool visible(int x, int y, int width, int height){
+	Player* hero = Player_Accessor::get_player();
+	return true;
+
+	int left_most = hero->get_x_pos() - VISIBLE_W - PAD;
+	int right_most = left_most + SCREEN_W + PAD;
+
+	int top_most = hero->get_y_pos() - VISIBLE_H - PAD;
+	int bottom_most = top_most + SCREEN_H + PAD;
+	
+	// top left corner
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x += width;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x -= width;
+	y += height;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x += width;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	return false;
+}
 
 
 void Marsh::View::update(void){

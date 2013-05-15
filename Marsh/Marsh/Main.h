@@ -89,6 +89,7 @@ bool keyrel(int k);
 bool rectangle_intersection(int x1, int y1, int w1,int h1, int x2, int y2, int w2, int h2);
 Equipment* get_new_equipment(void);
 Equipment* get_item_clone(Equipment* old_item);
+bool visible(int x, int y, int width, int height);
 
 class Player_Accessor{
 public:
