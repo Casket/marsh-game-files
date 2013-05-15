@@ -440,6 +440,8 @@ Combat* Combat::fetch_me_as_combat(void){
 }
 
 void Combat::deal_with_attack(Attack* attack){
+	if (attack->my_caster->my_type == this->my_type)
+		return;
 	if (!this->active_wards->empty()){
 		std::list<Attack*>::iterator pos = this->active_wards->begin();
 		(*pos)->deal_with_attack(attack); // tell the ward to handle the attack

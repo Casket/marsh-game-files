@@ -4,6 +4,7 @@ HealthDrainAttack::HealthDrainAttack(int x, int y, int vel, int vel_d, Sprite* i
 :Attack(x, y, vel, vel_d, img, stats)
 {
 	this->target = NULL;
+	this->my_type = Wallop;
 }
 HealthDrainAttack::~HealthDrainAttack(void){
 
