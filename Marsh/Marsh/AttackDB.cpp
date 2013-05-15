@@ -136,7 +136,7 @@ void AttackDB::populate_utility_spells(void){
 	Attack_Sprite* drain = new Attack_Sprite("Resources//Attack Sprites//Drain.bmp", W, 5, 1, 5, 5, 24, 19);
 	drain->set_state_frame_counts(0, 5, 0);
 	Attack* shadow_drain = new HealthDrainAttack(0, 0, 2, 10, drain, stats_for_spell);
-	shadow_drain->set_boundary_value(25, 17, 0, 0);
+	shadow_drain->set_boundary_value(17, 25, 0, 0);
 	shadow_drain->set_mana_cost(base_mana+5);
 	shadow_drain->spell_id = DRAIN_HEALTH;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(DRAIN_HEALTH, shadow_drain));
