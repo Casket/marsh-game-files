@@ -466,8 +466,7 @@ void draw_status(Player* hero, BITMAP* buffer){
 	int max_exp = EXPERIENCE_TO_LEVEL;
 	int cur_exp = hero->experience;
 	double px_per_e = (double) EXP_BAR_WIDTH / (double)max_exp;
-	rectfill(buffer, EXP_BAR_X_POS, EXP_BAR_Y_POS, EXP_BAR_X_POS + px_per_e*cur_exp, EXP_BAR_Y_POS + EXP_BAR_HEIGHT, EXP_COLOR);
-
+	rectfill(buffer, EXP_BAR_X_POS+2, EXP_BAR_Y_POS-8, EXP_BAR_X_POS + px_per_e*cur_exp+2, EXP_BAR_Y_POS + EXP_BAR_HEIGHT-8, EXP_COLOR);
 }
 
 int pick_cast_color(Attack* attack){
