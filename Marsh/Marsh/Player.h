@@ -98,6 +98,7 @@ class Player: public Combat{
 		virtual bool get_visible(iDrawable* check);
 		virtual bool detect_enemies(iDrawable* check);
 		virtual void set_world(World* world);
+		void Player::grant_experience(int experience_worth);
 
 	
 	private:
@@ -109,7 +110,6 @@ class Player: public Combat{
 		void check_casting(void);
 		void accept_interaction(void);
 		void set_new_inventory(void);
-		void Player::grant_experience(int experience_worth);
 
 };
 

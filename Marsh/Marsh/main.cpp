@@ -652,8 +652,14 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
+	if (mute==0) {
+		stop_sample(theme);
+	}
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 	menu->StartPosition = FormStartPosition::CenterScreen;
 	menu->ShowDialog();
+	if (mute==0) {
+		play_sample(theme,255,128,1000,1);
+	}
 	delete menu;
 }

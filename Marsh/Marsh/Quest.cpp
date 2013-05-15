@@ -36,10 +36,10 @@ void Quest::end_quest(void){
 	std::list<QuestReward>::iterator end = this->rewards->end();
 	for (iter = this->rewards->begin(); iter != end; ++iter){
 		hero->gold += (iter)->gold;
-		hero->experience += (iter)->exp;
+		hero->grant_experience((iter)->exp);
 		hero->notoriety += (iter)->rep;
 		hero->add_to_inventory(itemDB->fetch_item((iter)->item));
-		if((iter)->mission == 0)
+		if((iter)->mission == 1)
 			hero->new_mission = true;
 	}
 }
