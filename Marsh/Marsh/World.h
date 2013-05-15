@@ -28,7 +28,8 @@ typedef struct Tile{
 	bool flyable;
 }Tile;
 
-enum WorldName{main_world11,main_world12,main_world13,main_world14,main_world15,main_world16,main_world17,main_world18,main_world19,hut_play,hut_1,hut_2,hut_3,hut_4,hut_5,hut_6,hut_7,hut_8,hut_9,keep, church_lower, church_upper};
+enum WorldName{main_world11,main_world12,main_world13,main_world14,main_world15,main_world16,main_world17,main_world18,main_world19,shop1,shop2,shop3,
+hut_play,hut_1,hut_2,hut_3,hut_4,hut_5,hut_6,hut_7,hut_8,hut_9,house1,house2,house3,house4,house5,house6,house7,house12,house22,house32,house42,house52,house62,house72,keep, church, church_upper};
 
 class World{
 public:
@@ -68,7 +69,7 @@ public:
 	void convert_to_tile(char, char, int, int);
 	void make_world();
 	void make_drawable(std::string);
-	void make_portal(std::string);
+	void make_portal(std::string, bool);
 	void make_AI(std::string);
 	void make_op(std::string, int,std::string, int, int);
 	void make_dialouge_op(std::string, int, OptionPresenter*);

@@ -110,7 +110,11 @@ void World::load_world(){
 				//if background tile line formmated so that 01010101 is a rep of 4 of the same tile
 			}else if(items.at(0) == '#'){
 
-				make_portal(items);
+				make_portal(items, false);
+
+			}else if(items.at(0) == '%'){
+
+				make_portal(items, true);
 
 			}else if(items.at(0) == '~'){
 
@@ -202,11 +206,6 @@ void World::convert_to_tile(char a, char b, int pos_x, int pos_y){
 
 		this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
 
-		if(sprite_x == 11){
-			Ground_Sprite* tile_sprite = new Ground_Sprite(file, 0,sprite_y);
-			this->tile_map[pos_x][pos_y]->background_image = tile_sprite;
-			this->tile_map[pos_x][pos_y]->can_walk = false;
-		}
 		if(sprite_x == 5 || sprite_x == 9){
 			this->tile_map[pos_x][pos_y]->can_walk = false;
 		}
@@ -486,7 +485,46 @@ std::string World::get_file(WorldName name){
 		return "Resources//maps//world18.txt";
 	}else if(name == main_world19){
 		return "Resources//maps//world19.txt";
-	}else{
+	}else if(name == house1){
+		return "Resources//maps//house1.txt";
+	}else if(name == house2){
+		return "Resources//maps//house2.txt";
+	}else if(name == house3){
+		return "Resources//maps//house3.txt";
+	}else if(name == house4){
+		return "Resources//maps//house4.txt";
+	}else if(name == house5){
+		return "Resources//maps//house5.txt";
+	}else if(name == house6){
+		return "Resources//maps//house6.txt";
+	}else if(name == house7){
+		return "Resources//maps//house7.txt";
+	}else if(name == house12){
+		return "Resources//maps//house12.txt";
+	}else if(name == house22){
+		return "Resources//maps//house22.txt";
+	}else if(name == house32){
+		return "Resources//maps//house32.txt";
+	}else if(name == house42){
+		return "Resources//maps//house42.txt";
+	}else if(name == house52){
+		return "Resources//maps//house52.txt";
+	}else if(name == house62){
+		return "Resources//maps//house62.txt";
+	}else if(name == house72){
+		return "Resources//maps//house72.txt";
+	}else if(name == shop1){
+		return "Resources//maps//shop1.txt";
+	}else if(name == shop2){
+		return "Resources//maps//shop2.txt";
+	}else if(name == shop3){
+		return "Resources//maps//shop3.txt";
+	}else if(name == keep){
+		return "Resources//maps//keep.txt";
+	}else if(name == church){
+		return "Resources//maps//church1.txt";
+	}
+	else{
 		throw std::exception("No world");
 	}
 }
@@ -699,6 +737,11 @@ void World::intial_drawable_map(void){
 	set_boundaries( "hut_2",96,32,0,0);
 	set_boundaries( "hut_3",95,32,0,0);
 	set_boundaries( "hut_5",239,55,0,0);
+	set_boundaries( "hut_cheese",0,0,0,0);
+	set_boundaries( "hut_counter",64,24,0,10);
+	set_boundaries( "hut_grain",0,0,0,0);
+	set_boundaries( "hut_oven",65,43,0,0);
+	set_boundaries( "hut_table",52,40,0,12);
 	set_boundaries( "keep",416,370,0,60);
 	set_boundaries( "keep_stair",64,119,0,0);
 	set_boundaries( "keep1",957,700,0,47);
@@ -753,16 +796,39 @@ void World::intial_drawable_map(void){
 	set_boundaries( "tent",136,155,0,12);
 	set_boundaries( "tent_back",136,155,0,12);
 	set_boundaries( "throne",67,32,0,32);
-	set_boundaries("tree_dead",32,32,0,32);
-	set_boundaries("tree_oak",32,32,0,32);
-	set_boundaries("tree_oak2",32,32,0,32);
+	set_boundaries("tree_dead",32,32,42,127);
+	set_boundaries("tree_dead1",32,32,35,150);
+	set_boundaries("tree_dead2",32,32,43,117);
+	set_boundaries("tree_dead3",32,32,37,80);
+	set_boundaries("tree_dead4",32,32,16,77);
+	set_boundaries("tree_oak",32,32,29,81);
+	set_boundaries("tree_oak2",32,32,64,168);
 	set_boundaries("tree_pine",35,30,60,123);
 	set_boundaries("tree_stump",27,18,2,7);
 	set_boundaries("watchtower",64,60,0,100);
 	set_boundaries( "wall_front",32,16,0,16);
 	set_boundaries("well",32,32,0,32);		
 	set_boundaries("wine",0,0,0,0);
-	set_boundaries("wine_cabinet",64,32,0,32);
+	set_boundaries("nice_1_1",400,81,0,0);
+	set_boundaries("nice_1_2",8,257,0,0);
+	set_boundaries("nice_1_3",195,32,0,0);
+	set_boundaries("nice_1_4",8,46,0,0);
+	set_boundaries("nice_1_5",8,80,0,0);
+	set_boundaries("nice_1_6",142,32,0,0);
+	set_boundaries("nice_1_7",171,32,0,0);
+	set_boundaries("nice_1_8",165,32,0,0);
+	set_boundaries("nice_1_9",400,32,0,0);
+	set_boundaries("nice_2_1",400,81,0,0);
+	set_boundaries("nice_2_2",8,256,0,0);
+	set_boundaries("nice_2_3",195,32,0,0);
+	set_boundaries("nice_2_4",8,46,0,0);
+	set_boundaries("nice_2_5",8,99,0,0);
+	set_boundaries("nice_2_6",107,32,0,0);
+	set_boundaries("nice_2_7",121,32,0,0);
+	set_boundaries("nice_2_8",8,130,0,0);
+	set_boundaries("nice_2_9",8,82,0,0);
+	set_boundaries("nice_2_10",164,32,0,0);
+	set_boundaries("nice_2_11",400,32,0,0);
 
 }
 void World::make_drawable(std::string items){
@@ -831,98 +897,154 @@ WorldName World::get_WorldName(std::string name, int name_size){
 		return hut_8;
 	}else if(worldName.compare("hut_9") == 0){
 		return hut_9;
-	}else if(worldName.compare("main_world11") == 0){
+	}else if(worldName.compare("world11") == 0){
 		return main_world11;
-	}else if(worldName.compare("main_world12") == 0){
+	}else if(worldName.compare("world12") == 0){
 		return main_world12;
-	}else if(worldName.compare("main_world13") == 0){
+	}else if(worldName.compare("world13") == 0){
 		return main_world13;
-	}else if(worldName.compare("main_world14") == 0){
+	}else if(worldName.compare("world14") == 0){
 		return main_world14;
-	}else if(worldName.compare("main_world15") == 0){
+	}else if(worldName.compare("world15") == 0){
 		return main_world15;
-	}else if(worldName.compare("main_world16") == 0){
+	}else if(worldName.compare("world16") == 0){
 		return main_world16;
-	}else if(worldName.compare("main_world17") == 0){
+	}else if(worldName.compare("world17") == 0){
 		return main_world17;
-	}else if(worldName.compare("main_world18") == 0){
+	}else if(worldName.compare("world18") == 0){
 		return main_world18;
-	}else if(worldName.compare("main_world19") == 0){
+	}else if(worldName.compare("world19") == 0){
 		return main_world19;
-	}
-	else{
+	}else if(worldName.compare("house1") == 0){
+		return house1;
+	}else if(worldName.compare("house2") == 0){
+		return house2;
+	}else if(worldName.compare("house3") == 0){
+		return house3;
+	}else if(worldName.compare("house4") == 0){
+		return house4;
+	}else if(worldName.compare("house5") == 0){
+		return house5;
+	}else if(worldName.compare("house6") == 0){
+		return house6;
+	}else if(worldName.compare("house7") == 0){
+		return house7;
+	}else if(worldName.compare("house12") == 0){
+		return house12;
+	}else if(worldName.compare("house22") == 0){
+		return house22;
+	}else if(worldName.compare("house32") == 0){
+		return house32;
+	}else if(worldName.compare("house42") == 0){
+		return house42;
+	}else if(worldName.compare("house52") == 0){
+		return house52;
+	}else if(worldName.compare("house62") == 0){
+		return house62;
+	}else if(worldName.compare("house72") == 0){
+		return house72;
+	}else if(worldName.compare("church") == 0){
+		return church;
+	}else if(worldName.compare("church_upper") == 0){
+		return church_upper;
+	}else if(worldName.compare("keep") == 0){
+		return keep;
+	}else if(worldName.compare("shop1") == 0){
+		return shop1;
+	}else if(worldName.compare("shop2") == 0){
+		return shop2;
+	}else if(worldName.compare("shop3") == 0){
+		return shop3;
+	}else{
 		throw std::exception("Broke");
 	}
 	return main_world11;
 
 }
 
-void World::make_portal(std::string items){
-	int outer_index = 1;
-	int inner_index = 0;
+void World::make_portal(std::string items, bool is_world){
+	std::pair<std::string,int> values;
+	int const_index = 1;
 
-	std::string worldName;
-	std::string x;
-	std::string y;
-	std::string x_targ;
-	std::string y_targ;
+	if(is_world){
+		//world_name
+		values = pull_out(items, const_index);
+		WorldName converted_name = get_WorldName(values.first, values.second);
+		const_index += values.second + 1;
 
-	while(items.at(outer_index) != '+'){
-		worldName.append(1, items.at(outer_index));
-		inner_index += 1;
-		outer_index += 1;
-	}
-	int name_size = inner_index;
-	outer_index += 1;
-	inner_index = 0;
+		values = pull_out(items, const_index);
+		const_index += values.second + 1;
+		int x = 0;
+		int y = 0;
+		int xb = 0;
+		int yb = 0;
 
-	//grabs xpos
-	while(items.at(outer_index) != '+'){
-		x.append(1, items.at(outer_index));
-		inner_index += 1;
-		outer_index += 1;
-	}
-	//grabs ypos and records num of digits xpos was 
-	outer_index += 1;
-	int size_x = inner_index;
-	inner_index = 0;
-
-	while(items.at(outer_index) != '+'){
-		y.append(1, items.at(outer_index));
-		inner_index += 1;
-		outer_index += 1;
-	}
-	outer_index += 1;
-	int size_y = inner_index;
-	inner_index = 0;
-
-	while(items.at(outer_index) != '+'){
-		x_targ.append(1, items.at(outer_index));
-		inner_index += 1;
-		outer_index += 1;
-	}
-	//grabs ypos and records num of digits xpos was 
-	outer_index += 1;
-	int size_tar = inner_index;
-	inner_index = 0;
-
-	while(items.at(outer_index) != '+'){
-		if(items.at(outer_index) == '!'){
-			break;
+		std::string str = values.first;
+		
+		if( str.compare("N") == 0){
+			y = 32; 
+			xb = 127 * 32;
+			yb = 4;
 		}
 
-		y_targ.append(1, items.at(outer_index));
-		inner_index += 1;
-		outer_index += 1;
+		else if(str.compare("S") == 0){
+			y = 126 * 32;
+			xb = 127 * 32;
+			yb = 4;
+		}
+		else if(str.compare("E") == 0){
+			x = 126 * 32;
+			xb = 4;
+			yb = 127*32;
+		}
+
+		else if(str.compare("W")==0){
+			x = 32;
+			xb = 4;
+			yb = 127*32;
+		}else{
+			//
+		}
+
+		iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, 0, 0, true);
+		new_portal->set_boundary_value(xb,yb, 0, 0);
+		insert_entity(new_portal);
+		
+		return;
+
 	}
 
-	int x_pos = list_to_int(x,size_x);
-	int y_pos = list_to_int(y,inner_index);
-	int x_tar = list_to_int(x_targ, size_tar); 
-	int y_tar = list_to_int(y_targ, inner_index);
-	WorldName converted_name = get_WorldName(worldName, name_size);
+	//world_name
+	values = pull_out(items, const_index);
+	WorldName converted_name = get_WorldName(values.first, values.second);
+	const_index += values.second + 1;
 
-	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, x_tar, y_tar, false);
+	//x
+	values = pull_out(items, const_index);
+	int x = list_to_int(values.first, values.second);
+	const_index += values.second + 1;
+
+	//y
+	values = pull_out(items, const_index);	
+	int y = list_to_int(values.first, values.second);
+	const_index += values.second + 1;
+
+	//target x
+	values = pull_out(items, const_index);
+	int tarx = list_to_int(values.first, values.second);
+	const_index += values.second + 1;
+
+	//target y
+	values = pull_out(items, const_index);
+	int tary = list_to_int(values.first, values.second);
+	const_index += values.second + 1;
+
+
+
+
+
+
+	iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, tarx, tary, false);
 	new_portal->set_boundary_value(32, 32, 0, 0);
 	insert_entity(new_portal);
 
@@ -1158,12 +1280,12 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 	values = pull_out(items, constant_index);
 	loot.exp = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1);
-	
+
 	//item
 	values = pull_out(items, constant_index);
 	loot.item = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1);
-	
+
 	//mission
 	values = pull_out(items, constant_index);
 	loot.mission = list_to_int(values.first, values.second);
@@ -1195,7 +1317,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 		obj = new RetrieveObjective(item_id, list_to_int(values.first, values.second));
-	
+
 	}else if(items[constant_index] == 'T'){
 		constant_index += 1;
 		//target id
@@ -1313,27 +1435,27 @@ iDrawable* World::designate_drawable(std::string type, std::string x, std::strin
 
 }
 void World::make_quest_giver(std::string items, int constant_index, std::string filename, int x_pos, int y_pos){
-	
+
 	std::pair<Quest*, int> quest_data;
 	std::pair<std::string, int> values = pull_out(items, constant_index);
-	
+
 	std::string dialouge;
 
-	
+
 
 
 	//create the quests
 	quest_data = make_quest(items, constant_index);
 	constant_index = quest_data.second;
-	
-	
+
+
 	//make the guy
 	QuestGiver* character = new QuestGiver(quest_data.first,x_pos, y_pos, 0, 0, new Player_Sprite((char*)filename.c_str(), S, 5, 1, 16, 16));
-	
+
 	//set values
 	character->set_boundary_value(30, 30, 0, 0);
 	character->set_world(this);
-	
+
 	//dialouge
 	make_dialouge_qg(items, constant_index, character);
 
@@ -1342,9 +1464,9 @@ void World::make_quest_giver(std::string items, int constant_index, std::string 
 
 }
 void World::make_item_bestower(std::string items, int constant_index, std::string filename, int x_pos, int y_pos){
-	
+
 	std::pair<std::string, int> values = pull_out(items, constant_index);
-	
+
 	//shop keeper or something else
 	int chest_or = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1); 
@@ -1354,35 +1476,35 @@ void World::make_item_bestower(std::string items, int constant_index, std::strin
 
 	//make the guy
 	ItemBestower* character = new ItemBestower(x_pos, y_pos, 0, 0, new Player_Sprite((char*)filename.c_str(), S, 5, 1, 16, 16));
-	
+
 	if(chest_or == 0){
 		character->bestow_all_items = true;
 	}
-	
+
 	character->append_dialogue(dialouge);
 	character->set_boundary_value(30, 30, 0, 0);
 	character->set_world(this);
 
 	while(items[constant_index - 1] != '!'){
-		
+
 		//number he has
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
-		
+
 		int numOf = list_to_int(values.first, values.second);
-		
+
 		//id
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 
 		int id = list_to_int(values.first, values.second);
-		
+
 		//cost
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 
 		int cost = list_to_int(values.first, values.second);		
-		
+
 		Equipment* item = itemDB->fetch_item(id);
 		item->number_held = numOf;
 
@@ -1391,5 +1513,5 @@ void World::make_item_bestower(std::string items, int constant_index, std::strin
 	}
 
 	this->insert_entity(character);
-	
+
 }
