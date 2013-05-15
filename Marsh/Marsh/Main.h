@@ -38,6 +38,7 @@ class Attack;
 #include "View.h"
 #include "AttackDB.h"
 #include "Portal.h"
+#include "WorldPortal.h"
 #include "QuestManager.h"
 #include "IQuestObjective.h"
 #include "RetrieveObjective.h"

@@ -11,6 +11,7 @@ typedef struct QuestReward{
 	int rep;
 	int exp;
 	int item;
+	int mission;
 
 }QuestReward;
 

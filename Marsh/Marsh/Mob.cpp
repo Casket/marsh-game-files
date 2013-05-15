@@ -161,9 +161,8 @@ void Mob::update(void){
 			break;
 
 		case patrol:
-
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
-
+			
 			this->prev_state = this->current_state;
 
 			if(!check){

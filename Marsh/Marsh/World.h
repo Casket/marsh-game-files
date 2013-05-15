@@ -8,6 +8,7 @@
 
 class Quest;
 class OptionPresenter;
+class QuestGiver;
 
 using namespace std;
 class Ground_Sprite;
@@ -69,9 +70,12 @@ public:
 	void make_AI(std::string);
 	void make_op(std::string, int,std::string, int, int);
 	void make_dialouge_op(std::string, int, OptionPresenter*);
+	void make_dialouge_qg(std::string, int, QuestGiver*);
 	std::pair<Quest*, int> make_quest(std::string,int);
 	iDrawable* designate_drawable(std::string type, std::string x, std::string y, int size_x, int size_y, int type_size);
 	void set_boundaries(std::string,int,int,int,int);
+	void make_quest_giver(std::string items, int constant_index, std::string filename, int x_pos, int y_pos);
+	void make_item_bestower(std::string items, int constant_index, std::string filename, int x_pos, int y_pos);
 
 	
 	// room for expansion packs! (and easter eggs, and stuffz)
