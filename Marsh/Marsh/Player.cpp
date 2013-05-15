@@ -270,9 +270,7 @@ void Player::listen_to_keyboard(void) {
 	else {
 		// deal with all other potential input
 		//TODO Get rid of these cheat codes
-		if(key[KEY_H]){
-			this->health -= 50000;
-		}
+		
 		accept_movement();
 		accept_interaction();
 		if (this->mana > 0)
@@ -368,7 +366,8 @@ void Player::accept_aiming(void) {
 	Direction new_dir = old_dir;
 
 	if (keyrel(AIM_LEFT)) {
-		switch(old_dir) {
+		old_dir = W;
+		/*switch(old_dir) {
 			case N:
 				new_dir = W;
 				break;	
@@ -381,10 +380,11 @@ void Player::accept_aiming(void) {
 			case W:
 				new_dir = W;
 				break;
-		}
+		}*/
 	}
 	if (keyrel(AIM_RIGHT)) {
-		switch(old_dir) {
+		new_dir = E;
+		/*switch(old_dir) {
 			case N:
 				new_dir = E;
 				break;
@@ -397,11 +397,12 @@ void Player::accept_aiming(void) {
 			case W:
 				new_dir = E;
 				break;
-		}
+		}*/
 	}
 	// should rotate the player 180 degrees (turn around... bright eyes... everytime...)
-	if (keyrel(AIM_UP) || keyrel(AIM_DOWN)) {
-		switch(old_dir) {
+	if (keyrel(AIM_UP)) {
+		new_dir = N;
+		/*switch(old_dir) {
 			case N:
 				new_dir = S;
 				break;
@@ -414,8 +415,11 @@ void Player::accept_aiming(void) {
 			case W:
 				new_dir = E;
 				break;
-		}
+		}*/
 	}
+	if(keyrel(AIM_DOWN))
+		new_dir = S;
+
 	if (new_dir != old_dir)
 		this->image->set_facing(new_dir);
 	this->image->casting_update();

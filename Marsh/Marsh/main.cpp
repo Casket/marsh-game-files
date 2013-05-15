@@ -290,7 +290,7 @@ void start_game(void) {
 			continue;
 		}
 		if(keyrel(KEY_J)){
-			hero->experience += 50;
+			hero->grant_experience(15);
 		}
 		rested = false;
 		ticks++;
