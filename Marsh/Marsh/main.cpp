@@ -284,6 +284,9 @@ void start_game(void) {
 		if (keyrel(KEY_L)) {
 			show_level_up();
 		}
+		if (keyrel(KEY_B)) {
+			hero->mana = hero->max_mana;
+		}
 		if (!rested) {
 			rest(4);
 			continue;
