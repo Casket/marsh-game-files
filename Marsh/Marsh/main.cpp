@@ -181,37 +181,6 @@ void show_intro(void) {
 	int max_sel = 2;
 	if (game_state == IN_GAME) max_sel = 3;
 	while (game_state == INTRO_GAME || game_state == IN_GAME) {
-<<<<<<< HEAD
-=======
-		if (keypressed()) {
-			int k = readkey();
-			switch(k >> 8) {
-				case KEY_ESC: break;
-				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = max_sel; break;
-				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = 0; break;
-				case KEY_ENTER:
-					switch (menu_sel) {
-				case 0: game_state=IN_GAME; start_game(); break; // new game
-				case 1: game_state=LOAD_GAME; load_game(); break; // load game
-				case 2: game_state=FINISH_GAME; break; // exit game 
-			//	case 3: game_state=IN_GAME; save_game(); break; // save game
-				case 3: game_state=IN_GAME; goto exit_loop;
-					} break;
-				case KEY_M: {
-					if (mute==0) {
-						mute=1;
-						stop_sample(theme);
-					}
-					else {
-						mute=0;
-						play_sample(theme,255,128,1000,1);
-					}
-							}
-			}
-			clear_keybuf();
-		}
-
->>>>>>> 71bb5b029bd728159b3866a0daaff197bd0a6bd9
 		// drawing
 		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
@@ -294,15 +263,11 @@ void restartWithDeathScreen(void){
 	rest(5000);
 	destroy_bitmap(deathScreen);
 	game_state = LOAD_GAME;
-<<<<<<< HEAD
 }
 
 void new_game(void){
 	CopyFile("init.Marsh", "Save1.Marsh", false);
 	load_game("init.Marsh");
-=======
-	load_game();
->>>>>>> 71bb5b029bd728159b3866a0daaff197bd0a6bd9
 }
 
 void start_game(void) {
