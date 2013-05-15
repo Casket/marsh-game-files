@@ -21,6 +21,7 @@ using namespace std;
 Player* Player_Accessor::hero;
 Marsh::View* v;
 WorldName world_name;
+volatile bool started;
 
 volatile int ticks, framerate;
 volatile bool rested;
@@ -232,7 +233,7 @@ void start_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
-	bool started = false;
+	started = false;
 	while(game_state == IN_GAME) {
 		if(hero->dead){
 			restartWithDeathScreen();
@@ -469,9 +470,8 @@ void save_game(void) {
 	file1 << "Spell-loadout " << items << endl;
 
 	file1.close();
-	cout << "Game saved to Save1.marsh!";
-
-	show_intro();
+	
+	if (!started) show_intro();
 }
 
 void show_inv(void) { // show inventory items in a list as well as quanitty (click each item to view what they do)
