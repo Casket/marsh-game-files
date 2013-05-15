@@ -139,8 +139,8 @@ bool Attack::detect_collisions(void){
 			Attack* check_attack = check->fetch_me_as_attack();
 			if (check_attack->my_caster == this->my_caster)
 				continue;
-			if (check_attack->my_caster->my_type == this->my_caster->my_type)
-				continue;
+			/*if (check_attack->my_caster->my_type == this->my_caster->my_type)
+				continue;*/
 		}
 
 		check_x = check->get_reference_x();

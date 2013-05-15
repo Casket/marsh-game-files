@@ -198,18 +198,18 @@ void Marsh::View::insert_testing_entities(void){
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
 		//this->current_world->insert_entity(g2);
 
-		ItemBestower* qg = ItemBestower(400,400, 0,0,new Player-Sprite("Resources//AI_characters//nice_folk.bmp", S, 5,1,16,16));
+		ItemBestower* qg = new ItemBestower(400,400, 0,0,new Player_Sprite("Resources//AI_characters//nice_folk.bmp", S, 5,1,16,16));
 		
-		qg->append_inventory(itemDb->fetch_item(4),0);
-		qg->append_inventory(itemDb->fetch_item(7),0);
-		qg->append_inventory(itemDb->fetch_item(10),0);
+		qg->append_inventory(itemDB->fetch_item(4),0);
+		qg->append_inventory(itemDB->fetch_item(7),0);
+		qg->append_inventory(itemDB->fetch_item(10),0);
 
 		qg->append_dialogue("what would you like to buy?");
-		if(this->current_world->my_name == world19){
+		if(this->current_world->my_name == main_world19){
 			qg->set_world(this->current_world);
 			this->current_world->insert_entity(qg);
 		}else{
-			delete gq;
+			delete qg;
 			
 		}
 	}
