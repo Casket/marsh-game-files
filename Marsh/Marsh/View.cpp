@@ -139,7 +139,7 @@ void Marsh::View::load_world(WorldName world){
 		this->current_world->insert_entity(this->playa);
 	}
 	this->playa->set_world(this->current_world);
-	this->insert_testing_entities();
+	//this->insert_testing_entities();
 }
 
 static bool should_save(World* check_world){
@@ -204,10 +204,10 @@ bool visible(int x, int y, int width, int height){
 	return true;
 
 	int left_most = hero->get_x_pos() - VISIBLE_W - PAD;
-	int right_most = left_most + SCREEN_W + PAD;
+	int right_most = left_most + 2*SCREEN_W + PAD;
 
 	int top_most = hero->get_y_pos() - VISIBLE_H - PAD;
-	int bottom_most = top_most + SCREEN_H + PAD;
+	int bottom_most = top_most + 2*SCREEN_H + PAD;
 	
 	// top left corner
 	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
@@ -372,10 +372,12 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 		} else {
 			masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, width, height);
 		}
+		/*
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
+			*/ 
 	}
 }
 

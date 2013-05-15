@@ -524,6 +524,8 @@ std::string World::get_file(WorldName name){
 		return "Resources//maps//keep.txt";
 	}else if(name == church){
 		return "Resources//maps//church1.txt";
+	}else if(name = dung_vamp1){
+		return "Resources//maps//dung_vamp1.txt";
 	}
 	else{
 		throw std::exception("No world");
@@ -776,6 +778,8 @@ void World::intial_drawable_map(void){
 	set_boundaries( "pew",90,30,0,0);
 	set_boundaries( "portrait",0,0,0,0);
 	set_boundaries( "rug",0,0,0,0);
+	set_boundaries("ruins1",465,230,0,32);
+	set_boundaries("ruins2",465,230,0,32);
 	set_boundaries( "rock1",84,68,0,0);
 	set_boundaries( "rock2",56,39,0,0);
 	set_boundaries( "rock3",38,39,0,0);
@@ -956,6 +960,8 @@ WorldName World::get_WorldName(std::string name, int name_size){
 		return shop2;
 	}else if(worldName.compare("shop3") == 0){
 		return shop3;
+	}else if(worldName.compare("dung_vamp1") == 0){
+		return dung_vamp1;
 	}else{
 		throw std::exception("Broke");
 	}
@@ -1007,7 +1013,7 @@ void World::make_portal(std::string items, bool is_world){
 			throw std::exception("Broke");
 		}
 
-		iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, 0, 0, true);
+		iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//dungeon.bmp",9,0),converted_name, 0, 0, true);
 		new_portal->set_boundary_value(xb,yb, 0, 0);
 		insert_entity(new_portal);
 		
@@ -1045,7 +1051,7 @@ void World::make_portal(std::string items, bool is_world){
 
 
 
-	iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, tarx, tary, false);
+	iDrawable* new_portal = new Portal(x,y,new Ground_Sprite("Resources//back_ground//dungeon.bmp",9,0),converted_name, tarx, tary, false);
 	new_portal->set_boundary_value(32, 32, 0, 0);
 	insert_entity(new_portal);
 
@@ -1073,7 +1079,7 @@ void World::make_AI(std::string items){
 	std::string	filename = "Resources//AI_characters//";
 	filename.append(file);
 	filename.append(".bmp");
-	Sprite* img = new Player_Sprite(filename, S, 5, 1, 12, 12);
+	Sprite* img = new Player_Sprite(filename, S, 5, 1, 16, 16);
 	iDrawable* to_add;
 
 	values = pull_out(items, constant_index);
@@ -1125,60 +1131,74 @@ void World::make_AI(std::string items){
 		return;
 
 	}else if(type.compare("Guard") == 0){
-
+		
 		to_add = new Town_Guard(x_pos, y_pos, 2, 3, img, ways);
 		to_add->set_boundary_value(30, 18, 1, 14);
+		to_add->fetch_me_as_mob()->set_world(this);
+		to_add->fetch_me_as_mob()->set_stats(1000, 1000, 1000, 1000, 1000);
+		this->insert_entity(to_add);
 
-	}else if(type.compare("Guard_Captain")){
+	}else if(type.compare("Guard_Captain") == 0){
 
 		to_add = new GuardCaptain(x_pos, y_pos, 2, 3, img, ways);
 		to_add->set_boundary_value(30, 18, 1, 14);
-
-	}else if(type.compare("Skeleton")){
+		to_add->fetch_me_as_mob()->set_world(this);
+		to_add->fetch_me_as_mob()->set_stats(1000, 1000, 1000, 1000, 1000);
+		
+	}else if(type.compare("Skeleton") == 0){
 
 		//		to_add = new Skeleton(x_pos, y_pos, 2, 3, img, ways);
 		//		to_add->set_boundary_value(30, 18, 1, 14);
 
 
 
-	}else if(type.compare("Dragon")){
+	}else if(type.compare("Dragon") == 0){
 
 
 
-	}else if(type.compare("Vampire")){
+	}else if(type.compare("Vampire") == 0){
 
 		to_add = new Vampire(x_pos, y_pos, 2, 3, img, ways);
 		to_add->set_boundary_value(30, 18, 1, 14);
+		to_add->fetch_me_as_mob()->set_world(this);
+		to_add->fetch_me_as_mob()->set_stats(1000, 1000, 1000, 1000, 1000);
+		this->insert_entity(to_add);
+		return;
 
 
+	}else if(type.compare("VampireBoss")== 0){
 
-	}else if(type.compare("Vampire_Boss")){
-
-
-
-	}else if(type.compare("Statue_Boss")){
-
-
-	}else if(type.compare("Marsh_Monster")){
-		to_add = new Marsh_Monster(x_pos, y_pos, 2, 3, img, ways);
-		to_add->set_boundary_value(30, 18, 1, 5);
+		to_add = new VampireBoss(x_pos, y_pos, 2, 3, img, ways);
+		to_add->set_boundary_value(30, 18, 1, 14);
+		to_add->fetch_me_as_mob()->set_world(this);
+		to_add->fetch_me_as_mob()->set_stats(1000, 1000, 1000, 1000, 1000);
+		this->insert_entity(to_add);
+		return;
+	}else if(type.compare("Statue_Boss")== 0){
 
 
+	}else if(type.compare("MarshMonster")== 0){
+		to_add = new Marsh_Monster(x_pos, y_pos, 2, 3, new Player_Sprite(filename, S, 5, 1, 16, 16), ways);
+		to_add->set_boundary_value(30, 18, 1, 14);
+		to_add->fetch_me_as_mob()->set_world(this);
+		to_add->fetch_me_as_mob()->set_stats(1000, 1000, 1000, 1000, 1000);
+		this->insert_entity(to_add);
+		return;
 
-	}else if(type.compare("Rival")){
+
+	}else if(type.compare("Rival")== 0){
 		//		to_add = new Rival(x_pos, y_pos, 2, 3, img, ways);
 		//	to_add->set_boundary_value(30, 18, 1, 14);
 
 
 
-	}else if(type.compare("Person")){
+	}else if(type.compare("Person")== 0){
 
 
 
 	}else{
 		throw std::exception("Invalid AI");
 	}
-	this->insert_entity(to_add);
 
 }
 

@@ -6,13 +6,18 @@ using namespace std;
 
 Marsh_Monster::Marsh_Monster(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<int,int>>* waypoints)
 :Mob(x, y,vel, vel_d, img, waypoints){
-	
 	this->my_type = Monster;
-
 }
-Marsh_Monster::~Marsh_Monster(void){
 
+Marsh_Monster::~Marsh_Monster(void){
 	
+}
+
+void Marsh_Monster::populate_spells(void){
+	this->attack_loadout[0] = attackDB->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
+	this->attack_loadout[0]->set_my_caster(this);
+
+	this->cooldowns[0].second = MELEE_CD;
 }
 
 
