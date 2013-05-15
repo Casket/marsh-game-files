@@ -285,6 +285,9 @@ void start_game(void) {
 			rest(4);
 			continue;
 		}
+		if(keyrel(KEY_J)){
+			hero->experience += 50;
+		}
 		rested = false;
 		ticks++;
 		if (++world_time_counter >= world_time_delay){
