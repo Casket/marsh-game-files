@@ -29,6 +29,8 @@ void Portal::update(void){
 	int my_y = this->get_reference_y();
 	int my_w = this->get_bounding_width()+hero->velocity;
 	int my_h = this->get_bounding_height()+hero->velocity;
+	Direction facing = hero->get_image()->get_facing();
+
 	if(this->is_world_port){
 		if(facing == N){
 			this->target_x_pos = hero->x_pos;

@@ -695,7 +695,11 @@ void World::intial_drawable_map(void){
 	set_boundaries( "hut1",220,220,0,20);
 	set_boundaries( "hut2",165,170,0,20);
 	set_boundaries( "hut3",120,161,0,30);
-	set_boundaries( "hut4",163,115,0,30);		
+	set_boundaries( "hut4",163,115,0,30);
+	set_boundaries( "hut_1",8,177,0,0);
+	set_boundaries( "hut_2",96,32,0,0);
+	set_boundaries( "hut_3",95,32,0,0);
+	set_boundaries( "hut_5",239,55,0,0);
 	set_boundaries( "keep",416,370,0,60);
 	set_boundaries( "keep_stair",64,119,0,0);
 	set_boundaries( "keep1",957,700,0,47);
