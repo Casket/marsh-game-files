@@ -30,8 +30,18 @@ void Quest::begin_quest(void){
 }
 
 void Quest::end_quest(void){
-	Player_Accessor::get_player()->display_to_user("Congratulations, you've completed your quest of: \n" + this->description.text);
-	Player_Accessor::get_player()->experience+=10;
+	Player* hero = Player_Accessor::get_player();
+	hero->display_to_user("Congratulations, you've completed your quest of: \n" + this->description.text);
+	std::list<QuestReward>::iterator iter;
+	std::list<QuestReward>::iterator end = this->rewards->end();
+	for (iter = this->rewards->begin(); iter != end; ++iter){
+		hero->gold += (iter)->gold;
+		hero->grant_experience((iter)->exp);
+		hero->notoriety += (iter)->rep;
+		hero->add_to_inventory(itemDB->fetch_item((iter)->item));
+		if((iter)->mission == 1)
+			hero->new_mission = true;
+	}
 }
 
 bool Quest::mark_progress(void){

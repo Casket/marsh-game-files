@@ -79,6 +79,7 @@ Item_ID 10
 Name Ax of Shadows
 Description Int +15
 Intelligence 15
+Equipable true
 Type Weapon
 Item
 Name Spike Boots
@@ -150,10 +151,16 @@ Item_ID 20
 Name Scepter of Fire
 Description Int +25
 Intelligence 25
+Equipable true
 Type Weapon
 Item
 Item_ID 21
 Name Master Key
 Description Key that opens all things
+Type QuestItem
+Item
+Item_ID 22
+Name Book
+Description Book of all of the answers
 Type QuestItem
 Item

@@ -127,42 +127,13 @@ void set_up_game(void) {
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
-	Equipment* equip = new Equipment();
-	//Equipment* equip1 = new Equipment();
-	//Equipment* equip2 = new Equipment(); 
-	/*equip1->name = "Cloth Armor";
-	equip1->type = Tunic;
-	equip1->vitality = 5;
-	equip1->description = "+5 Vit";
-	equip1->item_id = 0;
-	equip1->equipped = false;
-	equip1->equipable = true;
-	equip1->number_held = 1;
-	hero->add_to_inventory(equip1);
-	equip2->name = "Long Sword";
-	equip2->type = Dagger;
-	equip2->description = "+5 Wp";
-	equip2->willpower = 5;
-	equip2->item_id = 1;
-	equip2->equipped = false;
-	equip2->equipable = true;
-	equip2->number_held = 1;
-	hero->add_to_inventory(equip2);*/
-	for(int i = 0; i <= 21; i++){
+	Equipment* equip = new Equipment(); 
+	for(int i = 0; i <= 22; i++){
 		equip = itemDB->fetch_item(i);
 		equip->number_held = 1;
 		hero->add_to_inventory(equip);
 		equip = new Equipment();
 	}
-	/*equip->name = "None";
-	equip->description = "Filler test";
-	equip->item_id = -1;
-	equip->number_held = -1;
-	int i = 2;
-	while (i<MAX_HELD_ITEMS) {
-		hero->add_to_inventory(equip);
-		i += 1;
-	}*/
 }
 
 void show_intro(void) {
@@ -170,22 +141,22 @@ void show_intro(void) {
 	if (!title_screen_bitmap)
 		exit(1);
 	int menu_sel = 0;
-	int max_sel = 3;
-	if (game_state == IN_GAME) max_sel = 4;
+	int max_sel = 2;
+	if (game_state == IN_GAME) max_sel = 3;
 	while (game_state == INTRO_GAME || game_state == IN_GAME) {
 		if (keypressed()) {
 			int k = readkey();
 			switch(k >> 8) {
 				case KEY_ESC: break;
-				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
-				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
+				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = max_sel; break;
+				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = 0; break;
 				case KEY_ENTER:
 					switch (menu_sel) {
 				case 0: game_state=IN_GAME; start_game(); break; // new game
 				case 1: game_state=IN_GAME; load_game(); break; // load game
 				case 2: game_state=FINISH_GAME; break; // exit game 
-				case 3: game_state=IN_GAME; save_game(); break; // save game
-				case 4: game_state=IN_GAME; goto exit_loop;
+			//	case 3: game_state=IN_GAME; save_game(); break; // save game
+				case 3: game_state=IN_GAME; goto exit_loop;
 					} break;
 				case KEY_M: {
 					if (mute==0) {
@@ -221,16 +192,10 @@ void show_intro(void) {
 			textprintf_ex(buffer, font1, 50,  270, makecol(255,255,255), -1, "EXIT GAME");
 		} 
 		if (game_state == IN_GAME) {
-			if (menu_sel == 3) { 
-				textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
+			if (menu_sel == 3) {
+				textprintf_ex(buffer, font1, 50,  340, makecol(255,0,51), -1, "Return");
 			} else {
-				textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
-			} 
-
-			if (menu_sel == 4) {
-				textprintf_ex(buffer, font1, 50,  420, makecol(255,0,51), -1, "Return");
-			} else {
-				textprintf_ex(buffer, font1, 50,  420, makecol(255,255,0), -1, "RETURN");
+				textprintf_ex(buffer, font1, 50,  340, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
 		if (mute==0) textprintf_ex(buffer, font, 370, 100, makecol(204,255,204), -1, "Sound On! (M to mute)");
@@ -245,12 +210,33 @@ exit_loop: ;
 	return;
 }
 
+BITMAP* draw_Death(void) {
+	BITMAP *death_screen_bitmap = load_bitmap("Resources//DeathScreen.bmp",NULL);
+	if (!death_screen_bitmap){
+		allegro_message("Failed to load the death screen."); 
+		exit(1);	
+	}
+	blit(death_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
+	return death_screen_bitmap;
+}
+
+void restartWithDeathScreen(void){
+	BITMAP* deathScreen = draw_Death();
+	rest(5000);
+	destroy_bitmap(deathScreen);
+	load_game();
+}
+
 void start_game(void) {
 	game_state = IN_GAME;
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
+	bool started = false;
 	while(game_state == IN_GAME) {
+		if(hero->dead){
+			restartWithDeathScreen();
+		}
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
@@ -273,10 +259,18 @@ void start_game(void) {
 
 		hero->update();
 		our_viewer->draw_active_world();
+		started = true;
+
+		if(hero->new_mission){
+			save_game();
+			hero->new_mission = false;
+		}
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
 		clear_keybuf();
+
+		if (started) save_game();
 	}
 
 	//delete hero;
@@ -342,7 +336,7 @@ void load_spells(string stream) {
 void load_game(void) {
 	int x_pos, y_pos, height, width;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold, spell_pts;
-	int world;
+	int world, vitality, focus, intelligence, willpower, armor;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 	std::string items, item_equip, item_held; 
 
@@ -374,6 +368,12 @@ void load_game(void) {
 			else if (beg.compare("Inventory1") == 0) stringstream(end) >> item_equip;
 			else if (beg.compare("Inventory2") == 0) stringstream(end) >> item_held;
 			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
+			else if (beg.compare("Vitality") == 0) stringstream(end) >> vitality;
+			else if (beg.compare("Intellligence") == 0) stringstream(end) >> intelligence;
+			else if (beg.compare("Focus") == 0) stringstream(end) >> focus;
+			else if (beg.compare("Willpower") == 0) stringstream(end) >> willpower;
+			else if (beg.compare("Armor") == 0) stringstream(end) >> armor;
+
 		}
 	}
 	load_inventory(items,item_equip,item_held);
@@ -390,6 +390,11 @@ void load_game(void) {
 	hero->health = health;
 	hero->max_health = max_health;
 	hero->gold = gold;
+	hero->vitality = vitality;
+	hero->intelligence = intelligence;
+	hero->focus = focus;
+	hero->willpower = willpower;
+	hero->armor = armor;
 	start_game();
 }
 
@@ -405,7 +410,7 @@ void save_game(void) {
 
 	// player extras
 	file1 << "Level " << hero->level << endl;
-	file1 << "Experience " << hero->current_experience << endl;
+	file1 << "Experience " << hero->experience << endl;
 	file1 << "Notoriety " << hero->notoriety << endl;
 	file1 << "Stats " << hero->statPoints << endl; 
 	file1 << "Spell-pts " << hero->spellPoints << endl;
@@ -414,6 +419,11 @@ void save_game(void) {
 	file1 << "Health " << hero->get_current_health() << endl;
 	file1 << "Max-health " << hero->get_max_health() << endl;
 	file1 << "Gold " << hero->gold << endl;
+	file1 << "Vitality " << hero->vitality << endl;
+	file1 << "Intelligence " << hero->intelligence << endl;
+	file1 << "Focus " << hero->focus << endl;
+	file1 << "Willpower " << hero->willpower << endl;
+	file1 << "Armor " << hero->armor << endl;
 
 	// world
 	int world = v->current_world->my_name;
@@ -426,6 +436,7 @@ void save_game(void) {
 	std::stringstream line; // id's
 	std::stringstream line1; // equipped
 	std::stringstream line2; // number_held
+	std::stringstream line3; // attacks
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	std::vector<Equipment*>::iterator end = inventory.end();
 	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
@@ -445,15 +456,16 @@ void save_game(void) {
 	file1 << "Inventory1 " << item_equip << endl;
 	file1 << "Inventory2 " << item_held << endl;
 
-	// player spell loadout
-	Attack* loadout = *hero->attack_loadout;
 	int i=0;
 	for (i; i<MAX_ATTACKS; i++) {
-		line << loadout[i].spell_id;
-		if (i < (MAX_ATTACKS-1)) line << ",";
+		if(hero->attack_loadout[i] != NULL){
+			line3 << hero->attack_loadout[i]->spell_id;
+			if (hero->attack_loadout[i+1] != NULL) line3 << ",";
+		}
 	}
+
 	items.clear();
-	items = line.str();
+	items = line3.str();
 	file1 << "Spell-loadout " << items << endl;
 
 	file1.close();
@@ -501,7 +513,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Character");
-		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game and esc to exit the menu to the pause screen.");
+		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game or esc to exit the menu to the pause screen.");
 		textprintf_ex(buffer, font3, 50, 145, makecol(255,255,255), -1, "Use the arrow keys to scroll trough the items. Only 25 items can be kept in your inventory");
 		textprintf_ex(buffer, font3, 50, 175, makecol(255,255,255), -1, "at a time. Use the Delete key to remove items permanently. [Quest Items cannot be deleted]");
 		textprintf_ex(buffer, font3, 50, 220, makecol(56,235,181), -1, "Inventory");
@@ -656,8 +668,15 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
+	if (mute==0) {
+		stop_sample(theme);
+		rest(1000);
+	}
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 	menu->StartPosition = FormStartPosition::CenterScreen;
 	menu->ShowDialog();
+	if (mute==0) {
+		play_sample(theme,255,128,1000,1);
+	}
 	delete menu;
 }

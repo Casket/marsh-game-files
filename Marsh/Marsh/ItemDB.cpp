@@ -108,7 +108,7 @@ void ItemDB::load_From_File(void){
 				description = "";
 				type_string = "";
 				item_id = 0; vitality = 0; focus = 0; intelligence = 0; willpower = 0; armor = 0;
-				bool equipable = false; stackable = false;
+				equipable = false; stackable = false;
 				EquipmentType type = Unitialized;
 				
 			}

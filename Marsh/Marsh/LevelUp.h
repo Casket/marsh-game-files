@@ -49,21 +49,12 @@ namespace Marsh {
 	private: System::Windows::Forms::PictureBox^  pictureBox11;
 	private: System::Windows::Forms::PictureBox^  pictureBox12;
 	private: System::Windows::Forms::RichTextBox^  SpellInfo;
+	private: System::Windows::Forms::Label^  LevelLabel;
 	public: 
 
 	public: 
 
 	public: 
-
-
-
-
-
-
-
-
-
-
 
 	private: System::Windows::Forms::Label^  SpellPointsLabel;
 	public: 
@@ -86,30 +77,10 @@ namespace Marsh {
 			this->WillpowerLabel->Text = "Willpower: " + hero->willpower;
 			this->FocusLabel->Text = "Focus: " + hero->focus;
 			this->VitalityLabel->Text = "Vitality: " + hero->vitality;
+			this->LevelLabel->Text = "Current Level: " + hero->level;
 			this->BringToFront();
 			createNodes();
 			disableGottenSpells();
-
-			/*for(int i = 0; i < 15; i++){
-			Attack* attack = new Attack(800, 800, 2, 10, new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 5, 26,26), 51,0,MID_RANGE, 0,0,10);
-			attack->my_type = Wallop;
-			attack->set_boundary_value(26, 26, 2, 2);
-			attack->set_my_caster(hero);
-
-
-			std::string s;
-			std::stringstream out;
-			out << i;
-			s = out.str();
-
-			AttackNode* node = new AttackNode();
-			node->name = "Fireball " + s;
-			node->description = "This is a fireball number " + s;
-			node->index = i;
-			node->attack = attack;
-			node->previousAttack = NULL;
-			nodes->push_back(node);
-			}*/
 
 			currentNode = NULL;
 		}
@@ -276,13 +247,8 @@ namespace Marsh {
 
 		int findLoadoutIndex(){
 			for(int i = 0; i < MAX_ATTACKS; i++){
-				try{
-					if(hero->attack_loadout[i]->range == NULL){
-						return i;
-					}
-				}
-				catch(...){
-					return i;//TODO make this work without exceptions?
+				if(hero->attack_loadout[i] == NULL){
+					return i;
 				}
 			}
 			return -1;
@@ -383,6 +349,7 @@ namespace Marsh {
 			this->pictureBox11 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox12 = (gcnew System::Windows::Forms::PictureBox());
 			this->SpellInfo = (gcnew System::Windows::Forms::RichTextBox());
+			this->LevelLabel = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox3))->BeginInit();
@@ -407,7 +374,7 @@ namespace Marsh {
 			this->Spell0->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell0.Image")));
 			this->Spell0->Location = System::Drawing::Point(99, 42);
 			this->Spell0->Name = L"Spell0";
-			this->Spell0->Size = System::Drawing::Size(59, 58);
+			this->Spell0->Size = System::Drawing::Size(65, 65);
 			this->Spell0->TabIndex = 0;
 			this->Spell0->Tag = L"0";
 			this->Spell0->UseVisualStyleBackColor = false;
@@ -423,7 +390,7 @@ namespace Marsh {
 			this->Spell1->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell1.Image")));
 			this->Spell1->Location = System::Drawing::Point(280, 140);
 			this->Spell1->Name = L"Spell1";
-			this->Spell1->Size = System::Drawing::Size(59, 58);
+			this->Spell1->Size = System::Drawing::Size(65, 65);
 			this->Spell1->TabIndex = 2;
 			this->Spell1->Tag = L"1";
 			this->Spell1->UseVisualStyleBackColor = false;
@@ -439,7 +406,7 @@ namespace Marsh {
 			this->Spell2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell2.Image")));
 			this->Spell2->Location = System::Drawing::Point(280, 42);
 			this->Spell2->Name = L"Spell2";
-			this->Spell2->Size = System::Drawing::Size(59, 58);
+			this->Spell2->Size = System::Drawing::Size(65, 65);
 			this->Spell2->TabIndex = 1;
 			this->Spell2->Tag = L"2";
 			this->Spell2->UseVisualStyleBackColor = false;
@@ -447,7 +414,8 @@ namespace Marsh {
 			// 
 			// Spell3
 			// 
-			this->Spell3->BackColor = System::Drawing::Color::Black;
+			this->Spell3->BackColor = System::Drawing::Color::Transparent;
+			this->Spell3->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell3->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell3->FlatAppearance->BorderSize = 2;
 			this->Spell3->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -455,7 +423,7 @@ namespace Marsh {
 			this->Spell3->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell3.Image")));
 			this->Spell3->Location = System::Drawing::Point(461, 42);
 			this->Spell3->Name = L"Spell3";
-			this->Spell3->Size = System::Drawing::Size(59, 58);
+			this->Spell3->Size = System::Drawing::Size(65, 65);
 			this->Spell3->TabIndex = 3;
 			this->Spell3->Tag = L"3";
 			this->Spell3->UseVisualStyleBackColor = false;
@@ -463,7 +431,8 @@ namespace Marsh {
 			// 
 			// Spell4
 			// 
-			this->Spell4->BackColor = System::Drawing::Color::Black;
+			this->Spell4->BackColor = System::Drawing::Color::Transparent;
+			this->Spell4->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell4->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell4->FlatAppearance->BorderSize = 2;
 			this->Spell4->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -471,7 +440,7 @@ namespace Marsh {
 			this->Spell4->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell4.Image")));
 			this->Spell4->Location = System::Drawing::Point(99, 276);
 			this->Spell4->Name = L"Spell4";
-			this->Spell4->Size = System::Drawing::Size(59, 58);
+			this->Spell4->Size = System::Drawing::Size(65, 65);
 			this->Spell4->TabIndex = 4;
 			this->Spell4->Tag = L"4";
 			this->Spell4->UseVisualStyleBackColor = false;
@@ -480,6 +449,7 @@ namespace Marsh {
 			// Spell5
 			// 
 			this->Spell5->BackColor = System::Drawing::Color::Black;
+			this->Spell5->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell5->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell5->FlatAppearance->BorderSize = 2;
 			this->Spell5->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -487,7 +457,7 @@ namespace Marsh {
 			this->Spell5->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell5.Image")));
 			this->Spell5->Location = System::Drawing::Point(280, 371);
 			this->Spell5->Name = L"Spell5";
-			this->Spell5->Size = System::Drawing::Size(59, 58);
+			this->Spell5->Size = System::Drawing::Size(65, 65);
 			this->Spell5->TabIndex = 6;
 			this->Spell5->Tag = L"5";
 			this->Spell5->UseVisualStyleBackColor = false;
@@ -503,7 +473,7 @@ namespace Marsh {
 			this->Spell6->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell6.Image")));
 			this->Spell6->Location = System::Drawing::Point(280, 276);
 			this->Spell6->Name = L"Spell6";
-			this->Spell6->Size = System::Drawing::Size(59, 58);
+			this->Spell6->Size = System::Drawing::Size(65, 65);
 			this->Spell6->TabIndex = 5;
 			this->Spell6->Tag = L"6";
 			this->Spell6->UseVisualStyleBackColor = false;
@@ -512,6 +482,7 @@ namespace Marsh {
 			// Spell7
 			// 
 			this->Spell7->BackColor = System::Drawing::Color::Black;
+			this->Spell7->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->Spell7->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell7->FlatAppearance->BorderSize = 2;
 			this->Spell7->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -519,7 +490,7 @@ namespace Marsh {
 			this->Spell7->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell7.Image")));
 			this->Spell7->Location = System::Drawing::Point(461, 276);
 			this->Spell7->Name = L"Spell7";
-			this->Spell7->Size = System::Drawing::Size(59, 58);
+			this->Spell7->Size = System::Drawing::Size(65, 65);
 			this->Spell7->TabIndex = 7;
 			this->Spell7->Tag = L"7";
 			this->Spell7->UseVisualStyleBackColor = false;
@@ -527,7 +498,8 @@ namespace Marsh {
 			// 
 			// Spell8
 			// 
-			this->Spell8->BackColor = System::Drawing::Color::Black;
+			this->Spell8->BackColor = System::Drawing::Color::Transparent;
+			this->Spell8->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			this->Spell8->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell8->FlatAppearance->BorderSize = 2;
 			this->Spell8->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -535,7 +507,7 @@ namespace Marsh {
 			this->Spell8->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell8.Image")));
 			this->Spell8->Location = System::Drawing::Point(99, 624);
 			this->Spell8->Name = L"Spell8";
-			this->Spell8->Size = System::Drawing::Size(59, 58);
+			this->Spell8->Size = System::Drawing::Size(65, 65);
 			this->Spell8->TabIndex = 8;
 			this->Spell8->Tag = L"8";
 			this->Spell8->UseVisualStyleBackColor = false;
@@ -544,6 +516,7 @@ namespace Marsh {
 			// Spell9
 			// 
 			this->Spell9->BackColor = System::Drawing::Color::Transparent;
+			this->Spell9->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell9->FlatAppearance->BorderColor = System::Drawing::Color::Black;
 			this->Spell9->FlatAppearance->BorderSize = 2;
 			this->Spell9->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
@@ -551,7 +524,7 @@ namespace Marsh {
 			this->Spell9->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell9.Image")));
 			this->Spell9->Location = System::Drawing::Point(280, 482);
 			this->Spell9->Name = L"Spell9";
-			this->Spell9->Size = System::Drawing::Size(59, 58);
+			this->Spell9->Size = System::Drawing::Size(65, 65);
 			this->Spell9->TabIndex = 9;
 			this->Spell9->Tag = L"9";
 			this->Spell9->UseVisualStyleBackColor = false;
@@ -559,14 +532,16 @@ namespace Marsh {
 			// 
 			// Spell10
 			// 
-			this->Spell10->BackColor = System::Drawing::Color::Red;
+			this->Spell10->BackColor = System::Drawing::Color::Transparent;
+			this->Spell10->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell10->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell10->FlatAppearance->BorderSize = 2;
 			this->Spell10->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell10->ForeColor = System::Drawing::Color::Transparent;
+			this->Spell10->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell10.Image")));
 			this->Spell10->Location = System::Drawing::Point(461, 482);
 			this->Spell10->Name = L"Spell10";
-			this->Spell10->Size = System::Drawing::Size(59, 58);
+			this->Spell10->Size = System::Drawing::Size(65, 65);
 			this->Spell10->TabIndex = 11;
 			this->Spell10->Tag = L"10";
 			this->Spell10->UseVisualStyleBackColor = false;
@@ -574,14 +549,16 @@ namespace Marsh {
 			// 
 			// Spell11
 			// 
-			this->Spell11->BackColor = System::Drawing::Color::Red;
+			this->Spell11->BackColor = System::Drawing::Color::Transparent;
+			this->Spell11->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell11->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell11->FlatAppearance->BorderSize = 2;
 			this->Spell11->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell11->ForeColor = System::Drawing::Color::Transparent;
+			this->Spell11->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell11.Image")));
 			this->Spell11->Location = System::Drawing::Point(280, 624);
 			this->Spell11->Name = L"Spell11";
-			this->Spell11->Size = System::Drawing::Size(59, 58);
+			this->Spell11->Size = System::Drawing::Size(65, 65);
 			this->Spell11->TabIndex = 14;
 			this->Spell11->Tag = L"11";
 			this->Spell11->UseVisualStyleBackColor = false;
@@ -589,14 +566,16 @@ namespace Marsh {
 			// 
 			// Spell12
 			// 
-			this->Spell12->BackColor = System::Drawing::Color::Red;
+			this->Spell12->BackColor = System::Drawing::Color::Transparent;
+			this->Spell12->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell12->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell12->FlatAppearance->BorderSize = 2;
 			this->Spell12->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell12->ForeColor = System::Drawing::Color::Transparent;
+			this->Spell12->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell12.Image")));
 			this->Spell12->Location = System::Drawing::Point(461, 624);
 			this->Spell12->Name = L"Spell12";
-			this->Spell12->Size = System::Drawing::Size(59, 58);
+			this->Spell12->Size = System::Drawing::Size(65, 65);
 			this->Spell12->TabIndex = 12;
 			this->Spell12->Tag = L"12";
 			this->Spell12->UseVisualStyleBackColor = false;
@@ -604,14 +583,16 @@ namespace Marsh {
 			// 
 			// Spell13
 			// 
-			this->Spell13->BackColor = System::Drawing::Color::Red;
+			this->Spell13->BackColor = System::Drawing::Color::Transparent;
+			this->Spell13->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell13->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell13->FlatAppearance->BorderSize = 2;
 			this->Spell13->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell13->ForeColor = System::Drawing::Color::Transparent;
+			this->Spell13->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell13.Image")));
 			this->Spell13->Location = System::Drawing::Point(280, 756);
 			this->Spell13->Name = L"Spell13";
-			this->Spell13->Size = System::Drawing::Size(59, 58);
+			this->Spell13->Size = System::Drawing::Size(65, 65);
 			this->Spell13->TabIndex = 13;
 			this->Spell13->Tag = L"13";
 			this->Spell13->UseVisualStyleBackColor = false;
@@ -619,14 +600,16 @@ namespace Marsh {
 			// 
 			// Spell14
 			// 
-			this->Spell14->BackColor = System::Drawing::Color::Red;
+			this->Spell14->BackColor = System::Drawing::Color::Transparent;
+			this->Spell14->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->Spell14->FlatAppearance->BorderColor = System::Drawing::SystemColors::ControlText;
 			this->Spell14->FlatAppearance->BorderSize = 2;
 			this->Spell14->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->Spell14->ForeColor = System::Drawing::Color::Transparent;
+			this->Spell14->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"Spell14.Image")));
 			this->Spell14->Location = System::Drawing::Point(461, 756);
 			this->Spell14->Name = L"Spell14";
-			this->Spell14->Size = System::Drawing::Size(59, 58);
+			this->Spell14->Size = System::Drawing::Size(65, 65);
 			this->Spell14->TabIndex = 14;
 			this->Spell14->Tag = L"14";
 			this->Spell14->UseVisualStyleBackColor = false;
@@ -635,11 +618,10 @@ namespace Marsh {
 			// AcceptSpellButton
 			// 
 			this->AcceptSpellButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->AcceptSpellButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->AcceptSpellButton->Location = System::Drawing::Point(761, 653);
+			this->AcceptSpellButton->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->AcceptSpellButton->Location = System::Drawing::Point(753, 653);
 			this->AcceptSpellButton->Name = L"AcceptSpellButton";
-			this->AcceptSpellButton->Size = System::Drawing::Size(173, 89);
+			this->AcceptSpellButton->Size = System::Drawing::Size(181, 103);
 			this->AcceptSpellButton->TabIndex = 16;
 			this->AcceptSpellButton->Text = L"Accept New Spell";
 			this->AcceptSpellButton->UseVisualStyleBackColor = true;
@@ -648,11 +630,10 @@ namespace Marsh {
 			// ReturnButton
 			// 
 			this->ReturnButton->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->ReturnButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->ReturnButton->Location = System::Drawing::Point(958, 653);
+			this->ReturnButton->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->ReturnButton->Location = System::Drawing::Point(953, 653);
 			this->ReturnButton->Name = L"ReturnButton";
-			this->ReturnButton->Size = System::Drawing::Size(143, 89);
+			this->ReturnButton->Size = System::Drawing::Size(164, 103);
 			this->ReturnButton->TabIndex = 17;
 			this->ReturnButton->Text = L"Return";
 			this->ReturnButton->UseVisualStyleBackColor = true;
@@ -663,11 +644,11 @@ namespace Marsh {
 			this->StatPointsLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->StatPointsLabel->AutoSize = true;
-			this->StatPointsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->StatPointsLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->StatPointsLabel->Location = System::Drawing::Point(710, 42);
 			this->StatPointsLabel->Name = L"StatPointsLabel";
-			this->StatPointsLabel->Size = System::Drawing::Size(224, 29);
+			this->StatPointsLabel->Size = System::Drawing::Size(276, 42);
 			this->StatPointsLabel->TabIndex = 20;
 			this->StatPointsLabel->Text = L"Current Stat Points: ";
 			// 
@@ -676,11 +657,10 @@ namespace Marsh {
 			this->IntelligenceLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->IntelligenceLabel->AutoSize = true;
-			this->IntelligenceLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->IntelligenceLabel->Location = System::Drawing::Point(807, 141);
+			this->IntelligenceLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->IntelligenceLabel->Location = System::Drawing::Point(807, 126);
 			this->IntelligenceLabel->Name = L"IntelligenceLabel";
-			this->IntelligenceLabel->Size = System::Drawing::Size(143, 29);
+			this->IntelligenceLabel->Size = System::Drawing::Size(159, 42);
 			this->IntelligenceLabel->TabIndex = 20;
 			this->IntelligenceLabel->Text = L"Intelligence:";
 			// 
@@ -689,11 +669,10 @@ namespace Marsh {
 			this->WillpowerLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->WillpowerLabel->AutoSize = true;
-			this->WillpowerLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->WillpowerLabel->Location = System::Drawing::Point(807, 182);
+			this->WillpowerLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->WillpowerLabel->Location = System::Drawing::Point(807, 167);
 			this->WillpowerLabel->Name = L"WillpowerLabel";
-			this->WillpowerLabel->Size = System::Drawing::Size(127, 29);
+			this->WillpowerLabel->Size = System::Drawing::Size(145, 42);
 			this->WillpowerLabel->TabIndex = 19;
 			this->WillpowerLabel->Text = L"Willpower:";
 			// 
@@ -702,11 +681,10 @@ namespace Marsh {
 			this->FocusLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->FocusLabel->AutoSize = true;
-			this->FocusLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->FocusLabel->Location = System::Drawing::Point(807, 227);
+			this->FocusLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->FocusLabel->Location = System::Drawing::Point(807, 212);
 			this->FocusLabel->Name = L"FocusLabel";
-			this->FocusLabel->Size = System::Drawing::Size(91, 29);
+			this->FocusLabel->Size = System::Drawing::Size(100, 42);
 			this->FocusLabel->TabIndex = 20;
 			this->FocusLabel->Text = L"Focus: ";
 			// 
@@ -715,11 +693,10 @@ namespace Marsh {
 			this->VitalityLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->VitalityLabel->AutoSize = true;
-			this->VitalityLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->VitalityLabel->Location = System::Drawing::Point(807, 88);
+			this->VitalityLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->VitalityLabel->Location = System::Drawing::Point(807, 83);
 			this->VitalityLabel->Name = L"VitalityLabel";
-			this->VitalityLabel->Size = System::Drawing::Size(88, 29);
+			this->VitalityLabel->Size = System::Drawing::Size(113, 42);
 			this->VitalityLabel->TabIndex = 21;
 			this->VitalityLabel->Text = L"Vitality:";
 			// 
@@ -789,11 +766,10 @@ namespace Marsh {
 			this->SpellPointsLabel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->SpellPointsLabel->AutoSize = true;
-			this->SpellPointsLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->SpellPointsLabel->Location = System::Drawing::Point(710, 334);
+			this->SpellPointsLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->SpellPointsLabel->Location = System::Drawing::Point(710, 292);
 			this->SpellPointsLabel->Name = L"SpellPointsLabel";
-			this->SpellPointsLabel->Size = System::Drawing::Size(286, 29);
+			this->SpellPointsLabel->Size = System::Drawing::Size(327, 42);
 			this->SpellPointsLabel->TabIndex = 26;
 			this->SpellPointsLabel->Text = L"You can get 0 new spells.";
 			// 
@@ -922,20 +898,32 @@ namespace Marsh {
 			this->SpellInfo->BackColor = System::Drawing::SystemColors::ControlText;
 			this->SpellInfo->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->SpellInfo->Cursor = System::Windows::Forms::Cursors::Arrow;
-			this->SpellInfo->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
+			this->SpellInfo->Font = (gcnew System::Drawing::Font(L"Segoe Print", 15));
 			this->SpellInfo->ForeColor = System::Drawing::Color::White;
-			this->SpellInfo->Location = System::Drawing::Point(713, 371);
+			this->SpellInfo->Location = System::Drawing::Point(713, 337);
 			this->SpellInfo->Name = L"SpellInfo";
-			this->SpellInfo->Size = System::Drawing::Size(480, 265);
+			this->SpellInfo->ReadOnly = true;
+			this->SpellInfo->Size = System::Drawing::Size(480, 299);
 			this->SpellInfo->TabIndex = 39;
 			this->SpellInfo->Text = L"";
+			// 
+			// LevelLabel
+			// 
+			this->LevelLabel->AutoSize = true;
+			this->LevelLabel->BackColor = System::Drawing::Color::Transparent;
+			this->LevelLabel->Font = (gcnew System::Drawing::Font(L"Segoe Print", 18));
+			this->LevelLabel->Location = System::Drawing::Point(710, 9);
+			this->LevelLabel->Name = L"LevelLabel";
+			this->LevelLabel->Size = System::Drawing::Size(189, 42);
+			this->LevelLabel->TabIndex = 40;
+			this->LevelLabel->Text = L"Current Level:";
 			// 
 			// LevelUp
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlText;
+			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
 			this->ClientSize = System::Drawing::Size(1244, 860);
 			this->Controls->Add(this->SpellInfo);
 			this->Controls->Add(this->pictureBox11);
@@ -977,6 +965,7 @@ namespace Marsh {
 			this->Controls->Add(this->pictureBox9);
 			this->Controls->Add(this->pictureBox8);
 			this->Controls->Add(this->pictureBox10);
+			this->Controls->Add(this->LevelLabel);
 			this->ForeColor = System::Drawing::SystemColors::HighlightText;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Location = System::Drawing::Point(307, 510);

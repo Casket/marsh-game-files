@@ -12,8 +12,12 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 {
 	this->my_type = Hero;
 	this->casting = false;
+	this->new_mission = false;
+	this->dead  = false;
 	this->quest_manager = new QuestManager();
 	this->experience = 0;
+	this->notoriety = 0;
+	this->level = 0;
 	// TODO implement a constructor
 	this->inventory = new std::vector<Equipment*>();
 	this->set_new_inventory();
@@ -41,7 +45,7 @@ void Player::set_world(World* world){
 }
 
 void Player::upon_death(void){
-
+	this->dead = true;
 }
 
 void Player::increment_notoriety(int increase){
@@ -238,7 +242,10 @@ void Player::grant_experience(int experience_worth){
 		this->experience -= EXPERIENCE_TO_LEVEL;
 		this->spellPoints += 1;
 		this->statPoints += 5;
-		display_to_user("You have leveled up! Press L to get a new spell and increase your stats.");
+		this->level++;
+		std::stringstream levelup;
+		levelup <<  "You have leveled up to level " << this->level << "! Press L to get a new spell and increase your stats.";
+		display_to_user(levelup.str());
 	}
 
 }
@@ -262,6 +269,12 @@ void Player::listen_to_keyboard(void) {
 		accept_aiming();
 	else {
 		// deal with all other potential input
+		//TODO Get rid of these cheat codes
+		if(key[KEY_H]){
+			this->health -= 50000;
+		}else if(key[KEY_J]){
+			this->experience += 50;
+		}
 		accept_movement();
 		accept_interaction();
 		if (this->mana > 0)
