@@ -677,6 +677,7 @@ void show_level_up(void) { // show level up menu
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 	menu->StartPosition = FormStartPosition::CenterScreen;
 	menu->ShowDialog();
+	v->draw_updated_loadout(Player_Accessor::get_player()->attack_loadout);
 	if (mute==0) {
 		play_sample(theme,255,128,1000,1);
 	}
