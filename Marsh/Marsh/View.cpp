@@ -33,6 +33,7 @@ Marsh::View::View(Player* hero){
 	this->spell_icon_coords = new std::vector<std::pair<int, int>>();
 	this->populate_spell_locs();
 	this->populate_image_names();
+	
 
 	this->draw_updated_loadout(Player_Accessor::get_player()->attack_loadout);
 }
@@ -144,13 +145,13 @@ void Marsh::View::load_world(WorldName world){
 static bool should_save(World* check_world){
 	switch(check_world->my_name){
 	case main_world11:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	case main_world13:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	case main_world16:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	case main_world19:
-		return check_world->current_mission == Player_Accessor::get_player()->current_mission;
+		return true; //check_world->current_mission == Player_Accessor::get_player()->current_mission;
 	default:
 		return false;
 
@@ -198,6 +199,32 @@ void Marsh::View::insert_testing_entities(void){
 		//this->current_world->insert_entity(g2);
 	}
 
+bool visible(int x, int y, int width, int height){
+	Player* hero = Player_Accessor::get_player();
+	return true;
+
+	int left_most = hero->get_x_pos() - VISIBLE_W - PAD;
+	int right_most = left_most + 2*SCREEN_W + PAD;
+
+	int top_most = hero->get_y_pos() - VISIBLE_H - PAD;
+	int bottom_most = top_most + 2*SCREEN_H + PAD;
+	
+	// top left corner
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x += width;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x -= width;
+	y += height;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	x += width;
+	if ((x >= left_most && x <= right_most) && (y >= top_most && y <= bottom_most))
+		return true;
+	return false;
+}
+
 
 void Marsh::View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
@@ -212,6 +239,9 @@ void Marsh::View::update(void){
 			if (gateway->activated){
 				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
 				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
+				Player_Accessor::get_player()->velocity = 3;
+				Player_Accessor::get_player()->get_image()->animation_delay = 4;
+				world_time_delay = DEFAULT_WORLD_TIME_DELAY;
 				gateway->activated = false;
 				this->load_world(gateway->portal_to);
 				return;
@@ -342,10 +372,12 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 		} else {
 			masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, width, height);
 		}
+		/*
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
+			*/ 
 	}
 }
 

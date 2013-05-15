@@ -30,7 +30,7 @@
 #define CANCEL_CAST_KEY KEY_C
 #define OPEN_MENU KEY_ESC	// TODO define that
 
-#define MOVEMENT_DELTA 2
+#define MOVEMENT_DELTA 3
 
 #define INTERACT_KEY KEY_SPACE
 

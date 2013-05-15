@@ -31,8 +31,11 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->casting_timer = 0;
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 
-	this->insert_db_attacks();
-	this->insert_utility_spells(4);
+	this->attack_loadout[0] = attackDB->fetch_attack(SHADOW_BALL)->clone(0, 0, W);
+	this->attack_loadout[0]->set_my_caster(this);
+
+	//this->insert_db_attacks();
+	//this->insert_utility_spells(4);
 	//this->insert_damage_attacks(4);
 }
 
@@ -67,7 +70,7 @@ void Combat::insert_db_attacks(void){
 	this->attack_loadout[0] = attacks->fetch_attack(SHADOW_NEEDLE)->clone(0, 0, N);
 	this->attack_loadout[0]->set_my_caster(this);
 
-	this->attack_loadout[1] = attacks->fetch_attack(SHADOW_NEEDLE_PLUS)->clone(0, 0, N);
+	this->attack_loadout[1] = attacks->fetch_attack(SHADOW_BALL)->clone(0, 0, N);
 	this->attack_loadout[1]->set_my_caster(this);
 
 	this->attack_loadout[2] = attacks->fetch_attack(SHADOW_SPIKES)->clone(0, 0, N);

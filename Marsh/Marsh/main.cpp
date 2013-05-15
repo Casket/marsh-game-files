@@ -66,9 +66,6 @@ int main(void)
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
 	font3 = load_font("font3.pcx",NULL,NULL);
-
-	world_name = main_world18;
-
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -129,7 +126,7 @@ void set_up_game(void) {
 	itemDB = new ItemDB();
 
 	// default data for inventory - TEST DATA
-	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
+	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 4, 2, 16, 2*16);
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
 	Equipment* equip = new Equipment();
@@ -240,9 +237,7 @@ void show_intro(void) {
 							}
 			}
 			clear_keybuf();
-		}
-
-		
+		}		
 	}
 exit_loop: ;
 
