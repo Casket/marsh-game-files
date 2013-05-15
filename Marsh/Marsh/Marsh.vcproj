@@ -505,6 +505,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TargetSeeker.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TeleportAttack.cpp"
 				>
 			</File>
@@ -710,6 +714,10 @@
 			</File>
 			<File
 				RelativePath=".\StunningAttack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TargetSeeker.h"
 				>
 			</File>
 			<File

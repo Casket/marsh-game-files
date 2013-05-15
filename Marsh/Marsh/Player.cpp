@@ -45,7 +45,7 @@ void Player::set_world(World* world){
 }
 
 void Player::upon_death(void){
-	this->dead = true;
+	//this->dead = true;
 }
 
 void Player::increment_notoriety(int increase){
@@ -370,56 +370,32 @@ void Player::accept_aiming(void) {
 	if (keyrel(AIM_LEFT)) {
 		switch(old_dir) {
 			case N:
-				new_dir = NW;
-				break;
-			case NE:
-				new_dir = N;
-				break;
-			case NW:
 				new_dir = W;
-				break;
+				break;	
 			case S:
-				new_dir = SW;
-				break;
-			case SW:
 				new_dir = W;
-				break;
-			case SE:
-				new_dir = S;
 				break;
 			case E:
-				new_dir = NE;
+				new_dir = W;
 				break;
 			case W:
-				new_dir = SW;
+				new_dir = W;
 				break;
 		}
 	}
 	if (keyrel(AIM_RIGHT)) {
 		switch(old_dir) {
 			case N:
-				new_dir = NE;
-				break;
-			case NE:
 				new_dir = E;
 				break;
-			case NW:
-				new_dir = N;
-				break;
 			case S:
-				new_dir = SE;
-				break;
-			case SW:
-				new_dir = S;
-				break;
-			case SE:
 				new_dir = E;
 				break;
 			case E:
-				new_dir = SE;
+				new_dir = E;
 				break;
 			case W:
-				new_dir = NW;
+				new_dir = E;
 				break;
 		}
 	}
@@ -429,20 +405,8 @@ void Player::accept_aiming(void) {
 			case N:
 				new_dir = S;
 				break;
-			case NE:
-				new_dir = SW;
-				break;
-			case NW:
-				new_dir = SE;
-				break;
 			case S:
 				new_dir = N;
-				break;
-			case SW:
-				new_dir = NE;
-				break;
-			case SE:
-				new_dir = NW;
 				break;
 			case E:
 				new_dir = W;

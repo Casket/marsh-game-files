@@ -31,6 +31,8 @@
 #define MONSTER_MELEE 16
 #define GUARD_MELEE 17
 
+#define TARGET_SEEKER 18
+
 class AttackDB {
 	std::map<int, Attack*>* attacks_by_id;
 

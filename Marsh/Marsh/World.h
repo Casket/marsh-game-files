@@ -4,6 +4,7 @@
 
 #include "Main.h"
 #include <map>
+#include <set>
 
 
 class Quest;
@@ -36,7 +37,7 @@ public:
 	int current_mission;
 	std::list<iDrawable*> *active_entities;
 	std::list<iDrawable*> *visible_entities;
-	std::list<iDrawable*> *removal_queue;
+	std::set<iDrawable*> *removal_queue;
 	Player* playa;
 	WorldName my_name;
 	std::map<std::string, drawable_bounds>* drawables; 

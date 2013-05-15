@@ -331,6 +331,7 @@ void start_game(void) {
 		}
 		rested = false;
 		ticks++;
+
 		if (++world_time_counter >= world_time_delay){
 			world_time_counter = 0;
 			v->update();
