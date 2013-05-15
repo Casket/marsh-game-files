@@ -138,7 +138,7 @@ void Marsh::View::load_world(WorldName world){
 		this->current_world->insert_entity(this->playa);
 	}
 	this->playa->set_world(this->current_world);
-	this->insert_testing_entities();
+	//this->insert_testing_entities();
 }
 
 static bool should_save(World* check_world){
@@ -195,7 +195,7 @@ void Marsh::View::insert_testing_entities(void){
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
-		this->current_world->insert_entity(g2);
+		//this->current_world->insert_entity(g2);
 	}
 
 
