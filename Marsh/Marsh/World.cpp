@@ -449,28 +449,44 @@ void World::make_world(){
 
 
 std::string World::get_file(WorldName name){
-	if(name == test_map){
-		return "Resources//maps//ATestMap.txt";
-	}else if(name == main_world){
-		return "Resources//maps//friday_map.txt";
+	if(name == hut_play){
+		return "Resources//maps//hut_play.txt";
+	}else if(name == hut_1){
+		return "Resources//maps//hut_1.txt";
+	}else if(name == hut_2){
+		return "Resources//maps//hut_2.txt";
+	}else if(name == hut_3){
+		return "Resources//maps//hut_3.txt";
+	}else if(name == hut_4){
+		return "Resources//maps//hut_4.txt";
+	}else if(name == hut_5){
+		return "Resources//maps//hut_5.txt";
+	}else if(name == hut_6){
+		return "Resources//maps//hut_6.txt";
+	}else if(name == hut_7){
+		return "Resources//maps//hut_7.txt";
+	}else if(name == hut_8){
+		return "Resources//maps//hut_8.txt";
+	}else if(name == hut_9){
+		return "Resources//maps//hut_9.txt";
 	}else if(name == main_world11){
-		return "Resources//maps//main_world11.txt";
+		return "Resources//maps//world11.txt";
 	}else if(name == main_world12){
-		return "Resources//maps//main_world12.txt";
+		return "Resources//maps//world12.txt";
 	}else if(name == main_world13){
-		return "Resources//maps//main_world13.txt";
+		return "Resources//maps//world13.txt";
 	}else if(name == main_world14){
-		return "Resources//maps//main_world14.txt";
+		return "Resources//maps//world14.txt";
 	}else if(name == main_world15){
-		return "Resources//maps//main_world15.txt";
+		return "Resources//maps//world15.txt";
 	}else if(name == main_world16){
 		return "Resources//maps//world16.txt";
 	}else if(name == main_world17){
-		return "Resources//maps//main_world17.txt";
+		return "Resources//maps//world17.txt";
 	}else if(name == main_world18){
-		return "Resources//maps//main_world18.txt";
+		return "Resources//maps//world18.txt";
 	}else if(name == main_world19){
-		return "Resources//maps//main_world19.txt";
+		return "Resources//maps//world19.txt";
 	}else{
 		throw std::exception("No world");
 	}
@@ -564,6 +580,98 @@ void World::intial_drawable_map(void){
 	set_boundaries( "dung_keep3",166,80,0,16);
 	set_boundaries( "dung_keep4",755,143,0,10);
 	set_boundaries( "dung_keep5",453,138,0,15);
+	set_boundaries( "dung_keep6",6,1782,0,10);
+	set_boundaries( "dung_keep7",960,40,0,6);
+	set_boundaries( "dung_keep8",6,214,0,10);
+	set_boundaries( "dung_keep9",96,86,0,10);
+	set_boundaries( "dung_keep10",6,64,0,0);
+	set_boundaries( "dung_keep11",460,86,0,10);
+	set_boundaries( "dung_keep12",6,502,0,10);
+	set_boundaries( "dung_keep13",461,36,0,10);
+	set_boundaries( "dung_keep14",6,232,0,10);
+	set_boundaries( "dung_keep15",96,46,0,0);
+	set_boundaries( "dung_keep16",6,616,0,10);
+	set_boundaries( "dung_keep17",1088,86,0,10);
+	set_boundaries( "dung_keep18",1350,36,0,10);
+	set_boundaries( "dung_keep19",6,658,0,10);
+	set_boundaries( "dung_keep20",128,46,0,0);
+	set_boundaries( "dung_keep21",6,136,0,10);
+	set_boundaries( "dung_keep22",364,36,0,10);
+	set_boundaries( "dung_keep23",6,608,0,0);
+	set_boundaries( "dung_keep24",364,86,0,10);
+	set_boundaries( "dung_keep25",6,151,0,10);
+	set_boundaries( "dung_keep26",128,80,0,16);
+	set_boundaries( "dung_keep27",6,457,0,10);
+	set_boundaries( "dung_keep28",614,46,0,0);
+	set_boundaries( "dung_keep29",6,1780,0,12);
+	set_boundaries( "dung_other1",1440,101,0,10);
+	set_boundaries( "dung_other2",1440,16,0,0);
+	set_boundaries( "dung_other3",11,208,0,0);
+	set_boundaries( "dung_other4",1313,16,0,0);
+	set_boundaries( "dung_other5",11,688,0,0);
+	set_boundaries( "dung_other6",276,16,0,0);
+	set_boundaries( "dung_other7",11,582,0,10);
+	set_boundaries( "dung_other8",800,6,0,10);
+	set_boundaries( "dung_other9",11,1158,0,10);
+	set_boundaries( "dung_other10",150,6,0,10);
+	set_boundaries( "dung_other11",287,99,0,10);
+	set_boundaries( "dung_other12",11,1251,0,10);
+	set_boundaries( "dung_other13",523,101,0,10);
+	set_boundaries( "dung_other14",11,439,0,10);
+	set_boundaries( "dung_other15",277,16,0,0);
+	set_boundaries( "dung_other16",11,1222,0,10);
+	set_boundaries( "dung_other17",171,16,0,0);
+	set_boundaries( "dung_other18",11,134,0,10);
+	set_boundaries( "dung_other19",254,16,0,0);
+	set_boundaries( "dung_other20",11,436,0,10);
+	set_boundaries( "dung_other21",254,101,0,10);
+	set_boundaries( "dung_other22",183,239,0,0);
+	set_boundaries( "dung_other23",11,752,0,0);
+	set_boundaries( "dung_other24",895,101,0,10);
+	set_boundaries( "dung_other25",11,687,0,0);
+	set_boundaries( "dung_other26",565,118,0,10);
+	set_boundaries( "dung_other27",11,324,0,10);
+	set_boundaries( "dung_other28",383,101,0,10);
+	set_boundaries( "dung_other29",11,334,0,0);
+	set_boundaries( "dung_other30",480,118,0,10);
+	set_boundaries( "dung_other31",11,324,0,10);
+	set_boundaries( "dung_other32",1472,119,0,10);
+	set_boundaries( "dung_other33",1312,119,0,10);
+	set_boundaries( "dung_other34",161,791,0,10);
+	set_boundaries( "dung_other35",161,1655,0,10);
+	set_boundaries( "dung_other36",480,439,0,10);
+	set_boundaries( "dung_vamp1",1676,86,0,10);
+	set_boundaries( "dung_vamp2",6,1014,0,10);
+	set_boundaries( "dung_vamp3",768,36,0,10);
+	set_boundaries( "dung_vamp4",6,118,0,10);
+	set_boundaries( "dung_vamp5",165,86,0,10);
+	set_boundaries( "dung_vamp6",6,173,0,10);
+	set_boundaries( "dung_vamp7",863,86,0,10);
+	set_boundaries( "dung_vamp8",960,36,0,10);
+	set_boundaries( "dung_vamp9",6,1137,0,0);
+	set_boundaries( "dung_vamp10",6,1183,0,0);
+	set_boundaries( "dung_vamp11",922,86,0,10);
+	set_boundaries( "dung_vamp12",6,278,0,10);
+	set_boundaries( "dung_vamp13",428,36,0,10);
+	set_boundaries( "dung_vamp14",6,278,0,10);
+	set_boundaries( "dung_vamp15",1030,86,0,10);
+	set_boundaries( "dung_vamp16",6,2166,0,10);
+	set_boundaries( "dung_vamp17",1260,87,0,10);
+	set_boundaries( "dung_vamp18",6,598,0,10);
+	set_boundaries( "dung_vamp19",357,86,0,10);
+	set_boundaries( "dung_vamp20",6,502,0,10);
+	set_boundaries( "dung_vamp21",715,36,0,10);
+	set_boundaries( "dung_vamp22",6,502,0,10);
+	set_boundaries( "dung_vamp23",166,86,0,10);
+	set_boundaries( "dung_vamp24",6,392,0,10);
+	set_boundaries( "dung_vamp25",864,36,0,10);
+	set_boundaries( "dung_vamp26",6,1672,0,10);
+	set_boundaries( "dung_vamp27",1761,86,0,10);
+	set_boundaries( "dung_vamp28",6,1184,0,0);
+	set_boundaries( "dung_vamp29",166,86,0,10);
+	set_boundaries( "dung_vamp30",6,82,0,0);
+	set_boundaries( "dung_vamp31",774,36,0,10);
+	set_boundaries( "dung_vamp32",6,1014,0,10);
 	set_boundaries( "dung_room_change",14,14,0,50);
 	set_boundaries( "farm_house",165,129,30,45);
 	set_boundaries( "feed",0,0,0,0);
@@ -587,12 +695,17 @@ void World::intial_drawable_map(void){
 	set_boundaries( "hut1",220,220,0,20);
 	set_boundaries( "hut2",165,170,0,20);
 	set_boundaries( "hut3",120,161,0,30);
-	set_boundaries( "hut4",163,115,0,30);		
+	set_boundaries( "hut4",163,115,0,30);
+	set_boundaries( "hut_1",8,177,0,0);
+	set_boundaries( "hut_2",96,32,0,0);
+	set_boundaries( "hut_3",95,32,0,0);
+	set_boundaries( "hut_5",239,55,0,0);
 	set_boundaries( "keep",416,370,0,60);
 	set_boundaries( "keep_stair",64,119,0,0);
 	set_boundaries( "keep1",957,700,0,47);
 	set_boundaries( "kitchen_cabinet",32,40,0,24);
 	set_boundaries( "kitchen_stuff",0,0,0,0);
+	set_boundaries( "laundry",0,0,0,0);
 	set_boundaries( "lantern",0,0,0,0);
 	set_boundaries( "lazy_chair",32,40,0,10);
 	set_boundaries( "livestock_food",64,35,0,4);
@@ -686,6 +799,9 @@ void World::make_drawable(std::string items){
 		constant_index += (y.second + 1);
 		//passes the things gathered to another function that will make the object
 		iDrawable* d = designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
+		if(d == NULL){
+			return;
+		}
 		d->set_my_type(Stationary);
 		this->insert_entity(d);
 
@@ -696,10 +812,26 @@ WorldName World::get_WorldName(std::string name, int name_size){
 	std::string worldName = name;
 
 
-	if(worldName.compare("test_map")==0){
-		return test_map;
-	}else if(worldName.compare("main_world") == 0){
-		return main_world;
+	if(worldName.compare("hut_play") == 0){
+		return hut_play;
+	}else if(worldName.compare("hut_1") == 0){
+		return hut_1;
+	}else if(worldName.compare("hut_2") == 0){
+		return hut_2;
+	}else if(worldName.compare("hut_3") == 0){
+		return hut_3;
+	}else if(worldName.compare("hut_4") == 0){
+		return hut_4;
+	}else if(worldName.compare("hut_5") == 0){
+		return hut_5;
+	}else if(worldName.compare("hut_6") == 0){
+		return hut_6;
+	}else if(worldName.compare("hut_7") == 0){
+		return hut_7;
+	}else if(worldName.compare("hut_8") == 0){
+		return hut_8;
+	}else if(worldName.compare("hut_9") == 0){
+		return hut_9;
 	}else if(worldName.compare("main_world11") == 0){
 		return main_world11;
 	}else if(worldName.compare("main_world12") == 0){
@@ -722,7 +854,7 @@ WorldName World::get_WorldName(std::string name, int name_size){
 	else{
 		throw std::exception("Broke");
 	}
-	return main_world;
+	return main_world11;
 
 }
 
@@ -791,7 +923,7 @@ void World::make_portal(std::string items){
 	int y_tar = list_to_int(y_targ, inner_index);
 	WorldName converted_name = get_WorldName(worldName, name_size);
 
-	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, x_tar, y_tar);
+	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, x_tar, y_tar, false);
 	new_portal->set_boundary_value(32, 32, 0, 0);
 	insert_entity(new_portal);
 
@@ -831,7 +963,7 @@ void World::make_AI(std::string items){
 	constant_index += (values.second + 1);
 	std::vector<std::pair<int,int>>* ways = new std::vector<std::pair<int,int>>();
 
-	if(type.compare("OptionPresenter") != 0 && type.compare("QuestGiver") != 0){
+	if(type.compare("OptionPresenter") != 0 && type.compare("QuestGiver") != 0 && type.compare("ItemBestower") != 0){
 		values = pull_out(items, constant_index);
 		std::string cur_x;
 		std::string cur_y;
@@ -862,7 +994,13 @@ void World::make_AI(std::string items){
 
 	}else if(type.compare("QuestGiver") == 0){
 
-		//		make_quest_giver(items, constant_index, filename, x_pos, y_pos);
+		make_quest_giver(items, constant_index, filename, x_pos, y_pos);
+		return;
+
+	}else if(type.compare("ItemBestower") == 0){
+
+		make_item_bestower(items, constant_index, filename, x_pos, y_pos);
+		return;
 
 	}else if(type.compare("Guard") == 0){
 
@@ -1021,6 +1159,16 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 	values = pull_out(items, constant_index);
 	loot.exp = list_to_int(values.first, values.second);
 	constant_index += (values.second + 1);
+	
+	//item
+	values = pull_out(items, constant_index);
+	loot.item = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
+	
+	//mission
+	values = pull_out(items, constant_index);
+	loot.mission = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1);
 
 	IQuestObjective* obj;
 	char thing = items[constant_index];
@@ -1048,6 +1196,7 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 		values = pull_out(items, constant_index);
 		constant_index += (values.second + 1);
 		obj = new RetrieveObjective(item_id, list_to_int(values.first, values.second));
+	
 	}else if(items[constant_index] == 'T'){
 		constant_index += 1;
 		//target id
@@ -1073,6 +1222,37 @@ std::pair<Quest*, int> World::make_quest(std::string items, int constant_index){
 }
 
 void World::make_dialouge_op(std::string items, int constant_index, OptionPresenter* op){
+	std::pair<std::string,int> values;
+
+	while(true){
+
+
+		if(items.at(constant_index-1) == '!'){
+			break;
+		}
+
+		char check = items.at(constant_index);
+
+		if( check == '^'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_pre_dialogue(to_string(values.first, values.second));
+
+		}else if(items.at(constant_index) == '*'){
+			constant_index++;
+			values = pull_out(items, constant_index);
+			op->append_post_dialogue(to_string(values.first, values.second));
+		}else{
+			throw std::exception("dialouge OP code error");
+		}
+
+		constant_index += (values.second + 1);
+
+
+	}
+
+}
+void World::make_dialouge_qg(std::string items, int constant_index, QuestGiver* op){
 	std::pair<std::string,int> values;
 
 	while(true){
@@ -1132,4 +1312,85 @@ iDrawable* World::designate_drawable(std::string type, std::string x, std::strin
 	return new_d;
 
 
+}
+void World::make_quest_giver(std::string items, int constant_index, std::string filename, int x_pos, int y_pos){
+	
+	std::pair<Quest*, int> quest_data;
+	std::pair<std::string, int> values = pull_out(items, constant_index);
+	
+	std::string dialouge;
+
+	
+
+
+	//create the quests
+	quest_data = make_quest(items, constant_index);
+	constant_index = quest_data.second;
+	
+	
+	//make the guy
+	QuestGiver* character = new QuestGiver(quest_data.first,x_pos, y_pos, 0, 0, new Player_Sprite((char*)filename.c_str(), S, 5, 1, 16, 16));
+	
+	//set values
+	character->set_boundary_value(30, 30, 0, 0);
+	character->set_world(this);
+	
+	//dialouge
+	make_dialouge_qg(items, constant_index, character);
+
+	//put in the d
+	this->insert_entity(character);
+
+}
+void World::make_item_bestower(std::string items, int constant_index, std::string filename, int x_pos, int y_pos){
+	
+	std::pair<std::string, int> values = pull_out(items, constant_index);
+	
+	//shop keeper or something else
+	int chest_or = list_to_int(values.first, values.second);
+	constant_index += (values.second + 1); 
+	//dialouge	
+	std::string dialouge = values.first;
+	constant_index += (values.second + 1);
+
+	//make the guy
+	ItemBestower* character = new ItemBestower(x_pos, y_pos, 0, 0, new Player_Sprite((char*)filename.c_str(), S, 5, 1, 16, 16));
+	
+	if(chest_or == 0){
+		character->bestow_all_items = true;
+	}
+	
+	character->append_dialogue(dialouge);
+	character->set_boundary_value(30, 30, 0, 0);
+	character->set_world(this);
+
+	while(items[constant_index - 1] != '!'){
+		
+		//number he has
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+		
+		int numOf = list_to_int(values.first, values.second);
+		
+		//id
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+
+		int id = list_to_int(values.first, values.second);
+		
+		//cost
+		values = pull_out(items, constant_index);
+		constant_index += (values.second + 1);
+
+		int cost = list_to_int(values.first, values.second);		
+		
+		Equipment* item = itemDB->fetch_item(id);
+		item->number_held = numOf;
+
+		character->append_inventory(item, cost);
+
+	}
+
+	this->insert_entity(character);
+	
 }

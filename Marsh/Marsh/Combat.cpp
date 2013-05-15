@@ -32,8 +32,8 @@ Combat::Combat(int x, int y, int vel, int vel_d, Sprite* img)
 	this->set_stats(this->vitality, this->intelligence, this->focus, this->willpower, this->armor);
 
 	this->insert_db_attacks();
-	//this->insert_utility_spells(4);
-	this->insert_damage_attacks(4);
+	this->insert_utility_spells(4);
+	//this->insert_damage_attacks(4);
 }
 
 Combat::~Combat(void) {

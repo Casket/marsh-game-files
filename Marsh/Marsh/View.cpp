@@ -28,7 +28,7 @@ Marsh::View::View(Player* hero){
 	blit(this->clear_console, this->in_use_console, 0, 0, 0, 0, CONSOLE_WIDTH, CONSOLE_HEIGHT);
 	this->behind_bars = load_bitmap("Resources//MarshUI5_background.bmp", NULL);
 	hero->set_consoles(this->clear_console, this->in_use_console);
-
+	this->behind_exp = load_bitmap("Resources//MarshUI5_experience.bmp", NULL);
 	this->displayed_images = new std::vector<std::string>();
 	this->spell_icon_coords = new std::vector<std::pair<int, int>>();
 	this->populate_spell_locs();
@@ -182,6 +182,7 @@ void Marsh::View::put_world_in_loaded(World* world){
 }
 
 void Marsh::View::insert_testing_entities(void){
+	/*
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
 		std::pair<int, int> test = std::make_pair(120, 1000);
@@ -243,15 +244,15 @@ void Marsh::View::insert_testing_entities(void){
 		g1->set_world(this->current_world);
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g1);
+<<<<<<< HEAD
 	*/
-		Mob* g2 = new Town_Guard(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g2 = new VampireBoss(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g2);
 	}
-
-
+	*/
 	/*	QuestDescription kill_chickens;
 	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
 	test_transp->set_world(this->current_world);
@@ -467,7 +468,7 @@ void draw_status(Player* hero, BITMAP* buffer){
 	int max_exp = EXPERIENCE_TO_LEVEL;
 	int cur_exp = hero->experience;
 	double px_per_e = (double) EXP_BAR_WIDTH / (double)max_exp;
-	rectfill(buffer, EXP_BAR_X_POS+2, EXP_BAR_Y_POS-8, EXP_BAR_X_POS + px_per_e*cur_exp+2, EXP_BAR_Y_POS + EXP_BAR_HEIGHT-8, EXP_COLOR);
+	rectfill(buffer, EXP_BAR_X_POS+5, EXP_BAR_Y_POS-5, EXP_BAR_X_POS + px_per_e*cur_exp+5, EXP_BAR_Y_POS + EXP_BAR_HEIGHT-5, EXP_COLOR);
 }
 
 int pick_cast_color(Attack* attack){
@@ -480,13 +481,12 @@ void draw_dialogs(BITMAP* buffer){
 
 void Marsh::View::draw_interface(Player* hero){
 	blit(this->behind_bars, this->ui_buffer, 0, 0, BACK_LAYER_X, BACK_LAYER_Y, this->behind_bars->w, this->behind_bars->h);
-	// draw your image
+	blit(this->behind_exp, this->ui_buffer, 0, 0, BACK_EXP_X, BACK_EXP_Y, this->behind_exp->w, this->behind_exp->h);
 	draw_status(hero, this->ui_buffer);
 	masked_blit(this->resource_bars[0], this->ui_buffer, 0, 0, HEALTH_BAR_X_POS, HEALTH_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	masked_blit(this->resource_bars[0], this->ui_buffer, 0, 0, MANA_BAR_X_POS, MANA_BAR_Y_POS, RESOURCE_BAR_WIDTH + BAR_PAD, RESOURCE_BAR_HEIGHT + BAR_PAD);
 	masked_blit(this->resource_bars[1], this->ui_buffer, 0, 0, CAST_BAR_X_POS, CAST_BAR_Y_POS, CAST_BAR_WIDTH + BAR_PAD, CAST_BAR_HEIGHT + BAR_PAD);
 	blit(this->in_use_console, this->ui_buffer, 0, 0, CONSOLE_X_POS, CONSOLE_Y_POS, CONSOLE_WIDTH, CONSOLE_HEIGHT);
-	
 }
 
 void Marsh::View::draw_sprites(BITMAP* buffer, Tile*** tile_map, int tile_wide, int tile_high){

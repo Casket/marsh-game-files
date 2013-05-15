@@ -66,7 +66,7 @@ int main(void)
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
 	font3 = load_font("font3.pcx",NULL,NULL);
-	world_name = test_map;
+	world_name = hut_play;
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -130,13 +130,47 @@ void set_up_game(void) {
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
+	Equipment* equip = new Equipment();
+	//Equipment* equip1 = new Equipment();
+	//Equipment* equip2 = new Equipment(); 
+	/*equip1->name = "Cloth Armor";
+	equip1->type = Tunic;
+	equip1->vitality = 5;
+	equip1->description = "+5 Vit";
+	equip1->item_id = 0;
+	equip1->equipped = false;
+	equip1->equipable = true;
+	equip1->number_held = 1;
+	hero->add_to_inventory(equip1);
+	equip2->name = "Long Sword";
+	equip2->type = Dagger;
+	equip2->description = "+5 Wp";
+	equip2->willpower = 5;
+	equip2->item_id = 1;
+	equip2->equipped = false;
+	equip2->equipable = true;
+	equip2->number_held = 1;
+	hero->add_to_inventory(equip2);*/
+/*	for(int i = 0; i <= 21; i++){
+
 	Equipment* equip = new Equipment(); 
 	for(int i = 0; i <= 22; i++){
 		equip = itemDB->fetch_item(i);
 		equip->number_held = 1;
 		hero->add_to_inventory(equip);
 		equip = new Equipment();
-	}
+	}*/
+	/*equip->name = "None";
+	equip->description = "Filler test";
+	equip->item_id = -1;
+	equip->number_held = -1;
+	int i = 2;
+	while (i<MAX_HELD_ITEMS) {
+		hero->add_to_inventory(equip);
+		i += 1;
+	}*/
+
+
 }
 
 void show_intro(void) {
@@ -147,6 +181,37 @@ void show_intro(void) {
 	int max_sel = 2;
 	if (game_state == IN_GAME) max_sel = 3;
 	while (game_state == INTRO_GAME || game_state == IN_GAME) {
+<<<<<<< HEAD
+=======
+		if (keypressed()) {
+			int k = readkey();
+			switch(k >> 8) {
+				case KEY_ESC: break;
+				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = max_sel; break;
+				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = 0; break;
+				case KEY_ENTER:
+					switch (menu_sel) {
+				case 0: game_state=IN_GAME; start_game(); break; // new game
+				case 1: game_state=LOAD_GAME; load_game(); break; // load game
+				case 2: game_state=FINISH_GAME; break; // exit game 
+			//	case 3: game_state=IN_GAME; save_game(); break; // save game
+				case 3: game_state=IN_GAME; goto exit_loop;
+					} break;
+				case KEY_M: {
+					if (mute==0) {
+						mute=1;
+						stop_sample(theme);
+					}
+					else {
+						mute=0;
+						play_sample(theme,255,128,1000,1);
+					}
+							}
+			}
+			clear_keybuf();
+		}
+
+>>>>>>> 71bb5b029bd728159b3866a0daaff197bd0a6bd9
 		// drawing
 		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
@@ -229,11 +294,15 @@ void restartWithDeathScreen(void){
 	rest(5000);
 	destroy_bitmap(deathScreen);
 	game_state = LOAD_GAME;
+<<<<<<< HEAD
 }
 
 void new_game(void){
 	CopyFile("init.Marsh", "Save1.Marsh", false);
 	load_game("init.Marsh");
+=======
+	load_game();
+>>>>>>> 71bb5b029bd728159b3866a0daaff197bd0a6bd9
 }
 
 void start_game(void) {
@@ -257,6 +326,9 @@ void start_game(void) {
 			rest(4);
 			continue;
 		}
+		if(keyrel(KEY_J)){
+			hero->experience += 50;
+		}
 		rested = false;
 		ticks++;
 		if (++world_time_counter >= world_time_delay){
@@ -273,7 +345,7 @@ void start_game(void) {
 		}
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
-		//textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
+		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Position %dx%d ", hero->x_pos, hero->y_pos);
 		clear_keybuf();
 
 		//if (started) save_game();
