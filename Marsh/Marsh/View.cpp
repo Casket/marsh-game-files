@@ -106,7 +106,8 @@ void Marsh::View::draw_updated_loadout(Attack* loadout[]){
 			continue;
 		}
 		std::string file("Resources//Attack_Images//");
-		file.append(this->displayed_images->at(id).append(".bmp"));
+		file.append(this->displayed_images->at(id));
+		file.append(".bmp");
 		std::pair<int, int> coord = this->spell_icon_coords->at(i);
 		BITMAP* image = load_bitmap(file.c_str(), NULL);
 		masked_blit(image, this->ui_buffer, 0, 0, coord.first, coord.second, image->w, image->h);
@@ -230,6 +231,7 @@ void Marsh::View::insert_testing_entities(void){
 		companion->item_id = 197;
 		farmer_bob->append_inventory(companion, 1000000);
 
+		/*
 		Mob* g = new Town_Guard(116,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g->set_boundary_value(32,18,0,14);
 		g->set_world(this->current_world);
@@ -241,8 +243,8 @@ void Marsh::View::insert_testing_entities(void){
 		g1->set_world(this->current_world);
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g1);
-
-		Mob* g2 = new Vampire(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+	*/
+		Mob* g2 = new VampireBoss(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
@@ -417,7 +419,6 @@ void Marsh::View::update(void){
 		}
 	}
 	this->current_world->remove_destroyed();
-
 }
 
 void Marsh::View::draw_active_world(void){

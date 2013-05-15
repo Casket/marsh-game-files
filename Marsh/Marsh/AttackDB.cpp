@@ -143,7 +143,7 @@ void AttackDB::populate_utility_spells(void){
 
 
 	//Shadow Dash
-	Attack* dash = new SprintSpell(4, 250, base_charge_time - 10);
+	Attack* dash = new SprintSpell(4, 300, base_charge_time - 10);
 	dash->set_mana_cost(base_mana);
 	dash->spell_id = SHADOW_DASH;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(SHADOW_DASH, dash));
