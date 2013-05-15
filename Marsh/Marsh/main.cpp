@@ -228,7 +228,7 @@ BITMAP* draw_Death(void) {
 
 void restartWithDeathScreen(void){
 	BITMAP* deathScreen = draw_Death();
-	rest(50000);
+	rest(5000);
 	destroy_bitmap(deathScreen);
 	load_game();
 }
@@ -422,6 +422,7 @@ void save_game(void) {
 	std::stringstream line; // id's
 	std::stringstream line1; // equipped
 	std::stringstream line2; // number_held
+	std::stringstream line3; // attacks
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	std::vector<Equipment*>::iterator end = inventory.end();
 	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
@@ -440,16 +441,20 @@ void save_game(void) {
 	file1 << "Inventory " << items << endl;
 	file1 << "Inventory1 " << item_equip << endl;
 	file1 << "Inventory2 " << item_held << endl;
+	//line.clear();
 
 	// player spell loadout
-	Attack* loadout = *hero->attack_loadout;
+	//Attack* loadout[MAX_ATTACKS] = hero->attack_loadout;
 	int i=0;
 	for (i; i<MAX_ATTACKS; i++) {
-		line << loadout[i].spell_id;
-		if (i < (MAX_ATTACKS-1)) line << ",";
+		if(hero->attack_loadout[i] != NULL){
+			line3 << hero->attack_loadout[i]->spell_id;
+			if (hero->attack_loadout[i+1] != NULL) line3 << ",";
+		}
 	}
+
 	items.clear();
-	items = line.str();
+	items = line3.str();
 	file1 << "Spell-loadout " << items << endl;
 
 	file1.close();
@@ -654,6 +659,7 @@ void addStat(int selection){
 void show_level_up(void) { // show level up menu
 	if (mute==0) {
 		stop_sample(theme);
+		rest(1000);
 	}
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 	menu->StartPosition = FormStartPosition::CenterScreen;
