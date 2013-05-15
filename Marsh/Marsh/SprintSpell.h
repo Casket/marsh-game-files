@@ -5,6 +5,7 @@
 class SprintSpell: public Attack{
 int velocity_to_receive;
 int previous_velocity;
+int prev_framerate;
 
 public:
 	SprintSpell(int vel, int duration, int charge);

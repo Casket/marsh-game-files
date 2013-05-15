@@ -517,6 +517,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\VampireBoss.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\VampireClone.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\View.cpp"
 				>
 			</File>
@@ -710,6 +718,14 @@
 			</File>
 			<File
 				RelativePath=".\Vampire.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VampireBoss.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VampireClone.h"
 				>
 			</File>
 			<File

@@ -18,6 +18,7 @@ void Dragon::set_ranges(void){
 	this->in_mid_range = false;
 	this->in_long_range = false;
 }
+
 int Dragon::choose_attack(){
 	if(this->in_melee_range && this->cooldowns[0].first == 0){
 		return 0;

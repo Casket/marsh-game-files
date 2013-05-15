@@ -59,6 +59,9 @@ class Attack;
 #include "ProtectionAttack.h"
 #include "ItemDB.h"
 #include "SpikeLauncher.h"
+#include "VampireClone.h"
+#include "VampireBoss.h"
+
 
 class AttackDB;
 class ItemDB;

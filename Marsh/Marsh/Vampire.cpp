@@ -36,7 +36,7 @@ void Vampire::populate_spells(void){
 	this->cooldowns[0].second = MELEE_CD;
 
 	this->cooldowns[1].first = 0;
-	this->cooldowns[1].second = MID_RANGE_CD;
+	this->cooldowns[1].second = 2*MID_RANGE_CD;
 
 	this->cooldowns[2].first = 0;
 	this->cooldowns[2].second = UTIL_CD;
