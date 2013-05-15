@@ -60,6 +60,7 @@ namespace Marsh {
 		std::map<WorldName, World*>* loaded_worlds;
 		BITMAP* ui_image;
 		BITMAP* black_overlay;
+		BITMAP* behind_exp;
 
 		View(Player* hero);
 		~View(void);
