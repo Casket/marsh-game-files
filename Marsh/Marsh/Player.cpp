@@ -16,6 +16,8 @@ Player::Player(int x, int y, int vel, int vel_d, Sprite* img)
 	this->dead  = false;
 	this->quest_manager = new QuestManager();
 	this->experience = 0;
+	this->notoriety = 0;
+	this->level = 0;
 	// TODO implement a constructor
 	this->inventory = new std::vector<Equipment*>();
 	this->set_new_inventory();
@@ -240,7 +242,10 @@ void Player::grant_experience(int experience_worth){
 		this->experience -= EXPERIENCE_TO_LEVEL;
 		this->spellPoints += 1;
 		this->statPoints += 5;
-		display_to_user("You have leveled up! Press L to get a new spell and increase your stats.");
+		this->level++;
+		std::stringstream levelup;
+		levelup <<  "You have leveled up to level " << this->level << "! Press L to get a new spell and increase your stats.";
+		display_to_user(levelup.str());
 	}
 
 }

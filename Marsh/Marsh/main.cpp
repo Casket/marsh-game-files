@@ -338,7 +338,7 @@ void load_spells(string stream) {
 void load_game(void) {
 	int x_pos, y_pos, height, width;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold, spell_pts;
-	int world;
+	int world, vitality, focus, intelligence, willpower, armor;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 	std::string items, item_equip, item_held; 
 
@@ -370,6 +370,12 @@ void load_game(void) {
 			else if (beg.compare("Inventory1") == 0) stringstream(end) >> item_equip;
 			else if (beg.compare("Inventory2") == 0) stringstream(end) >> item_held;
 			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
+			else if (beg.compare("Vitality") == 0) stringstream(end) >> vitality;
+			else if (beg.compare("Intellligence") == 0) stringstream(end) >> intelligence;
+			else if (beg.compare("Focus") == 0) stringstream(end) >> focus;
+			else if (beg.compare("Willpower") == 0) stringstream(end) >> willpower;
+			else if (beg.compare("Armor") == 0) stringstream(end) >> armor;
+
 		}
 	}
 	load_inventory(items,item_equip,item_held);
@@ -386,6 +392,11 @@ void load_game(void) {
 	hero->health = health;
 	hero->max_health = max_health;
 	hero->gold = gold;
+	hero->vitality = vitality;
+	hero->intelligence = intelligence;
+	hero->focus = focus;
+	hero->willpower = willpower;
+	hero->armor = armor;
 	start_game();
 }
 
@@ -401,7 +412,7 @@ void save_game(void) {
 
 	// player extras
 	file1 << "Level " << hero->level << endl;
-	file1 << "Experience " << hero->current_experience << endl;
+	file1 << "Experience " << hero->experience << endl;
 	file1 << "Notoriety " << hero->notoriety << endl;
 	file1 << "Stats " << hero->statPoints << endl; 
 	file1 << "Spell-pts " << hero->spellPoints << endl;
@@ -410,6 +421,11 @@ void save_game(void) {
 	file1 << "Health " << hero->get_current_health() << endl;
 	file1 << "Max-health " << hero->get_max_health() << endl;
 	file1 << "Gold " << hero->gold << endl;
+	file1 << "Vitality " << hero->vitality << endl;
+	file1 << "Intelligence " << hero->intelligence << endl;
+	file1 << "Focus " << hero->focus << endl;
+	file1 << "Willpower " << hero->willpower << endl;
+	file1 << "Armor " << hero->armor << endl;
 
 	// world
 	int world = v->current_world->my_name;
@@ -441,10 +457,7 @@ void save_game(void) {
 	file1 << "Inventory " << items << endl;
 	file1 << "Inventory1 " << item_equip << endl;
 	file1 << "Inventory2 " << item_held << endl;
-	//line.clear();
 
-	// player spell loadout
-	//Attack* loadout[MAX_ATTACKS] = hero->attack_loadout;
 	int i=0;
 	for (i; i<MAX_ATTACKS; i++) {
 		if(hero->attack_loadout[i] != NULL){
