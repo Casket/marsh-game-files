@@ -15,6 +15,7 @@ class Vampire:public Mob{
 		~Vampire(void);
 		virtual void set_ranges(void);
 		virtual int choose_attack(void);
+		virtual void populate_spells(void);
 };
 
 #endif
