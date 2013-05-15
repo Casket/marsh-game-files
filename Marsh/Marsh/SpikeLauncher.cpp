@@ -65,6 +65,7 @@ void SpikeLauncher::update(void){
 		x_pos += delta_x;
 		y_pos += delta_y;
 		launched->set_world(this->get_world());
+		launched->set_my_caster(this->my_caster);
 		this->get_world()->insert_entity(launched);
 	}
 	this->get_world()->remove_entity(this);

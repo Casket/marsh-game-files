@@ -30,6 +30,7 @@ volatile int world_time_delay = DEFAULT_WORLD_TIME_DELAY;
 AttackDB* attackDB;
 ItemDB* itemDB;
 
+void new_game(void);
 void load_inventory(string stream);
 void load_spells(string stream);
 void timer_framerate_counter(void);
@@ -41,7 +42,7 @@ void start_game(void);
 void end_game(void);
 void show_intro(void);
 void save_game(void);
-void load_game(void);
+void load_game(std::string);
 void show_inv(void);
 void show_screen(Equipment*);
 void show_level_up(void);
@@ -65,7 +66,11 @@ int main(void)
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
 	font3 = load_font("font3.pcx",NULL,NULL);
+<<<<<<< HEAD
 	world_name = main_world19;
+=======
+	world_name = main_world11;
+>>>>>>> b6993214390ab380706eea8d0b98b2cd3ce2c38b
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -75,6 +80,7 @@ int main(void)
 	while(game_state != FINISH_GAME) {
 		if (game_state == INTRO_GAME) show_intro();
 		if (game_state == LEVEL_UP_GAME) show_level_up();
+		if (game_state == LOAD_GAME) load_game("Save1.Marsh");
 	}
 
 	destroy_bitmap(buffer);
@@ -179,34 +185,6 @@ void show_intro(void) {
 	int max_sel = 2;
 	if (game_state == IN_GAME) max_sel = 3;
 	while (game_state == INTRO_GAME || game_state == IN_GAME) {
-		if (keypressed()) {
-			int k = readkey();
-			switch(k >> 8) {
-				case KEY_ESC: break;
-				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = max_sel; break;
-				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = 0; break;
-				case KEY_ENTER:
-					switch (menu_sel) {
-				case 0: game_state=IN_GAME; start_game(); break; // new game
-				case 1: game_state=LOAD_GAME; load_game(); break; // load game
-				case 2: game_state=FINISH_GAME; break; // exit game 
-			//	case 3: game_state=IN_GAME; save_game(); break; // save game
-				case 3: game_state=IN_GAME; goto exit_loop;
-					} break;
-				case KEY_M: {
-					if (mute==0) {
-						mute=1;
-						stop_sample(theme);
-					}
-					else {
-						mute=0;
-						play_sample(theme,255,128,1000,1);
-					}
-							}
-			}
-			clear_keybuf();
-		}
-
 		// drawing
 		blit(title_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
@@ -238,6 +216,35 @@ void show_intro(void) {
 
 		// draw to screen
 		blit(buffer, screen, 0,0, 0,0, SCREENW, SCREENH);
+		if (keypressed()) {
+			int k = readkey();
+			switch(k >> 8) {
+				case KEY_ESC: break;
+				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = max_sel; break;
+				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = 0; break;
+				case KEY_ENTER:
+					switch (menu_sel) {
+				case 0: game_state=IN_GAME; new_game(); break; // new game
+				case 1: game_state=LOAD_GAME; load_game("Save1.Marsh"); break; // load game
+				case 2: game_state=FINISH_GAME; break; // exit game 
+			//	case 3: game_state=IN_GAME; save_game(); break; // save game
+				case 3: game_state=IN_GAME; goto exit_loop;
+					} break;
+				case KEY_M: {
+					if (mute==0) {
+						mute=1;
+						stop_sample(theme);
+					}
+					else {
+						mute=0;
+						play_sample(theme,255,128,1000,1);
+					}
+							}
+			}
+			clear_keybuf();
+		}
+
+		
 	}
 exit_loop: ;
 
@@ -260,18 +267,20 @@ void restartWithDeathScreen(void){
 	rest(5000);
 	destroy_bitmap(deathScreen);
 	game_state = LOAD_GAME;
-	load_game();
+}
+
+void new_game(void){
+	CopyFile("init.Marsh", "Save1.Marsh", false);
+	load_game("init.Marsh");
 }
 
 void start_game(void) {
 	game_state = IN_GAME;
 	Player*	hero = Player_Accessor::get_player();
-	Marsh::View *our_viewer= create_view(hero);
-	hero->set_my_type(Hero);
-	started = false;
 	while(game_state == IN_GAME) {
 		if(hero->dead){
 			restartWithDeathScreen();
+			return;
 		}
 		if (key[KEY_ESC]) {
 			show_intro();
@@ -291,14 +300,14 @@ void start_game(void) {
 		}
 		rested = false;
 		ticks++;
+
 		if (++world_time_counter >= world_time_delay){
 			world_time_counter = 0;
-			our_viewer->update();
+			v->update();
 		}
 
 		hero->update();
-		our_viewer->draw_active_world();
-		started = true;
+		v->draw_active_world();
 
 		if(hero->new_mission){
 			save_game();
@@ -309,11 +318,11 @@ void start_game(void) {
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Position %dx%d ", hero->x_pos, hero->y_pos);
 		clear_keybuf();
 
-		if (started) save_game();
+		//if (started) save_game();
 	}
 
 	//delete hero;
-	delete our_viewer;
+	delete v;
 }
 
 void load_inventory(string stream, string stream1, string stream2) {
@@ -372,14 +381,14 @@ void load_spells(string stream) {
 	}
 }
 
-void load_game(void) {
+void load_game(std::string file) {
 	int x_pos, y_pos, height, width;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold, spell_pts;
 	int world, vitality, focus, intelligence, willpower, armor;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 	std::string items, item_equip, item_held; 
 
-	ifstream file1("Save1.marsh");
+	ifstream file1(file.c_str());
 	string line;
 	string beg, end;
 	if (file1.is_open()) {
@@ -434,6 +443,7 @@ void load_game(void) {
 	hero->focus = focus;
 	hero->willpower = willpower;
 	hero->armor = armor;
+	create_view(hero);
 	start_game();
 }
 
@@ -509,7 +519,7 @@ void save_game(void) {
 
 	file1.close();
 	
-	if (!started) show_intro();
+	//if (!started) show_intro();
 }
 
 void show_inv(void) { // show inventory items in a list as well as quanitty (click each item to view what they do)

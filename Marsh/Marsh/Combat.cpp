@@ -52,8 +52,12 @@ void Combat::insert_damage_attacks(int n){
 	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_WAVE)->clone(0, 0, W);
 	this->attack_loadout[n++]->set_my_caster(this);
 
-	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_NOVA)->clone(0, 0, N);
+	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_NOVA)->clone(0, 0, W);
 	this->attack_loadout[n++]->set_my_caster(this);
+
+	this->attack_loadout[n] = attacks->fetch_attack(TARGET_SEEKER)->clone(0, 0, W);
+	this->attack_loadout[n]->set_my_caster(this);
+	this->attack_loadout[n++]->target = Player_Accessor::get_player();
 
 	delete attacks;
 }
@@ -102,137 +106,6 @@ void Combat::insert_utility_spells(int start){
 
 	delete attacks;
 }
-
-void Combat::testing_attacks(void){
-	AttackDB* attacks = new AttackDB();
-	this->attack_loadout[0] = attacks->fetch_attack(GUARD_MELEE);
-	this->attack_loadout[0] = this->attack_loadout[0]->clone(0, 0, W);
-	this->attack_loadout[0]->set_my_caster(this);
-
-	Attack_Sprite* death = new Attack_Sprite("Resources//Attack Sprites//NEW_death_beam_attack.bmp", W, 10, 1, 6, 6, 32, 53);
-	death->set_state_frame_counts(0, 3, 3);
-	AttackStatistics stats;
-	stats.base_damage = 100;
-	stats.charge_time = 100;
-	stats.exp_date = 30;
-	stats.penetration = 15;
-	stats.range = MID_RANGE;
-	stats.tree_depth = 1;
-
-	Attack* death_beam = new Attack(800, 800, 2, 10, death, stats);
-	death_beam->set_boundary_value(25, 34, 2, 11);
-	death_beam->set_my_caster(this);
-	death_beam->set_position_adjustment(40, 20);
-	death_beam->spell_id = DEATH_BEAM;
-
-	this->attack_loadout[1] = death_beam;
-
-
-	Attack_Sprite* drain = new Attack_Sprite("Resources//Attack Sprites//Drain.bmp", W, 5, 1, 3, 3, 32, 19);
-	drain->set_state_frame_counts(0, 5, 0);
-	/*
-	this->attack_loadout[1] = new HealthDrainAttack(0, 0, 2, 10, drain, stats);
-	this->attack_loadout[1]->set_my_caster(this);
-	this->attack_loadout[1]->set_boundary_value(120/5, 19, 0, 0);
-	*/
-
-	Attack_Sprite* shooter_img = new Attack_Sprite("Resources//Attack Sprites//NEW_death_beam_charge.bmp", N, 5, 1, 3, 3, 55, 51);
-	shooter_img->set_state_frame_counts(0, 3, 0);
-
-	stats.base_damage = 0;
-	stats.charge_time = 100;
-	stats.exp_date = 100;
-	stats.penetration = 15;
-	stats.range = 250;
-	stats.tree_depth = 2;
-	MultiSpawnAttack* beamer = new MultiSpawnAttack(800, 800, 2, 10, shooter_img, stats, death_beam, 20);
-	beamer->set_position_adjustment(50, 0);
-	beamer->set_boundary_value(50, 34, 5, 10);
-	beamer->set_my_caster(this);
-	beamer->spell_id = DEATH_BEAM;
-	this->attack_loadout[2] = beamer;
-
-	this->attack_loadout[3] = attackDB->fetch_attack(GUARD_MELEE)->clone(0, 0, W);
-	this->attack_loadout[3]->set_my_caster(this);
-
-	this->attack_loadout[4] = attackDB->fetch_attack(MONSTER_MELEE)->clone(0, 0, W);
-	this->attack_loadout[4]->set_my_caster(this);
-
-	stats.charge_time = 0;
-	this->attack_loadout[3] = new TemporalModifier(death, stats, 10);
-	this->attack_loadout[3]->set_my_caster(this);
-	this->attack_loadout[3]->set_boundary_value(0, 0, 0, 0);
-
-	Attack_Sprite* ward_img = new Attack_Sprite("Resources//Attack Sprites//ward.tga", W, 50, 1, 7, 7, 480/7-2, 65);
-	ward_img->set_state_frame_counts(0, 7, 0);
-	ward_img->is_translucent = true;
-
-
-	this->attack_loadout[5] = new ProtectionAttack(800, 800, 2, 10, ward_img, stats, ShieldAttack);
-	this->attack_loadout[5]->set_boundary_value(10, 10, 0, 10);
-	this->attack_loadout[5]->set_position_adjustment(0,0);
-	this->attack_loadout[5]->set_my_caster(this);
-	this->attack_loadout[5]->spell_id = SHIELD;
-
-
-	this->attack_loadout[0]->set_my_caster(this);
-	/*
-	fireball_spr->set_state_frame_counts(0, 5, 3);
-	this->attack_loadout[1] = new Attack(800, 800, 2, 10, fireball_spr, 100, 0, 500, 3, 50, 100);
-
-	this->attack_loadout[1]->my_type = Wallop;
-	this->attack_loadout[1]->set_boundary_value(26, 26, 2, 2);
-	this->attack_loadout[1]->set_my_caster(this);
-	*/
-
-	Attack_Sprite* fire = new Attack_Sprite("Resources//Attack Sprites//Nova.tga", W, 10, 1, 11, 11, 580/11, 48);
-
-	fire->is_translucent = true;
-	fire->set_state_frame_counts(0, 1, 10);
-
-	stats.base_damage = 0;
-	stats.charge_time = 100;
-	stats.exp_date = 1000;
-	stats.penetration = 15;
-	stats.range = 250;
-	stats.tree_depth = 2;
-	fire->is_translucent = true;
-	this->attack_loadout[6] = new StunningAttack(800, 800, 1, 10, fire, stats);
-	this->attack_loadout[6]->set_boundary_value(35, 25, 10, 15);
-	this->attack_loadout[6]->set_my_caster(this);
-	this->attack_loadout[6]->set_position_adjustment(0, 20);
-
-	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 20, 1, 7, 7, 147/7, 45);
-	spikes->set_state_frame_counts(0, 7, 0);
-	stats.range = 20;
-	stats.exp_date = 7*20;
-	StationaryAttack* spike_attack = new StationaryAttack(0, 0, spikes, stats);
-	spike_attack->set_boundary_value(20, 20, 0, 23);
-	spike_attack->set_my_caster(this);
-
-	this->attack_loadout[7] = new SpikeLauncher(0, 0, spikes, spike_attack, stats, 10, 4);
-	this->attack_loadout[7]->set_my_caster(this);
-	this->attack_loadout[7]->set_boundary_value(20, 22, 0, 23);
-	this->attack_loadout[7]->set_position_adjustment(0, 10);
-
-	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, drain, stats, 100);
-	this->attack_loadout[6]->spell_id = SHADOW_NOVA;
-	//Attack_Sprite* fireball_spr = new Attack_Sprite("Resources//magic//fireball.bmp", W, 5, 1, 5, 8, 26, 26);
-	//this->attack_loadout[7] = new PersistentAttack(800, 800, 1, 10, fireball_spr, stats);
-	//this->attack_loadout[7]->set_boundary_value(26, 26, 2, 2);
-	//this->attack_loadout[7]->set_my_caster(this);
-
-	this->attack_loadout[8] = new TeleportAttack(0, 0, 0, 0, fire, stats, 100);
-	this->attack_loadout[8]->set_my_caster(this);
-	this->attack_loadout[8]->spell_id = TELEPORT;
-
-	this->attack_loadout[9] = new SprintSpell(10, 1000, 10);
-	this->attack_loadout[9]->set_my_caster(this);
-}
-
-
-
-
 
 void Combat::apply_ward(Attack* ward){
 	this->active_wards->push_back(ward);
@@ -472,7 +345,7 @@ void Combat::deal_with_attack(Attack* attack){
 }
 
 void Combat::upon_death(void){
-	this->my_world->removal_queue->push_back(this);
+	this->get_world()->remove_entity(this);
 }
 
 void Combat::append_dialogue(std::string message){

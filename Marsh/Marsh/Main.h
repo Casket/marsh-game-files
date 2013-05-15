@@ -61,6 +61,8 @@ class Attack;
 #include "SpikeLauncher.h"
 #include "VampireClone.h"
 #include "VampireBoss.h"
+#include "TargetSeeker.h"
+#include "StatueBoss.h"
 
 
 class AttackDB;

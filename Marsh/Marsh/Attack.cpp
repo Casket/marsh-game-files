@@ -17,6 +17,7 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img,
 	this->mana_cost = 0;
 	this->x_adjustment = 0;
 	this->y_adjustment = 0;
+	this->target = NULL;
 }
 
 Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics stats)
@@ -34,6 +35,7 @@ Attack::Attack(int x, int y, int vel, int vel_d, Sprite* img, AttackStatistics s
 	this->death_timer = 0;
 	this->x_adjustment = 0;
 	this->y_adjustment = 0;
+	this->target = NULL;
 }
 
 Attack::~Attack(void)
@@ -61,6 +63,7 @@ void Attack::update(void){
 	this->get_image()->update();
 	if (!this->alive){
 		if (++this->death_timer >= this->expiration_date){
+			this->death_timer = 0;
 			this->get_world()->remove_entity(this);
 		}
 		return;
