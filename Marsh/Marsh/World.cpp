@@ -449,28 +449,44 @@ void World::make_world(){
 
 
 std::string World::get_file(WorldName name){
-	if(name == test_map){
-		return "Resources//maps//ATestMap.txt";
-	}else if(name == main_world){
-		return "Resources//maps//friday_map.txt";
+	if(name == hut_play){
+		return "Resources//maps//hut_play.txt";
+	}else if(name == hut_1){
+		return "Resources//maps//hut_1.txt";
+	}else if(name == hut_2){
+		return "Resources//maps//hut_2.txt";
+	}else if(name == hut_3){
+		return "Resources//maps//hut_3.txt";
+	}else if(name == hut_4){
+		return "Resources//maps//hut_4.txt";
+	}else if(name == hut_5){
+		return "Resources//maps//hut_5.txt";
+	}else if(name == hut_6){
+		return "Resources//maps//hut_6.txt";
+	}else if(name == hut_7){
+		return "Resources//maps//hut_7.txt";
+	}else if(name == hut_8){
+		return "Resources//maps//hut_8.txt";
+	}else if(name == hut_9){
+		return "Resources//maps//hut_9.txt";
 	}else if(name == main_world11){
-		return "Resources//maps//main_world11.txt";
+		return "Resources//maps//world11.txt";
 	}else if(name == main_world12){
-		return "Resources//maps//main_world12.txt";
+		return "Resources//maps//world12.txt";
 	}else if(name == main_world13){
-		return "Resources//maps//main_world13.txt";
+		return "Resources//maps//world13.txt";
 	}else if(name == main_world14){
-		return "Resources//maps//main_world14.txt";
+		return "Resources//maps//world14.txt";
 	}else if(name == main_world15){
-		return "Resources//maps//main_world15.txt";
+		return "Resources//maps//world15.txt";
 	}else if(name == main_world16){
 		return "Resources//maps//world16.txt";
 	}else if(name == main_world17){
-		return "Resources//maps//main_world17.txt";
+		return "Resources//maps//world17.txt";
 	}else if(name == main_world18){
-		return "Resources//maps//main_world18.txt";
+		return "Resources//maps//world18.txt";
 	}else if(name == main_world19){
-		return "Resources//maps//main_world19.txt";
+		return "Resources//maps//world19.txt";
 	}else{
 		throw std::exception("No world");
 	}
@@ -593,6 +609,7 @@ void World::intial_drawable_map(void){
 	set_boundaries( "keep1",957,700,0,47);
 	set_boundaries( "kitchen_cabinet",32,40,0,24);
 	set_boundaries( "kitchen_stuff",0,0,0,0);
+	set_boundaries( "laundry",0,0,0,0);
 	set_boundaries( "lantern",0,0,0,0);
 	set_boundaries( "lazy_chair",32,40,0,10);
 	set_boundaries( "livestock_food",64,35,0,4);
@@ -686,6 +703,9 @@ void World::make_drawable(std::string items){
 		constant_index += (y.second + 1);
 		//passes the things gathered to another function that will make the object
 		iDrawable* d = designate_drawable(type.first, x.first, y.first,x.second,y.second, type.second);
+		if(d == NULL){
+			return;
+		}
 		d->set_my_type(Stationary);
 		this->insert_entity(d);
 
@@ -696,10 +716,26 @@ WorldName World::get_WorldName(std::string name, int name_size){
 	std::string worldName = name;
 
 
-	if(worldName.compare("test_map")==0){
-		return test_map;
-	}else if(worldName.compare("main_world") == 0){
-		return main_world;
+	if(worldName.compare("hut_play") == 0){
+		return hut_play;
+	}else if(worldName.compare("hut_1") == 0){
+		return hut_1;
+	}else if(worldName.compare("hut_2") == 0){
+		return hut_2;
+	}else if(worldName.compare("hut_3") == 0){
+		return hut_3;
+	}else if(worldName.compare("hut_4") == 0){
+		return hut_4;
+	}else if(worldName.compare("hut_5") == 0){
+		return hut_5;
+	}else if(worldName.compare("hut_6") == 0){
+		return hut_6;
+	}else if(worldName.compare("hut_7") == 0){
+		return hut_7;
+	}else if(worldName.compare("hut_8") == 0){
+		return hut_8;
+	}else if(worldName.compare("hut_9") == 0){
+		return hut_9;
 	}else if(worldName.compare("main_world11") == 0){
 		return main_world11;
 	}else if(worldName.compare("main_world12") == 0){
@@ -722,7 +758,7 @@ WorldName World::get_WorldName(std::string name, int name_size){
 	else{
 		throw std::exception("Broke");
 	}
-	return main_world;
+	return main_world11;
 
 }
 

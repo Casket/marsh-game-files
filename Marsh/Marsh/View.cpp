@@ -181,6 +181,7 @@ void Marsh::View::put_world_in_loaded(World* world){
 }
 
 void Marsh::View::insert_testing_entities(void){
+	/*
 	if(this->current_world->my_name == main_world){
 		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
 		std::pair<int, int> test = std::make_pair(120, 1000);
@@ -248,7 +249,7 @@ void Marsh::View::insert_testing_entities(void){
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g2);
 	}
-
+	*/
 
 	/*	QuestDescription kill_chickens;
 	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));

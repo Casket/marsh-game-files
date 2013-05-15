@@ -26,7 +26,7 @@ typedef struct Tile{
 	bool flyable;
 }Tile;
 
-enum WorldName{main_world,main_world11,main_world12,main_world13,main_world14,main_world15,main_world16,main_world17,main_world18,main_world19,test_map, keep, church_lower, church_upper};
+enum WorldName{main_world11,main_world12,main_world13,main_world14,main_world15,main_world16,main_world17,main_world18,main_world19,hut_play,hut_1,hut_2,hut_3,hut_4,hut_5,hut_6,hut_7,hut_8,hut_9,keep, church_lower, church_upper};
 
 class World{
 public:

@@ -64,7 +64,7 @@ int main(void)
 	font1 = load_font("font1.pcx",NULL,NULL);
 	font2 = load_font("font2.pcx",NULL,NULL);
 	font3 = load_font("font3.pcx",NULL,NULL);
-	world_name = test_map;
+	world_name = hut_play;
 	theme = load_wav("Resources//Music//main_theme.wav");
 	if (!theme) allegro_message("error theme wav");
 	else play_sample(theme,255,128,1000,1);
@@ -271,7 +271,7 @@ void start_game(void) {
 		}
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
-		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
+		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"Position %dx%d ", hero->x_pos, hero->y_pos);
 		clear_keybuf();
 	}
 
