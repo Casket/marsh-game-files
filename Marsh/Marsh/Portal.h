@@ -10,9 +10,10 @@ public:
 	bool activated;
 	int target_x_pos;
 	int target_y_pos;
+	bool is_world_port;
 
 public:
-	Portal(int x, int y, Sprite* img, WorldName togo, int targ_x, int targ_y);
+	Portal(int x, int y, Sprite* img, WorldName togo, int targ_x, int targ_y, bool);
 	~Portal(void);
 	virtual void update(void);
 	virtual void deal_with_attack(Attack* attack);

@@ -17,7 +17,7 @@ Mob::Mob(int x, int y, int vel, int vel_d, Sprite* img, std::vector<std::pair<in
 	this->mid_range_cd = 0;
 	this->attack_dir = None;
 	for(int i = 0; i < 10; i++){
-		this->cooldowns[i] = std::make_pair(0, -1);
+		this->cooldowns[i] = std::make_pair(0, 0);
 	}
 	this->chill_timer = 0;
 	this->priorities = NULL;
@@ -31,13 +31,10 @@ void Mob::update(void){
 
 	update_cd_timers();
 
-	if(this->wait > 0){
-		this->wait -= 1;
-		return;
-	}
 	if (this->entangled){
 		return;
 	}
+
 	bool dest_reached = false;
 
 	if(this->casting){
@@ -83,6 +80,7 @@ void Mob::update(void){
 		case attack_move:
 			if(this->target == NULL){
 				this->current_state = patrol;
+				break;
 			}
 			
 			this->target_area = set_target_area();
@@ -109,7 +107,7 @@ void Mob::update(void){
 					this->current_state = chilling_out;
 					int distance_needed = this->blocking_entity->get_bounding_width() + this->blocking_entity->get_bounding_height();
 					this->chill_time = (distance_needed / this->velocity);
-					break;
+					//break;
 				}
 			}
 
@@ -164,6 +162,8 @@ void Mob::update(void){
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
 			
 			this->prev_state = this->current_state;
+			dir_moving = this->get_direction_moving();
+			check = this->get_current_facing_flag(dir_moving);
 
 			if(!check){
 				this->current_state = detour_intial;
@@ -286,7 +286,7 @@ bool Mob::detect_enemies(iDrawable* to_check){
 
 	EntityType type_check = to_check->my_type;
 
-	if(type_check == Monster || type_check == Outcast){
+	if(type_check == Monster || type_check == Vamp || type_check == Guard || type_check == Outcast){
 		return true;
 	}else if(type_check == Hero){
 		if(to_check->get_image()->wearing_mask){
@@ -534,25 +534,46 @@ Direction Mob::get_direction_moving(){
 
 	int x_dif = (this->target_area.first - this->get_reference_x());
 	int y_dif = (this->target_area.second - this->get_reference_y());
-
+	int dif_x_y = std::abs(x_dif) - std::abs(y_dif);
 	int my_width = this->get_bounding_width();
 	int my_height = this->get_bounding_height();
 
-	//go left
-	if((x_dif < 0) && ((-5 < y_dif) && (y_dif < 5))){
-		return W;
-		//go right
-	}else if((x_dif > 0) && ((-5 < y_dif) && (y_dif< 5))){
-		return E;
-		//go up
-	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  < 0)){
-		return N;
-		//go down
-	}else if(((-5 < x_dif) && (x_dif < 5)) && (y_dif  > 0)){
-		return S;
-	}
+	Direction moving = None;
+	if(((0-ERR < x_dif) && (x_dif < ERR)) && ((0-ERR < y_dif) && (y_dif< ERR))){
+		return None;// reached destination
+		//go left and down
+	}else if((x_dif >= 0) && (y_dif >= 0)){
+		if(dif_x_y > 0){
+			moving = E;
+		}else{
+			moving = S;
+		}
 
-	return this->image->get_facing();
+		//go right and up
+	}else if((x_dif >= 0) && (y_dif <= 0)){
+		if(dif_x_y > 0){
+			moving = E;
+		}else{
+			moving = N;
+		}
+		//go left and down
+	}else if((x_dif <= 0) && (y_dif >= 0)){
+		if(dif_x_y > 0){
+			moving = W;
+		}else{
+			moving = S;
+		}
+
+		//go left and up
+	}else if((x_dif <= 0) && (y_dif <= 0)){
+		if(dif_x_y > 0){
+			moving = W;
+		}else{
+			moving = N;
+		}
+	}
+	
+	return moving == None ? this->get_image()->get_facing() : moving;
 
 }
 
@@ -578,14 +599,16 @@ bool Mob::check_variable_range(int dist){
 
 	if(cur_dir == N){
 		int y_dif = this->y_pos - this->target->y_pos - 32;
-		if(y_dif < dist && this->x_pos == tar_x){
+		int x_dif = this->target->x_pos - this->x_pos;
+		if(y_dif < dist && (abs(x_dif) < dist)){
 			return true;
 		}else{
 			return false;
 		}
 	}else if(cur_dir == S){
 		int y_dif = this->target->y_pos - this->y_pos - 32;
-		if(y_dif < dist && this->x_pos == tar_x){
+		int x_dif = this->target->x_pos - this->x_pos;
+		if(y_dif < dist && (abs(x_dif) < dist)){
 			return true;
 		}else{
 			return false;
@@ -593,7 +616,7 @@ bool Mob::check_variable_range(int dist){
 	}else if(cur_dir == W){
 		int x_dif = (this->x_pos - this->target->x_pos) - 32;
 		int y_dif = this->y_pos - this->target->y_pos;
-		if(x_dif < dist && ((y_dif > -10) && (y_dif < 10))){
+		if(x_dif < dist && (abs(y_dif) < dist)){
 			return true;
 		}else{
 			return false;
@@ -601,7 +624,7 @@ bool Mob::check_variable_range(int dist){
 	}else{
 		int x_dif = this->target->x_pos - this->x_pos - 32;
 		int y_dif = this->y_pos - this->target->y_pos;
-		if(x_dif < dist && ((y_dif > -10) && (y_dif < 10))){
+		if(x_dif < dist && (abs(y_dif) < dist)){
 			return true;
 		}else{
 			return false;
@@ -618,7 +641,7 @@ std::pair<int,int> Mob::set_target_area(void){
 	}else if(this->attack_dir == W){
 		return std::make_pair(this->target->get_reference_x() - 10, this->target->get_reference_y());
 	}
-	return std::make_pair(this->get_reference_x(), this->get_reference_y());
+	return std::make_pair(this->target->get_reference_x(), this->target->get_reference_y());
 }
 
 void Mob::update_cd_timers(void){

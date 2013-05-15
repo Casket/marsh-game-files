@@ -258,7 +258,6 @@ Attack* Attack::clone(int x, int y, Direction dir){
 		y += this->y_adjustment;
 		break;
 	case W:
-		
 		result->set_boundary_value(this->get_bounding_width(), this->get_bounding_height(), this->reference_horizontal, this->reference_vertical);
 		x -= this->x_adjustment + this->get_bounding_width();
 		y -= this->y_adjustment;
@@ -274,5 +273,6 @@ Attack* Attack::clone(int x, int y, Direction dir){
 	result->set_my_caster(this->my_caster);
 	result->my_type = Wallop;
 	result->spell_id = this->spell_id;
+	result->set_position_adjustment(this->x_adjustment, this->y_adjustment);
 	return result;
 }

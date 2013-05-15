@@ -41,7 +41,7 @@ void AttackDB::populate_penetration_spells(void){
 	//Shadow Needle
 	stats_for_spell.base_damage = base_spell_damage;
 	stats_for_spell.charge_time = base_charge_time + 5;
-	stats_for_spell.exp_date = animation_delay * 6;
+	stats_for_spell.exp_date = animation_delay * 0;
 	stats_for_spell.penetration = base_spell_penetration;
 	stats_for_spell.range = LONG_RANGE;
 	stats_for_spell.tree_depth = 1;
@@ -56,7 +56,7 @@ void AttackDB::populate_penetration_spells(void){
 	//Shadow Needle Plus
 	stats_for_spell.base_damage = base_spell_damage + 10;
 	stats_for_spell.charge_time = base_charge_time + 5;
-	stats_for_spell.exp_date = animation_delay * 6;
+	stats_for_spell.exp_date = animation_delay * 0;
 	stats_for_spell.penetration = base_spell_penetration + 5;
 	stats_for_spell.range = LONG_RANGE;
 	stats_for_spell.tree_depth = 2;
@@ -69,18 +69,18 @@ void AttackDB::populate_penetration_spells(void){
 	//Shadow spikes
 	stats_for_spell.base_damage = base_spell_damage + 10;
 	stats_for_spell.charge_time = base_charge_time + 100;
-	stats_for_spell.exp_date = 7*20;
+	stats_for_spell.exp_date = 7*5;
 	stats_for_spell.penetration = base_spell_penetration + 5;
 	stats_for_spell.range = 0;
 	stats_for_spell.tree_depth = 2;
 
-	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 20, 1, 7, 7, 147/7, 45);
+	Attack_Sprite* spikes = new Attack_Sprite("Resources//Attack Sprites//Shadow_Spike.bmp", W, 4, 1, 7, 7, 147/7, 45);
 	spikes->set_state_frame_counts(0, 7, 0);
 	
 	StationaryAttack* spike_attack = new StationaryAttack(0, 0, spikes, stats_for_spell);
 	spike_attack->set_boundary_value(20, 20, 0, 23);
 
-	Attack* shadow_spikes = new SpikeLauncher(0, 0, spikes, spike_attack,stats_for_spell, 10, 4);
+	Attack* shadow_spikes = new SpikeLauncher(0, 0, spikes, spike_attack,stats_for_spell, 5, 4);
 	shadow_spikes->set_boundary_value(20, 23, 0, 0);
 	shadow_spikes->set_mana_cost(base_mana + 10);
 	shadow_spikes->spell_id = SHADOW_SPIKES;
@@ -136,7 +136,7 @@ void AttackDB::populate_utility_spells(void){
 	Attack_Sprite* drain = new Attack_Sprite("Resources//Attack Sprites//Drain.bmp", W, 5, 1, 5, 5, 24, 19);
 	drain->set_state_frame_counts(0, 5, 0);
 	Attack* shadow_drain = new HealthDrainAttack(0, 0, 2, 10, drain, stats_for_spell);
-	shadow_drain->set_boundary_value(17, 25, 0, 0);
+	shadow_drain->set_boundary_value(25, 17, 0, 0);
 	shadow_drain->set_mana_cost(base_mana+5);
 	shadow_drain->spell_id = DRAIN_HEALTH;
 	this->attacks_by_id->insert(std::pair<int, Attack*>(DRAIN_HEALTH, shadow_drain));
@@ -311,7 +311,7 @@ void AttackDB::populate_melee(){
 	Attack* monster_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, slash, stats_for_spell);
 	monster_melee->set_mana_cost(base_mana);
 	monster_melee->set_position_adjustment(0, 40);
-	monster_melee->set_boundary_value(315/7, 58, 0,0);
+	monster_melee->set_boundary_value(45, 59, 0, 0);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(MONSTER_MELEE, monster_melee));
 
 
@@ -322,13 +322,13 @@ void AttackDB::populate_melee(){
 	stats_for_spell.penetration = base_spell_penetration;
 	stats_for_spell.range = NO_RANGE;
 	stats_for_spell.tree_depth = 0;
-	Attack_Sprite* gslash = new Attack_Sprite("Resources//Attack Sprites//guard_melee.tga", N, 3, 1, 4,4,252/4, 32);
+	Attack_Sprite* gslash = new Attack_Sprite("Resources//Attack Sprites//guard_melee_trim.tga", N, 3, 1, 4,4,40, 32);
 	gslash->is_translucent = true;
 	gslash->set_state_frame_counts(0,4,0);
 	Attack* guard_melee = new Attack(0,0,base_spell_speed, base_spell_v_delay, gslash, stats_for_spell);
 	guard_melee->set_mana_cost(base_mana);
-	guard_melee->set_position_adjustment(0, 40);
-	guard_melee->set_boundary_value(252/4, 32, 0,0);
+	guard_melee->set_position_adjustment(-30, 0);
+	guard_melee->set_boundary_value(36, 26, 0, 5);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(GUARD_MELEE, guard_melee));
 
 		//guard melee

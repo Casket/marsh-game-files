@@ -79,21 +79,21 @@ void Marsh::View::populate_spell_locs(void){
 	this->spell_icon_coords->push_back(std::pair<int, int>(1268, 106));
 }
 void Marsh::View::populate_image_names(void){
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
-	this->displayed_images->push_back("Energy_Bolt");
+	this->displayed_images->push_back("shadow_ball");
+	this->displayed_images->push_back("shadow_ball");
+	this->displayed_images->push_back("Energy_Wave");
+	this->displayed_images->push_back("shadow_nova");
+	this->displayed_images->push_back("Energy_Needle");
+	this->displayed_images->push_back("Energy_Needle");
+	this->displayed_images->push_back("Shadow_Spike");
+	this->displayed_images->push_back("death_beam");
+	this->displayed_images->push_back("Drain");
+	this->displayed_images->push_back("bind");
+	this->displayed_images->push_back("mass_slow");
+	this->displayed_images->push_back("shadow_dash");
+	this->displayed_images->push_back("teleport");
+	this->displayed_images->push_back("shield");
+	this->displayed_images->push_back("deflect");
 }
 
 void Marsh::View::draw_updated_loadout(Attack* loadout[]){
@@ -236,13 +236,13 @@ void Marsh::View::insert_testing_entities(void){
 		g->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g);
 
-		Mob* g1 = new Town_Guard(188,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g1 = new Vampire(188,800,0,0,new Player_Sprite("Resources//people//boy_one.bmp", S, 5, 1, 16, 16),ways); 
 		g1->set_boundary_value(32,18,0,14);
 		g1->set_world(this->current_world);
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g1);
 
-		Mob* g2 = new Town_Guard(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g2 = new Vampire(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);

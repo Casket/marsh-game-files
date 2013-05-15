@@ -528,10 +528,6 @@
 				RelativePath=".\World.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\WorldPortal.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -730,10 +726,6 @@
 			</File>
 			<File
 				RelativePath=".\World.h"
-				>
-			</File>
-			<File
-				RelativePath=".\WorldPortal.h"
 				>
 			</File>
 		</Filter>

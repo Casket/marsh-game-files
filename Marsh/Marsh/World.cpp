@@ -625,7 +625,6 @@ void World::intial_drawable_map(void){
 	set_boundaries( "dung_other34",161,791,0,10);
 	set_boundaries( "dung_other35",161,1655,0,10);
 	set_boundaries( "dung_other36",480,439,0,10);
-
 	set_boundaries( "dung_vamp1",1676,86,0,10);
 	set_boundaries( "dung_vamp2",6,1014,0,10);
 	set_boundaries( "dung_vamp3",768,36,0,10);
@@ -885,7 +884,7 @@ void World::make_portal(std::string items){
 	int y_tar = list_to_int(y_targ, inner_index);
 	WorldName converted_name = get_WorldName(worldName, name_size);
 
-	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, x_tar, y_tar);
+	iDrawable* new_portal = new Portal(x_pos,y_pos,new Ground_Sprite("Resources//back_ground//general.bmp",10,0),converted_name, x_tar, y_tar, false);
 	new_portal->set_boundary_value(32, 32, 0, 0);
 	insert_entity(new_portal);
 

@@ -149,6 +149,9 @@ void set_up_game(void) {
 	equip2->number_held = 1;
 	hero->add_to_inventory(equip2);*/
 /*	for(int i = 0; i <= 21; i++){
+
+	Equipment* equip = new Equipment(); 
+	for(int i = 0; i <= 22; i++){
 		equip = itemDB->fetch_item(i);
 		equip->number_held = 1;
 		hero->add_to_inventory(equip);
@@ -163,6 +166,8 @@ void set_up_game(void) {
 		hero->add_to_inventory(equip);
 		i += 1;
 	}*/
+
+
 }
 
 void show_intro(void) {
@@ -245,12 +250,32 @@ exit_loop: ;
 	return;
 }
 
+BITMAP* draw_Death(void) {
+	BITMAP *death_screen_bitmap = load_bitmap("Resources//DeathScreen.bmp",NULL);
+	if (!death_screen_bitmap){
+		allegro_message("Failed to load the death screen."); 
+		exit(1);	
+	}
+	blit(death_screen_bitmap, screen, 0,0, 0,0, 1400, 1000);
+	return death_screen_bitmap;
+}
+
+void restartWithDeathScreen(void){
+	BITMAP* deathScreen = draw_Death();
+	rest(5000);
+	destroy_bitmap(deathScreen);
+	load_game();
+}
+
 void start_game(void) {
 	game_state = IN_GAME;
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
 	while(game_state == IN_GAME) {
+		if(hero->dead){
+			restartWithDeathScreen();
+		}
 		if (key[KEY_ESC]) {
 			show_intro();
 		} 
@@ -273,6 +298,11 @@ void start_game(void) {
 
 		hero->update();
 		our_viewer->draw_active_world();
+
+		if(hero->new_mission){
+			save_game();
+			hero->new_mission = false;
+		}
 
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
@@ -342,7 +372,7 @@ void load_spells(string stream) {
 void load_game(void) {
 	int x_pos, y_pos, height, width;
 	int level, experience, notoriety, stats, mana, max_mana, health, max_health, gold, spell_pts;
-	int world;
+	int world, vitality, focus, intelligence, willpower, armor;
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 32);
 	std::string items, item_equip, item_held; 
 
@@ -374,6 +404,12 @@ void load_game(void) {
 			else if (beg.compare("Inventory1") == 0) stringstream(end) >> item_equip;
 			else if (beg.compare("Inventory2") == 0) stringstream(end) >> item_held;
 			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
+			else if (beg.compare("Vitality") == 0) stringstream(end) >> vitality;
+			else if (beg.compare("Intellligence") == 0) stringstream(end) >> intelligence;
+			else if (beg.compare("Focus") == 0) stringstream(end) >> focus;
+			else if (beg.compare("Willpower") == 0) stringstream(end) >> willpower;
+			else if (beg.compare("Armor") == 0) stringstream(end) >> armor;
+
 		}
 	}
 	load_inventory(items,item_equip,item_held);
@@ -390,6 +426,11 @@ void load_game(void) {
 	hero->health = health;
 	hero->max_health = max_health;
 	hero->gold = gold;
+	hero->vitality = vitality;
+	hero->intelligence = intelligence;
+	hero->focus = focus;
+	hero->willpower = willpower;
+	hero->armor = armor;
 	start_game();
 }
 
@@ -405,7 +446,7 @@ void save_game(void) {
 
 	// player extras
 	file1 << "Level " << hero->level << endl;
-	file1 << "Experience " << hero->current_experience << endl;
+	file1 << "Experience " << hero->experience << endl;
 	file1 << "Notoriety " << hero->notoriety << endl;
 	file1 << "Stats " << hero->statPoints << endl; 
 	file1 << "Spell-pts " << hero->spellPoints << endl;
@@ -414,6 +455,11 @@ void save_game(void) {
 	file1 << "Health " << hero->get_current_health() << endl;
 	file1 << "Max-health " << hero->get_max_health() << endl;
 	file1 << "Gold " << hero->gold << endl;
+	file1 << "Vitality " << hero->vitality << endl;
+	file1 << "Intelligence " << hero->intelligence << endl;
+	file1 << "Focus " << hero->focus << endl;
+	file1 << "Willpower " << hero->willpower << endl;
+	file1 << "Armor " << hero->armor << endl;
 
 	// world
 	int world = v->current_world->my_name;
@@ -426,6 +472,7 @@ void save_game(void) {
 	std::stringstream line; // id's
 	std::stringstream line1; // equipped
 	std::stringstream line2; // number_held
+	std::stringstream line3; // attacks
 	std::vector<Equipment*> inventory = *hero->get_inventory();
 	std::vector<Equipment*>::iterator end = inventory.end();
 	for (std::vector<Equipment*>::iterator iter = inventory.begin(); iter != end; ++iter){
@@ -445,15 +492,16 @@ void save_game(void) {
 	file1 << "Inventory1 " << item_equip << endl;
 	file1 << "Inventory2 " << item_held << endl;
 
-	// player spell loadout
-	Attack* loadout = *hero->attack_loadout;
 	int i=0;
 	for (i; i<MAX_ATTACKS; i++) {
-		line << loadout[i].spell_id;
-		if (i < (MAX_ATTACKS-1)) line << ",";
+		if(hero->attack_loadout[i] != NULL){
+			line3 << hero->attack_loadout[i]->spell_id;
+			if (hero->attack_loadout[i+1] != NULL) line3 << ",";
+		}
 	}
+
 	items.clear();
-	items = line.str();
+	items = line3.str();
 	file1 << "Spell-loadout " << items << endl;
 
 	file1.close();
@@ -501,7 +549,7 @@ void show_inv(void) { // show inventory items in a list as well as quanitty (cli
 		blit(inv_screen_bitmap, buffer, 0, 0, 0, 0, SCREENW, SCREENH);
 
 		textprintf_ex(buffer, font2, 50, 20, makecol(255,051,102), -1, "Character");
-		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game and esc to exit the menu to the pause screen.");
+		textprintf_ex(buffer, font3, 50, 900, makecol(255,255,255), -1, "Use the i key to return to the game or esc to exit the menu to the pause screen.");
 		textprintf_ex(buffer, font3, 50, 145, makecol(255,255,255), -1, "Use the arrow keys to scroll trough the items. Only 25 items can be kept in your inventory");
 		textprintf_ex(buffer, font3, 50, 175, makecol(255,255,255), -1, "at a time. Use the Delete key to remove items permanently. [Quest Items cannot be deleted]");
 		textprintf_ex(buffer, font3, 50, 220, makecol(56,235,181), -1, "Inventory");
@@ -656,8 +704,15 @@ void addStat(int selection){
 }
 
 void show_level_up(void) { // show level up menu
+	if (mute==0) {
+		stop_sample(theme);
+		rest(1000);
+	}
 	LevelUp^ menu = gcnew LevelUp(Player_Accessor::get_player());
 	menu->StartPosition = FormStartPosition::CenterScreen;
 	menu->ShowDialog();
+	if (mute==0) {
+		play_sample(theme,255,128,1000,1);
+	}
 	delete menu;
 }

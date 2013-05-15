@@ -18,6 +18,24 @@ Equipment* ItemDB::fetch_item(int item_id){
 	return (*location).second;
 }
 
+Equipment* clone_item(Equipment* item){
+	Equipment* clone = new Equipment();
+	clone->name = item->name;
+	clone->description = item->description;
+	clone->item_id = item->item_id;
+	clone->vitality = item->vitality;
+	clone->focus = item->focus;
+	clone->intelligence = item->intelligence;
+	clone->willpower = item->willpower;
+	clone->armor = item->armor;
+	clone->equipped = false;
+	clone->equipable = item->equipable;
+	clone->stackable = item->stackable;
+	clone->number_held = 1;
+	clone->type = item->type;
+	return clone;
+}
+
 void ItemDB::clear_Item(Equipment* item){
 	item->item_id = -1;
 	item->vitality = 0;
@@ -90,7 +108,7 @@ void ItemDB::load_From_File(void){
 				description = "";
 				type_string = "";
 				item_id = 0; vitality = 0; focus = 0; intelligence = 0; willpower = 0; armor = 0;
-				bool equipable = false; stackable = false;
+				equipable = false; stackable = false;
 				EquipmentType type = Unitialized;
 				
 			}
