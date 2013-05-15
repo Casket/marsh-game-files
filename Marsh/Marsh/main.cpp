@@ -141,22 +141,22 @@ void show_intro(void) {
 	if (!title_screen_bitmap)
 		exit(1);
 	int menu_sel = 0;
-	int max_sel = 3;
-	if (game_state == IN_GAME) max_sel = 4;
+	int max_sel = 2;
+	if (game_state == IN_GAME) max_sel = 3;
 	while (game_state == INTRO_GAME || game_state == IN_GAME) {
 		if (keypressed()) {
 			int k = readkey();
 			switch(k >> 8) {
 				case KEY_ESC: break;
-				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = 0; break;
-				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = max_sel; break;
+				case KEY_UP: menu_sel--; if (menu_sel < 0) menu_sel = max_sel; break;
+				case KEY_DOWN: menu_sel++; if (menu_sel > max_sel) menu_sel = 0; break;
 				case KEY_ENTER:
 					switch (menu_sel) {
 				case 0: game_state=IN_GAME; start_game(); break; // new game
 				case 1: game_state=IN_GAME; load_game(); break; // load game
 				case 2: game_state=FINISH_GAME; break; // exit game 
-				case 3: game_state=IN_GAME; save_game(); break; // save game
-				case 4: game_state=IN_GAME; goto exit_loop;
+			//	case 3: game_state=IN_GAME; save_game(); break; // save game
+				case 3: game_state=IN_GAME; goto exit_loop;
 					} break;
 				case KEY_M: {
 					if (mute==0) {
@@ -192,16 +192,10 @@ void show_intro(void) {
 			textprintf_ex(buffer, font1, 50,  270, makecol(255,255,255), -1, "EXIT GAME");
 		} 
 		if (game_state == IN_GAME) {
-			if (menu_sel == 3) { 
-				textprintf_ex(buffer, font1, 50,  340, makecol(0,255,255), -1, "Save Game");
+			if (menu_sel == 3) {
+				textprintf_ex(buffer, font1, 50,  340, makecol(255,0,51), -1, "Return");
 			} else {
-				textprintf_ex(buffer, font1, 50,  340, makecol(255,255,255), -1, "SAVE GAME");
-			} 
-
-			if (menu_sel == 4) {
-				textprintf_ex(buffer, font1, 50,  420, makecol(255,0,51), -1, "Return");
-			} else {
-				textprintf_ex(buffer, font1, 50,  420, makecol(255,255,0), -1, "RETURN");
+				textprintf_ex(buffer, font1, 50,  340, makecol(255,255,0), -1, "RETURN");
 			} 
 		}
 		if (mute==0) textprintf_ex(buffer, font, 370, 100, makecol(204,255,204), -1, "Sound On! (M to mute)");
@@ -238,6 +232,7 @@ void start_game(void) {
 	Player*	hero = Player_Accessor::get_player();
 	Marsh::View *our_viewer= create_view(hero);
 	hero->set_my_type(Hero);
+	bool started = false;
 	while(game_state == IN_GAME) {
 		if(hero->dead){
 			restartWithDeathScreen();
@@ -264,6 +259,7 @@ void start_game(void) {
 
 		hero->update();
 		our_viewer->draw_active_world();
+		started = true;
 
 		if(hero->new_mission){
 			save_game();
@@ -273,6 +269,8 @@ void start_game(void) {
 		textprintf_centre_ex(screen,font,100,20,makecol(255,255,255),-1,"FRAMERATE %d", framerate);		
 		textprintf_centre_ex(screen,font,100,30,makecol(255,255,255),-1,"SIZE %d ", sizeof(Combat));
 		clear_keybuf();
+
+		if (started) save_game();
 	}
 
 	//delete hero;
