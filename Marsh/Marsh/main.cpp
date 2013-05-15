@@ -188,7 +188,7 @@ void show_intro(void) {
 				case KEY_ENTER:
 					switch (menu_sel) {
 				case 0: game_state=IN_GAME; start_game(); break; // new game
-				case 1: game_state=IN_GAME; load_game(); break; // load game
+				case 1: game_state=LOAD_GAME; load_game(); break; // load game
 				case 2: game_state=FINISH_GAME; break; // exit game 
 			//	case 3: game_state=IN_GAME; save_game(); break; // save game
 				case 3: game_state=IN_GAME; goto exit_loop;
@@ -259,6 +259,7 @@ void restartWithDeathScreen(void){
 	BITMAP* deathScreen = draw_Death();
 	rest(5000);
 	destroy_bitmap(deathScreen);
+	game_state = LOAD_GAME;
 	load_game();
 }
 
