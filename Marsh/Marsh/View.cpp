@@ -244,7 +244,7 @@ void Marsh::View::insert_testing_entities(void){
 		g1->set_stats(1000, 1000, 1000, 1000, 1000);
 		this->current_world->insert_entity(g1);
 	*/
-		Mob* g2 = new VampireBoss(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+		Mob* g2 = new Town_Guard(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
@@ -415,6 +415,7 @@ void Marsh::View::update(void){
 				Player_Accessor::get_player()->x_pos = gateway->target_x_pos;
 				Player_Accessor::get_player()->y_pos = gateway->target_y_pos;
 				this->load_world(gateway->portal_to);
+				return;
 			}
 		}
 	}

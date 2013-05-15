@@ -13,8 +13,13 @@ iDrawable::iDrawable(int x, int y, int vel, int vel_d, Sprite* img){
 }
 
 iDrawable::~iDrawable(void){
-	if (this->image != NULL)
-		delete this->image;
+	/*try{*/
+		if (this->image != NULL)
+			delete this->image;
+	/*}
+	catch(...){
+		return;
+	}*/
 }
 
 void iDrawable::set_sprite(Sprite* spr){
