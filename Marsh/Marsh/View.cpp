@@ -372,10 +372,12 @@ void Marsh::View::draw_drawables(BITMAP* buffer, std::list<iDrawable*> *sprites)
 		} else {
 			masked_blit(frame, buffer, 0,0, x-xshift, y-yshift, width, height);
 		}
+		/*
 		rect(buffer, (*iter)->get_reference_x() - xshift, (*iter)->get_reference_y() - yshift,
 			(*iter)->get_reference_x() + (*iter)->get_bounding_width() - xshift,
 			(*iter)->get_reference_y() + (*iter)->get_bounding_height() - yshift,
 			makecol(255, 255, 255));
+			*/ 
 	}
 }
 
