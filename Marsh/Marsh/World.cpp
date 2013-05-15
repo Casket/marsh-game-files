@@ -15,7 +15,7 @@ World::World(WorldName this_world){
 	this->my_name = this_world;
 	this->active_entities = new std::list<iDrawable*>();
 	this->visible_entities = new std::list<iDrawable*>();
-	this->removal_queue = new std::list<iDrawable*>();
+	this->removal_queue = new std::set<iDrawable*>();
 	load_world();
 	destroy_bitmap(loading_screen_bitmap);
 }
@@ -384,7 +384,7 @@ void World::insert_entity(iDrawable* da_d){
 }
 
 void World::remove_entity(iDrawable* dat){
-	this->removal_queue->push_back(dat);
+	this->removal_queue->insert(dat);
 }
 
 std::list<iDrawable*>* World::get_visible_entities(void){
@@ -415,8 +415,8 @@ std::list<iDrawable*>* World::get_active_entities(void){
 }
 
 void World::remove_destroyed(void){
-	std::list<iDrawable*>::iterator iter;
-	std::list<iDrawable*>::iterator end = this->removal_queue->end();
+	std::set<iDrawable*>::iterator iter;
+	std::set<iDrawable*>::iterator end = this->removal_queue->end();
 	for (iter = this->removal_queue->begin(); iter != end; ++iter){
 		this->active_entities->remove((*iter));
 		delete (*iter);

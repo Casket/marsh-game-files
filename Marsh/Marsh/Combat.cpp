@@ -52,8 +52,12 @@ void Combat::insert_damage_attacks(int n){
 	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_WAVE)->clone(0, 0, W);
 	this->attack_loadout[n++]->set_my_caster(this);
 
-	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_NOVA)->clone(0, 0, N);
+	this->attack_loadout[n] = attacks->fetch_attack(SHADOW_NOVA)->clone(0, 0, W);
 	this->attack_loadout[n++]->set_my_caster(this);
+
+	this->attack_loadout[n] = attacks->fetch_attack(TARGET_SEEKER)->clone(0, 0, W);
+	this->attack_loadout[n]->set_my_caster(this);
+	this->attack_loadout[n++]->target = Player_Accessor::get_player();
 
 	delete attacks;
 }
@@ -472,7 +476,7 @@ void Combat::deal_with_attack(Attack* attack){
 }
 
 void Combat::upon_death(void){
-	this->my_world->removal_queue->push_back(this);
+	this->get_world()->remove_entity(this);
 }
 
 void Combat::append_dialogue(std::string message){

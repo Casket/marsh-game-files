@@ -34,6 +34,7 @@ public:
 	int y_adjustment;
 	Combat* my_caster;
 	int spell_id;
+	iDrawable* target;
 
 	public:
 		Attack(int x, int y, int vel, int vel_d, Sprite* img, int base_damage, int penetration, int range, int tree_depth, int exp_date, int charge_time);

@@ -210,6 +210,20 @@ void AttackDB::populate_utility_spells(void){
 	slow->set_mana_cost(base_mana+20);
 	this->attacks_by_id->insert(std::pair<int, Attack*>(MASS_SLOW, slow));
 
+	// target seeker
+	stats_for_spell.base_damage = base_spell_damage;
+	stats_for_spell.charge_time = base_charge_time+10;
+	stats_for_spell.exp_date = 0;
+	stats_for_spell.penetration = 20;
+	stats_for_spell.range = LONG_RANGE;
+	stats_for_spell.tree_depth = 5;
+	Attack_Sprite* seeker_spr = drain;
+	Attack* seeker = new TargetSeeker(0, 0, 1, 10, seeker_spr, stats_for_spell, NULL);
+	seeker->spell_id = TARGET_SEEKER;
+	seeker->set_mana_cost(15);
+	seeker->set_boundary_value(20, 20, 0, 0);
+	this->attacks_by_id->insert(std::pair<int, Attack*>(TARGET_SEEKER, seeker));
+
 }
 
 void AttackDB::populate_damage_spells(void){
