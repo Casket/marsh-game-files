@@ -196,11 +196,12 @@ void Marsh::View::insert_testing_entities(void){
 		g2->set_boundary_value(32,18,0,14);
 		g2->set_world(this->current_world);
 		g2->set_stats(1000, 1000, 1000, 1000, 1000);
-		this->current_world->insert_entity(g2);
+		//this->current_world->insert_entity(g2);
 	}
 
 bool visible(int x, int y, int width, int height){
 	Player* hero = Player_Accessor::get_player();
+	return true;
 
 	int left_most = hero->get_x_pos() - VISIBLE_W - PAD;
 	int right_most = left_most + SCREEN_W + PAD;
@@ -229,18 +230,7 @@ void Marsh::View::update(void){
 	std::list<iDrawable*>* actives = this->current_world->get_active_entities();
 	std::list<iDrawable*>::iterator end = actives->end();
 	std::list<iDrawable*>::iterator iter;
-	this->current_world->updating_entities->clear();
-	for (iter = actives->begin(); iter != end; ++iter){
-		iDrawable* check = (*iter);
-		if (check->get_bounding_height() == 0 && check->get_bounding_width() == 0)
-			continue;
-		if (!visible(check->x_pos, check->y_pos, check->get_image()->get_current_frame()->w, check->get_image()->get_current_frame()->h))
-			continue;
-		this->current_world->updating_entities->push_back(check);
-	}
-
-	end = this->current_world->updating_entities->end();
-	for (iter = this->current_world->updating_entities->begin(); iter != end; iter++){
+	for (iter = actives->begin(); iter != end; iter++){
 		if ((*iter)->my_type == Hero)
 			continue;
 		(*iter)->update();
