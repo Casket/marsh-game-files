@@ -14,6 +14,7 @@ ItemBestower::ItemBestower(int x, int y, int vel, int vel_d, Sprite* img)
 	this->has_player_hostage = false;
 	this->should_give_items = false;
 	this->bestow_all_items = false;
+	this->can_speak = true;
 }
 ItemBestower::~ItemBestower(void){
 	delete this->dialogue;

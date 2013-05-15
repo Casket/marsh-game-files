@@ -159,11 +159,12 @@ void Mob::update(void){
 			break;
 
 		case patrol:
+
 			if (this->waypoints == NULL)
 				break;
 
 			dest_reached = move_towards(this->waypoints->at(this->patrol_node));
-
+			
 			this->prev_state = this->current_state;
 			dir_moving = this->get_direction_moving();
 			check = this->get_current_facing_flag(dir_moving);

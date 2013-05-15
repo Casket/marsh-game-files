@@ -128,13 +128,47 @@ void set_up_game(void) {
 	Player_Sprite* img = new Player_Sprite("Resources//player//player_sheet.bmp", S, 5, 2, 16, 2*16);
 	Player_Accessor::create_player(300, 256, img, 28, 14, 0, 18);
 	Player*	hero = Player_Accessor::get_player();
+	Equipment* equip = new Equipment();
+	//Equipment* equip1 = new Equipment();
+	//Equipment* equip2 = new Equipment(); 
+	/*equip1->name = "Cloth Armor";
+	equip1->type = Tunic;
+	equip1->vitality = 5;
+	equip1->description = "+5 Vit";
+	equip1->item_id = 0;
+	equip1->equipped = false;
+	equip1->equipable = true;
+	equip1->number_held = 1;
+	hero->add_to_inventory(equip1);
+	equip2->name = "Long Sword";
+	equip2->type = Dagger;
+	equip2->description = "+5 Wp";
+	equip2->willpower = 5;
+	equip2->item_id = 1;
+	equip2->equipped = false;
+	equip2->equipable = true;
+	equip2->number_held = 1;
+	hero->add_to_inventory(equip2);*/
+/*	for(int i = 0; i <= 21; i++){
+
 	Equipment* equip = new Equipment(); 
 	for(int i = 0; i <= 22; i++){
 		equip = itemDB->fetch_item(i);
 		equip->number_held = 1;
 		hero->add_to_inventory(equip);
 		equip = new Equipment();
-	}
+	}*/
+	/*equip->name = "None";
+	equip->description = "Filler test";
+	equip->item_id = -1;
+	equip->number_held = -1;
+	int i = 2;
+	while (i<MAX_HELD_ITEMS) {
+		hero->add_to_inventory(equip);
+		i += 1;
+	}*/
+
+
 }
 
 void show_intro(void) {
@@ -250,6 +284,9 @@ void start_game(void) {
 		if (!rested) {
 			rest(4);
 			continue;
+		}
+		if(keyrel(KEY_J)){
+			hero->experience += 50;
 		}
 		rested = false;
 		ticks++;
