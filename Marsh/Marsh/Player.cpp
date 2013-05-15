@@ -272,8 +272,6 @@ void Player::listen_to_keyboard(void) {
 		//TODO Get rid of these cheat codes
 		if(key[KEY_H]){
 			this->health -= 50000;
-		}else if(key[KEY_J]){
-			this->experience += 50;
 		}
 		accept_movement();
 		accept_interaction();

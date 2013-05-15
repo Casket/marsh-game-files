@@ -27,6 +27,8 @@
 #define CONSOLE_HEIGHT 155
 #define BACK_LAYER_X 585
 #define BACK_LAYER_Y 40
+#define BACK_EXP_X 210 
+#define BACK_EXP_Y 208
 #define SPELL_ICON_SIZE 65
 
 
@@ -60,6 +62,7 @@ namespace Marsh {
 		std::map<WorldName, World*>* loaded_worlds;
 		BITMAP* ui_image;
 		BITMAP* black_overlay;
+		BITMAP* behind_exp;
 
 		View(Player* hero);
 		~View(void);

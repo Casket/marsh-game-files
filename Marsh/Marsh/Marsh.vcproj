@@ -497,6 +497,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StatueBoss.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\StunningAttack.cpp"
 				>
 			</File>
@@ -702,6 +706,10 @@
 			</File>
 			<File
 				RelativePath=".\StationaryAttack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StatueBoss.h"
 				>
 			</File>
 			<File
