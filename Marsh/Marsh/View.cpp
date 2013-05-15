@@ -184,221 +184,220 @@ void Marsh::View::put_world_in_loaded(World* world){
 void Marsh::View::insert_testing_entities(void){
 	/*
 	if(this->current_world->my_name == main_world){
-		std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
-		std::pair<int, int> test = std::make_pair(120, 1000);
-		ways->insert(ways->end(), test);
-		std::pair<int, int> test2 = std::make_pair(120, 800);
-		ways->insert(ways->end(), test2);
-		std::pair<int, int> test3 = std::make_pair(45, 800);
-		ways->insert(ways->end(), test3);
+	std::vector<std::pair<int, int>>* ways = new std::vector<std::pair<int,int>>();
+	std::pair<int, int> test = std::make_pair(120, 1000);
+	ways->insert(ways->end(), test);
+	std::pair<int, int> test2 = std::make_pair(120, 800);
+	ways->insert(ways->end(), test2);
+	std::pair<int, int> test3 = std::make_pair(45, 800);
+	ways->insert(ways->end(), test3);
 
-		ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
-		shop->bestow_all_items = false;
+	ItemBestower* shop = new ItemBestower(700, 700, 0, 0, NULL);
+	shop->bestow_all_items = false;
 
-		ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//AI_characters//nice_folk.bmp", S, 5, 1, 16, 16));
-		farmer_bob->set_world(this->current_world);
-		farmer_bob->append_dialogue("Good work tiny adventurer.");
-		farmer_bob->can_speak = true;
-		farmer_bob->bestow_all_items = true;
-		this->current_world->insert_entity(farmer_bob);
-		farmer_bob->set_boundary_value(30, 30, 0, 0);
-		Equipment* manapot = get_new_equipment();
-		manapot->intelligence = 100;
-		manapot->number_held = 1;
-		manapot->description = "+100 Mana [Enter to drink]";
-		manapot->item_id = 17;
-		manapot->type = Consumable;
-		manapot->stackable = true;
-		manapot->name = "Weak Mana Potion";
-
-		farmer_bob->append_inventory(manapot, 20);
-
-		Equipment* healthpot = get_new_equipment();
-		healthpot->vitality = 300;
-		healthpot->number_held = 1;
-		healthpot->description = "+300 Health [Enter to drink]";
-		healthpot->name = "Super Powerful Healing Potion";
-		healthpot->item_id = 19;
-		healthpot->type = Consumable;
-		healthpot->stackable = true;
-
-		farmer_bob->append_inventory(healthpot, 15);
-
-		Equipment* companion = get_new_equipment();
-		companion->description = "A fluffy kitty who will smite your enemies with cuteness.";
-		companion->name = "Mr. Biggles Worth";
-		companion->number_held = 1;
-		companion->stackable = false;
-		companion->item_id = 197;
-		farmer_bob->append_inventory(companion, 1000000);
-
-		/*
-		Mob* g = new Town_Guard(116,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
-		g->set_boundary_value(32,18,0,14);
-		g->set_world(this->current_world);
-		g->set_stats(1000, 1000, 1000, 1000, 1000);
-		this->current_world->insert_entity(g);
-
-		Mob* g1 = new Vampire(188,800,0,0,new Player_Sprite("Resources//people//boy_one.bmp", S, 5, 1, 16, 16),ways); 
-		g1->set_boundary_value(32,18,0,14);
-		g1->set_world(this->current_world);
-		g1->set_stats(1000, 1000, 1000, 1000, 1000);
-		this->current_world->insert_entity(g1);
-	
-		Mob* g2 = new VampireBoss(152,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
-		g2->set_boundary_value(32,18,0,14);
-		g2->set_world(this->current_world);
-		g2->set_stats(10, 10, 10, 10, 10);
-		this->current_world->insert_entity(g2);
-	}
-	*/
-	/*	QuestDescription kill_chickens;
-	Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
-	test_transp->set_world(this->current_world);
-	test_transp->get_image()->is_translucent = true;
-	this->current_world->insert_entity(test_transp);
-
-	kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
-	QuestReward lootz;
-	lootz.gold = 1;
-	KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
-	Quest* farm_quest = new Quest(kill_chickens, obj);
-	farm_quest->add_reward(lootz);
-
-	RetrieveObjective* item_obj = new RetrieveObjective(10, 1);
-	QuestDescription item;
-	item.text = "You need to get some items for me because I like stuff.";
-	Quest* quest2 = new Quest(item, item_obj);
-	quest2->add_reward(lootz);
-
-	OptionPresenter* farmer_bob = new OptionPresenter(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+	ItemBestower* farmer_bob = new ItemBestower(500, 400, 0, 0, new Player_Sprite("Resources//AI_characters//nice_folk.bmp", S, 5, 1, 16, 16));
 	farmer_bob->set_world(this->current_world);
-	farmer_bob->append_quest(farm_quest);
-	farmer_bob->append_quest(quest2);
-	farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
-	farmer_bob->append_pre_dialogue("Would you like to [1] kill chickens or [2] retrieve fancy items?");
-	farmer_bob->append_post_dialogue("Thanks for helping out.");
+	farmer_bob->append_dialogue("Good work tiny adventurer.");
 	farmer_bob->can_speak = true;
+	farmer_bob->bestow_all_items = true;
 	this->current_world->insert_entity(farmer_bob);
 	farmer_bob->set_boundary_value(30, 30, 0, 0);
+	Equipment* manapot = get_new_equipment();
+	manapot->intelligence = 100;
+	manapot->number_held = 1;
+	manapot->description = "+100 Mana [Enter to drink]";
+	manapot->item_id = 17;
+	manapot->type = Consumable;
+	manapot->stackable = true;
+	manapot->name = "Weak Mana Potion";
 
-	/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
-	std::pair<int, Direction> test = std::make_pair(-1, N);
-	ways->insert(ways->end(), test);
-	std::pair<int, Direction> test2 = std::make_pair(30, S);
-	ways->insert(ways->end(), test2);
-	std::pair<int, Direction> test5 = std::make_pair(-1,N);
-	ways->insert(ways->end(), test5);
+	farmer_bob->append_inventory(manapot, 20);
 
+	Equipment* healthpot = get_new_equipment();
+	healthpot->vitality = 300;
+	healthpot->number_held = 1;
+	healthpot->description = "+300 Health [Enter to drink]";
+	healthpot->name = "Super Powerful Healing Potion";
+	healthpot->item_id = 19;
+	healthpot->type = Consumable;
+	healthpot->stackable = true;
 
-	Mob* g = new Mob(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+	farmer_bob->append_inventory(healthpot, 15);
+
+	Equipment* companion = get_new_equipment();
+	companion->description = "A fluffy kitty who will smite your enemies with cuteness.";
+	companion->name = "Mr. Biggles Worth";
+	companion->number_held = 1;
+	companion->stackable = false;
+	companion->item_id = 197;
+	farmer_bob->append_inventory(companion, 1000000);
+
+	/*
+	Mob* g = new Town_Guard(116,800,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+	g->set_boundary_value(32,18,0,14);
 	g->set_world(this->current_world);
+	g->set_stats(1000, 1000, 1000, 1000, 1000);
 	this->current_world->insert_entity(g);
 
-	Combat* talker = new Combat(400,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
-	talker->set_my_type(EntityType::Speaker);
-	talker->set_world(this->current_world);
-	talker->can_speak = true;
-	talker->append_dialogue("I used to be an adventurer like you, until I took an arrow to the knee");
-	talker->append_dialogue("How does a rogue beat a paladin?  He pickpockets his hearth stone.");
-	talker->append_dialogue("I wondered why the baseball was getting bigger.  Then it hit me.");
-	talker->append_dialogue("I used to have a fear of hurdles, but I got over it.");
-	talker->append_dialogue("I see you have some graph paper.  You must be plotting something.");
-	this->current_world->insert_entity(talker);
-	talker->set_boundary_value(40, 40, 0, 0);
-
-	QuestReward r;
-	r.gold = 1;
-
-	QuestDescription des;
-	des.text = "Go kill two killer rambo sheep";
-
-	KillObjective* objective;
-	objective = new KillObjective(EntityType::Monster, 2);
-
-	Quest* quest = new Quest(des, objective);
-	quest->add_reward(r);
-
-	quest->begin_quest();
-
-	des.text = "Go talk to the barrel";
-
-	InteractObjective* inter_objective;
-	inter_objective = new InteractObjective(EntityType::Speaker, 1);
-
-	Quest* quest2 = new Quest(des, inter_objective);
-	quest2->add_reward(r);
-
-	quest2->begin_quest();
-
-
-	this->playa->quest_manager->flush_queues();
-
-
-	Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d->set_boundary_value(0, 0, 0, 0);
-	this->current_world->insert_entity(d);
-
-	Drawable* d1 = new Drawable(650, 149, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d1->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d1);
-
-	Drawable* d2 = new Drawable(780, 300, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d2->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d2);
-
-	Drawable* d3 = new Drawable(800, 593, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d3->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d3);
-
-	Drawable* d4 = new Drawable(1000, 450, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d4->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d4);
-
-	Drawable* d5 = new Drawable(950, 438, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d5->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d5);
-
-	Drawable* d6 = new Drawable(850, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d6->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d6);
-
-	Drawable* d7 = new Drawable(850, 834, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
-	d7->set_boundary_value(35, 30, 60, 123);
-	this->current_world->insert_entity(d7);
-
-	Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
-	rambo_sheep->set_my_type(EntityType::Monster);
-	rambo_sheep->set_stats(103, 0, 0, 0, 0);
-	rambo_sheep->set_world(this->current_world);
-	this->current_world->insert_entity(rambo_sheep);
-	rambo_sheep->set_boundary_value(30, 30, 2, 2);
-
-	Combat* rambo_sheep2 = new Combat(1000, 800, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 33, 0, 30, 30));
-	rambo_sheep2->set_my_type(EntityType::Monster);
-	rambo_sheep2->set_stats(99, 0, 0, 0, 0);
-	rambo_sheep2->set_world(this->current_world);
-	this->current_world->insert_entity(rambo_sheep2);
-	rambo_sheep2->set_boundary_value(30, 30, 2, 2);
-
-	Combat* chicken = new Combat(500, 1000, 0, 0, new Solid_Sprite("Resources//Misc//chicken.bmp", 0, 0, 30, 30));
-	chicken->set_my_type(EntityType::Chicken);
-	chicken->set_stats(99, 0, 0, 0, 0);
-	chicken->set_world(this->current_world);
-	this->current_world->insert_entity(chicken);
-	chicken->set_boundary_value(30, 30, 2, 2);
-
-	Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
-	att->set_boundary_value(28, 28, 4, 4);
-	this->current_world->insert_entity(att);
-	att->set_world(this->current_world);
-
-	Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), small_map);
-	port->set_boundary_value(100, 100, 0, 0);
-	port->set_world(this->current_world);
-	this->current_world->insert_entity(port);
+	Mob* g1 = new Vampire(188,800,0,0,new Player_Sprite("Resources//people//boy_one.bmp", S, 5, 1, 16, 16),ways); 
+	g1->set_boundary_value(32,18,0,14);
+	g1->set_world(this->current_world);
+	g1->set_stats(1000, 1000, 1000, 1000, 1000);
+	this->current_world->insert_entity(g1);
 	*/
+	Mob* g2 = new StatueBoss(152,800,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16)); 
+	g2->set_boundary_value(32,18,0,14);
+	g2->set_world(this->current_world);
+	g2->set_stats(10, 10, 10, 10, 10);
+	this->current_world->insert_entity(g2);
 }
+
+/*	QuestDescription kill_chickens;
+Drawable* test_transp = new Drawable(200, 200, 0, 0, new Solid_Sprite("Resources//Misc//Special14.tga"));
+test_transp->set_world(this->current_world);
+test_transp->get_image()->is_translucent = true;
+this->current_world->insert_entity(test_transp);
+
+kill_chickens.text = "Chickens are up in here eating our food.  Kill one chicken and claim your rewards.";
+QuestReward lootz;
+lootz.gold = 1;
+KillObjective* obj = new KillObjective(EntityType::Chicken, 1);
+Quest* farm_quest = new Quest(kill_chickens, obj);
+farm_quest->add_reward(lootz);
+
+RetrieveObjective* item_obj = new RetrieveObjective(10, 1);
+QuestDescription item;
+item.text = "You need to get some items for me because I like stuff.";
+Quest* quest2 = new Quest(item, item_obj);
+quest2->add_reward(lootz);
+
+OptionPresenter* farmer_bob = new OptionPresenter(400, 400, 0, 0, new Player_Sprite("Resources//people//nice_folk.bmp", S, 5, 1, 16, 16));
+farmer_bob->set_world(this->current_world);
+farmer_bob->append_quest(farm_quest);
+farmer_bob->append_quest(quest2);
+farmer_bob->append_pre_dialogue("Howdy, how would you like to help me out?");
+farmer_bob->append_pre_dialogue("Would you like to [1] kill chickens or [2] retrieve fancy items?");
+farmer_bob->append_post_dialogue("Thanks for helping out.");
+farmer_bob->can_speak = true;
+this->current_world->insert_entity(farmer_bob);
+farmer_bob->set_boundary_value(30, 30, 0, 0);
+
+/*std::vector<std::pair<int, Direction>>* ways = new std::vector<std::pair<int,Direction>>();
+std::pair<int, Direction> test = std::make_pair(-1, N);
+ways->insert(ways->end(), test);
+std::pair<int, Direction> test2 = std::make_pair(30, S);
+ways->insert(ways->end(), test2);
+std::pair<int, Direction> test5 = std::make_pair(-1,N);
+ways->insert(ways->end(), test5);
+
+
+Mob* g = new Mob(300,450,0,0,new Player_Sprite("Resources//Misc//guard.bmp", S, 5, 1, 16, 16),ways); 
+g->set_world(this->current_world);
+this->current_world->insert_entity(g);
+
+Combat* talker = new Combat(400,500, 0,0, new Solid_Sprite("Resources//drawable_images//barrel.bmp"));
+talker->set_my_type(EntityType::Speaker);
+talker->set_world(this->current_world);
+talker->can_speak = true;
+talker->append_dialogue("I used to be an adventurer like you, until I took an arrow to the knee");
+talker->append_dialogue("How does a rogue beat a paladin?  He pickpockets his hearth stone.");
+talker->append_dialogue("I wondered why the baseball was getting bigger.  Then it hit me.");
+talker->append_dialogue("I used to have a fear of hurdles, but I got over it.");
+talker->append_dialogue("I see you have some graph paper.  You must be plotting something.");
+this->current_world->insert_entity(talker);
+talker->set_boundary_value(40, 40, 0, 0);
+
+QuestReward r;
+r.gold = 1;
+
+QuestDescription des;
+des.text = "Go kill two killer rambo sheep";
+
+KillObjective* objective;
+objective = new KillObjective(EntityType::Monster, 2);
+
+Quest* quest = new Quest(des, objective);
+quest->add_reward(r);
+
+quest->begin_quest();
+
+des.text = "Go talk to the barrel";
+
+InteractObjective* inter_objective;
+inter_objective = new InteractObjective(EntityType::Speaker, 1);
+
+Quest* quest2 = new Quest(des, inter_objective);
+quest2->add_reward(r);
+
+quest2->begin_quest();
+
+
+this->playa->quest_manager->flush_queues();
+
+
+Drawable* d = new Drawable(550, 10, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d->set_boundary_value(0, 0, 0, 0);
+this->current_world->insert_entity(d);
+
+Drawable* d1 = new Drawable(650, 149, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d1->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d1);
+
+Drawable* d2 = new Drawable(780, 300, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d2->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d2);
+
+Drawable* d3 = new Drawable(800, 593, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d3->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d3);
+
+Drawable* d4 = new Drawable(1000, 450, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d4->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d4);
+
+Drawable* d5 = new Drawable(950, 438, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d5->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d5);
+
+Drawable* d6 = new Drawable(850, 600, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d6->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d6);
+
+Drawable* d7 = new Drawable(850, 834, 0,0, new Solid_Sprite("Resources//drawable_images//tree_pine.bmp"));
+d7->set_boundary_value(35, 30, 60, 123);
+this->current_world->insert_entity(d7);
+
+Combat* rambo_sheep = new Combat(800,500, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 0, 0, 30, 30));
+rambo_sheep->set_my_type(EntityType::Monster);
+rambo_sheep->set_stats(103, 0, 0, 0, 0);
+rambo_sheep->set_world(this->current_world);
+this->current_world->insert_entity(rambo_sheep);
+rambo_sheep->set_boundary_value(30, 30, 2, 2);
+
+Combat* rambo_sheep2 = new Combat(1000, 800, 0,0, new Solid_Sprite("Resources//drawable_images//sheep.bmp", 33, 0, 30, 30));
+rambo_sheep2->set_my_type(EntityType::Monster);
+rambo_sheep2->set_stats(99, 0, 0, 0, 0);
+rambo_sheep2->set_world(this->current_world);
+this->current_world->insert_entity(rambo_sheep2);
+rambo_sheep2->set_boundary_value(30, 30, 2, 2);
+
+Combat* chicken = new Combat(500, 1000, 0, 0, new Solid_Sprite("Resources//Misc//chicken.bmp", 0, 0, 30, 30));
+chicken->set_my_type(EntityType::Chicken);
+chicken->set_stats(99, 0, 0, 0, 0);
+chicken->set_world(this->current_world);
+this->current_world->insert_entity(chicken);
+chicken->set_boundary_value(30, 30, 2, 2);
+
+Attack* att = new Attack(800, 800, 5, 5, new Player_Sprite("magic//fireball.bmp", W, 0,0,0,0), 0,0,0,0,0,0);
+att->set_boundary_value(28, 28, 4, 4);
+this->current_world->insert_entity(att);
+att->set_world(this->current_world);
+
+Portal* port = new Portal(1000, 1000, new Solid_Sprite("Resources//drawable_images//sheep.bmp"), small_map);
+port->set_boundary_value(100, 100, 0, 0);
+port->set_world(this->current_world);
+this->current_world->insert_entity(port);
+*/
 
 
 void Marsh::View::update(void){
