@@ -45,7 +45,7 @@ void Player::set_world(World* world){
 }
 
 void Player::upon_death(void){
-	//this->dead = true;
+	this->dead = true;
 }
 
 void Player::increment_notoriety(int increase){
