@@ -410,7 +410,7 @@ void load_game(std::string file) {
 			else if (beg.compare("Inventory2") == 0) stringstream(end) >> item_held;
 			else if (beg.compare("Spell-loadout") == 0) load_spells(end);
 			else if (beg.compare("Vitality") == 0) stringstream(end) >> vitality;
-			else if (beg.compare("Intellligence") == 0) stringstream(end) >> intelligence;
+			else if (beg.compare("Intelligence") == 0) stringstream(end) >> intelligence;
 			else if (beg.compare("Focus") == 0) stringstream(end) >> focus;
 			else if (beg.compare("Willpower") == 0) stringstream(end) >> willpower;
 			else if (beg.compare("Armor") == 0) stringstream(end) >> armor;
